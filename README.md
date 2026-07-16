@@ -1,78 +1,51 @@
 # AI Explorer
 
-Homepage dashboard prototype for a 14-16 age learning website about how ChatGPT generates text.
+AI Explorer is an interactive React/Vite learning prototype for helping 12--14 year-old students understand core ideas behind Large Language Models. The central learning message is that ChatGPT does not truly "know" answers in the human sense: it processes tokens, uses context, compares probabilities, learns patterns from training data, and can still make confident mistakes.
 
-## Homepage Purpose
+## Current Prototype
 
-The homepage immediately tells students:
+The project has evolved from separate static HTML pages into a React single-page application. It currently includes:
 
-- This website teaches how ChatGPT generates text.
-- They need to complete 6 missions.
-- The Final Challenge unlocks after all missions are complete.
+- A Home dashboard that acts as the main orientation space for the learning journey.
+- A Missions overview page for navigating six learning missions.
+- Mission 1: Tokenisation, redesigned as a long-scroll lesson flow.
+- Mission 2: Next-token prediction, with probability bars and a creativity slider.
+- Mission 3: Hallucination, redesigned as a detective-style investigation.
+- Mission 4: Context, currently a functional draft.
+- Mission 5: Training data, split into get data, learn patterns, and make predictions pages.
+- Mission 6: Bias, currently a functional draft.
+- Progress and Activity pages that prototype learner records, saved reflections, XP, and badge-style rewards.
 
-## Current UI
+Some surrounding features such as XP, badges, and activity records are design prototypes rather than final learning analytics. They are included to explore how the tool might motivate learners and make progress visible, but still need evaluation and refinement.
 
-- Mission 1 tokenisation page matching the provided mission layout.
-- Mission 2 next-token prediction page with guessing, probability bars, and temperature exploration.
-- Missions list page for real sidebar/back navigation.
-- Left sidebar with Home, Missions, Progress, Badges, Glossary, and About.
-- User profile card showing Explorer, Level 3, XP, and progress.
-- Top status bar with XP, 7 day streak, Settings, and Profile.
-- Hero section: "Understand how ChatGPT thinks."
-- Six mission cards with locked states for later missions.
-- Final Challenge card with locked feedback.
-- Progress section with a 0% circular progress indicator.
-- Skills You'll Learn links to glossary anchors.
-- Recent Badges section with locked badge states.
-- Settings modal with sound, animation speed, text size, dark mode, and reset progress.
+## Technology
 
-## Click Behaviour
-
-This is a static prototype. Clicks currently simulate routing with toast feedback and update the browser path using the requested URLs, including:
-
-- `/dashboard`
-- `/missions`
-- `/progress`
-- `/badges`
-- `/glossary`
-- `/about`
-- `/profile`
-- `/mission/1-tokenisation`
-- `/mission/2-next-token`
-- `/mission/3-hallucination`
-- `/mission/4-context`
-- `/mission/5-training-data`
-- `/mission/6-bias`
-- `/final-challenge`
-
-Locked missions and the Final Challenge show unlock messages.
-
-## Files
-
-- `index.html` - homepage dashboard
-- `mission-1-tokenisation.html` - Mission 1 learning page
-- `mission-2-next-token.html` - Mission 2 next-token prediction page
-- `missions.html` - all missions list page
-- `assets/css/style.css` - dashboard visual design
-- `assets/css/mission.css` - mission page visual design
-- `assets/js/app.js` - routing feedback, locked states, and settings modal
-- `assets/js/mission1.js` - Mission 1 tokenisation and mini challenge logic
-- `assets/js/mission2.js` - Mission 2 prediction, probability, and temperature logic
-- `assets/js/missions.js` - missions list interactions
-- `assets/img/mission-robot-reading.png` - 3D robot reading illustration
-- `assets/img/mission-robot-pointing.png` - 3D robot prediction illustration
-- `project.json` - project metadata
+- React
+- Vite
+- CSS animations and responsive layout
+- localStorage for prototype progress and saved reflections
+- Static PNG mascot and learning illustrations
 
 ## Run Locally
 
-Open `index.html` directly in a browser, or run:
+Install dependencies:
 
 ```bash
-python3 -m http.server 8000
+npm install
 ```
 
-Then open:
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Then open the local URL shown by Vite, usually:
 
 ```text
-http://localhost:8000
+http://127.0.0.1:5173/
 ```
+
+## Project Status
+
+Missions 1--3 are the most polished long-scroll learning flows. Mission 5 has been restructured into a clearer multi-page training-data flow. Missions 4--6 will be further refined so the full learning path has a consistent teaching style.
