@@ -1,0 +1,51 @@
+{
+  "title": "AI Explorer",
+  "subtitle": "How ChatGPT Thinks",
+  "brief": "A homepage dashboard for a 14-16 age educational website that teaches how ChatGPT generates text through six missions and a final challenge.",
+  "target_age": "14-16",
+  "homepage_goal": [
+    "Explain that ChatGPT predicts text based on patterns in data",
+    "Show students that they need to complete 6 missions",
+    "Use progress, XP, streaks, and badges to support engagement",
+    "Unlock a Final Challenge after all missions are complete"
+  ],
+  "routes": {
+    "home": "/dashboard",
+    "missions": "/missions",
+    "progress": "/progress",
+    "badges": "/badges",
+    "glossary": "/glossary",
+    "about": "/about",
+    "profile": "/profile",
+    "mission_1": "/mission/1-tokenisation",
+    "mission_2": "/mission/2-next-token",
+    "mission_3": "/mission/3-hallucination",
+    "mission_4": "/mission/4-context",
+    "mission_5": "/mission/5-training-data",
+    "mission_6": "/mission/6-bias",
+    "final_challenge": "/final-challenge"
+  },
+  "missions": [
+    "How does ChatGPT read?",
+    "Can you think like ChatGPT?",
+    "Why does ChatGPT make mistakes?",
+    "Why does context matter?",
+    "Train your own AI",
+    "Can AI be biased?"
+  ],
+  "files": [
+    "index.html",
+    "missions.html",
+    "mission-1-tokenisation.html",
+    "mission-2-next-token.html",
+    "assets/css/style.css",
+    "assets/css/mission.css",
+    "assets/js/app.js",
+    "assets/js/mission1.js",
+    "assets/js/mission2.js",
+    "assets/js/missions.js",
+    "assets/img/mission-robot-reading.png",
+    "assets/img/mission-robot-pointing.png",
+    "README.md"
+  ]
+}

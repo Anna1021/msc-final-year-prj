@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mission 2 - Can you think like ChatGPT?</title>
+  <link rel="stylesheet" href="assets/css/mission.css" />
+</head>
+<body>
+  <div class="mission-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="logo" href="index.html" aria-label="AI Explorer dashboard">
+        <span class="robot-logo" aria-hidden="true"><span class="antenna"></span><span class="robot-face"><span></span></span></span>
+        <span><strong>AI Explorer</strong><small>How ChatGPT Thinks</small></span>
+      </a>
+      <nav class="side-nav">
+        <a href="index.html"><span class="nav-icon icon-home"></span>Home</a>
+        <a class="active" href="missions.html"><span class="nav-icon icon-home"></span>Missions</a>
+        <a href="/progress" data-route="/progress"><span class="nav-icon icon-chart"></span>Progress</a>
+        <a href="/badges" data-route="/badges"><span class="nav-icon icon-badge"></span>Badges</a>
+        <a href="/glossary" data-route="/glossary"><span class="nav-icon icon-book"></span>Glossary</a>
+        <a href="/about" data-route="/about"><span class="nav-icon icon-info"></span>About</a>
+      </nav>
+      <a class="profile-card" href="/profile" data-route="/profile">
+        <span class="avatar" aria-hidden="true"><span class="avatar-hair"></span><span class="avatar-face"></span></span>
+        <span class="profile-copy"><strong>Explorer</strong><em>Level 3</em></span>
+        <span class="xp-track"><span style="width: 60%"></span></span>
+        <small>1200 / 2000 XP</small>
+      </a>
+    </aside>
+
+    <main class="mission-page mission-two-page">
+      <header class="mission-topbar">
+        <a class="back-button" href="missions.html"><span>‹</span>Back to Missions</a>
+        <div class="mission-progress">
+          <strong>Mission 2 of 6</strong>
+          <span class="progress-dots" aria-label="2 of 6 missions">
+            <span class="filled"></span><span class="filled"></span><span></span><span></span><span></span><span></span>
+          </span>
+        </div>
+        <div class="status-actions">
+          <button class="status-pill" type="button" data-popover="You earn XP by completing missions and challenges."><span class="star-icon"></span>1200 XP</button>
+          <button class="status-pill" type="button" data-popover="You have learned for 7 days in a row."><span class="flame-icon"></span>7 day streak</button>
+          <button class="icon-button settings-trigger icon-settings" type="button" aria-label="Open settings"></button>
+        </div>
+      </header>
+
+      <section class="mission-content mission-two-content">
+        <div class="main-column">
+          <section class="title-section mission-two-title">
+            <div>
+              <h1>2. Can you think like ChatGPT?</h1>
+              <p>ChatGPT predicts the next token.<br />It looks at the context and gives each possible<br />next word a <strong>probability</strong>.</p>
+            </div>
+            <img class="reading-robot pointing-robot" src="assets/img/mission-robot-pointing.png" alt="Friendly robot explaining next-token prediction" />
+          </section>
+
+          <section class="step-card guess-card" id="questionCard">
+            <span id="questionBadge" class="question-badge">Question 1 of 5</span>
+            <div class="context-box">
+              <small>Context:</small>
+              <strong id="questionText">The cat sat on the ____.</strong>
+            </div>
+            <p>What do you think comes next? Choose your guess.</p>
+            <div id="answerOptions" class="answer-grid" aria-live="polite"></div>
+            <button id="submitGuessBtn" class="primary-button submit-button" type="button" disabled>Submit Guess</button>
+          </section>
+
+          <section class="step-card prediction-card" id="predictionCard">
+            <div class="prediction-layout">
+              <div>
+                <h2>AI Prediction <span>(probabilities)</span> <button class="tiny-info" type="button" data-popover="AI considers many possible next tokens at the same time.">i</button></h2>
+                <div id="probabilityBars" class="probability-bars"></div>
+              </div>
+              <aside id="predictionFeedback" class="prediction-feedback"></aside>
+            </div>
+          </section>
+
+          <footer class="bottom-nav">
+            <a class="secondary-button link-button" href="mission-1-tokenisation.html">‹ Previous</a>
+            <button id="nextMissionBtn" class="primary-button" type="button">Next ›</button>
+          </footer>
+        </div>
+
+        <aside class="right-column">
+          <section class="side-panel how-panel mission2-how">
+            <h2>How it works</h2>
+            <button class="flow-card" type="button" data-popover="This is the context. ChatGPT uses earlier words to decide what comes next.">
+              <span class="flow-icon green">⌘</span>
+              <span><strong>Context <em>(what came before)</em></strong><small id="contextFlow">The cat sat on the</small></span>
+            </button>
+            <span class="arrow">↓</span>
+            <button class="flow-card" type="button" data-popover="The model considers many possible next tokens.">
+              <span class="flow-icon blue">↯</span>
+              <span><strong>Next-token Prediction</strong><small>The model looks at many possible next tokens.</small></span>
+            </button>
+            <span class="arrow">↓</span>
+            <button class="flow-card" type="button" data-popover="Each possible token gets a probability score.">
+              <span class="flow-icon orange">▥</span>
+              <span><strong>Probabilities</strong><small>Each token gets a probability score.</small></span>
+            </button>
+            <span class="arrow">↓</span>
+            <button class="flow-card" type="button" data-popover="The model usually picks the token with the highest probability.">
+              <span class="flow-icon purple-flow">✦</span>
+              <span><strong>Generation</strong><small>The model usually picks the highest probability token.</small></span>
+            </button>
+          </section>
+
+          <section class="side-panel temperature-panel">
+            <h2>Creativity (Temperature) <button class="tiny-info" type="button" data-popover="Lower temperature makes the model safer and more predictable. Higher temperature makes it more random.">i</button></h2>
+            <div class="temperature-labels"><span>Lower = safer answers</span><span>Higher = more creative</span></div>
+            <div class="temperature-control">
+              <input id="temperatureSlider" type="range" min="0.1" max="2" step="0.1" value="0.7" />
+              <output id="temperatureValue">0.7</output>
+            </div>
+            <div class="try-box">
+              <span>💡</span>
+              <div>
+                <strong>Try it!</strong>
+                <p>Move the slider and click “Show again” to see how the probabilities change.</p>
+              </div>
+              <button id="showAgainBtn" class="hint-button" type="button">Show again</button>
+            </div>
+          </section>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="modal" id="settingsModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-settings></div>
+    <section class="settings-dialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="modal-header"><h2 id="settingsTitle">Settings</h2><button class="icon-button close-button" type="button" data-close-settings aria-label="Close settings">×</button></div>
+      <label><span>Text size</span><input type="range" min="1" max="3" value="2" /></label>
+      <label><span>Animation</span><input type="checkbox" checked /></label>
+      <label><span>Sound</span><input type="checkbox" checked /></label>
+      <label><span>Dark mode</span><input type="checkbox" /></label>
+      <button class="reset-button" type="button">Reset mission progress</button>
+    </section>
+  </div>
+
+  <script src="assets/js/shared-ui.js"></script>
+  <script src="assets/js/mission2.js"></script>
+</body>
+</html>
