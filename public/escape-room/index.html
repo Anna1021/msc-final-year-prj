@@ -441,6 +441,157 @@
     }
     input[type="range"] { width: 100%; accent-color: var(--room); }
 
+    .fairness-lab {
+      display: grid;
+      gap: 14px;
+    }
+
+    .fairness-data-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(250px, .9fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .data-window, .prediction-window, .data-cleaner {
+      border: 1px solid rgba(230,220,255,.16);
+      border-radius: 18px;
+      padding: 14px;
+      background: rgba(255,255,255,.07);
+    }
+
+    .data-window h3, .prediction-window h3, .data-cleaner h3 {
+      margin: 0 0 9px;
+      font-size: 1rem;
+    }
+
+    .people-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 8px 0 12px;
+    }
+
+    .person-dot {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #07101f;
+      font-size: 1.05rem;
+      font-weight: 950;
+      box-shadow: 0 6px 14px rgba(0,0,0,.18);
+    }
+
+    .person-dot.male { background: linear-gradient(135deg, #8fc5ff, #2f83ff); }
+    .person-dot.female { background: linear-gradient(135deg, #ffd68a, #ff9f2f); }
+
+    .bias-sample {
+      display: grid;
+      gap: 5px;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      color: #ffe2e7;
+      background: rgba(170,37,58,.22);
+      border: 1px solid rgba(255,112,131,.35);
+      font-weight: 850;
+    }
+
+    .bias-sample.removed {
+      color: #d7ffe8;
+      background: rgba(32,155,93,.18);
+      border-color: rgba(124,244,178,.34);
+      text-decoration: none;
+    }
+
+    .prediction-big {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .prediction-big strong {
+      font-size: clamp(1.6rem, 4vw, 3rem);
+      color: #fff;
+      line-height: 1;
+    }
+
+    .prediction-bars {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .prediction-bar {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr) 48px;
+      gap: 8px;
+      align-items: center;
+      color: #f9f5ff;
+      font-weight: 900;
+    }
+
+    .prediction-bar span:nth-child(2) {
+      height: 14px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,.13);
+    }
+
+    .prediction-bar i {
+      display: block;
+      height: 100%;
+      width: var(--value);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--bar), #fff2b0);
+      transition: width .24s ease;
+    }
+
+    .fix-controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .remove-card {
+      width: 100%;
+      display: grid;
+      gap: 4px;
+      min-height: 72px;
+      text-align: left;
+      color: #fff;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(230,220,255,.18);
+      box-shadow: none;
+    }
+
+    .remove-card.selected {
+      color: #d7ffe8;
+      border-color: rgba(124,244,178,.45);
+      background: rgba(32,155,93,.2);
+    }
+
+    .test-output {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border-radius: 16px;
+      color: #f8f4ff;
+      background: rgba(155,108,255,.12);
+      border: 1px solid rgba(155,108,255,.28);
+      font-weight: 850;
+    }
+
+    .test-output b { color: #fff; }
+
     .room-foot {
       display: flex;
       justify-content: space-between;
@@ -568,6 +719,7 @@
       .app { min-height: 100vh; height: auto; }
       .stage { overflow: visible; }
       .hero, .room-body, .exit-panels { grid-template-columns: 1fr; }
+      .fairness-data-row, .fix-controls { grid-template-columns: 1fr; }
       .map-grid { grid-template-columns: 1fr; }
       .screen, .room, .room-inner, .exit { min-height: auto; }
     }
@@ -609,7 +761,7 @@
       { id: "verification", number: 3, title: "Hallucination Archive", power: "Verification", crystal: "verification", colour: "#ff5a70", aim: "Check confident claims before trusting them." },
       { id: "context", number: 4, title: "Context Lens", power: "Context", crystal: "context", colour: "#38c47f", aim: "Add useful clues, not random details." },
       { id: "patterns", number: 5, title: "Training Lab", power: "Training patterns", crystal: "patterns", colour: "#3a8bff", aim: "Choose examples that teach a clear pattern." },
-      { id: "fairness", number: 6, title: "Fairness Chamber", power: "Bias and fairness", crystal: "fairness", colour: "#a855f7", aim: "Balance the data and remove unfair examples." }
+      { id: "fairness", number: 6, title: "Fairness Chamber", power: "Bias and fairness", crystal: "fairness", colour: "#a855f7", aim: "The model follows the data it was given. Fairer data can lead to fairer outputs." }
     ];
 
     const state = {
@@ -727,7 +879,7 @@
       if (id === "verification") return { selected: "", feedback: "" };
       if (id === "context") return { selected: [], feedback: "" };
       if (id === "patterns") return { selected: [], feedback: "" };
-      if (id === "fairness") return { ratio: 8, removed: false, feedback: "" };
+      if (id === "fairness") return { ratio: 8, removed: false, tested: false, feedback: "" };
       return {};
     }
 
@@ -1002,19 +1154,73 @@
     function fairnessPuzzle(data) {
       const female = 10 - data.ratio;
       const balancedEnough = data.ratio >= 4 && data.ratio <= 6;
+      const stereotypePenalty = data.removed ? 0 : 12;
+      const malePrediction = Math.max(5, Math.min(95, data.ratio * 10 + stereotypePenalty));
+      const femalePrediction = 100 - malePrediction;
+      const predictedLabel = Math.abs(malePrediction - femalePrediction) <= 8 ? "Both equally" : malePrediction > femalePrediction ? "Male" : "Female";
+      const defaultFeedback = balancedEnough && data.removed
+        ? "Ready to test. The data is more balanced and the unfair sentence is gone."
+        : balancedEnough
+          ? "The numbers are better. Now remove the unfair sentence."
+          : data.removed
+            ? "The unfair sentence is gone. Now balance the example numbers."
+            : "First, fix the data mix and remove the unfair sentence.";
+      const people = [
+        ...Array.from({ length: data.ratio }, () => "male"),
+        ...Array.from({ length: female }, () => "female")
+      ];
       return `<div class="room-body">
         <section class="puzzle-board">
-          ${stepStrip(["Balance data", "Remove unfair idea", "Test chamber"], balancedEnough && data.removed ? 2 : balancedEnough || data.removed ? 1 : 0)}
-          <span class="clue">Fairness chamber</span>
-          <h2>Fix the unfair data.</h2>
-          <div class="scale"><div class="beam"></div></div>
-          <p>Male examples: ${data.ratio} · Female examples: ${female}</p>
-          <input type="range" min="0" max="10" step="1" value="${data.ratio}" data-slider="ratio">
-          <div class="chip-grid"><button type="button" class="${data.removed ? "selected" : ""}" data-action="remove-stereotype">Remove unfair example</button></div>
-          <button type="button" data-action="check">Test fairness chamber</button>
-          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || (balancedEnough ? "Good start. Now remove the unfair example." : "Move the slider closer to 5 and 5.")}</div>
+          ${stepStrip(["Look at data", "Fix data", "Test prediction"], balancedEnough && data.removed ? 2 : balancedEnough || data.removed ? 1 : 0)}
+          <span class="clue">Learning simulation</span>
+          <h2>Make the training data fairer.</h2>
+          <p>The model does not choose fairness by itself. It follows patterns from the data it was given.</p>
+          <div class="fairness-lab">
+            <div class="fairness-data-row">
+              <div class="data-window">
+                <h3>Training data shown to the model</h3>
+                <div class="people-row">${people.map((kind) => `<span class="person-dot ${kind}" title="${kind}">${kind === "male" ? "M" : "F"}</span>`).join("")}</div>
+                <p><b>Male examples:</b> ${data.ratio} · <b>Female examples:</b> ${female}</p>
+                <div class="bias-sample ${data.removed ? "removed" : ""}">
+                  <span>${data.removed ? "✓ Removed unfair sentence" : "⚠ Unfair sentence still in data"}</span>
+                  <small>${data.removed ? "The data is cleaner now." : "\"Men are usually better leaders.\" This is not a fair example."}</small>
+                </div>
+              </div>
+              <div class="prediction-window">
+                <h3>Simulated prediction</h3>
+                <div class="prediction-big">
+                  <span>The model is more likely to answer:</span>
+                  <strong>${predictedLabel}</strong>
+                  <div class="prediction-bars">
+                    <div class="prediction-bar" style="--bar:#4a91ff; --value:${malePrediction}%"><span>Male</span><span><i></i></span><span>${malePrediction}%</span></div>
+                    <div class="prediction-bar" style="--bar:#ffb340; --value:${femalePrediction}%"><span>Female</span><span><i></i></span><span>${femalePrediction}%</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="data-cleaner">
+              <h3>Fix the data</h3>
+              <div class="fix-controls">
+                <label>
+                  <b>Change the mix of examples</b>
+                  <input type="range" min="0" max="10" step="1" value="${data.ratio}" data-slider="ratio" aria-label="Male examples out of 10">
+                </label>
+                <span class="pill">M ${data.ratio} / F ${female}</span>
+              </div>
+              <button type="button" class="remove-card ${data.removed ? "selected" : ""}" data-action="remove-stereotype">
+                <strong>${data.removed ? "Unfair sentence removed" : "Remove the unfair sentence"}</strong>
+                <span>${data.removed ? "Good. The model should not learn from that sentence." : "Take out the sentence that teaches a harmful shortcut."}</span>
+              </button>
+            </div>
+            <div class="test-output">
+              <span>⚖</span>
+              <span>${data.tested ? (balancedEnough && data.removed ? "<b>Test passed:</b> the output is fairer because the data is cleaner and more balanced." : "<b>Test failed:</b> the data still teaches a biased pattern.") : "When the data changes, the prediction changes. Test it when you think the data is fairer."}</span>
+            </div>
+          </div>
+          <button type="button" data-action="check">Test new prediction</button>
+          <div class="feedback ${data.feedback?.startsWith("Good") || data.feedback?.startsWith("Ready") || data.feedback?.startsWith("You removed") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || defaultFeedback}</div>
         </section>
-        ${guide("Fair AI needs better data, not just a lucky guess.")}
+        ${guide("The model is not checking what is fair. It is copying patterns from the examples. Fix the examples, then test again.")}
       </div>`;
     }
 
@@ -1084,10 +1290,14 @@
     function bindFairnessRoom(room) {
       roomScreen.querySelector("[data-slider='ratio']")?.addEventListener("input", (event) => {
         state.roomData.ratio = Number(event.target.value);
+        state.roomData.tested = false;
+        state.roomData.feedback = "";
         renderRoom(room);
       });
       roomScreen.querySelector("[data-action='remove-stereotype']")?.addEventListener("click", () => {
         state.roomData.removed = !state.roomData.removed;
+        state.roomData.tested = false;
+        state.roomData.feedback = state.roomData.removed ? "You removed the unfair sentence. Now test the prediction." : "The unfair sentence is back in the data.";
         renderRoom(room);
       });
     }
@@ -1119,8 +1329,10 @@
         data.feedback = "Choose many correct examples. Avoid wrong or tiny data.";
       }
       if (room.id === "fairness") {
+        data.tested = true;
         if (data.ratio >= 4 && data.ratio <= 6 && data.removed) return roomComplete(room);
-        data.feedback = "Do both: balance the numbers and remove the unfair example.";
+        if (data.ratio < 4 || data.ratio > 6) data.feedback = "The examples are still unbalanced. Move the slider closer to 5 and 5.";
+        else data.feedback = "The numbers are better, but the unfair sentence is still teaching a bad shortcut.";
       }
       renderRoom(room);
     }
