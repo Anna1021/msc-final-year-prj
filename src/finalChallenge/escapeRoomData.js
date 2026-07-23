@@ -10,8 +10,8 @@ export const tokenRoom = {
   crystalId: "token",
   accent: "#9b6cff",
   sentence: "I can't wait!",
-  correctTokens: ["I", "can", "'t", "wait", "!"],
-  trayTokens: ["wait", "I", "can't", "!", "can", "'t"],
+  correctTokens: ["I", "can't", "wait", "!"],
+  trayTokens: ["wait", "I", "can't", "!", "can"],
   simulationNote: "Simplified tokenisation example. Different models may split text differently.",
   learningGoal: "A token may be a word, part of a word, or punctuation."
 };
@@ -42,6 +42,6 @@ export const finalExitPanels = {
 
 export const tokenHintLevels = [
   "Start by rebuilding the sentence from left to right.",
-  "A token can be a whole word, part of a word, or punctuation. In this learning simulation, can't is split into two pieces.",
-  "For this learning simulation, use: I → can → 't → wait → !"
+  "A token can be a whole word, part of a word, or punctuation. Here, can't stays together.",
+  "For this learning simulation, use: I → can't → wait → !"
 ];
