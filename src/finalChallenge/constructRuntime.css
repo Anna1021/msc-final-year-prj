@@ -1,0 +1,404 @@
+.construct-wrapper-page {
+  min-height: 100vh;
+  color: #111b36;
+  background: linear-gradient(180deg, #f8faff 0%, #edf2ff 100%);
+}
+
+body.escape-room-expanded {
+  overflow: hidden;
+}
+
+.construct-wrapper-page .final-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.construct-shell {
+  height: calc(100vh - 64px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  padding: 18px clamp(16px, 2.4vw, 30px);
+  overflow: hidden;
+}
+
+.construct-shell:has(.construct-progress-panel) {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 350px);
+}
+
+.construct-wrapper-page.is-expanded {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  min-height: 100vh;
+  background: #070917;
+}
+
+.construct-wrapper-page.is-expanded .final-header {
+  display: none;
+}
+
+.construct-wrapper-page.is-expanded .construct-shell {
+  height: 100vh;
+  padding: 0;
+  gap: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.construct-wrapper-page.is-expanded .construct-game-frame {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: #070917;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.construct-wrapper-page.is-expanded .construct-frame-header {
+  min-height: 58px;
+  padding: 10px 16px;
+  color: #fff;
+  background: rgba(7, 9, 23, 0.94);
+  border-bottom-color: rgba(223, 214, 255, 0.15);
+}
+
+.construct-wrapper-page.is-expanded .construct-frame-header h1 {
+  color: #fff;
+}
+
+.construct-wrapper-page.is-expanded .construct-iframe-wrap {
+  min-height: 0;
+}
+
+.construct-game-frame,
+.construct-progress-panel {
+  border: 1px solid #dbe4f6;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 48px rgba(44, 55, 105, 0.11);
+}
+
+.construct-game-frame {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+
+.construct-frame-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  padding: 15px 18px;
+  border-bottom: 1px solid #e3e9f5;
+}
+
+.construct-frame-header span {
+  display: block;
+  color: #6f55f5;
+  font-weight: 950;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.construct-frame-header h1 {
+  margin: 2px 0 0;
+  font-size: 1.2rem;
+}
+
+.construct-frame-header strong {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: #5643f2;
+  background: #f0ecff;
+  font-size: 0.9rem;
+}
+
+.construct-top-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.construct-top-actions button {
+  min-height: 38px;
+  padding: 8px 13px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+
+.construct-top-actions .fullscreen-toggle {
+  border-color: #b9c5e3;
+}
+
+.construct-wrapper-page.is-expanded .construct-top-actions .fullscreen-toggle {
+  color: #fff;
+  border-color: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.11);
+}
+
+.construct-iframe-wrap {
+  position: relative;
+  min-height: 0;
+  background: #080b1f;
+}
+
+.construct-game-frame iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  display: block;
+  background: #080b1f;
+}
+
+.construct-runtime-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  padding: 28px;
+  text-align: center;
+  color: #fff;
+  background: radial-gradient(circle at 50% 38%, rgba(118, 91, 255, 0.22), transparent 30%), rgba(8, 11, 31, 0.92);
+}
+
+.construct-runtime-overlay strong {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.construct-runtime-overlay p {
+  max-width: 520px;
+  margin: 0;
+  color: #d8d2ff;
+  font-weight: 780;
+  line-height: 1.45;
+}
+
+.construct-runtime-overlay div {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.construct-runtime-overlay.error {
+  background: radial-gradient(circle at 50% 38%, rgba(255, 90, 112, 0.2), transparent 30%), rgba(15, 11, 31, 0.95);
+}
+
+.runtime-spinner {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.24);
+  border-top-color: #9b7cff;
+  animation: spin 0.9s linear infinite;
+}
+
+.construct-inventory {
+  padding: 12px 16px 14px;
+  border-top: 1px solid #e3e9f5;
+  background: rgba(251, 253, 255, 0.96);
+}
+
+.construct-inventory header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #202b49;
+  font-weight: 950;
+}
+
+.construct-inventory header span {
+  color: #6b55f5;
+}
+
+.construct-inventory div {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.construct-inventory div span {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #dfe6f4;
+  border-radius: 13px;
+  padding: 8px;
+  background: #fff;
+  color: #72809d;
+}
+
+.construct-inventory div span i {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  color: #8490aa;
+  background: #eef2f8;
+  font-style: normal;
+  font-weight: 950;
+}
+
+.construct-inventory div span small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 850;
+}
+
+.construct-inventory div span.collected {
+  border-color: color-mix(in srgb, var(--room) 42%, #dfe6f4);
+  color: #1f2846;
+  background: color-mix(in srgb, var(--room) 9%, #fff);
+}
+
+.construct-inventory div span.collected i {
+  color: #fff;
+  background: var(--room);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--room) 42%, transparent);
+}
+
+.construct-progress-panel {
+  min-height: 0;
+  overflow: auto;
+  padding: 18px;
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.construct-progress-panel section {
+  border: 1px solid #e3e9f5;
+  border-radius: 16px;
+  padding: 15px;
+  background: #fff;
+}
+
+.construct-progress-panel h2,
+.construct-progress-panel h3 {
+  margin: 0 0 8px;
+}
+
+.construct-progress-panel p {
+  margin: 7px 0;
+  color: #4a5674;
+  font-weight: 760;
+  line-height: 1.45;
+}
+
+.construct-room-list {
+  display: grid;
+  gap: 8px;
+}
+
+.construct-room-list span {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #e2e8f5;
+  border-radius: 12px;
+  padding: 8px;
+  color: #687491;
+  background: #fbfdff;
+}
+
+.construct-room-list b {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  color: #7a849b;
+  background: #eef2f8;
+}
+
+.construct-room-list em {
+  font-style: normal;
+  font-weight: 850;
+}
+
+.construct-room-list span.done {
+  color: #192441;
+  border-color: color-mix(in srgb, var(--room) 40%, #dfe6f4);
+  background: color-mix(in srgb, var(--room) 9%, #fff);
+}
+
+.construct-room-list span.done b {
+  color: #fff;
+  background: var(--room);
+}
+
+.construct-progress-panel article {
+  border-radius: 12px;
+  padding: 11px 12px;
+  background: #f8faff;
+}
+
+.construct-progress-panel article + article {
+  margin-top: 10px;
+}
+
+.construct-progress-panel article strong {
+  color: #5f49f4;
+}
+
+.construct-progress-panel article p {
+  margin: 6px 0 0;
+  font-size: 0.9rem;
+}
+
+.construct-panel-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.construct-panel-actions .danger {
+  color: #e24d61;
+  border-color: #ffd1d8;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .construct-wrapper-page *,
+  .construct-wrapper-page *::before,
+  .construct-wrapper-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (max-width: 1180px) {
+  .construct-shell {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: auto;
+  }
+
+  .construct-game-frame iframe,
+  .construct-iframe-wrap {
+    height: min(68vh, 760px);
+  }
+}

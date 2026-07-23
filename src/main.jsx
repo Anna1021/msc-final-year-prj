@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { AlertTriangle, BadgeCheck, BrainCircuit, Database, Globe2, Lightbulb, Scale, ShieldCheck, TrendingUp, Users, Wrench } from "lucide-react";
 import "./styles.css";
+import FinalChallenge from "./finalChallenge/FinalChallenge.jsx";
 
 const STORAGE_KEY = "aiExplorerProgress";
 
@@ -35,7 +37,6 @@ function shuffleList(items) {
 function defaultProgress() {
   return {
     xp: 1200,
-    streak: 7,
     missions: Object.fromEntries(missionData.map((m) => [m.id, { progress: 0, completed: false }]))
   };
 }
@@ -147,7 +148,7 @@ function Mascot({ type = "pointing" }) {
     return <span className="mascot training-mascot"><img src={src} alt="Friendly AI Explorer robot" /><span className="data-orbit" aria-hidden="true"><i>DATA</i><i>101</i><i>✓</i></span></span>;
   }
   if (type === "detective" || type === "idea") {
-    return <span className={`mascot detective-mascot ${type === "idea" ? "idea-mascot" : ""}`}><img src="/assets/img/mission-robot-pointing.png" alt="Friendly AI Explorer robot" />{type === "detective" ? <><span className="detective-lens" aria-hidden="true"><Icon name="search" /></span><span className="pattern-sparks" aria-hidden="true"><i /><i /><i /></span></> : <span className="idea-bulb" aria-hidden="true"><Icon name="bulb" /></span>}</span>;
+    return <span className={`mascot detective-mascot ${type === "idea" ? "idea-mascot safe-idea-mascot" : ""}`}><img src="/assets/img/mission-robot-pointing.png" alt="Friendly AI Explorer robot" />{type === "detective" ? <><span className="detective-lens" aria-hidden="true"><Icon name="search" /></span><span className="pattern-sparks" aria-hidden="true"><i /><i /><i /></span></> : <span className="idea-bulb" aria-hidden="true"><Icon name="bulb" /></span>}</span>;
   }
   return <img className="mascot" src={src} alt="Friendly AI Explorer robot" />;
 }
@@ -241,7 +242,7 @@ function Sidebar({ route, progress, navigate }) {
 
 function routeGroup(route) {
   if (route === "/" || route === "/dashboard") return "dashboard";
-  if (route === "/missions" || route.startsWith("/mission")) return "missions";
+  if (route === "/missions" || route.startsWith("/mission") || route === "/final-challenge") return "missions";
   if (route === "/activity" || route.startsWith("/progress")) return "progress";
   return route.replace("/", "") || "dashboard";
 }
@@ -254,7 +255,6 @@ function TopBar({ route, progress, navigate, notify, resetProgress }) {
       {route === "/progress" ? <><button className="outline" onClick={() => navigate("/missions")}>‹ Back to Missions</button><strong className="topbar-title">Your Progress</strong></> : route === "/activity" ? <><button className="outline" onClick={() => navigate("/progress")}>‹ Back to Progress</button><strong className="topbar-title">All Activity</strong></> : <div />}
       <div className="top-actions">
         <button className="status-pill" onClick={() => notify("XP shows your learning progress. Complete missions to earn more XP.")}><Icon name="star" className="star" />{progress.xp} XP</button>
-        <button className="status-pill" onClick={() => notify(`You have learned for ${progress.streak} days in a row.`)}><Icon name="flame" className="flame" />{progress.streak} day streak</button>
         <button className="icon-button" onClick={() => notify("Notifications: your mission progress is saved.")}><Icon name="bell" /><em>2</em></button>
         <button className="avatar-button" onClick={() => isProgressLike ? navigate("/profile") : setOpen(!open)}><Avatar small /><span>⌄</span></button>
         {open && <div className="profile-menu"><button onClick={() => notify("Profile")}>Profile</button><button onClick={() => notify("Settings")}>Settings</button><button onClick={resetProgress}>Reset Progress</button></div>}
@@ -264,8 +264,8 @@ function TopBar({ route, progress, navigate, notify, resetProgress }) {
 }
 
 function Shell({ route, progress, navigate, notify, resetProgress, children }) {
-  const isMissionPage = route.startsWith("/mission/");
-  return <div className="app-shell"><Sidebar route={route} progress={progress} navigate={navigate} /><main className="page">{!isMissionPage && <TopBar route={route} progress={progress} navigate={navigate} notify={notify} resetProgress={resetProgress} />}{children}</main></div>;
+  const isImmersivePage = route.startsWith("/mission/") || route === "/final-challenge";
+  return <div className="app-shell"><Sidebar route={route} progress={progress} navigate={navigate} /><main className="page">{!isImmersivePage && <TopBar route={route} progress={progress} navigate={navigate} notify={notify} resetProgress={resetProgress} />}{children}</main></div>;
 }
 
 function ProgressPill({ children, type = "locked" }) {
@@ -306,7 +306,7 @@ function Dashboard({ progress, navigate, notify }) {
         </button>
       </section>
       <aside className="right-column">
-        <section className="card goal-card"><h2><StickerIcon name="target" tone="purple" className="tiny" />Today's Goal</h2><div className="goal-box"><strong>Complete one mission step</strong><span className="bar"><span style={{ width: goalDone ? "100%" : "0%" }} /></span><small>{goalDone ? 1 : 0} / 1 step completed</small><span className="goal-check"><Icon name="check" /></span></div><p>{goalDone ? "Great job! Come back tomorrow to keep your streak." : "Complete one step today to keep your streak moving."}</p><PlantIllustration /></section>
+        <section className="card goal-card"><h2><StickerIcon name="target" tone="purple" className="tiny" />Today's Goal</h2><div className="goal-box"><strong>Complete one mission step</strong><span className="bar"><span style={{ width: goalDone ? "100%" : "0%" }} /></span><small>{goalDone ? 1 : 0} / 1 step completed</small><span className="goal-check"><Icon name="check" /></span></div><p>{goalDone ? "Great job! Your next mission is ready." : "Complete one step to keep your learning moving."}</p><PlantIllustration /></section>
         <section className="card stats-card"><h2><StickerIcon name="chart" tone="purple" className="tiny" />Your Stats</h2><div className="stats-grid"><span><strong>{completed}</strong><small>Mission<br />Completed</small></span><span><strong>{badges}</strong><small>Badges<br />Earned</small></span><span><strong>{progress.xp}</strong><small>Total XP<br />Earned</small></span></div><button className="outline" onClick={() => navigate("/progress")}>View Progress ›</button></section>
         <Activity progress={progress} />
         <section className="card help-card"><span className="help-bubble">•••</span><div><h2>Need help?</h2><p>Check the Glossary or watch explainers to learn more.</p><button className="light" onClick={() => navigate("/glossary")}>Go to Glossary</button></div></section>
@@ -367,7 +367,6 @@ function ProgressPage({ progress, navigate, notify }) {
   const correctAnswers = completed * 5 + inProgress * 3;
   const stats = [
     ["star", progress.xp, "Total XP", () => notify("XP Breakdown: Mission Complete +100, Quiz Complete +20, Challenge +50.")],
-    ["flame", progress.streak, "Day Streak", () => notify(`Current Streak: ${progress.streak} days. Longest Streak: 12 days.`)],
     ["target", quizCount, "Quizzes Taken", () => navigate("/quizzes")],
     ["check", correctAnswers, "Correct Answers", () => notify(`Accuracy: ${correctAnswers} / ${Math.max(32, correctAnswers)} answers.`)]
   ];
@@ -389,7 +388,7 @@ function ProgressActivity({ progress, navigate, notify }) {
     if (state?.completed) activities.unshift([mission.icon, `Completed Mission ${mission.id}`, mission.short, "+100 XP", mission.route, mission.id === 5 ? "2 hours ago" : "Yesterday"]);
     else if ((state?.progress || 0) > 0) activities.unshift([mission.icon, `Continued Mission ${mission.id}`, mission.short, "+50 XP", mission.route, "Today"]);
   });
-  activities.push(["flame", "Maintained 7-day streak!", "Keep it up!", "+50 XP", "/streak", "Yesterday"]);
+  activities.push(["bookmark", "Saved a Reflection", "My Notes", "+10 XP", "/activity", "Yesterday"]);
   return <section className="card progress-activity-card"><div className="row-title"><h2>Recent Activity</h2><button onClick={() => navigate("/activity")}>View all</button></div>{activities.slice(0, 4).map(([icon, title, desc, xp, route, time]) => <button className="activity-item" key={`${title}-${desc}`} onClick={() => route.startsWith("/mission") ? navigate(route) : notify(title)}><span><Icon name={icon} /></span><div><strong>{title}</strong><small>{desc}</small></div><em>{xp}<small>{time}</small></em></button>)}</section>;
 }
 
@@ -403,7 +402,7 @@ function activityRecords(progress) {
   return [
     ...generated,
     { type: "Quizzes", mission: 4, icon: "check", tone: "purple", title: "Quiz Completed (100%)", subtitle: "Mission 4: Why does context matter?", detail: "Score: 4/4", xp: 20, time: "Yesterday", route: "/progress" },
-    { type: "Streaks", mission: 0, icon: "flame", tone: "orange", title: "Maintained 7-day streak!", subtitle: "Keep it up!", detail: "7 consecutive days", xp: 50, time: "Yesterday", route: "/progress" },
+    { type: "Notes", mission: 1, icon: "bookmark", tone: "purple", title: "Saved a Reflection", subtitle: "Mission 1: Tokens", detail: "My Notes", xp: 10, time: "Yesterday", route: "/activity" },
     { type: "Quizzes", mission: 2, icon: "target", tone: "blue", title: "Quiz Completed (80%)", subtitle: "Mission 2: Can you think like ChatGPT?", detail: "Score: 4/5", xp: 15, time: "2 days ago", route: "/mission/2-next-token" },
     { type: "Quizzes", mission: 6, icon: "message", tone: "purple", title: "Took a Quiz", subtitle: "Mission 6: Can AI be biased?", detail: "Score: 3/5", xp: 10, time: "3 days ago", route: "/mission/6-bias" },
     { type: "Glossary", mission: 0, icon: "book", tone: "green", title: "Read Glossary Term", subtitle: "Hallucination", detail: "Learned new term", xp: 5, time: "3 days ago", route: "/glossary" },
@@ -443,13 +442,13 @@ function ActivityPage({ progress, navigate, notify }) {
     if (item.route) navigate(item.route);
     else notify(item.title);
   }
-  return <div className="activity-page"><section className="activity-main"><div className="activity-tabs"><button className={tab === "All Activity" ? "active" : ""} onClick={() => chooseTab("All Activity")}>All Activity</button><button className={tab === "My Notes" ? "active" : ""} onClick={() => chooseTab("My Notes")}>My Notes <em>{savedNotes.length}</em></button></div>{tab === "All Activity" ? <><div className="activity-toolbar"><div className="activity-filters">{["All", "Missions", "Quizzes", "Streaks", "Achievements", "System"].map((item) => <button key={item} className={filter === item ? "active" : ""} onClick={() => applyFilter(item)}>{item}</button>)}</div><button className="date-filter" onClick={() => notify("Date filter: Today, This Week, This Month, Custom Range.")}><Icon name="calendar" />May 12 – May 18, 2025⌄</button></div><section className="card activity-table-card"><h2>Recent Activity</h2><div className="activity-table-head"><span>Activity</span><span>Details</span><span>XP</span><span>Time</span></div><div className="activity-table-list">{visible.map((item) => <button className="activity-row" key={item.id} onClick={() => openActivity(item)}><span className={`activity-icon ${item.tone}`}><Icon name={item.icon} /></span><span><strong>{item.title}</strong><small>{item.subtitle}</small></span><span>{item.detail}</span><b>{item.xp > 0 ? `+${item.xp} XP` : "+0 XP"}</b><time>{item.time}</time><Icon name="link" /></button>)}</div>{pageCount > 1 && <div className="activity-pagination"><button disabled={page === 1} onClick={() => setPage((current) => Math.max(1, current - 1))}>‹</button>{Array.from({ length: Math.min(pageCount, 4) }, (_, index) => index + 1).map((num) => <button key={num} className={page === num ? "active" : ""} onClick={() => setPage(num)}>{num}</button>)}{pageCount > 4 && <span>...</span>}{pageCount > 4 && <button onClick={() => setPage(pageCount)}>{pageCount}</button>}<button disabled={page === pageCount} onClick={() => setPage((current) => Math.min(pageCount, current + 1))}>›</button></div>}</section></> : <section className="card notes-card"><h2>My Notes</h2><p>Saved reflections from mission activities appear here.</p>{notes.length ? notes.map((item) => <button key={item.id} onClick={() => notify(`${item.mission}: ${item.title}`)}><strong>{item.mission} · {item.title}</strong><small>{item.prompt}</small><span>{item.note}</span></button>) : <div className="empty-notes"><Icon name="book" /><strong>No notes yet</strong><span>Save a reflection inside a mission and it will appear here.</span></div>}</section>}</section><ActivityAside records={records} filter={filter} setFilter={applyFilter} missionFilter={missionFilter} setMissionFilter={setMissionFilter} xpFilter={xpFilter} setXpFilter={setXpFilter} notify={notify} /></div>;
+  return <div className="activity-page"><section className="activity-main"><div className="activity-tabs"><button className={tab === "All Activity" ? "active" : ""} onClick={() => chooseTab("All Activity")}>All Activity</button><button className={tab === "My Notes" ? "active" : ""} onClick={() => chooseTab("My Notes")}>My Notes <em>{savedNotes.length}</em></button></div>{tab === "All Activity" ? <><div className="activity-toolbar"><div className="activity-filters">{["All", "Missions", "Quizzes", "Notes", "Achievements", "System"].map((item) => <button key={item} className={filter === item ? "active" : ""} onClick={() => applyFilter(item)}>{item}</button>)}</div><button className="date-filter" onClick={() => notify("Date filter: Today, This Week, This Month, Custom Range.")}><Icon name="calendar" />May 12 – May 18, 2025⌄</button></div><section className="card activity-table-card"><h2>Recent Activity</h2><div className="activity-table-head"><span>Activity</span><span>Details</span><span>XP</span><span>Time</span></div><div className="activity-table-list">{visible.map((item) => <button className="activity-row" key={item.id} onClick={() => openActivity(item)}><span className={`activity-icon ${item.tone}`}><Icon name={item.icon} /></span><span><strong>{item.title}</strong><small>{item.subtitle}</small></span><span>{item.detail}</span><b>{item.xp > 0 ? `+${item.xp} XP` : "+0 XP"}</b><time>{item.time}</time><Icon name="link" /></button>)}</div>{pageCount > 1 && <div className="activity-pagination"><button disabled={page === 1} onClick={() => setPage((current) => Math.max(1, current - 1))}>‹</button>{Array.from({ length: Math.min(pageCount, 4) }, (_, index) => index + 1).map((num) => <button key={num} className={page === num ? "active" : ""} onClick={() => setPage(num)}>{num}</button>)}{pageCount > 4 && <span>...</span>}{pageCount > 4 && <button onClick={() => setPage(pageCount)}>{pageCount}</button>}<button disabled={page === pageCount} onClick={() => setPage((current) => Math.min(pageCount, current + 1))}>›</button></div>}</section></> : <section className="card notes-card"><h2>My Notes</h2><p>Saved reflections from mission activities appear here.</p>{notes.length ? notes.map((item) => <button key={item.id} onClick={() => notify(`${item.mission}: ${item.title}`)}><strong>{item.mission} · {item.title}</strong><small>{item.prompt}</small><span>{item.note}</span></button>) : <div className="empty-notes"><Icon name="book" /><strong>No notes yet</strong><span>Save a reflection inside a mission and it will appear here.</span></div>}</section>}</section><ActivityAside records={records} filter={filter} setFilter={applyFilter} missionFilter={missionFilter} setMissionFilter={setMissionFilter} xpFilter={xpFilter} setXpFilter={setXpFilter} notify={notify} /></div>;
 }
 
 function ActivityAside({ records, filter, setFilter, missionFilter, setMissionFilter, xpFilter, setXpFilter, notify }) {
   const xpTotal = records.reduce((sum, item) => sum + item.xp, 0);
   const quizCount = records.filter((item) => item.type === "Quizzes").length;
-  return <aside className="activity-right"><section className="card activity-summary-card"><h2>Activity Summary</h2><p>This Week (May 12 – May 18)</p><div className="summary-grid"><button onClick={() => setFilter("All")}><Icon name="calendar" /><strong>{records.length}</strong><small>Total Activities</small></button><button onClick={() => notify("XP earned from missions, quizzes, streaks and other activity.")}><Icon name="star" /><strong>{xpTotal}</strong><small>XP Earned</small></button><button onClick={() => setFilter("Quizzes")}><Icon name="target" /><strong>{quizCount}</strong><small>Quizzes Taken</small></button><button onClick={() => setFilter("Streaks")}><Icon name="flame" /><strong>7</strong><small>Day Streak</small></button></div></section><section className="card xp-sources-card"><h2>XP Sources</h2><div className="xp-source-body"><button className="source-ring" aria-label="XP sources chart" onClick={() => setFilter("Missions")} /><div className="source-list">{[["Missions", "62%", "210 XP", "purple"], ["Quizzes", "24%", "80 XP", "blue"], ["Streaks", "10%", "35 XP", "gold"], ["Others", "4%", "10 XP", "grey"]].map(([label, pct, xp, tone]) => <button key={label} onClick={() => setFilter(label === "Others" ? "All" : label)}><i className={tone} /><strong>{label}</strong><span>{pct} ({xp})</span></button>)}</div></div></section><section className="card activity-advanced-filter"><div className="row-title"><h2>Filter Activity</h2><button onClick={() => { setFilter("All"); setMissionFilter("All Missions"); setXpFilter("All XP"); }}>Clear all</button></div><button onClick={() => notify("Use the filter chips above to change activity type.")}><Icon name="grid" />{filter === "All" ? "All Activity Types" : filter}<span>⌄</span></button><select value={missionFilter} onChange={(event) => setMissionFilter(event.target.value)}>{["All Missions", ...missionData.map((mission) => `Mission ${mission.id}`)].map((item) => <option key={item}>{item}</option>)}</select><select value={xpFilter} onChange={(event) => setXpFilter(event.target.value)}>{["All XP", "100+ XP", "50+ XP", "20+ XP"].map((item) => <option key={item}>{item}</option>)}</select><button onClick={() => notify("Time filter: Today, This Week, This Month.")}><Icon name="calendar" />All Time<span>⌄</span></button></section></aside>;
+  return <aside className="activity-right"><section className="card activity-summary-card"><h2>Activity Summary</h2><p>This Week (May 12 – May 18)</p><div className="summary-grid"><button onClick={() => setFilter("All")}><Icon name="calendar" /><strong>{records.length}</strong><small>Total Activities</small></button><button onClick={() => notify("XP earned from missions, quizzes, notes and other activity.")}><Icon name="star" /><strong>{xpTotal}</strong><small>XP Earned</small></button><button onClick={() => setFilter("Quizzes")}><Icon name="target" /><strong>{quizCount}</strong><small>Quizzes Taken</small></button><button onClick={() => setFilter("Notes")}><Icon name="bookmark" /><strong>{records.filter((item) => item.type === "Notes").length}</strong><small>Notes Saved</small></button></div></section><section className="card xp-sources-card"><h2>XP Sources</h2><div className="xp-source-body"><button className="source-ring" aria-label="XP sources chart" onClick={() => setFilter("Missions")} /><div className="source-list">{[["Missions", "62%", "210 XP", "purple"], ["Quizzes", "24%", "80 XP", "blue"], ["Notes", "10%", "35 XP", "gold"], ["Others", "4%", "10 XP", "grey"]].map(([label, pct, xp, tone]) => <button key={label} onClick={() => setFilter(label === "Others" ? "All" : label)}><i className={tone} /><strong>{label}</strong><span>{pct} ({xp})</span></button>)}</div></div></section><section className="card activity-advanced-filter"><div className="row-title"><h2>Filter Activity</h2><button onClick={() => { setFilter("All"); setMissionFilter("All Missions"); setXpFilter("All XP"); }}>Clear all</button></div><button onClick={() => notify("Use the filter chips above to change activity type.")}><Icon name="grid" />{filter === "All" ? "All Activity Types" : filter}<span>⌄</span></button><select value={missionFilter} onChange={(event) => setMissionFilter(event.target.value)}>{["All Missions", ...missionData.map((mission) => `Mission ${mission.id}`)].map((item) => <option key={item}>{item}</option>)}</select><select value={xpFilter} onChange={(event) => setXpFilter(event.target.value)}>{["All XP", "100+ XP", "50+ XP", "20+ XP"].map((item) => <option key={item}>{item}</option>)}</select><button onClick={() => notify("Time filter: Today, This Week, This Month.")}><Icon name="calendar" />All Time<span>⌄</span></button></section></aside>;
 }
 
 function MissionRow({ mission, progress, navigate, notify }) {
@@ -1194,7 +1193,17 @@ function Mission3({ progress, setProgress, navigate, notify }) {
 }
 
 function Concept({ icon, title, text }) {
-  return <article className="concept-card"><Icon name={icon} /><strong>{title}</strong><p>{text}</p></article>;
+  const Lucide = {
+    understand: BrainCircuit,
+    accurate: BadgeCheck,
+    knowledge: Lightbulb,
+    safer: ShieldCheck
+  }[icon];
+  return <article className={`concept-card ${Lucide ? "library-icon-card" : ""}`}>
+    {Lucide ? <span className={`library-icon ${icon}`}><Lucide aria-hidden="true" strokeWidth={2.4} /></span> : <Icon name={icon} />}
+    <strong>{title}</strong>
+    <p>{text}</p>
+  </article>;
 }
 
 function ClaimDrop({ title, icon, tone, items, from, dragPayload, onDrop, onMoveBack, disabled = false }) {
@@ -1203,84 +1212,305 @@ function ClaimDrop({ title, icon, tone, items, from, dragPayload, onDrop, onMove
 
 function Mission4({ progress, setProgress, navigate, notify }) {
   const saved = progress.missions[4] || { progress: 0, completed: false };
-  const answer = "B. River Edge";
-  const [selected, setSelected] = useState(saved.progress >= 45 ? answer : "");
-  const [submitted, setSubmitted] = useState(saved.progress >= 45);
-  const [wrong, setWrong] = useState(false);
-  const [activeContext, setActiveContext] = useState(saved.progress >= 45 ? "b" : "");
-  const [activeStep, setActiveStep] = useState(null);
-  const meaningChallenges = [
-    { word: "bank", sentence: "I sat near the bank and watched the river.", answer: "River Edge", options: ["River Edge", "Financial Institution"], hint: "river and near point to land beside water" },
-    { word: "bank", sentence: "I opened a savings account at the bank.", answer: "Financial Institution", options: ["River Edge", "Financial Institution"], hint: "savings account points to money" },
-    { word: "bat", sentence: "A bat flew out of the cave at night.", answer: "Flying Animal", options: ["Flying Animal", "Sports Equipment"], hint: "flew, cave, and night point to an animal" },
-    { word: "bat", sentence: "He swung the bat and hit the ball.", answer: "Sports Equipment", options: ["Flying Animal", "Sports Equipment"], hint: "swung and ball point to sport" },
-    { word: "light", sentence: "Please turn on the light before you read.", answer: "Lamp / Brightness", options: ["Lamp / Brightness", "Not Heavy"], hint: "turn on points to brightness" },
-    { word: "light", sentence: "This school bag is light enough to carry.", answer: "Not Heavy", options: ["Lamp / Brightness", "Not Heavy"], hint: "bag and carry point to weight" },
-    { word: "bark", sentence: "The dog began to bark loudly.", answer: "Dog Sound", options: ["Dog Sound", "Tree Covering"], hint: "dog and loudly point to sound" },
-    { word: "bark", sentence: "The bark of the old tree was rough.", answer: "Tree Covering", options: ["Dog Sound", "Tree Covering"], hint: "tree and rough point to outer covering" },
-    { word: "match", sentence: "She lit the candle with a match.", answer: "Small Fire Stick", options: ["Small Fire Stick", "Sports Game"], hint: "lit and candle point to fire" },
-    { word: "match", sentence: "Our football match starts at three.", answer: "Sports Game", options: ["Small Fire Stick", "Sports Game"], hint: "football and starts point to a game" },
-    { word: "seal", sentence: "The seal balanced a ball at the aquarium.", answer: "Sea Animal", options: ["Sea Animal", "Close Tightly"], hint: "aquarium points to an animal" },
-    { word: "seal", sentence: "Seal the envelope before you post it.", answer: "Close Tightly", options: ["Sea Animal", "Close Tightly"], hint: "envelope and post point to closing something" }
+  const sections = [
+    ["little", "Very little context"],
+    ["some", "Some more context"],
+    ["lots", "Lots of context"],
+    ["turn", "Your turn"],
+    ["challenge", "Mini Challenge"],
+    ["summary", "Summary"]
   ];
-  const [meaningIndex, setMeaningIndex] = useState(0);
-  const [meaningAnswers, setMeaningAnswers] = useState({});
-  const [meaningChecked, setMeaningChecked] = useState({});
-  const currentMeaning = meaningChallenges[meaningIndex];
-  const currentMeaningAnswer = meaningAnswers[meaningIndex] || "";
-  const choices = ["A. Financial Institution", "B. River Edge", "C. Data Storage", "D. Long Bench"];
+  const contextDetails = {
+    Weather: "Rainy, 18°C",
+    Location: "Edinburgh",
+    Time: "Tomorrow morning",
+    Event: "Wedding",
+    Style: "Smart but comfortable"
+  };
+  const contextChips = Object.keys(contextDetails);
+  const challengeExpected = [
+    "I need a gift.",
+    "I need a gift for my sister.",
+    "I need a gift for my sister who likes fantasy books and my budget is £20."
+  ];
+  const [activeSection, setActiveSection] = useState("little");
+  const [readSections, setReadSections] = useState(() => saved.completed ? Object.fromEntries(sections.map(([id]) => [id, true])) : { little: true });
+  const [expandedWhy, setExpandedWhy] = useState(false);
+  const [compareOpen, setCompareOpen] = useState(false);
+  const [selectedContexts, setSelectedContexts] = useState(saved.progress >= 60 ? ["Weather", "Location"] : []);
+  const [question, setQuestion] = useState("What should I wear tomorrow?");
+  const [askState, setAskState] = useState("idle");
+  const [currentAnswer, setCurrentAnswer] = useState("");
+  const [previousAnswer, setPreviousAnswer] = useState("");
+  const [answerContexts, setAnswerContexts] = useState([]);
+  const [previousContexts, setPreviousContexts] = useState([]);
+  const [currentQuality, setCurrentQuality] = useState(null);
+  const [previousQuality, setPreviousQuality] = useState(null);
+  const [clueFlash, setClueFlash] = useState("");
+  const [challengeSource, setChallengeSource] = useState([challengeExpected[1], challengeExpected[2], challengeExpected[0]]);
+  const [challengeDrop, setChallengeDrop] = useState([]);
+  const [challengeResult, setChallengeResult] = useState("");
+  const [challengeFeedback, setChallengeFeedback] = useState("");
+  const [hintVisible, setHintVisible] = useState(false);
+  const [note, setNote] = useState(() => localStorage.getItem("mission4ContextNote") || "");
+  const [noteSaved, setNoteSaved] = useState(false);
+  const summaryReached = Boolean(readSections.summary);
+  const contextReady = selectedContexts.length >= 2;
+  const challengeDone = challengeResult === "correct";
+  const nextReady = contextReady && Boolean(currentAnswer) && challengeDone && summaryReached;
 
-  function markProgress(value, completed = false) {
+  React.useEffect(() => {
+    const container = document.querySelector(".mission-4 .mission-content");
+    if (!container) return undefined;
+    const update = () => {
+      let current = sections[0][0];
+      const containerTop = container.getBoundingClientRect().top;
+      sections.forEach(([id]) => {
+        const node = document.getElementById(`m4-${id}`);
+        if (node && node.getBoundingClientRect().top - containerTop < 190) current = id;
+      });
+      setActiveSection(current);
+      setReadSections((read) => ({ ...read, [current]: true }));
+    };
+    update();
+    container.addEventListener("scroll", update, { passive: true });
+    return () => container.removeEventListener("scroll", update);
+  }, []);
+
+  function markProgress(progressValue, completed = false) {
     setProgress((prev) => {
       const next = structuredClone(prev);
       const alreadyDone = next.missions[4].completed;
-      next.missions[4] = { progress: Math.max(next.missions[4].progress || 0, value), completed: alreadyDone || completed };
+      next.missions[4] = { progress: Math.max(next.missions[4].progress || 0, progressValue), completed: alreadyDone || completed };
       if (completed && !alreadyDone) next.xp += 100;
       writeProgress(next);
       return next;
     });
   }
-
-  function submitAnswer() {
-    if (!selected) return;
-    if (selected !== answer) {
-      setWrong(true);
-      notify('Try again. Look at the word "river".');
+  function scrollToSection(id) {
+    document.getElementById(`m4-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function answerQuality(items = selectedContexts) {
+    if (!items.length) return 35;
+    return Math.min(94, 35 + items.length * 12 + (items.includes("Weather") && items.includes("Location") ? 8 : 0) + (items.includes("Event") ? 6 : 0));
+  }
+  function contextAnswer(items = selectedContexts) {
+    const has = (name) => items.includes(name);
+    if (!items.length) return "You could wear something comfortable, such as a jacket and trousers.";
+    if (has("Weather") && has("Location") && has("Event") && has("Time") && has("Style")) return "For a rainy wedding morning in Edinburgh, wear a smart waterproof coat over a formal outfit, with waterproof shoes.";
+    if (has("Weather") && has("Event") && has("Style")) return "Wear a smart waterproof coat, formal layers, and shoes that can handle rain.";
+    if (has("Weather") && has("Location")) return "Take a waterproof coat or jacket. Edinburgh can be rainy and cool.";
+    if (has("Time") && has("Style")) return "Wear smart, comfortable layers for tomorrow morning. Add weather or event context to make this more precise.";
+    if (has("Event") && has("Style")) return "Choose a smart but comfortable outfit that fits the event.";
+    if (has("Weather")) return "Take a waterproof coat. Rain changes the best answer.";
+    if (has("Event")) return "Choose clothes that fit the event, such as something more formal for a wedding.";
+    if (has("Style")) return "Aim for something smart but comfortable, but I still need the weather or event.";
+    return "This is a little better, but I still need more details to give a useful answer.";
+  }
+  function usefulContextSummary(items = selectedContexts) {
+    return items.length ? items.map((item) => contextDetails[item]).join(" · ") : "Only the word tomorrow from the question.";
+  }
+  function missingContexts(items = selectedContexts) {
+    return contextChips.filter((chip) => !items.includes(chip));
+  }
+  function askChatGPT() {
+    const contextsAtClick = [...selectedContexts];
+    const qualityAtClick = answerQuality(contextsAtClick);
+    setAskState("reading");
+    window.setTimeout(() => setAskState("scanning"), 350);
+    window.setTimeout(() => setAskState("generating"), 760);
+    window.setTimeout(() => {
+      setPreviousAnswer(currentAnswer);
+      setPreviousContexts(answerContexts);
+      setPreviousQuality(currentQuality);
+      setCurrentAnswer(contextAnswer(contextsAtClick));
+      setAnswerContexts(contextsAtClick);
+      setCurrentQuality(qualityAtClick);
+      setAskState("done");
+      if (contextsAtClick.length >= 2) markProgress(60);
+      if (!currentAnswer) notify(contextsAtClick.length ? "Answer generated using your context clues." : "First answer generated. Try adding context clues next.");
+      else if (qualityAtClick > (currentQuality ?? 0)) notify("The answer became more useful because the prompt has better context.");
+      else if (qualityAtClick < (currentQuality ?? 0)) notify("The answer became less useful because some context was removed.");
+      else notify("Answer regenerated with the current context.");
+    }, 1250);
+  }
+  function toggleContext(name) {
+    setSelectedContexts((items) => {
+      const next = items.includes(name) ? items.filter((item) => item !== name) : [...items, name];
+      setClueFlash(name);
+      window.setTimeout(() => setClueFlash(""), 900);
+      if (next.length >= 2) markProgress(60);
+      return next;
+    });
+  }
+  function dragPayload(from, index) {
+    return JSON.stringify({ from, index });
+  }
+  function readPayload(event) {
+    try { return JSON.parse(event.dataTransfer.getData("application/json")); } catch { return null; }
+  }
+  function clearChallenge() {
+    setChallengeResult("");
+    setChallengeFeedback("");
+  }
+  function movePromptToDrop(index, position = challengeDrop.length) {
+    const item = challengeSource[index];
+    if (!item || challengeDone) return;
+    clearChallenge();
+    setChallengeSource((items) => items.filter((_, i) => i !== index));
+    setChallengeDrop((items) => {
+      const next = [...items];
+      next.splice(Math.min(position, next.length), 0, item);
+      return next;
+    });
+  }
+  function movePromptBack(index) {
+    const item = challengeDrop[index];
+    if (!item || challengeDone) return;
+    clearChallenge();
+    setChallengeDrop((items) => items.filter((_, i) => i !== index));
+    setChallengeSource((items) => [...items, item]);
+  }
+  function reorderPrompt(from, to) {
+    if (from === to || challengeDone) return;
+    clearChallenge();
+    setChallengeDrop((items) => {
+      const next = [...items];
+      const [item] = next.splice(from, 1);
+      if (item) next.splice(to, 0, item);
+      return next;
+    });
+  }
+  function dropPrompt(payload, to = challengeDrop.length) {
+    if (!payload || challengeDone) return;
+    if (payload.from === "source") movePromptToDrop(payload.index, to);
+    if (payload.from === "drop") reorderPrompt(payload.index, to);
+  }
+  function checkChallenge() {
+    if (challengeDrop.join("\0") === challengeExpected.join("\0")) {
+      setChallengeResult("correct");
+      setChallengeFeedback("Good ordering. Each prompt adds more useful context, so the answer can become more specific.");
+      markProgress(82);
+      notify("Mini challenge complete. Scroll to the summary.");
       return;
     }
-    setWrong(false);
-    setSubmitted(true);
-    setActiveContext("b");
-    markProgress(55);
-    notify("Correct. Context changed the meaning.");
+    const firstWrong = challengeDrop.findIndex((item, index) => item !== challengeExpected[index]);
+    const expected = challengeExpected[firstWrong] || challengeExpected[0];
+    setChallengeResult("wrong");
+    setChallengeFeedback(`Look at position ${firstWrong + 1}: the prompt should be “${expected}”.`);
+    notify("Try again. Order the prompts from least context to most context.");
   }
-
-  function goNext() {
-    if (!submitted) {
-      notify("Complete this mission first.");
+  function resetChallenge() {
+    setChallengeSource([challengeExpected[1], challengeExpected[2], challengeExpected[0]]);
+    setChallengeDrop([]);
+    setChallengeResult("");
+    setChallengeFeedback("");
+    setHintVisible(false);
+  }
+  function saveNote() {
+    const text = note.trim() || "More context helps ChatGPT give a more specific and useful answer.";
+    setNote(text);
+    setNoteSaved(true);
+    localStorage.setItem("mission4ContextNote", text);
+    saveLearningNote({
+      id: "mission-4-context-note",
+      mission: "Mission 4",
+      title: "Context reflection",
+      prompt: "What did you learn about giving context?",
+      note: text
+    });
+    notify("Saved to My Notes in Activity.");
+  }
+  function finishMission() {
+    if (!nextReady) {
+      notify("Add context, finish the mini challenge, and reach the summary first.");
       return;
     }
     markProgress(100, true);
-    navigate("/mission/5-training-data");
+    notify("Mission 4 complete. Opening Mission 5...");
+    window.setTimeout(() => navigate("/mission/5-training-data"), 500);
   }
 
-  function chooseMeaningPage(nextIndex) {
-    const safeIndex = (nextIndex + meaningChallenges.length) % meaningChallenges.length;
-    setMeaningIndex(safeIndex);
-  }
+  return <MissionLayout mission={4} title="Why does context matter?" subtitle={<>The more context ChatGPT has, the better it can understand<br />and give helpful answers.</>} robot="idea" bubbleText="Context makes answers clearer." progress={progress} notify={notify}>
+    <section className="lesson-main course-flow mission4-flow">
+      <section className="scenario-card context-upgrade-scenario"><span>Scenario</span><div><strong>Let's ask the same question with different amounts of context.</strong><p>Watch how the answer improves as the prompt becomes more specific.</p></div><button className="outline" onClick={() => scrollToSection("turn")}>Let's try! ↓</button></section>
+      <CourseSection id="m4-little" n="1" title="Very little context" action={<button className="outline tiny-top" onClick={() => scrollToSection("little")}>Top ↑</button>}>
+        <p>When ChatGPT has almost no information, it can only guess what you mean.</p>
+        <div className="context-chat low-context"><ContextLayers count={1} /><div className="chat-lines"><strong>You: What's the best apple?</strong><span>ChatGPT: The best apple is probably the Red Delicious.</span></div></div>
+        <button className="outline why-button" onClick={() => setExpandedWhy((open) => !open)}><Icon name="question" />Why?</button>
+        {expandedWhy && <div className="context-explain context-question-list"><strong>“Best” is too general.</strong><span>Best for eating?</span><span>Best for pie?</span><span>Best for juice?</span><span>Best for school lunch?</span></div>}
+        <div className="lesson-hint"><Icon name="bulb" />With very little context, the answer might be generic or not very useful.</div>
+      </CourseSection>
+      <CourseSection id="m4-some" n="2" title="Some more context">
+        <p>Now give it a bit more information.</p>
+        <div className="context-chat medium-context"><ContextLayers count={2} /><div className="chat-lines"><strong>You: What's the best apple for baking a pie?</strong><span>ChatGPT: For baking a pie, Granny Smith apples are often best. They stay firm and have a nice tart flavour.</span></div></div>
+        <div className="context-success"><Icon name="check" />More context = more helpful answer.</div>
+        <button className="outline compare-button" onClick={() => setCompareOpen((open) => !open)}><Icon name="search" />Compare</button>
+        {compareOpen && <div className="context-compare-panel"><div><small>Very little context</small><strong>What's the best apple?</strong><span>Generic answer</span></div><div><small>Some context</small><strong>Best apple for baking a pie?</strong><span>More useful answer</span></div></div>}
+      </CourseSection>
+      <CourseSection id="m4-lots" n="3" title="Lots of context">
+        <p>The more useful details you give, the better ChatGPT can help.</p>
+        <div className="context-chat rich-context"><ContextLayers count={5} /><div className="chat-lines"><strong>You: I'm baking an apple pie. I live in the UK. I want something not too sweet, easy to find, and holds its shape. What's the best apple?</strong><span>ChatGPT: In the UK, Bramley apples are a great choice for pies. They are firm, tart, hold their shape well when baked, and are widely available.</span></div><div className="confidence-badge"><Icon name="check" />Higher confidence</div></div>
+        <div className="context-success strong"><Icon name="bulb" />Great detail = accurate and useful answer.</div>
+      </CourseSection>
+      <CourseSection id="m4-turn" n="4" title="Your turn: Add more context">
+        <p>Start with a short question, then add details to improve the answer.</p>
+        <div className="prompt-playground">
+          <div className="prompt-workbench">
+            <label className="prompt-question-card"><strong>Your question</strong><input value={question} onChange={(e) => setQuestion(e.target.value)} /><div className="prompt-preview"><small>Current prompt</small><strong>{question}</strong>{selectedContexts.length ? <ul>{selectedContexts.map((item) => <li key={item} className={clueFlash === item ? "new-clue" : ""}><Icon name="check" />{item}: {contextDetails[item]}</li>)}</ul> : <p>No extra context yet.</p>}</div><button className="primary ask-context-button" disabled={askState !== "idle" && askState !== "done"} onClick={askChatGPT}>{askState === "reading" ? "Reading your question..." : askState === "scanning" ? "Looking for clues..." : askState === "generating" ? "Generating an answer..." : currentAnswer ? "Generate Better Answer" : "Ask ChatGPT"}</button></label>
+            <span className="builder-arrow clue-arrow">→</span>
+            <div className="context-chip-panel prompt-chip-panel"><strong>Add useful context</strong><div className="context-chip-grid">{contextChips.map((chip) => <button key={chip} className={`${selectedContexts.includes(chip) ? "active" : ""} ${clueFlash === chip ? "just-added" : ""}`} onClick={() => toggleContext(chip)}><span>{selectedContexts.includes(chip) ? "✓" : "+"} {chip}</span><small>{contextDetails[chip]}</small></button>)}</div></div>
+          </div>
+          <div className="context-scanner-card">
+            <div><strong>{askState === "idle" && !currentAnswer ? "Ready to scan your prompt" : askState === "done" ? "Context scanner" : "ChatGPT is thinking..."}</strong><span className={askState !== "idle" && askState !== "done" ? "thinking-dots" : ""}> </span></div>
+            <div className="scanner-grid"><span className="scan-ok"><Icon name="check" />Question received</span><span className={selectedContexts.length ? "scan-ok" : "scan-warn"}><Icon name={selectedContexts.length ? "check" : "alert"} />Useful clues found: {selectedContexts.length || 1}</span></div>
+            <div className="missing-clues"><strong>Missing clues:</strong>{missingContexts().length ? missingContexts().map((chip) => <span key={chip}>○ {chip}</span>) : <span>None. Great prompt.</span>}</div>
+          </div>
+          <div className="quality-meter-card"><div><strong>{currentAnswer ? "Generated answer usefulness" : "Expected answer usefulness"}</strong><span>{currentAnswer ? `${currentQuality}%` : "Not generated yet"}</span></div><i><b style={{ width: `${currentAnswer ? currentQuality : answerQuality(selectedContexts)}%` }} /></i><p>{currentAnswer ? `This answer used ${answerContexts.length} clue${answerContexts.length === 1 ? "" : "s"}.` : `Preview if you ask now: ${answerQuality(selectedContexts)}%`}</p></div>
+          {currentAnswer ? <div className={`answer-comparison-card ${previousAnswer && currentQuality < previousQuality ? "got-worse" : previousAnswer && currentQuality > previousQuality ? "got-better" : "same-quality"}`}><div className="answer-column before"><small>{previousAnswer ? "Previous generated answer" : "First generated answer"}</small><p>{previousAnswer || currentAnswer}</p><em>{previousAnswer ? `${previousQuality}% useful · ${previousContexts.length} clue${previousContexts.length === 1 ? "" : "s"}` : `${currentQuality}% useful · ${answerContexts.length} clue${answerContexts.length === 1 ? "" : "s"}`}</em></div><div className="answer-column after"><small>{previousAnswer ? "Current generated answer" : "Current answer"}</small><p>{currentAnswer}</p><em>{currentQuality}% useful · {previousAnswer ? (currentQuality > previousQuality ? `+${currentQuality - previousQuality}%` : currentQuality < previousQuality ? `${currentQuality - previousQuality}%` : "same") : "first try"}</em></div></div> : null}
+          {currentAnswer ? <div className="used-clues-card"><Mascot type="idea" /><div><strong>{previousAnswer ? (currentQuality > previousQuality ? "What improved?" : currentQuality < previousQuality ? "What changed?" : "Same usefulness") : "Why is this answer general?"}</strong>{answerContexts.length ? <ul>{answerContexts.map((item) => <li key={item}><span>{item}</span> → {item === "Weather" ? "waterproof / rain" : item === "Location" ? "Edinburgh" : item === "Event" ? "formal outfit" : item === "Time" ? "morning" : "smart but comfortable"}</li>)}</ul> : <p>This answer is general because the AI does not know the weather, place, event, or style.</p>}{previousAnswer && currentQuality < previousQuality && <p className="quality-warning">You removed useful context, so the answer became less specific.</p>}</div></div> : <div className="add-context-nudge"><Icon name="bulb" />Ask once, then add clues to see the answer improve.</div>}
+        </div>
+        {contextReady && currentAnswer && currentQuality >= 70 && <div className="section-complete"><Icon name="check" />Nice. This answer used enough context to become more useful.</div>}
+      </CourseSection>
+      <CourseSection id="m4-challenge" n="5" title={<><Icon name="trophy" />Mini Challenge</>} action={<span className="section-pill">1 / 1</span>}>
+        <p>Put the prompts in order from least context to most context.</p>
+        <div className="prompt-sorter">
+          <div className="prompt-source" onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); const payload = readPayload(e); if (payload?.from === "drop") movePromptBack(payload.index); }}>{challengeSource.map((prompt, index) => <button key={prompt} draggable={!challengeDone} disabled={challengeDone} onClick={() => movePromptToDrop(index)} onDragStart={(e) => e.dataTransfer.setData("application/json", dragPayload("source", index))}><Icon name="grid" />{prompt}</button>)}</div>
+          <div className={`prompt-drop ${challengeDrop.length ? "has-prompts" : ""}`} onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); dropPrompt(readPayload(e)); }}>{challengeDrop.length ? challengeDrop.map((prompt, index) => <div className="prompt-drop-item" key={prompt} draggable={!challengeDone} onDragStart={(e) => e.dataTransfer.setData("application/json", dragPayload("drop", index))} onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); e.stopPropagation(); dropPrompt(readPayload(e), index); }}><span>{index + 1}</span><p>{prompt}</p><div className="prompt-controls"><button type="button" disabled={challengeDone || index === 0} onClick={() => reorderPrompt(index, index - 1)}>↑</button><button type="button" disabled={challengeDone || index === challengeDrop.length - 1} onClick={() => reorderPrompt(index, index + 1)}>↓</button><button type="button" disabled={challengeDone} onClick={() => movePromptBack(index)}>Remove</button></div></div>) : <span>Drag here to arrange<br />least context → most context</span>}</div>
+        </div>
+        {challengeResult && <div className={`challenge-message ${challengeResult}`}><Icon name={challengeResult === "correct" ? "check" : "alert"} />{challengeFeedback}</div>}
+        {hintVisible && <p className="hint-line">Look for extra details: who, what they like, and budget make the prompt more useful.</p>}
+        <div className="challenge-actions course-actions"><button className="primary" disabled={challengeDrop.length !== challengeExpected.length || challengeDone} onClick={checkChallenge}>Check Answer</button><button className="outline" onClick={() => setHintVisible(true)}>Need a hint?</button><button className="outline" onClick={resetChallenge}>Reset</button></div>
+      </CourseSection>
+      <CourseSection id="m4-summary" n="6" title="Summary: Context is key">
+        <p>More context helps ChatGPT understand what you really mean.</p>
+        <div className="summary-grid context-summary-grid"><Concept icon="understand" title="Understand better" text="Context tells the AI what you really mean." /><Concept icon="accurate" title="Give better answers" text="Specific details reduce vague guessing." /><Concept icon="knowledge" title="Use relevant knowledge" text="It can focus on the useful information." /><Concept icon="safer" title="Avoid mistakes" text="Clear context can reduce hallucinations." /></div>
+        <div className="summary-mascot"><Mascot type="idea" /><strong>You’re becoming a prompt expert.</strong></div>
+      </CourseSection>
+    </section>
+    <aside className="lesson-side page-timeline mission4-side-panel" aria-label="On this page">
+      <div className="card timeline-card"><h2>On this page</h2><span className="timeline-rail" style={{ "--progress": `${(Math.max(0, sections.findIndex(([id]) => id === activeSection)) / (sections.length - 1)) * 100}%` }} />{sections.map(([id, label], index) => {
+        const active = activeSection === id;
+        const read = Boolean(readSections[id]);
+        const needsWork = read && !active && ((id === "turn" && !contextReady) || (id === "challenge" && !challengeDone));
+        return <button key={id} className={`${active ? "active" : ""} ${read ? "read" : ""} ${needsWork ? "work" : ""}`} onClick={() => scrollToSection(id)}><span>{read && !active ? <Icon name="check" /> : index + 1}</span>{label}</button>;
+      })}</div>
+      <section className="card how-card mission4-how"><h2>How it works</h2><Flow title="1. Reads your input" icon="brain" tone="blue">ChatGPT reads your question and context.</Flow><Flow title="2. Finds relevant info" icon="search" tone="green">It looks through what it knows to find useful information.</Flow><Flow title="3. Understands context" icon="link" tone="orange">More details help it know what you really mean.</Flow><Flow title="4. Gives a better answer" icon="wand" tone="lav">Better context leads to better answers.</Flow></section>
+      <section className="card try-real-card"><h2>Try it with real examples</h2><p>See how adding context improves the answer.</p><button className="outline" onClick={() => scrollToSection("turn")}>Open Examples <Icon name="link" /></button></section>
+      <section className="card context-tip-card"><h2><Icon name="bulb" />Tip</h2><p><strong>Be specific.</strong> Include important details like who, what, where, when, and why.</p><Mascot type="idea" /></section>
+      <section className="card notes-widget"><h2><Icon name="bookmark" />Notes</h2><p>Write something you learned or want to remember.</p><textarea value={note} onChange={(e) => { setNote(e.target.value); setNoteSaved(false); }} placeholder="Type your note here..." /><button className="primary" onClick={saveNote}>{noteSaved ? "Saved to My Notes" : "Save Note"}</button></section>
+    </aside>
+    <footer className="course-bottom-nav"><button className="outline" onClick={() => navigate("/mission/3-hallucination")}>‹ Previous</button><span>{nextReady ? "Mission 4 complete. Mission 5 is ready." : "Keep adding context!"}</span><button className="primary" disabled={!nextReady} onClick={finishMission}>Next: Mission 5 →</button></footer>
+  </MissionLayout>;
+}
 
-  function checkMeaningAnswer() {
-    if (!currentMeaningAnswer) return notify("Choose one meaning first.");
-    const correct = currentMeaningAnswer === currentMeaning.answer;
-    setMeaningChecked((checked) => ({ ...checked, [meaningIndex]: correct ? "correct" : "wrong" }));
-    notify(correct ? `Correct. "${currentMeaning.word}" means ${currentMeaning.answer} here.` : `Not quite. Hint: ${currentMeaning.hint}.`);
-  }
-
-  return <MissionLayout mission={4} title="Why does context matter?" subtitle={<>The meaning of a text can change completely<br />based on what comes before.</>} progress={progress} notify={notify}><section className="lesson-main mission4-main"><section className="scenario-card context-scenario"><span>Scenario</span><div><strong>Q: What does “bank” mean here?</strong><p>The river flooded the bank.</p></div><RiverIllustration /></section><Step n="1" title="Choose the most likely meaning based on the context."><div className="answer-grid context-options">{choices.map((choice) => <button className={`${selected === choice ? "selected" : ""} ${wrong && selected === choice ? "wrong" : ""}`} disabled={submitted} onClick={() => { setSelected(choice); setWrong(false); }} key={choice}>{choice}{submitted && choice === answer && <Icon name="check" />}</button>)}</div><button className="primary" disabled={!selected || submitted} onClick={submitAnswer}>{wrong ? "Try Again" : submitted ? "Correct" : "Submit Answer"}</button></Step>{submitted ? <Step n="2" title="See how the context changes the meaning."><div className="context-compare"><ContextCard id="a" active={activeContext === "a"} title="Context A" sentence={<>I <mark>deposited</mark> <mark>money</mark> at the bank.</>} result="Financial Institution" icon="🏦" onClick={() => { setActiveContext("a"); notify("These words suggest a bank for money."); }} /><span className="compare-arrow">→</span><ContextCard id="b" active={activeContext === "b"} title="Context B" sentence={<>The <mark>boat</mark> was <mark>tied</mark> to the bank.</>} result="River Edge" icon="🌳" onClick={() => { setActiveContext("b"); notify("These words suggest the edge of a river."); }} /></div><div className="context-explain">{activeContext === "a" ? "Deposited and money point to a financial institution." : "Boat and tied point to the side of a river."}</div></Step> : <section className="card step-card locked-step"><h2><span>2</span>See how the context changes the meaning.</h2><p>Choose the correct meaning first to unlock the comparison.</p></section>}<footer className="bottom-nav"><button className="outline" onClick={() => navigate("/mission/3-hallucination")}>‹ Previous</button><button className="primary" onClick={goNext}>Next ›</button></footer></section><aside className="lesson-side mission4-side"><section className="card how-card happens-card context-works"><h2>How context works</h2>{[
-    ["brain", "1. Reads the context", "Looks at the words before the target word.", "blue", "ChatGPT looks at the words before the target word."],
-    ["chart", "2. Updates meaning", "Uses context to update word meaning.", "green", "The same word can mean different things in different contexts."],
-    ["user", "3. Predicts next", "Predicts the next tokens based on this meaning.", "orange", "The model uses context to predict the most likely next tokens."]
-  ].map(([icon, title, text, tone, detail], i) => <button className={`flow-card ${tone} ${activeStep === i ? "open" : ""}`} onClick={() => setActiveStep(activeStep === i ? null : i)} key={title}><span className="flow-icon"><Icon name={icon === "user" ? "target" : icon} /></span><span className="flow-copy"><strong>{title}</strong><small>{text}</small>{activeStep === i && <em>{detail}</em>}</span></button>)}</section><section className="card playground-card meaning-practice-card"><h2><Icon name="question" />Try it!</h2><p>Read the sentence and choose what the bold word means.</p><div className="meaning-practice-panel"><div className="playground-challenge-head"><strong>{currentMeaning.word}</strong><small>{meaningIndex + 1} / {meaningChallenges.length}</small></div><div className="meaning-sentence">{currentMeaning.sentence.split(currentMeaning.word).map((part, index, parts) => <React.Fragment key={`${part}-${index}`}>{part}{index < parts.length - 1 && <mark>{currentMeaning.word}</mark>}</React.Fragment>)}</div><div className="meaning-choice-grid">{currentMeaning.options.map((option) => <button key={option} className={`${currentMeaningAnswer === option ? "selected" : ""} ${meaningChecked[meaningIndex] === "correct" && option === currentMeaning.answer ? "correct" : ""} ${meaningChecked[meaningIndex] === "wrong" && currentMeaningAnswer === option ? "wrong" : ""}`} onClick={() => { setMeaningAnswers((answers) => ({ ...answers, [meaningIndex]: option })); setMeaningChecked((checked) => ({ ...checked, [meaningIndex]: "" })); }}>{option}{meaningChecked[meaningIndex] === "correct" && option === currentMeaning.answer && <Icon name="check" />}</button>)}</div>{meaningChecked[meaningIndex] && <em className={meaningChecked[meaningIndex] === "correct" ? "correct" : "wrong"}>{meaningChecked[meaningIndex] === "correct" ? `Correct: context makes "${currentMeaning.word}" mean ${currentMeaning.answer}.` : `Hint: ${currentMeaning.hint}.`}</em>}<div className="playground-examples playground-pager meaning-pager"><button onClick={() => chooseMeaningPage(meaningIndex - 1)}>‹ Previous</button><button className="primary" disabled={!currentMeaningAnswer} onClick={checkMeaningAnswer}>Check</button><button onClick={() => chooseMeaningPage(meaningIndex + 1)}>Next question ›</button></div></div></section></aside></MissionLayout>;
+function ContextLayers({ count = 1 }) {
+  const label = count === 1 ? "1 clue" : `${count} clues`;
+  return <span className={`context-layers layer-count-${count}`} aria-label={`${count} context layer${count === 1 ? "" : "s"}`}>
+    <span className="mini-context-robot"><Mascot type="pointing" /></span>
+    <span className="layer-stack">{Array.from({ length: count }, (_, index) => <i key={index} />)}</span>
+    <b>{label}</b>
+  </span>;
 }
 
 function ContextCard({ title, sentence, result, icon, active, onClick }) {
@@ -2037,19 +2267,74 @@ function PredictionScatter() {
 
 function Mission6({ progress, setProgress, navigate, notify }) {
   const saved = progress.missions[6] || { progress: 0, completed: false };
-  const [maleCount, setMaleCount] = useState(9);
-  const [viewMode, setViewMode] = useState("people");
-  const femaleCount = 10 - maleCount;
-  const malePercent = maleCount * 10;
-  const femalePercent = femaleCount * 10;
-  const prediction = maleCount > femaleCount ? "Male" : femaleCount > maleCount ? "Female" : "Both equally";
-  const answer = prediction === "Male" ? "A. Male" : prediction === "Female" ? "B. Female" : "C. Both equally";
-  const [selected, setSelected] = useState(saved.progress >= 45 ? answer : "");
-  const [submitted, setSubmitted] = useState(saved.progress >= 45);
-  const [wrong, setWrong] = useState(false);
-  const [activeStep, setActiveStep] = useState(null);
-  const [activeSolution, setActiveSolution] = useState(null);
-  const choices = ["A. Male", "B. Female", "C. Both equally", "D. It's impossible to know"];
+  const sections = [
+    ["observe", "Observe Data", Database],
+    ["predict", "Predict", TrendingUp],
+    ["why", "Why Bias?", BrainCircuit],
+    ["fix", "Fix the Data", Wrench],
+    ["turn", "Your Turn", Users],
+    ["challenge", "Mini Challenge", Scale],
+    ["summary", "Summary", Globe2]
+  ];
+  const [activeSection, setActiveSection] = useState("observe");
+  const [readSections, setReadSections] = useState({ observe: true });
+  const [observation, setObservation] = useState("");
+  const [predictionChoice, setPredictionChoice] = useState("");
+  const [predictionSubmitted, setPredictionSubmitted] = useState(false);
+  const [fixedMaleCount, setFixedMaleCount] = useState(9);
+  const fixedFemaleCount = 10 - fixedMaleCount;
+  const fixedMalePercent = fixedMaleCount * 10;
+  const fixedFemalePercent = fixedFemaleCount * 10;
+  const fixedPrediction = fixedMaleCount > fixedFemaleCount ? "Male" : fixedFemaleCount > fixedMaleCount ? "Female" : "Both equally";
+  const [savedBiasData, setSavedBiasData] = useState(null);
+  const turnMaleCount = savedBiasData?.male ?? fixedMaleCount;
+  const turnFemaleCount = 10 - turnMaleCount;
+  const turnMalePercent = turnMaleCount * 10;
+  const turnFemalePercent = turnFemaleCount * 10;
+  const turnPrediction = turnMaleCount > turnFemaleCount ? "Male" : turnFemaleCount > turnMaleCount ? "Female" : "Both equally";
+  const savedBalancedEnough = savedBiasData ? savedBiasData.male >= 4 && savedBiasData.male <= 6 : false;
+  const [turnAnswer, setTurnAnswer] = useState("");
+  const [turnSubmitted, setTurnSubmitted] = useState(false);
+  const [selectedProblem, setSelectedProblem] = useState("");
+  const [matches, setMatches] = useState({});
+  const [matchColors, setMatchColors] = useState({});
+  const [challengeResult, setChallengeResult] = useState("");
+  const [challengeFeedback, setChallengeFeedback] = useState("");
+  const [hintVisible, setHintVisible] = useState(false);
+  const challengePairs = {
+    "The AI only saw one kind of person.": "Show it more kinds of people",
+    "The data has an unfair idea in it.": "Remove or fix the unfair idea"
+  };
+  const challengeProblems = Object.keys(challengePairs);
+  const challengeSolutions = ["Remove or fix the unfair idea", "Show it more kinds of people"];
+  const challengeDone = challengeResult === "correct";
+  const balancedEnough = fixedMaleCount >= 4 && fixedMaleCount <= 6;
+  const turnDone = turnSubmitted && turnAnswer === turnPrediction;
+  const summaryReached = Boolean(readSections.summary) || activeSection === "summary" || saved.completed;
+  const predictionReady = predictionSubmitted || saved.progress >= 34 || saved.completed;
+  const dataReady = savedBalancedEnough || saved.progress >= 64 || saved.completed;
+  const turnReady = turnDone || saved.progress >= 74 || saved.completed;
+  const challengeReady = challengeDone || saved.progress >= 90 || saved.completed;
+  const missionTasksDone = predictionReady && dataReady && turnReady && challengeReady;
+  const nextReady = saved.completed || challengeReady || missionTasksDone;
+
+  React.useEffect(() => {
+    const container = document.querySelector(".mission-6 .mission-content");
+    if (!container) return undefined;
+    const update = () => {
+      let current = sections[0][0];
+      const containerTop = container.getBoundingClientRect().top;
+      sections.forEach(([id]) => {
+        const node = document.getElementById(`m6-${id}`);
+        if (node && node.getBoundingClientRect().top - containerTop < 190) current = id;
+      });
+      setActiveSection(current);
+      setReadSections((read) => ({ ...read, [current]: true }));
+    };
+    update();
+    container.addEventListener("scroll", update, { passive: true });
+    return () => container.removeEventListener("scroll", update);
+  }, []);
 
   function markProgress(value, completed = false) {
     setProgress((prev) => {
@@ -2061,51 +2346,215 @@ function Mission6({ progress, setProgress, navigate, notify }) {
       return next;
     });
   }
-
-  function submitAnswer() {
-    if (!selected) return;
-    if (selected !== answer) {
-      setWrong(true);
-      notify("Try again. Look at the training data ratio.");
+  function scrollToSection(id) {
+    document.getElementById(`m6-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function chooseObservation(value) {
+    setObservation(value);
+    if (value === "Mostly men") {
+      notify("Exactly. The training data is not balanced.");
+      markProgress(18);
+    } else {
+      notify("Look again at the training data: 9 out of 10 examples are male doctors.");
+    }
+  }
+  function submitPrediction() {
+    if (!predictionChoice) return;
+    setPredictionSubmitted(true);
+    markProgress(34);
+    notify(predictionChoice === "Male" ? "Yes. The AI follows the pattern it saw most often." : "Good thinking. The key idea is that the biased data pushes the AI toward Male.");
+  }
+  function changeFixedRatio(value) {
+    setFixedMaleCount(Number(value));
+    markProgress(58);
+  }
+  function saveFixedRatio() {
+    setSavedBiasData({ male: fixedMaleCount });
+    setTurnAnswer("");
+    setTurnSubmitted(false);
+    markProgress(64);
+    notify("Saved. Your Turn will now use this training data.");
+    window.setTimeout(() => scrollToSection("turn"), 250);
+  }
+  function resetFixedRatio() {
+    setFixedMaleCount(9);
+    setSavedBiasData(null);
+    setTurnAnswer("");
+    setTurnSubmitted(false);
+    notify("Reset to the original biased data.");
+  }
+  function submitTurn() {
+    if (!savedBiasData) {
+      notify("Save your adjusted training data first.");
       return;
     }
-    setWrong(false);
-    setSubmitted(true);
-    markProgress(80);
-    notify("Correct. The model follows the training data pattern.");
+    if (!turnAnswer) return;
+    setTurnSubmitted(true);
+    if (turnAnswer === turnPrediction) {
+      markProgress(74);
+      notify(`Correct. With this saved data, the AI is most likely to predict ${turnPrediction}.`);
+    } else {
+      notify(`Look at your saved data again: it points most strongly toward ${turnPrediction}.`);
+    }
   }
-
-  function changeRatio(value) {
-    setMaleCount(Number(value));
-    setSelected("");
-    setSubmitted(false);
-    setWrong(false);
-    markProgress(35);
+  function nextMatchColor(currentColors) {
+    const palette = ["blue", "green", "orange", "purple"];
+    return palette[Object.keys(currentColors).length % palette.length];
   }
-
-  function resetRatio() {
-    changeRatio(9);
-    notify("Training data reset to 90% male and 10% female.");
+  function chooseProblem(problem) {
+    if (challengeDone) return;
+    setSelectedProblem(problem);
+    setMatchColors((current) => current[problem] ? current : { ...current, [problem]: nextMatchColor(current) });
+    setChallengeResult("");
+    setChallengeFeedback("");
   }
-
-  function completeMission() {
-    if (!submitted) {
-      notify("Complete the bias activity first.");
+  function chooseSolution(solution) {
+    if (!selectedProblem || challengeDone) {
+      notify("Choose a problem first, then choose the fix you think matches it.");
+      return;
+    }
+    setMatches((current) => ({ ...current, [selectedProblem]: solution }));
+    setSelectedProblem("");
+    setChallengeResult("");
+    setChallengeFeedback("");
+  }
+  function removeMatch(problem) {
+    if (challengeDone) return;
+    setMatches((current) => {
+      const next = { ...current };
+      delete next[problem];
+      return next;
+    });
+    setMatchColors((current) => {
+      const next = { ...current };
+      delete next[problem];
+      return next;
+    });
+    setChallengeResult("");
+    setChallengeFeedback("");
+  }
+  function checkChallenge() {
+    const complete = challengeProblems.every((problem) => matches[problem]);
+    if (!complete) {
+      setChallengeResult("wrong");
+      setChallengeFeedback("Match both problems with a way to reduce bias first.");
+      return;
+    }
+    const allCorrect = challengeProblems.every((problem) => matches[problem] === challengePairs[problem]);
+    if (allCorrect) {
+      setChallengeResult("correct");
+      setChallengeFeedback("Great. You fixed the data: add more kinds of people, and remove unfair ideas.");
+      markProgress(90);
+      notify("Mini challenge complete. Scroll to the summary.");
+    } else {
+      setChallengeResult("wrong");
+      setChallengeFeedback("Try again. If the AI only saw one kind of person, show it more kinds. If the data has an unfair idea, remove or fix it.");
+    }
+  }
+  function resetChallenge() {
+    setSelectedProblem("");
+    setMatches({});
+    setMatchColors({});
+    setChallengeResult("");
+    setChallengeFeedback("");
+    setHintVisible(false);
+  }
+  function challengeTone(value) {
+    return value.includes("one kind of person") || value === "Show it more kinds of people" ? "diverse" : "stereotype";
+  }
+  function solutionMatchColor(solution) {
+    const problem = challengeProblems.find((item) => matches[item] === solution);
+    return problem ? matchColors[problem] : "";
+  }
+  function finishMission() {
+    if (!nextReady) {
+      notify("Observe, predict, balance the data, finish Your Turn, and complete the mini challenge first.");
       return;
     }
     markProgress(100, true);
-    notify("Mission 6 completed. Final Challenge unlocked.");
+    notify("Mission 6 complete. Opening the Final Challenge...");
     window.setTimeout(() => navigate("/final-challenge"), 500);
   }
 
-  return <MissionLayout mission={6} title="Can AI be biased?" subtitle={<>AI can reflect biases in its training data.<br />It’s important to understand and fix them.</>} progress={progress} notify={notify}><section className="lesson-main mission6-main"><section className="scenario-card bias-scenario interactive-bias-scenario"><span>Scenario</span><div className="bias-scenario-head"><div><strong>Q: Who is a doctor?</strong><p>This is the training data the AI has seen.</p></div><div className="bias-view-toggle" role="group" aria-label="Bias data view"><button className={viewMode === "people" ? "active" : ""} onClick={() => setViewMode("people")}><Icon name="person" />People view</button><button className={viewMode === "percentage" ? "active" : ""} onClick={() => setViewMode("percentage")}><Icon name="chart" />Percentage view</button></div></div><BiasTrainingBoard maleCount={maleCount} femaleCount={femaleCount} malePercent={malePercent} femalePercent={femalePercent} viewMode={viewMode} /><div className="ratio-control"><p>Adjust the data ratio <small>(total people = 10)</small></p><div className="ratio-line"><span><DoctorAvatar gender="male" mini />Male: {maleCount}</span><input aria-label="Adjust male doctor count" type="range" min="0" max="10" step="1" value={maleCount} onChange={(event) => changeRatio(event.target.value)} /><span><DoctorAvatar gender="female" mini />Female: {femaleCount}</span><button className="outline reset-ratio" onClick={resetRatio}>↻ Reset</button></div><div className="slider-scale">{Array.from({ length: 6 }, (_, i) => <i key={i}>{i * 2}</i>)}</div></div></section><Step n="1" title="What answer is the AI most likely to give?"><div className="bias-question-head"><p className="step-subcopy">Based on the training data above.</p><div className="prediction-strip"><small>Current prediction</small><strong className={prediction === "Female" ? "female" : prediction === "Both equally" ? "balanced" : ""}>{prediction}</strong><span>Male {malePercent}%</span><i /> <span>Female {femalePercent}%</span></div></div><div className="answer-grid bias-options">{choices.map((choice) => <button key={choice} disabled={submitted} onClick={() => { setSelected(choice); setWrong(false); }} className={`${selected === choice ? "selected" : ""} ${wrong && selected === choice ? "wrong" : ""}`}>{choice.replace(/^A\. |^B\. |^C\. |^D\. /, "")}{submitted && choice === answer && <Icon name="check" />}</button>)}</div>{submitted && <div className="answer-feedback"><strong>Correct!</strong><p>{prediction === "Both equally" ? "With balanced data, the AI has no strong reason to prefer one group." : <>Based on this data, the AI is most likely to say <b>{prediction}</b>.</>} It is still a prediction from patterns, not a guaranteed fact.</p></div>}<button className="primary" disabled={!selected || submitted} onClick={submitAnswer}>{wrong ? "Try Again" : submitted ? "Correct" : "Submit Answer"}</button></Step><footer className="bottom-nav"><button className="outline" onClick={() => navigate("/mission/5-training-data")}>‹ Previous</button><button className="primary" disabled={!submitted} onClick={completeMission}>Mission Complete 🎉</button></footer></section><aside className="lesson-side mission6-side"><section className="card how-card happens-card bias-flow"><h2>How bias happens</h2>{[
-    ["data", "1. Data is not balanced", "Some groups are over-represented.", "blue", "Some groups appear more often in the data."],
-    ["patterns", "2. Model learns bias", "The model learns patterns from the biased data.", "green", "The model learns patterns from the data."],
-    ["alert", "3. Biased predictions", "It may give unfair or discriminatory results.", "orange", "Predictions may become unfair."]
-  ].map(([icon, title, text, tone, detail], i) => <button className={`flow-card ${tone} ${activeStep === i ? "open" : ""}`} onClick={() => setActiveStep(activeStep === i ? null : i)} key={title}>{icon === "alert" ? <span className="flow-icon"><Icon name="alert" /></span> : <TrainingFigure name={icon} />}<span className="flow-copy"><strong>{title}</strong><small>{text}</small>{activeStep === i && <em>{detail}</em>}</span></button>)}</section><section className="card fairness-actions-card"><h2>What can we do?</h2><p>Use diverse data, test for bias, and build fairer AI systems.</p><FairnessArt type="group" /><div className="solution-list">{["Use diverse data", "Test for bias", "Build fairer AI systems"].map((item, i) => <button key={item} className={activeSolution === i ? "active" : ""} onClick={() => { setActiveSolution(activeSolution === i ? null : i); notify("Examples include more diverse datasets, human review, and bias testing."); }}><Icon name={i === 0 ? "person" : i === 1 ? "search" : "scale"} />{item}</button>)}</div>{activeSolution !== null && <small>Examples: more diverse datasets, human review, and bias testing.</small>}<QuickQuiz title="Bias Quick Check" notify={notify} locked={!submitted} lockText="Submit the bias prediction first." questions={[
-    { id: "bias-cause", prompt: "Why did the AI prefer one group?", options: ["The data was unbalanced", "It checked real-world truth"], answer: "The data was unbalanced" },
-    { id: "bias-fix", prompt: "A good way to reduce bias is...", options: ["Use more balanced data", "Hide the result"], answer: "Use more balanced data" }
-  ]} /></section>{(submitted || saved.completed) && <section className="card great-work-card"><h2>Great job!</h2><p>You’ve learned how bias happens and how we can fix it.</p><strong><Icon name="star" className="star" />+100 XP</strong></section>}</aside></MissionLayout>;
+  const timelineIndex = Math.max(0, sections.findIndex(([id]) => id === activeSection));
+
+  return <MissionLayout mission={6} title="Can AI be biased?" subtitle={<>AI can reflect biases in its training data.<br />It’s important to understand and fix them.</>} robot="idea" bubbleText="Follow the data trail." progress={progress} notify={notify}>
+    <section className="lesson-main course-flow mission6-flow">
+      <section className="scenario-card bias-scenario mission6-scenario"><span>Scenario</span><div><strong>Q: Who is a doctor?</strong><p>Let’s follow how training data can turn into a biased prediction.</p></div><button className="outline" onClick={() => scrollToSection("observe")}>Start investigation ↓</button></section>
+
+      <CourseSection id="m6-observe" n="1" title="Look at the training data" action={<button className="outline tiny-top" onClick={() => scrollToSection("observe")}>Top ↑</button>}>
+        <p>This is all the training data the AI has seen.</p>
+        <BiasTrainingBoard maleCount={9} femaleCount={1} malePercent={90} femalePercent={10} viewMode="people" />
+        <div className="notice-question"><strong>What do you notice?</strong><div>{["Mostly men", "Equal numbers", "Mostly women"].map((item) => <button key={item} className={observation === item ? "selected" : ""} onClick={() => chooseObservation(item)}>{item}</button>)}</div></div>
+        {observation && <div className={observation === "Mostly men" ? "section-complete" : "challenge-message wrong"}><Icon name={observation === "Mostly men" ? "check" : "alert"} />{observation === "Mostly men" ? "Exactly. The data is not balanced." : "Try looking at the counts again: there are many more male examples."}</div>}
+      </CourseSection>
+
+      <CourseSection id="m6-predict" n="2" title="What will the AI predict?">
+        <p>Now ask the AI a new question and predict what pattern it might follow.</p>
+        <div className="bias-predict-layout"><div><div className="bias-question-box"><small>Question</small><strong>Who is a doctor?</strong></div><div className="answer-grid bias-options">{["Male", "Female", "Both equally", "Impossible to know"].map((choice) => <button key={choice} disabled={predictionSubmitted} className={`${predictionChoice === choice ? "selected" : ""} ${predictionSubmitted && choice === "Male" ? "correct-choice" : ""} ${predictionSubmitted && predictionChoice === choice && choice !== "Male" ? "wrong-choice" : ""}`} onClick={() => setPredictionChoice(choice)}>{choice}{predictionSubmitted && choice === "Male" && <Icon name="check" />}</button>)}</div><button className="primary" disabled={!predictionChoice || predictionSubmitted} onClick={submitPrediction}>{predictionSubmitted ? "Submitted" : "Submit Prediction"}</button></div><div className={`prediction-meter ${predictionSubmitted ? "revealed" : "hidden-answer"}`}><small>{predictionSubmitted ? "AI is more likely to predict" : "AI is thinking about the pattern..."}</small><strong>{predictionSubmitted ? "Male" : "?"}</strong><span><b style={{ width: predictionSubmitted ? "90%" : "0%" }} /></span><em>{predictionSubmitted ? "90%" : "Make your prediction first"}</em></div></div>
+        {predictionSubmitted && <div className="answer-feedback with-robot"><Mascot type="pointing" /><strong>The AI is more likely to predict: Male</strong><p>because it has seen many more male doctors. It is learning a pattern from data, not checking what is fair.</p></div>}
+      </CourseSection>
+
+      <CourseSection id="m6-why" n="3" title="Why is this happening?">
+        <p>Bias appears when unbalanced training data becomes a repeated pattern.</p>
+        <div className="bias-cause-flow"><BiasFlowStep icon={Database} tone="blue" title="Training Data" text="9 male examples, 1 female example" /><span>→</span><BiasFlowStep icon={BrainCircuit} tone="purple" title="Pattern" text="doctor often appears with male" /><span>→</span><BiasFlowStep icon={AlertTriangle} tone="red" title="Biased Prediction" text="AI may prefer male as the answer" /></div>
+        <div className="ai-bias-brain"><div className="mini-avatar-cloud">{Array.from({ length: 9 }, (_, index) => <DoctorAvatar key={`brain-m-${index}`} gender="male" />)}<DoctorAvatar gender="female" /></div><Mascot type="detective" /><strong>doctor → male?</strong></div>
+        <div className="lesson-hint"><Icon name="bulb" />The AI is learning patterns, not fairness.</div>
+      </CourseSection>
+
+      <CourseSection id="m6-fix" n="4" title="Let's fix the data">
+        <p>Drag the slider. When the training data changes, the prediction changes too.</p>
+        <BiasTrainingBoard maleCount={fixedMaleCount} femaleCount={fixedFemaleCount} malePercent={fixedMalePercent} femalePercent={fixedFemalePercent} viewMode="people" />
+        <div className="ratio-control mission6-ratio"><p>Adjust the data ratio <small>(total people = 10)</small></p><div className="ratio-line"><span><DoctorAvatar gender="male" mini />Male: {fixedMaleCount}</span><input aria-label="Adjust male doctor count" type="range" min="0" max="10" step="1" value={fixedMaleCount} onChange={(event) => changeFixedRatio(event.target.value)} /><span><DoctorAvatar gender="female" mini />Female: {fixedFemaleCount}</span><button className="outline reset-ratio" onClick={resetFixedRatio}>↻ Reset</button></div><div className="slider-scale">{Array.from({ length: 6 }, (_, i) => <i key={i}>{i * 2}</i>)}</div></div>
+        <div className={`bias-live-prediction ${balancedEnough ? "balanced" : ""}`}><Icon name={balancedEnough ? "check" : "alert"} /><div><small>Current prediction</small><strong>{fixedPrediction}</strong><span>Male {fixedMalePercent}% · Female {fixedFemalePercent}%</span></div></div>
+        <div className="save-ratio-row"><button className="primary" onClick={saveFixedRatio}>Use this data for Your Turn</button>{savedBiasData && <span><Icon name="check" /> Saved: Male {savedBiasData.male * 10}% · Female {(10 - savedBiasData.male) * 10}%</span>}</div>
+      </CourseSection>
+
+      <CourseSection id="m6-turn" n="5" title="Your turn">
+        <p>{savedBiasData ? "Use your saved training data. What is the AI most likely to predict now?" : "First save the ratio you adjusted above, then predict what the AI will answer."}</p>
+        <div className="your-turn-bias"><div><strong>Your saved doctor training data</strong><div className="avatar-row large">{Array.from({ length: turnMaleCount }, (_, index) => <DoctorAvatar key={`turn-m-${index}`} gender="male" />)}{Array.from({ length: turnFemaleCount }, (_, index) => <DoctorAvatar key={`turn-f-${index}`} gender="female" />)}</div><p>Male: {turnMaleCount} ({turnMalePercent}%) · Female: {turnFemaleCount} ({turnFemalePercent}%)</p>{!savedBiasData && <small className="save-needed">No saved data yet. Go back to Step 4 and click “Use this data”.</small>}</div><div className="answer-grid bias-options">{["Male", "Female", "Both equally", "Impossible to know"].map((choice) => <button key={choice} disabled={!savedBiasData || turnSubmitted} className={`${turnAnswer === choice ? "selected" : ""} ${turnSubmitted && choice === turnPrediction ? "correct-choice" : ""} ${turnSubmitted && turnAnswer === choice && choice !== turnPrediction ? "wrong-choice" : ""}`} onClick={() => setTurnAnswer(choice)}>{choice}{turnSubmitted && choice === turnPrediction && <Icon name="check" />}</button>)}</div></div>
+        <button className="primary" disabled={!savedBiasData || !turnAnswer || turnSubmitted} onClick={submitTurn}>{turnSubmitted ? "Submitted" : "Submit Answer"}</button>
+        {turnSubmitted && <div className={turnDone ? "section-complete" : "challenge-message wrong"}><Icon name={turnDone ? "check" : "alert"} />{turnDone ? `Correct. The AI follows the saved data pattern and predicts ${turnPrediction}.` : `Try again: your saved data points most strongly toward ${turnPrediction}.`}</div>}
+        {turnSubmitted && !turnDone && <button className="outline" onClick={() => { setTurnSubmitted(false); setTurnAnswer(""); }}>Try again</button>}
+      </CourseSection>
+
+      <CourseSection id="m6-challenge" n="6" title={<><Icon name="trophy" />Mini Challenge</>} action={<span className="section-pill">{Object.keys(matches).length} / {challengeProblems.length}</span>}>
+        <p>Match each data problem with the best way to fix it.</p>
+        <p className="mini-instruction">Pick a problem on the left. It gets a colour. Then pick the fix you think matches it.</p>
+        <div className="bias-match-game"><div className="bias-problem-list">{challengeProblems.map((problem) => <button key={problem} className={`${selectedProblem === problem ? "selected" : ""} ${matches[problem] ? "matched" : ""} ${matchColors[problem] ? `match-tone-${matchColors[problem]}` : ""}`} disabled={challengeDone} onClick={() => chooseProblem(problem)}><Icon name="grid" /><span>{problem}</span>{matches[problem] && <em>{matches[problem]}</em>}</button>)}</div><div className="bias-solution-list">{challengeSolutions.map((solution) => <button key={solution} className={solutionMatchColor(solution) ? `matched match-tone-${solutionMatchColor(solution)}` : ""} disabled={challengeDone} onClick={() => chooseSolution(solution)}><Wrench aria-hidden="true" />{solution}</button>)}</div></div>
+        {Object.keys(matches).length > 0 && <div className="match-review">{challengeProblems.map((problem) => matches[problem] && <button key={problem} className={matchColors[problem] ? `match-tone-${matchColors[problem]}` : ""} onClick={() => removeMatch(problem)} disabled={challengeDone}><strong>{problem}</strong><span>→ {matches[problem]}</span><small>Remove</small></button>)}</div>}
+        {challengeResult && <div className={`challenge-message ${challengeResult}`}><Icon name={challengeResult === "correct" ? "check" : "alert"} />{challengeFeedback}</div>}
+        {hintVisible && <p className="hint-line">Hint: If the AI only saw one kind of person, show it more kinds of people. If it learned an unfair idea, remove or fix that idea.</p>}
+        <div className="challenge-actions course-actions"><button className="primary" disabled={challengeDone} onClick={checkChallenge}>Check Answer</button><button className="outline" onClick={() => setHintVisible(true)}>Need a hint?</button><button className="outline" onClick={resetChallenge}>Reset</button></div>
+      </CourseSection>
+
+      <CourseSection id="m6-summary" n="7" title="Summary: Building fair AI">
+        <p>Bias can happen, but we can make AI fairer.</p>
+        <div className="fair-ai-chain"><BiasSummary icon={Database} title="Training Data" text="What data we use shapes the AI." /><BiasSummary icon={BrainCircuit} title="Patterns" text="AI learns repeated patterns." /><BiasSummary icon={TrendingUp} title="Prediction" text="Patterns affect answers." /><BiasSummary icon={AlertTriangle} title="Bias" text="Unbalanced data can be unfair." /><BiasSummary icon={Scale} title="Balanced Data" text="Diverse data helps fix it." /><BiasSummary icon={Globe2} title="Fairer AI" text="Test and improve systems." /></div>
+        <div className="summary-mascot fair-summary"><Mascot type="idea" /><strong>Great! You learned how bias happens and how we can reduce it.</strong></div>
+      </CourseSection>
+    </section>
+
+    <aside className="lesson-side page-timeline mission6-side-panel" aria-label="On this page">
+      <div className="card timeline-card"><h2>On this page</h2><span className="timeline-rail" style={{ "--progress": `${(timelineIndex / (sections.length - 1)) * 100}%` }} />{sections.map(([id, label], index) => {
+        const IconComponent = sections[index][2];
+        const active = activeSection === id;
+        const read = Boolean(readSections[id]);
+        return <button key={id} className={`${active ? "active" : ""} ${read ? "read" : ""}`} onClick={() => scrollToSection(id)}><span>{read && !active ? <Icon name="check" /> : index + 1}</span>{label}</button>;
+      })}</div>
+      <section className="card bias-process-card"><h2>Bias process</h2>{sections.slice(0, 6).map(([id, label, IconComponent], index) => <button key={id} className={`${readSections[id] ? "lit" : ""} ${activeSection === id ? "active" : ""}`} onClick={() => scrollToSection(id)}><span><IconComponent aria-hidden="true" /></span><strong>{label}</strong></button>)}</section>
+      <section className="card did-you-know"><h2><Icon name="bulb" />Did you know?</h2><p>AI does not have opinions or beliefs. If training data is biased, it can learn and repeat those patterns.</p><Mascot type="reading" /></section>
+    </aside>
+    <footer className="course-bottom-nav"><button className="outline" onClick={() => navigate("/mission/5-training-data")}>‹ Previous</button><span>{nextReady ? "Mission 6 complete. Final Challenge is ready." : "Follow the cause → effect → solution chain."}</span><button className="primary" disabled={!nextReady} onClick={finishMission}>Start Final Challenge →</button></footer>
+  </MissionLayout>;
+}
+
+function BiasFlowStep({ icon: IconComponent, tone, title, text }) {
+  return <article className={`bias-flow-step ${tone}`}><span><IconComponent aria-hidden="true" /></span><strong>{title}</strong><p>{text}</p></article>;
+}
+
+function BiasSummary({ icon: IconComponent, title, text }) {
+  return <article><span><IconComponent aria-hidden="true" /></span><strong>{title}</strong><p>{text}</p></article>;
 }
 
 function BiasTrainingBoard({ maleCount, femaleCount, malePercent, femalePercent, viewMode }) {
@@ -2122,7 +2571,170 @@ function BiasDataCard({ title, male, female, active, onClick }) {
 }
 
 function MissionLayout({ mission, title, subtitle, robot = "pointing", progress, notify, children, headingPrefix, eyebrow, bubbleText }) {
-  return <div className={`mission-layout mission-${mission}`}><header className="mission-header"><button className="outline" onClick={() => window.dispatchEvent(new CustomEvent("navigate", { detail: "/missions" }))}>‹ Back to Missions</button><div className="mission-mid"><strong>Mission {mission} of 6</strong><span className="mission-dots">{missionData.map((m) => <i className={m.id <= mission ? "filled" : ""} key={m.id} />)}</span></div><div className="mission-header-actions"><button className="status-pill" onClick={() => notify?.("XP shows your learning progress. Complete missions to earn more XP.")}><Icon name="star" className="star" />{progress?.xp ?? 1200} XP</button><button className="status-pill" onClick={() => notify?.(`You have learned for ${progress?.streak ?? 7} days in a row.`)}><Icon name="flame" className="flame" />{progress?.streak ?? 7} day streak</button><button className="icon-button" onClick={() => notify?.("Settings: text size, animation speed, sound, dark mode, reset progress.")}><Icon name="gear" /></button></div></header><section className="mission-content"><header className="mission-title"><div>{eyebrow && <span className="mission-eyebrow">{eyebrow}</span>}<h1>{headingPrefix ?? `${mission}.`} {title}</h1><p>{subtitle}</p></div>{bubbleText && <span className="mascot-bubble">{bubbleText}</span>}<Mascot type={robot} /></header><div className="lesson-grid">{children}</div></section></div>;
+  return <div className={`mission-layout mission-${mission}`}><header className="mission-header"><button className="outline" onClick={() => window.dispatchEvent(new CustomEvent("navigate", { detail: "/missions" }))}>‹ Back to Missions</button><div className="mission-mid"><strong>Mission {mission} of 6</strong><span className="mission-dots">{missionData.map((m) => <i className={m.id <= mission ? "filled" : ""} key={m.id} />)}</span></div><div className="mission-header-actions"><button className="status-pill" onClick={() => notify?.("XP shows your learning progress. Complete missions to earn more XP.")}><Icon name="star" className="star" />{progress?.xp ?? 1200} XP</button><button className="icon-button" onClick={() => notify?.("Settings: text size, animation speed, sound, dark mode, reset progress.")}><Icon name="gear" /></button></div></header><section className="mission-content"><header className="mission-title"><div>{eyebrow && <span className="mission-eyebrow">{eyebrow}</span>}<h1>{headingPrefix ?? `${mission}.`} {title}</h1><p>{subtitle}</p></div>{bubbleText && <span className="mascot-bubble">{bubbleText}</span>}<Mascot type={robot} /></header><div className="lesson-grid">{children}</div></section></div>;
+}
+
+function LegacyFinalChallenge({ progress, setProgress, navigate, notify }) {
+  const rooms = [
+    { id: "token", title: "Tokeniser", subtitle: "The Token Door", crystal: "#9b6cff", power: "Tokenisation", icon: "Aa", memory: "The door now understands that text is split into tokens." },
+    { id: "prediction", title: "Predictor", subtitle: "Next-Word Machine", crystal: "#ffbf3d", power: "Prediction", icon: "⚡", memory: "The machine can choose the next token from context." },
+    { id: "mistake", title: "Mistake Detector", subtitle: "False-Clue Hall", crystal: "#ff5a70", power: "Mistake Detector", icon: "!", memory: "The robot remembers that AI can sound confident and still be wrong." },
+    { id: "context", title: "Context Finder", subtitle: "The Blurry Telescope", crystal: "#38c47f", power: "Context", icon: "◈", memory: "More useful context makes the answer clearer." },
+    { id: "training", title: "Trainer", subtitle: "Pattern Engine", crystal: "#3a8bff", power: "Training Data", icon: "▣", memory: "The engine learns patterns from examples, not magic answers." },
+    { id: "bias", title: "Bias Checker", subtitle: "Fairness Scale", crystal: "#a855f7", power: "Fair AI", icon: "⚖", memory: "Balanced data can help reduce biased predictions." }
+  ];
+  const [started, setStarted] = useState(false);
+  const [roomIndex, setRoomIndex] = useState(0);
+  const [step, setStep] = useState(0);
+  const [crystals, setCrystals] = useState({});
+  const [roomState, setRoomState] = useState({ tokenSplit: false, tokenCount: "", gear: "", reliable: "", contextChips: [], trainingData: [], biasCount: 9, inspected: {}, mistakeSorted: {}, predictionTemp: 55 });
+  const current = rooms[Math.min(roomIndex, rooms.length - 1)];
+  const completed = rooms.filter((room) => crystals[room.id]).length;
+  const allDone = completed === rooms.length;
+  const showEscape = started && allDone && roomIndex >= rooms.length;
+
+  function patchRoomState(patch) {
+    setRoomState((state) => ({ ...state, ...patch }));
+  }
+  function markInspected(id) {
+    patchRoomState({ inspected: { ...roomState.inspected, [id]: true } });
+    setStep(1);
+  }
+  function unlockRoom(message) {
+    setCrystals((state) => ({ ...state, [current.id]: true }));
+    setStep(2);
+    notify(message || current.power + " crystal unlocked.");
+  }
+  function enterNextRoom() {
+    if (roomIndex === rooms.length - 1) {
+      setRoomIndex(rooms.length);
+      setStep(0);
+      return;
+    }
+    setRoomIndex((index) => index + 1);
+    setStep(0);
+  }
+  function finishChallenge() {
+    if (!allDone) {
+      notify("Collect all six crystals first.");
+      return;
+    }
+    setProgress((prev) => {
+      const next = structuredClone(prev);
+      if (!next.finalChallengeCompleted) next.xp += 150;
+      next.finalChallengeCompleted = true;
+      writeProgress(next);
+      return next;
+    });
+    notify("Escape complete. AI Master badge unlocked!");
+    navigate("/progress");
+  }
+  function chooseTokenCount(count) {
+    patchRoomState({ tokenCount: count });
+    if (count === "5") unlockRoom("Token crystal unlocked. The door can read the sentence now.");
+    else notify("Not quite. Count each piece after splitting the sentence.");
+  }
+  function chooseGear(gear) {
+    patchRoomState({ gear });
+    if (gear === "umbrella") unlockRoom("Prediction crystal unlocked. That word fits the rainy context.");
+    else notify("Try another gear. Which word usually comes after rainy weather?");
+  }
+  function chooseReliable(clue) {
+    patchRoomState({ reliable: clue });
+    if (clue === "Water freezes at 0°C.") unlockRoom("Mistake crystal unlocked. You found the reliable clue.");
+    else notify("That clue sounds suspicious. Look for the one fact we can verify.");
+  }
+  function toggleContextChip(chip) {
+    const exists = roomState.contextChips.includes(chip);
+    const contextChips = exists ? roomState.contextChips.filter((item) => item !== chip) : [...roomState.contextChips, chip];
+    patchRoomState({ contextChips });
+    if (contextChips.length >= 3 && !crystals.context) window.setTimeout(() => unlockRoom("Context crystal unlocked. The answer is clear enough now."), 260);
+  }
+  function toggleTrainingData(item) {
+    const exists = roomState.trainingData.includes(item);
+    const trainingData = exists ? roomState.trainingData.filter((entry) => entry !== item) : [...roomState.trainingData, item];
+    patchRoomState({ trainingData });
+    if (trainingData.length >= 3 && !crystals.training) window.setTimeout(() => unlockRoom("Training crystal unlocked. The engine found repeated examples."), 260);
+  }
+  function changeBias(value) {
+    const biasCount = Number(value);
+    patchRoomState({ biasCount });
+    if (biasCount === 5 && !crystals.bias) window.setTimeout(() => unlockRoom("Bias crystal unlocked. The scale is balanced."), 300);
+  }
+  function resetCurrentRoom() {
+    if (current.id === "token") patchRoomState({ tokenSplit: false, tokenCount: "" });
+    if (current.id === "prediction") patchRoomState({ gear: "", predictionTemp: 55 });
+    if (current.id === "mistake") patchRoomState({ reliable: "" });
+    if (current.id === "context") patchRoomState({ contextChips: [] });
+    if (current.id === "training") patchRoomState({ trainingData: [] });
+    if (current.id === "bias") patchRoomState({ biasCount: 9 });
+    setCrystals((state) => {
+      const next = { ...state };
+      delete next[current.id];
+      return next;
+    });
+    setStep(0);
+  }
+
+  function renderRoomScene() {
+    if (current.id === "token") return <div className="escape-puzzle token-puzzle">
+      {step === 0 && <><div className="escape-door token-door"><span>□□□□□</span><b>Locked</b></div><div className="room-sentence">I love chocolate ice cream</div><p>The first crystal is trapped in a door that cannot read a full sentence.</p><button className="primary" onClick={() => markInspected("token")}>Inspect Door</button></>}
+      {step === 1 && <><div className="room-sentence split-source">I love chocolate ice cream</div><button className="outline split-button" onClick={() => patchRoomState({ tokenSplit: true })}>Split into tokens</button>{roomState.tokenSplit && <div className="flying-token-row">{["I", "love", "chocolate", "ice", "cream"].map((token) => <span key={token}>{token}</span>)}</div>}<p>How many tokens did the lock receive?</p><div className="escape-choice-row">{["4", "5", "6", "7"].map((count) => <button key={count} className={roomState.tokenCount === count ? "selected" : ""} onClick={() => chooseTokenCount(count)}>{count}</button>)}</div></>}
+      {step === 2 && <CrystalReward room={current} text="The Token Door opens. The first crystal flies into the robot." onNext={enterNextRoom} final={false} />}
+    </div>;
+    if (current.id === "prediction") return <div className="escape-puzzle predictor-puzzle">
+      {step === 0 && <><div className="prediction-machine"><span>The weather is very ____</span><i /></div><p>This machine predicts the next word. It needs the gear that best fits the context.</p><button className="primary" onClick={() => setStep(1)}>Power the Machine</button></>}
+      {step === 1 && <><div className="prediction-machine active"><span>The weather is very ____</span><i style={{ "--spin": roomState.predictionTemp + "deg" }} /></div><label className="temperature-control">Prediction speed <input type="range" min="0" max="100" value={roomState.predictionTemp} onChange={(event) => patchRoomState({ predictionTemp: Number(event.target.value) })} /></label><div className="escape-choice-row gear-row">{["sunny", "banana", "car", "elephant", "umbrella"].map((gear) => <button key={gear} className={roomState.gear === gear ? "selected" : ""} onClick={() => chooseGear(gear)}>{gear}</button>)}</div></>}
+      {step === 2 && <CrystalReward room={current} text="The prediction machine starts. The next-token crystal is restored." onNext={enterNextRoom} final={false} />}
+    </div>;
+    if (current.id === "mistake") return <div className="escape-puzzle mistake-puzzle">
+      {step === 0 && <><div className="fake-paper-wall">{["Cats can fly.", "The Moon is made of cheese.", "Water freezes at 0°C.", "Trees eat pizza."].map((paper) => <span key={paper}>{paper}</span>)}</div><p>This room is full of fake clues. Only one paper is reliable.</p><button className="primary" onClick={() => setStep(1)}>Search the Papers</button></>}
+      {step === 1 && <><p>Pick the reliable clue.</p><div className="paper-choice-grid">{["Cats can fly.", "The Moon is made of cheese.", "Water freezes at 0°C.", "Trees eat pizza."].map((clue) => <button key={clue} className={roomState.reliable === clue ? "selected" : ""} onClick={() => chooseReliable(clue)}>{clue}</button>)}</div></>}
+      {step === 2 && <CrystalReward room={current} text="The fake papers fade away. The mistake detector crystal is yours." onNext={enterNextRoom} final={false} />}
+    </div>;
+    if (current.id === "context") {
+      const clarity = Math.min(100, 25 + roomState.contextChips.length * 24);
+      return <div className="escape-puzzle context-puzzle">
+        {step === 0 && <><div className="blurry-answer">Maybe wear something nice?</div><p>The answer is blurry because the robot has almost no context.</p><button className="primary" onClick={() => setStep(1)}>Use the Context Telescope</button></>}
+        {step === 1 && <><div className="focus-meter"><span style={{ width: clarity + "%" }} /> <b>{clarity}% clear</b></div><div className="blurry-answer" style={{ filter: "blur(" + Math.max(0, 5 - roomState.contextChips.length) + "px)" }}>{roomState.contextChips.length >= 3 ? "Wear a waterproof formal jacket and comfortable shoes for the Edinburgh wedding." : "Maybe wear a jacket."}</div><div className="context-chip-grid">{["Weather: rainy", "Location: Edinburgh", "Event: wedding", "Style: comfortable", "Time: morning"].map((chip) => <button key={chip} className={roomState.contextChips.includes(chip) ? "selected" : ""} onClick={() => toggleContextChip(chip)}>{chip}</button>)}</div></>}
+        {step === 2 && <CrystalReward room={current} text="The telescope focuses. Context power has been restored." onNext={enterNextRoom} final={false} />}
+      </div>;
+    }
+    if (current.id === "training") return <div className="escape-puzzle training-puzzle">
+      {step === 0 && <><div className="training-engine"><span>Knowledge 0%</span><i /></div><p>The training engine is empty. Feed it different examples so it can find patterns.</p><button className="primary" onClick={() => setStep(1)}>Start Trainer</button></>}
+      {step === 1 && <><div className="training-engine active"><span>Knowledge {Math.min(100, roomState.trainingData.length * 34)}%</span><i style={{ height: Math.min(100, roomState.trainingData.length * 34) + "%" }} /></div><div className="data-feed-grid">{["Science facts", "Story sentences", "Math examples", "Question-answer pairs"].map((item) => <button key={item} className={roomState.trainingData.includes(item) ? "selected" : ""} onClick={() => toggleTrainingData(item)}>{item}</button>)}</div></>}
+      {step === 2 && <CrystalReward room={current} text="The engine learned from repeated examples. Training crystal restored." onNext={enterNextRoom} final={false} />}
+    </div>;
+    const female = 10 - roomState.biasCount;
+    return <div className="escape-puzzle bias-puzzle">
+      {step === 0 && <><div className="bias-scale-scene"><div className="scale-pan heavy">9</div><div className="scale-bar tilted" /><div className="scale-pan light">1</div></div><p>The fairness scale is tilted because the AI saw mostly one kind of person.</p><button className="primary" onClick={() => setStep(1)}>Balance the Scale</button></>}
+      {step === 1 && <><div className="bias-scale-scene"><div className="scale-pan">{roomState.biasCount}</div><div className={roomState.biasCount === 5 ? "scale-bar balanced" : "scale-bar tilted"} /><div className="scale-pan">{female}</div></div><label className="temperature-control">Male examples: {roomState.biasCount} · Female examples: {female}<input type="range" min="0" max="10" step="1" value={roomState.biasCount} onChange={(event) => changeBias(event.target.value)} /></label><p>Move the data toward 5 and 5.</p></>}
+      {step === 2 && <CrystalReward room={current} text="The scale balances. The fair-AI crystal is restored." onNext={enterNextRoom} final={true} />}
+    </div>;
+  }
+
+  return <div className="final-challenge-page final-escape-page">
+    <header className="mission-header final-header"><button className="outline" onClick={() => navigate("/missions")}>‹ Back to Missions</button><div className="mission-mid"><strong>Final Challenge: AI Literacy Escape Room</strong><span className="mission-dots">{rooms.map((room) => <i key={room.id} className={crystals[room.id] ? "filled" : ""} />)}</span></div><div className="mission-header-actions"><button className="status-pill"><Icon name="star" className="star" />{progress.xp} XP</button><button className="icon-button" onClick={() => notify("Escape each room by using what you learned in Missions 1 to 6.")}><Icon name="gear" /></button></div></header>
+    <main className="final-escape-shell">
+      {!started ? <section className="escape-map-board">
+        <div className="escape-map-hero"><span className="mission-eyebrow">Final Boss</span><h1>AI Literacy Escape Room</h1><p>Six locked rooms. Six AI powers. Help the robot collect every crystal and open the exit.</p><button className="primary" onClick={() => setStarted(true)}>Enter Room 1 →</button></div>
+        <div className="escape-map-grid"><article className="map-room-card large" style={{ "--room": rooms[0].crystal }}><span>ROOM 1</span><h2>Tokeniser</h2><p>Break the sentence into tokens to open the first door.</p><div className="map-door"><b>□□□□□</b></div><div className="map-token-strip"><i>I</i><i>love</i><i>chocolate</i><i>ice</i><i>cream</i></div></article>{rooms.slice(1).map((room, index) => <article key={room.id} className={"map-room-card small room-preview-" + room.id} style={{ "--room": room.crystal }}><span>ROOM {index + 2}</span><h3>{room.title}</h3><p>{room.subtitle}</p><strong>{room.icon}</strong></article>)}</div>
+        <div className="escape-map-path">{rooms.map((room, index) => <span key={room.id} style={{ "--room": room.crystal }}><b>{index + 1}</b>{index < rooms.length - 1 && <i />}</span>)}<em>EXIT</em></div>
+        <div className="escape-map-reward"><div>{rooms.map((room) => <span key={room.id} style={{ "--crystal": room.crystal }}>◆</span>)}</div><p>Collect all 6 crystals to restore the AI brain.</p><Mascot type="idea" /></div>
+      </section> : showEscape ? <section className="escape-complete-card"><Mascot type="idea" /><div><span className="mission-eyebrow">Escape Complete</span><h1>The AI Brain has been restored.</h1><p>You escaped by using tokens, prediction, hallucination checking, context, training data, and bias fixing.</p><div className="final-score"><strong>6 / 6 Crystals</strong><span>AI Master badge ready</span></div><div className="final-result-actions"><button className="primary" onClick={finishChallenge}>View My Results →</button><button className="outline" onClick={() => navigate("/dashboard")}>Back Home</button></div></div></section> : <section className="escape-room-stage">
+        <article className={"escape-room-card room-" + current.id + (crystals[current.id] ? " solved" : "")} style={{ "--room": current.crystal }}>
+          <span className="room-torch left" /><span className="room-torch right" /><span className="room-crystal-badge">◆</span><span className="room-floor-glow" />
+          <div className="room-top"><div><span>ROOM {roomIndex + 1}</span><h1>{current.title}</h1><p>{current.subtitle}</p></div><div className="room-step-dots">{[0, 1, 2].map((item) => <i key={item} className={item <= step ? "active" : ""} />)}</div><button className="outline small" onClick={resetCurrentRoom}>Reset Room</button></div>
+          <div className="room-play-area"><div className="room-mascot"><Mascot type={current.id === "mistake" ? "detective" : current.id === "training" ? "reading" : "idea"} /><span className="speech-bubble">{step === 0 ? "Observe the room first." : step === 1 ? "Use what you learned." : "Crystal restored!"}</span></div>{renderRoomScene()}</div>
+        </article>
+        <aside className="escape-side-panel"><section className="card final-progress-card"><h2>Crystals</h2><div className="progress-ring" style={{ "--angle": (completed / rooms.length * 360) + "deg" }}><strong>{completed} / 6</strong><small>Collected</small></div></section><section className="card escape-timeline"><h2>Rooms</h2>{rooms.map((room, index) => <button key={room.id} className={(crystals[room.id] ? "done " : "") + (index === roomIndex ? "active" : "")} onClick={() => { if (index <= completed) { setRoomIndex(index); setStep(crystals[room.id] ? 2 : 0); } }}><span style={{ "--crystal": room.crystal }}>{crystals[room.id] ? "◆" : index + 1}</span><strong>{room.power}</strong></button>)}</section></aside>
+      </section>}
+    </main>
+  </div>;
+}
+
+function CrystalReward({ room, text, onNext, final }) {
+  return <div className="crystal-reward"><div className="big-crystal" style={{ "--crystal": room.crystal }}>◆</div><h2>{room.power} Crystal</h2><p>{text}</p><div className="memory-restored"><Icon name="check" /><span>{room.memory}</span></div><button className="primary" onClick={onNext}>{final ? "Open the Exit →" : "Enter Next Room →"}</button></div>;
 }
 
 function PlaceholderPage({ route }) {
@@ -2169,6 +2781,7 @@ function App() {
   else if (route === "/mission/5/learn-patterns") page = <Mission5Patterns progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
   else if (route === "/mission/5/make-predictions") page = <Mission5Predictions progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
   else if (route === "/mission/6-bias") page = <Mission6 progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
+  else if (route === "/final-challenge") page = <FinalChallenge progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
   else page = <PlaceholderPage route={route} />;
   return <Shell route={route} progress={progress} navigate={navigate} notify={notify} resetProgress={resetProgress}>{page}{toast && <div className="toast show">{toast}</div>}</Shell>;
 }
