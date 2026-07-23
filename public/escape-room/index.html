@@ -508,19 +508,12 @@
     .completion-crystal {
       width: clamp(94px, 10vw, 136px);
       filter:
-        hue-rotate(var(--crystal-hue, 0deg))
-        saturate(var(--crystal-sat, 1.25))
-        brightness(var(--crystal-bright, 1.08))
+        brightness(1.08)
+        saturate(1.08)
         drop-shadow(0 0 16px #fff)
         drop-shadow(0 0 30px var(--room));
       animation: crystalRise .78s cubic-bezier(.17,.84,.44,1) both, float 2.2s ease-in-out .8s infinite;
     }
-    .crystal-token { --crystal-hue: 0deg; --crystal-sat: 1.25; --crystal-bright: 1.12; }
-    .crystal-prediction { --crystal-hue: 72deg; --crystal-sat: 2.2; --crystal-bright: 1.35; }
-    .crystal-verification { --crystal-hue: 132deg; --crystal-sat: 2.35; --crystal-bright: 1.2; }
-    .crystal-context { --crystal-hue: -72deg; --crystal-sat: 2; --crystal-bright: 1.24; }
-    .crystal-patterns { --crystal-hue: -38deg; --crystal-sat: 2.1; --crystal-bright: 1.22; }
-    .crystal-fairness { --crystal-hue: 18deg; --crystal-sat: 1.55; --crystal-bright: 1.18; }
     .completion .clue { animation: collectedPop .42s ease .16s both; }
     .completion h2,
     .completion p,
@@ -836,9 +829,10 @@
     function completionMarkup(room) {
       const next = rooms[room.number];
       const crystalName = `${room.power} Crystal`;
+      const crystalSrc = crystalAsset(room);
       return `<section class="completion">
         <div class="crystal-stage" aria-hidden="true">
-          <img class="completion-crystal crystal-${room.crystal}" src="/assets/img/final-challenge/room1/token-crystal-clean.png" alt="">
+          <img class="completion-crystal" src="${crystalSrc}" alt="">
         </div>
         <span class="clue">${crystalName} collected</span>
         <h2>${room.power} restored</h2>
@@ -849,6 +843,13 @@
           <button type="button" class="gold" data-action="next-room">${next ? `Enter Room ${next.number}` : "Open Final Exit"}</button>
         </div>
       </section>`;
+    }
+
+    function crystalAsset(room) {
+      if (room.crystal === "token") {
+        return "/assets/img/final-challenge/room1/token-crystal-clean.png";
+      }
+      return `/assets/img/final-challenge/crystals/crystal-${room.crystal}.png`;
     }
 
     function puzzleMarkup(room, data) {
