@@ -42,6 +42,6 @@ export const finalExitPanels = {
 
 export const tokenHintLevels = [
   "Start by rebuilding the sentence from left to right.",
-  "A token can be a whole word, part of a word, or punctuation. Look carefully at can't and the exclamation mark.",
+  "A token can be a whole word, part of a word, or punctuation. In this learning simulation, can't is split into two pieces.",
   "For this learning simulation, use: I → can → 't → wait → !"
 ];

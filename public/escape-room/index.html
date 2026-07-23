@@ -830,13 +830,18 @@
       const next = rooms[room.number];
       const crystalName = `${room.power} Crystal`;
       const crystalSrc = crystalAsset(room);
+      const completionNote = room.id === "token"
+        ? "Remember: this is only one possible tokenisation. Different LLMs may split the same sentence differently. The key idea is that tokens are not always whole words."
+        : next
+          ? `Door opened. Room ${next.number} is ready.`
+          : "All rooms cleared. The final exit is ready.";
       return `<section class="completion">
         <div class="crystal-stage" aria-hidden="true">
           <img class="completion-crystal" src="${crystalSrc}" alt="">
         </div>
         <span class="clue">${crystalName} collected</span>
         <h2>${room.power} restored</h2>
-        <p>${next ? `Door opened. Room ${next.number} is ready.` : "All rooms cleared. The final exit is ready."}</p>
+        <p>${completionNote}</p>
         <div>
           <button type="button" class="secondary" data-action="map">Room Map</button>
           <button type="button" data-action="replay">Replay</button>
@@ -886,28 +891,29 @@
           ${stepStrip(["Inspect door", "Run tokeniser", "Fill lock"], step)}
           <span class="clue">Learning simulation</span>
           <div class="door-zone">
-            <strong>The lock needs token pieces.</strong>
+            <strong>The lock receives text as token pieces, not one whole block.</strong>
             <p>Sentence: <b>I can't wait!</b></p>
             ${!data.inspected ? `<button type="button" class="gold" data-action="inspect">Inspect door</button>` : !data.tokenised ? `<button type="button" data-action="tokenise">Activate tokeniser</button>` : `
               <div class="tokeniser-device">
                 <img src="/assets/img/final-challenge/room1/tokeniser-machine.png" alt="">
                 <div>
-                  <strong>Example from the tokeniser</strong>
-                  <p><b>unbelievable!</b> can become smaller pieces.</p>
+                  <strong>Example (simplified)</strong>
+                  <p>One possible tokenisation of <b>unbelievable!</b> is:</p>
                   <div class="output-tokens">${exampleTokens.map((t) => `<span class="token example-token">${t}</span>`).join("")}</div>
+                  <p>Different AI models may split text differently.</p>
                 </div>
               </div>
               <p><b>Your lock sentence:</b> I can't wait!</p>
-              <p>Pick pieces from the tray. Then click the slots in order. One piece does not belong.</p>
+              <p>Pick the pieces for this learning simulation, then click the slots in order. One piece does not belong.</p>
               <div class="slot-row">${[0,1,2,3,4].map((index) => `<button type="button" class="slot ${data.placed[index] ? "filled" : ""}" data-slot="${index}">${data.placed[index] || ""}</button>`).join("")}</div>
               <div class="output-tokens">${data.tray.map((token, index) => `<button type="button" class="token ${data.selected === index ? "selected" : ""} ${data.placed.includes(token) ? "used" : ""}" data-token="${index}">${token}</button>`).join("")}</div>
               <button type="button" data-action="check">Activate lock</button>
               <button type="button" class="secondary" data-action="reset-room">Reset room</button>
             `}
           </div>
-          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "Tokens can be words, word parts, or punctuation."}</div>
+          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "A token can be a whole word, part of a word, or punctuation."}</div>
         </section>
-        ${guide(step === 0 ? "Start by checking the door." : step === 1 ? "Run the machine to see an example." : "Use the example idea on a new sentence. Hint: can't is not one piece here.")}
+        ${guide(step === 0 ? "Start by checking the door." : step === 1 ? "Run the machine to see a simple example." : "Use the example idea on the lock sentence. In this simulation, can't is split into two pieces.")}
       </div>`;
     }
 
@@ -1031,13 +1037,13 @@
       const data = state.roomData;
       roomScreen.querySelector("[data-action='inspect']")?.addEventListener("click", () => {
         data.inspected = true;
-        data.feedback = "Good. The door wants token pieces.";
+        data.feedback = "Good. Convert the sentence into token pieces before sending it to the lock.";
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "door-inspected" });
       });
       roomScreen.querySelector("[data-action='tokenise']")?.addEventListener("click", () => {
         data.tokenised = true;
-        data.feedback = "Good. The example is different. Now solve the lock sentence.";
+        data.feedback = "Good. That was only one possible split. Now solve the lock sentence.";
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "tokeniser-activated" });
       });
@@ -1091,7 +1097,7 @@
       if (room.id === "token") {
         const correct = ["I", "can", "'t", "wait", "!"];
         if (data.placed.filter(Boolean).length < 5) data.feedback = "Some slots are empty. Fill all 5 slots.";
-        else if (data.placed.join("|") !== correct.join("|")) data.feedback = "Not yet. Read the token pieces from left to right.";
+        else if (data.placed.join("|") !== correct.join("|")) data.feedback = "Not yet. Check the order and remember that one tray piece is a distractor.";
         else return roomComplete(room);
       }
       if (room.id === "prediction") {
