@@ -722,7 +722,7 @@
     }
 
     function defaultRoomData(id) {
-      if (id === "token") return { inspected: false, tokenised: false, placed: [], tray: ["wait", "I", "can't", "!", "can"], selected: null, feedback: "" };
+      if (id === "token") return { inspected: false, tokenised: false, placed: [], tray: ["patterns", "AI", "answers", "!", "from", "learns"], selected: null, feedback: "" };
       if (id === "prediction") return { inspected: false, choice: "", feedback: "" };
       if (id === "verification") return { selected: "", feedback: "" };
       if (id === "context") return { selected: [], feedback: "" };
@@ -892,7 +892,7 @@
           <span class="clue">Learning simulation</span>
           <div class="door-zone">
             <strong>The lock receives text as token pieces, not one whole block.</strong>
-            <p>Sentence: <b>I can't wait!</b></p>
+            <p>Sentence: <b>AI learns from patterns!</b></p>
             ${!data.inspected ? `<button type="button" class="gold" data-action="inspect">Inspect door</button>` : !data.tokenised ? `<button type="button" data-action="tokenise">Activate tokeniser</button>` : `
               <div class="tokeniser-device">
                 <img src="/assets/img/final-challenge/room1/tokeniser-machine.png" alt="">
@@ -903,9 +903,9 @@
                   <p>Different AI models may split text differently.</p>
                 </div>
               </div>
-              <p><b>Your lock sentence:</b> I can't wait!</p>
+              <p><b>Your lock sentence:</b> AI learns from patterns!</p>
               <p>Pick the pieces for this lock, then click the slots in order. One piece does not belong.</p>
-              <div class="slot-row">${[0,1,2,3].map((index) => `<button type="button" class="slot ${data.placed[index] ? "filled" : ""}" data-slot="${index}">${data.placed[index] || ""}</button>`).join("")}</div>
+              <div class="slot-row">${[0,1,2,3,4].map((index) => `<button type="button" class="slot ${data.placed[index] ? "filled" : ""}" data-slot="${index}">${data.placed[index] || ""}</button>`).join("")}</div>
               <div class="output-tokens">${data.tray.map((token, index) => `<button type="button" class="token ${data.selected === index ? "selected" : ""} ${data.placed.includes(token) ? "used" : ""}" data-token="${index}">${token}</button>`).join("")}</div>
               <button type="button" data-action="check">Activate lock</button>
               <button type="button" class="secondary" data-action="reset-room">Reset room</button>
@@ -913,7 +913,7 @@
           </div>
           <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "A token can be a whole word, part of a word, or punctuation."}</div>
         </section>
-        ${guide(step === 0 ? "Start by checking the door." : step === 1 ? "Run the machine to see a simple example." : "Now build the lock sentence from token pieces. Here, can't stays as one piece.")}
+        ${guide(step === 0 ? "Start by checking the door." : step === 1 ? "Run the machine to see a simple example." : "Now build the lock sentence from token pieces. One tray piece is a distractor.")}
       </div>`;
     }
 
@@ -1095,8 +1095,8 @@
     function checkRoom(room) {
       const data = state.roomData;
       if (room.id === "token") {
-        const correct = ["I", "can't", "wait", "!"];
-        if (data.placed.filter(Boolean).length < 4) data.feedback = "Some slots are empty. Fill all 4 slots.";
+        const correct = ["AI", "learns", "from", "patterns", "!"];
+        if (data.placed.filter(Boolean).length < 5) data.feedback = "Some slots are empty. Fill all 5 slots.";
         else if (data.placed.join("|") !== correct.join("|")) data.feedback = "Not yet. Check the order and remember that one tray piece is a distractor.";
         else return roomComplete(room);
       }
