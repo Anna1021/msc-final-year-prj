@@ -11,7 +11,7 @@ export const tokenRoom = {
   accent: "#9b6cff",
   sentence: "AI learns from patterns!",
   correctTokens: ["AI", "learns", "from", "patterns", "!"],
-  trayTokens: ["patterns", "AI", "answers", "!", "from", "learns"],
+  trayTokens: ["patterns", "AI", "pizza", "!", "from", "learns"],
   simulationNote: "Simplified tokenisation example. Different models may split text differently.",
   learningGoal: "A token may be a word, part of a word, or punctuation."
 };
