@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { finalExitPanels, rooms } from "./escapeRoomData";
+import { rooms } from "./escapeRoomData";
 import {
   awardRoomXpOnce,
   getStartupProgress,
@@ -108,9 +108,13 @@ function ProgressPanel({ progress, debug, status, onReset, onReload }) {
       </div>
     </section>
     <section>
-      <h3>Final Exit Model</h3>
-      <article><strong>Panel A</strong>{finalExitPanels.model.map((item) => <p key={item}>{item}</p>)}</article>
-      <article><strong>Panel B</strong>{finalExitPanels.human.map((item) => <p key={item}>{item}</p>)}</article>
+      <h3>Final Exit</h3>
+      <p>The final door is an AI Brain puzzle. Learners place all six crystals, build how text is generated, then add the human checking steps.</p>
+      <div className="construct-room-list compact">
+        <span><b>1</b><em>Place crystals around the AI Brain</em></span>
+        <span><b>2</b><em>Build the generation chain</em></span>
+        <span><b>3</b><em>Verify, check bias, and use AI critically</em></span>
+      </div>
     </section>
     {debug && <div className="construct-panel-actions">
       <button className="outline" type="button" onClick={onReload}>Reload Runtime</button>
@@ -323,9 +327,9 @@ export default function FinalChallenge({ progress: mainProgress, setProgress, na
               className="outline fullscreen-toggle"
               onClick={() => setIsExpanded((value) => !value)}
               aria-pressed={isExpanded}
-              title={isExpanded ? "Exit focus mode (Esc)" : "Focus the Escape Room (F)"}
+              title={isExpanded ? "Exit full screen (Esc)" : "Full screen Escape Room (F)"}
             >
-              {isExpanded ? "Exit Focus" : "Focus Room"}
+              {isExpanded ? "Exit Full Screen" : "Full Screen"}
             </button>
             <strong>{completedCount} / {rooms.length} rooms complete</strong>
           </div>

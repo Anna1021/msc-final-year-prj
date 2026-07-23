@@ -677,13 +677,250 @@
       border: 1px solid rgba(224,212,255,.18);
       border-radius: 28px;
       padding: clamp(20px, 3vw, 38px);
-      background: radial-gradient(circle at 78% 14%, rgba(255,209,90,.24), transparent 26%), linear-gradient(135deg, #14112a, #080a19);
+      background:
+        radial-gradient(circle at 50% 36%, rgba(155,108,255,.34), transparent 28%),
+        radial-gradient(circle at 84% 16%, rgba(255,209,90,.22), transparent 24%),
+        linear-gradient(135deg, #14112a, #080a19);
     }
-    .exit-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .exit-panel { border: 1px solid rgba(230,220,255,.18); border-radius: 22px; padding: 18px; background: rgba(255,255,255,.07); }
-    .exit-chain { display: grid; gap: 8px; margin-top: 12px; }
-    .exit-chain button { text-align: left; background: rgba(255,255,255,.08); border: 1px solid rgba(230,220,255,.16); box-shadow: none; }
-    .exit-chain button.selected { background: rgba(155,108,255,.28); border-color: rgba(155,108,255,.6); }
+    .brain-door {
+      display: grid;
+      grid-template-columns: minmax(280px, .8fr) minmax(300px, 1fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+    .brain-chamber, .review-console {
+      border: 1px solid rgba(230,220,255,.18);
+      border-radius: 24px;
+      background: rgba(255,255,255,.07);
+      padding: 18px;
+      min-height: 430px;
+    }
+    .brain-chamber {
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .brain-core {
+      width: min(300px, 68vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: clamp(3.4rem, 8vw, 6rem);
+      font-weight: 950;
+      background:
+        radial-gradient(circle, rgba(255,255,255,.22), transparent 32%),
+        radial-gradient(circle at 52% 46%, rgba(155,108,255,.62), rgba(20,14,48,.88) 62%);
+      border: 2px solid rgba(210,190,255,.35);
+      box-shadow: 0 0 55px rgba(155,108,255,.34), inset 0 0 45px rgba(255,255,255,.08);
+      transition: filter .28s ease, transform .28s ease;
+    }
+    .brain-core.ready {
+      filter: brightness(1.18) saturate(1.22);
+      transform: scale(1.02);
+      box-shadow: 0 0 80px rgba(155,108,255,.52), inset 0 0 55px rgba(255,255,255,.16);
+    }
+    .brain-core.charged {
+      box-shadow: 0 0 54px rgba(155,108,255,.42), inset 0 0 42px rgba(255,255,255,.12);
+    }
+    .brain-slot {
+      position: absolute;
+      width: 74px;
+      height: 74px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      border: 1px dashed rgba(232,223,255,.42);
+      background: rgba(8,8,24,.46);
+      box-shadow: inset 0 0 22px rgba(0,0,0,.28);
+    }
+    .brain-slot.filled {
+      border-style: solid;
+      border-color: color-mix(in srgb, var(--room) 78%, white);
+      background:
+        radial-gradient(circle, color-mix(in srgb, var(--room) 30%, transparent), transparent 68%),
+        rgba(18,14,42,.76);
+      box-shadow:
+        0 0 22px color-mix(in srgb, var(--room) 36%, transparent),
+        inset 0 0 22px rgba(255,255,255,.08);
+    }
+    .brain-slot span {
+      color: rgba(232,223,255,.72);
+      font-weight: 950;
+    }
+    .brain-slot img { width: 58px; height: 58px; object-fit: contain; animation: float 2.4s ease-in-out infinite; }
+    .brain-slot:nth-child(2) { top: 22px; left: 50%; transform: translateX(-50%); }
+    .brain-slot:nth-child(3) { top: 120px; right: 34px; }
+    .brain-slot:nth-child(4) { bottom: 72px; right: 72px; }
+    .brain-slot:nth-child(5) { bottom: 72px; left: 72px; }
+    .brain-slot:nth-child(6) { top: 120px; left: 34px; }
+    .brain-slot:nth-child(7) { bottom: 22px; left: 50%; transform: translateX(-50%); }
+    .crystal-tray {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .crystal-token {
+      min-width: 118px;
+      min-height: 74px;
+      padding: 8px 10px;
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 8px;
+      align-items: center;
+      text-align: left;
+      color: #fff;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(230,220,255,.2);
+      box-shadow: none;
+    }
+    .crystal-token img { width: 38px; height: 38px; object-fit: contain; }
+    .crystal-token.placed {
+      border-color: var(--room);
+      background: color-mix(in srgb, var(--room) 24%, rgba(255,255,255,.08));
+      transform: translateY(-2px);
+    }
+    .brain-chain {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .brain-chain div {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid rgba(230,220,255,.16);
+      border-radius: 16px;
+      padding: 10px 12px;
+      color: #f5f0ff;
+      background: rgba(255,255,255,.07);
+      font-weight: 880;
+    }
+    .brain-chain span {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #160f2f;
+      background: #7cf4b2;
+      font-weight: 950;
+    }
+    .exit-steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .exit-steps span {
+      border: 1px solid rgba(230,220,255,.2);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: rgba(245,240,255,.78);
+      background: rgba(255,255,255,.07);
+      font-weight: 900;
+      font-size: .9rem;
+    }
+    .exit-steps span.done {
+      color: #15331f;
+      border-color: rgba(124,244,178,.6);
+      background: #7cf4b2;
+    }
+    .exit-steps span.active {
+      color: #fff;
+      border-color: rgba(155,108,255,.8);
+      background: rgba(155,108,255,.28);
+      box-shadow: 0 0 24px rgba(155,108,255,.18);
+    }
+    .brain-status {
+      position: absolute;
+      inset: auto 20px 26px;
+      text-align: center;
+      color: rgba(245,240,255,.86);
+      font-weight: 950;
+    }
+    .brain-puzzle {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .sequence-board {
+      border: 1px solid rgba(230,220,255,.18);
+      border-radius: 20px;
+      padding: 14px;
+      background: rgba(255,255,255,.06);
+    }
+    .sequence-board h3 { margin-bottom: 4px; }
+    .sequence-board p {
+      color: rgba(232,223,255,.76);
+      font-weight: 780;
+      margin-bottom: 10px;
+    }
+    .sequence-slots, .sequence-tray {
+      display: grid;
+      gap: 8px;
+    }
+    .sequence-slot, .sequence-piece {
+      width: 100%;
+      min-height: 46px;
+      border-radius: 14px;
+      padding: 8px 10px;
+      border: 1px dashed rgba(230,220,255,.28);
+      background: rgba(12,10,32,.54);
+      color: rgba(245,240,255,.82);
+      font-weight: 900;
+      box-shadow: none;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      align-items: center;
+      gap: 8px;
+    }
+    .sequence-slot.filled {
+      border-style: solid;
+      border-color: rgba(124,244,178,.6);
+      background: rgba(124,244,178,.12);
+      color: #fff;
+    }
+    .sequence-slot small, .sequence-piece small {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(155,108,255,.24);
+      color: #fff;
+      font-weight: 950;
+    }
+    .sequence-piece {
+      border-style: solid;
+      border-color: rgba(155,108,255,.42);
+      background: rgba(155,108,255,.18);
+      cursor: pointer;
+    }
+    .sequence-piece:hover, .sequence-slot.filled:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.54);
+    }
+    .sequence-piece:disabled {
+      opacity: .42;
+      cursor: default;
+    }
+    .exit-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    @media (max-width: 900px) {
+      .brain-puzzle { grid-template-columns: 1fr; }
+    }
 
     .debug-banner { position: fixed; left: 16px; top: 16px; z-index: 30; padding: 8px 12px; border-radius: 999px; color: #241747; background: #ffe58f; font-weight: 950; box-shadow: 0 10px 24px rgba(0,0,0,.25); }
     .debug-toggle { position: fixed; right: 16px; bottom: 16px; z-index: 40; }
@@ -718,7 +955,7 @@
       body { overflow: auto; }
       .app { min-height: 100vh; height: auto; }
       .stage { overflow: visible; }
-      .hero, .room-body, .exit-panels { grid-template-columns: 1fr; }
+      .hero, .room-body, .brain-door { grid-template-columns: 1fr; }
       .fairness-data-row, .fix-controls { grid-template-columns: 1fr; }
       .map-grid { grid-template-columns: 1fr; }
       .screen, .room, .room-inner, .exit { min-height: auto; }
@@ -763,10 +1000,27 @@
       { id: "patterns", number: 5, title: "Training Lab", power: "Training patterns", crystal: "patterns", colour: "#3a8bff", aim: "Choose examples that teach a clear pattern." },
       { id: "fairness", number: 6, title: "Fairness Chamber", power: "Bias and fairness", crystal: "fairness", colour: "#a855f7", aim: "The model follows the data it was given. Fairer data can lead to fairer outputs." }
     ];
+    const finalModelPieces = [
+      { id: "training", label: "Training data teaches patterns" },
+      { id: "tokens", label: "Input becomes tokens + useful context" },
+      { id: "prediction", label: "The model predicts next tokens" },
+      { id: "output", label: "Generated output" }
+    ];
+    const finalReviewPieces = [
+      { id: "verify", label: "Verify important facts" },
+      { id: "bias", label: "Check for bias" },
+      { id: "critical", label: "Use AI critically" }
+    ];
+    const finalModelOrder = finalModelPieces.map((piece) => piece.id);
+    const finalReviewOrder = finalReviewPieces.map((piece) => piece.id);
 
     const state = {
       completed: new Set(),
       crystals: new Set(),
+      exitPlaced: new Set(),
+      exitModel: [],
+      exitReview: [],
+      exitFeedback: "",
       finalComplete: false,
       currentScreen: "room-select",
       currentRoom: null,
@@ -797,6 +1051,10 @@
       state.completed = new Set(payload.completedRooms || []);
       state.crystals = new Set(payload.crystals || []);
       state.finalComplete = Boolean(payload.finalExitCompleted);
+      state.exitPlaced = state.finalComplete ? new Set(rooms.map((room) => room.crystal)) : new Set();
+      state.exitModel = state.finalComplete ? [...finalModelOrder] : [];
+      state.exitReview = state.finalComplete ? [...finalReviewOrder] : [];
+      state.exitFeedback = "";
       const requestedScreen = ["room-select", "room", "final-exit"].includes(payload.currentScreen) ? payload.currentScreen : "room-select";
       const requestedRoom = roomById(payload.currentRoom)?.id || null;
       state.currentScreen = requestedScreen === "room" && requestedRoom ? "room" : requestedScreen === "final-exit" ? "final-exit" : "room-select";
@@ -1153,18 +1411,17 @@
 
     function fairnessPuzzle(data) {
       const female = 10 - data.ratio;
-      const balancedEnough = data.ratio >= 4 && data.ratio <= 6;
-      const stereotypePenalty = data.removed ? 0 : 12;
-      const malePrediction = Math.max(5, Math.min(95, data.ratio * 10 + stereotypePenalty));
+      const balancedEnough = data.ratio === 5;
+      const malePrediction = data.ratio * 10;
       const femalePrediction = 100 - malePrediction;
-      const predictedLabel = Math.abs(malePrediction - femalePrediction) <= 8 ? "Both equally" : malePrediction > femalePrediction ? "Male" : "Female";
+      const predictedLabel = malePrediction === femalePrediction ? "Both equally" : malePrediction > femalePrediction ? "Male" : "Female";
       const defaultFeedback = balancedEnough && data.removed
-        ? "Ready to test. The data is more balanced and the unfair sentence is gone."
+        ? "Ready to test. The examples are balanced and the unfair sentence is gone."
         : balancedEnough
-          ? "The numbers are better. Now remove the unfair sentence."
+          ? "The examples are balanced. Now remove the unfair sentence."
           : data.removed
-            ? "The unfair sentence is gone. Now balance the example numbers."
-            : "First, fix the data mix and remove the unfair sentence.";
+            ? "The unfair sentence is gone. Now balance the examples to 5 and 5."
+            : "First, balance the examples and remove the unfair sentence.";
       const people = [
         ...Array.from({ length: data.ratio }, () => "male"),
         ...Array.from({ length: female }, () => "female")
@@ -1214,7 +1471,7 @@
             </div>
             <div class="test-output">
               <span>⚖</span>
-              <span>${data.tested ? (balancedEnough && data.removed ? "<b>Test passed:</b> the output is fairer because the data is cleaner and more balanced." : "<b>Test failed:</b> the data still teaches a biased pattern.") : "When the data changes, the prediction changes. Test it when you think the data is fairer."}</span>
+              <span>${data.tested ? (balancedEnough && data.removed ? "<b>Test passed:</b> the output is fairer because the data is balanced and cleaner." : "<b>Test failed:</b> the data still teaches an unfair pattern.") : "When the data changes, the prediction changes. Test it when the examples are balanced and cleaner."}</span>
             </div>
           </div>
           <button type="button" data-action="check">Test new prediction</button>
@@ -1330,44 +1587,157 @@
       }
       if (room.id === "fairness") {
         data.tested = true;
-        if (data.ratio >= 4 && data.ratio <= 6 && data.removed) return roomComplete(room);
-        if (data.ratio < 4 || data.ratio > 6) data.feedback = "The examples are still unbalanced. Move the slider closer to 5 and 5.";
-        else data.feedback = "The numbers are better, but the unfair sentence is still teaching a bad shortcut.";
+        if (data.ratio === 5 && data.removed) return roomComplete(room);
+        if (data.ratio !== 5) data.feedback = "The examples are not balanced yet. Move the slider to 5 and 5.";
+        else data.feedback = "The examples are balanced, but the unfair sentence is still teaching a bad shortcut.";
       }
       renderRoom(room);
     }
 
     function renderExit() {
       const allDone = rooms.every((room) => state.completed.has(room.id) && state.crystals.has(room.crystal));
+      const placedCrystals = state.finalComplete ? new Set(rooms.map((room) => room.crystal)) : state.exitPlaced;
+      const allPlaced = allDone && rooms.every((room) => placedCrystals.has(room.crystal));
+      const modelPlaced = state.finalComplete ? finalModelOrder : state.exitModel;
+      const reviewPlaced = state.finalComplete ? finalReviewOrder : state.exitReview;
+      const modelCorrect = finalModelOrder.every((id, index) => modelPlaced[index] === id);
+      const reviewCorrect = finalReviewOrder.every((id, index) => reviewPlaced[index] === id);
+      const modelReady = modelPlaced.length === finalModelOrder.length;
+      const reviewReady = reviewPlaced.length === finalReviewOrder.length;
+      const canTryFinal = allPlaced && modelReady && reviewReady;
+      const finalReady = allPlaced && modelCorrect && reviewCorrect;
+      const pieceLabel = (collection, id) => collection.find((piece) => piece.id === id)?.label || "";
+      const renderSequence = (kind, pieces, order, placed, title, hint) => `
+        <section class="sequence-board">
+          <h3>${title}</h3>
+          <p>${hint}</p>
+          <div class="sequence-slots">
+            ${order.map((_, index) => {
+              const id = placed[index];
+              return `<button type="button" class="sequence-slot ${id ? "filled" : ""}" data-exit-slot="${kind}" data-index="${index}" ${state.finalComplete ? "disabled" : ""}>
+                <small>${index + 1}</small>
+                <span>${id ? pieceLabel(pieces, id) : "Empty slot"}</span>
+              </button>`;
+            }).join("")}
+          </div>
+          <div class="sequence-tray" aria-label="${title} cards">
+            ${pieces.map((piece) => {
+              const used = placed.includes(piece.id);
+              return `<button type="button" class="sequence-piece" data-exit-piece="${kind}" data-piece="${piece.id}" ${used || state.finalComplete ? "disabled" : ""}>
+                <small>+</small>
+                <span>${piece.label}</span>
+              </button>`;
+            }).join("")}
+          </div>
+        </section>`;
       exitScreen.innerHTML = `<section class="exit">
         <div>
           <span class="clue">Final Exit</span>
-          <h1>${allDone ? "Open the AI Brain Door" : "Exit locked"}</h1>
-          <p>${allDone ? "Use all six crystals to complete the final mental model." : "Collect all six crystals before opening the final exit."}</p>
-        </div>
-        <div class="exit-panels">
-          <article class="exit-panel">
-            <h2>Panel A: How the model generates text</h2>
-            <div class="exit-chain">${["Patterns learned from training data", "Input tokens + relevant context", "Next-token prediction", "Generated output"].map((item) => `<button type="button" class="selected">${item}</button>`).join("")}</div>
-          </article>
-          <article class="exit-panel">
-            <h2>Panel B: Why humans must check it</h2>
-            <div class="exit-chain">${["Generated output", "May be inaccurate → Verify sources", "May reflect bias → Check fairness", "Use AI critically"].map((item) => `<button type="button" class="selected">${item}</button>`).join("")}</div>
-          </article>
-        </div>
-        <div class="map-footer">
-          <div class="inventory"><strong>Crystals</strong>${rooms.map((room) => `<span class="${state.crystals.has(room.crystal) ? "collected" : ""}" style="--room:${room.colour}">${state.crystals.has(room.crystal) ? "◆" : room.number}</span>`).join("")}</div>
-          <div>
-            <button type="button" class="secondary" data-action="map">Room Map</button>
-            <button type="button" class="success" data-action="complete" ${allDone ? "" : "disabled"}>${state.finalComplete ? "Escape complete" : "Open exit"}</button>
+          <h1>${allDone ? "Power the AI Brain Door" : "Exit locked"}</h1>
+          <p>${allDone ? "Use the six crystals to rebuild the AI Brain, then open the door." : "Collect all six room crystals before opening the final exit."}</p>
+          <div class="exit-steps" aria-label="Final exit steps">
+            <span class="${allPlaced ? "done" : "active"}">1. Place crystals</span>
+            <span class="${modelCorrect ? "done" : allPlaced ? "active" : ""}">2. Build text generation</span>
+            <span class="${reviewCorrect ? "done" : modelReady ? "active" : ""}">3. Add human checks</span>
           </div>
         </div>
-        <div class="feedback ${allDone ? "good" : "bad"}">${allDone ? "LLMs generate text by predicting tokens from learned patterns. Their answers depend on training data and context, so they can be useful but also wrong or biased and should be checked critically." : "The exit needs every room's crystal."}</div>
+        <div class="brain-door">
+          <section class="brain-chamber" aria-label="AI Brain Door">
+            <div class="brain-core ${allPlaced ? "charged" : ""} ${finalReady ? "ready" : ""}">
+              <span>AI</span>
+            </div>
+            ${rooms.map((room) => {
+              const placed = placedCrystals.has(room.crystal);
+              return `<div class="brain-slot ${placed ? "filled" : ""}" style="--room:${room.colour}" aria-label="${room.power} slot">
+                ${placed ? `<img src="${crystalAsset(room)}" alt="${room.power} crystal">` : `<span>${room.number}</span>`}
+              </div>`;
+            }).join("")}
+            <div class="brain-status">${state.finalComplete ? "Door open" : finalReady ? "Ready to open" : allPlaced ? "Brain charged" : "Waiting for crystals"}</div>
+          </section>
+          <section class="review-console">
+            <h2>${state.finalComplete ? "AI Brain restored" : "Final brain lock"}</h2>
+            <p>${allPlaced ? "Now click the cards into the correct order." : allDone ? "Click each crystal to place it around the AI Brain." : "The brain door needs every room crystal."}</p>
+            <div class="crystal-tray" aria-label="Collected crystals">
+              ${rooms.map((room) => {
+                const collected = state.crystals.has(room.crystal);
+                const placed = placedCrystals.has(room.crystal);
+                return `<button type="button" class="crystal-token ${placed ? "placed" : ""}" style="--room:${room.colour}" data-exit-crystal="${room.crystal}" ${collected && !state.finalComplete ? "" : "disabled"}>
+                  ${collected ? `<img src="${crystalAsset(room)}" alt="">` : `<span>${room.number}</span>`}
+                  <span>${room.power}</span>
+                </button>`;
+              }).join("")}
+            </div>
+            <div class="brain-puzzle" ${allPlaced ? "" : "hidden"}>
+              ${renderSequence("model", finalModelPieces, finalModelOrder, modelPlaced, "AI Brain sequence", "How does the model make text?")}
+              ${renderSequence("review", finalReviewPieces, finalReviewOrder, reviewPlaced, "Human Review console", "What should people do after output appears?")}
+            </div>
+            <div class="exit-actions">
+              <button type="button" class="secondary" data-action="map">Room Map</button>
+              <button type="button" class="success" data-action="complete" ${canTryFinal || state.finalComplete ? "" : "disabled"}>${state.finalComplete ? "Escape complete" : "Activate AI Brain"}</button>
+            </div>
+          </section>
+        </div>
+        <div class="feedback ${finalReady || state.finalComplete ? "good" : "bad"}">${state.finalComplete ? "LLMs generate text by predicting tokens from learned patterns. Their answers depend on training data and context, so they can be useful but also wrong or biased and should be checked critically." : state.exitFeedback || (finalReady ? "The AI Brain is ready. Activate it to open the exit." : allPlaced ? "Build both sequences, then activate the AI Brain." : allDone ? "Place all six crystals around the brain door." : "The exit needs every room's crystal.")}</div>
       </section>`;
       exitScreen.querySelector("[data-action='map']").addEventListener("click", openMap);
+      exitScreen.querySelectorAll("[data-exit-crystal]").forEach((button) => button.addEventListener("click", () => {
+        if (!allDone || state.finalComplete) return;
+        const crystal = button.dataset.exitCrystal;
+        if (state.exitPlaced.has(crystal)) state.exitPlaced.delete(crystal);
+        else state.exitPlaced.add(crystal);
+        state.exitFeedback = "";
+        if (!state.exitPlaced.size) {
+          state.exitModel = [];
+          state.exitReview = [];
+        }
+        renderExit();
+      }));
+      exitScreen.querySelectorAll("[data-exit-piece]").forEach((button) => button.addEventListener("click", () => {
+        if (!allPlaced || state.finalComplete) return;
+        const target = button.dataset.exitPiece === "review" ? state.exitReview : state.exitModel;
+        const limit = button.dataset.exitPiece === "review" ? finalReviewOrder.length : finalModelOrder.length;
+        const piece = button.dataset.piece;
+        if (target.includes(piece) || target.length >= limit) return;
+        target.push(piece);
+        state.exitFeedback = "";
+        renderExit();
+      }));
+      exitScreen.querySelectorAll("[data-exit-slot]").forEach((button) => button.addEventListener("click", () => {
+        if (state.finalComplete) return;
+        const target = button.dataset.exitSlot === "review" ? state.exitReview : state.exitModel;
+        const index = Number(button.dataset.index);
+        if (!target[index]) return;
+        target.splice(index, 1);
+        state.exitFeedback = "Card removed. Try the order again.";
+        renderExit();
+      }));
       exitScreen.querySelector("[data-action='complete']").addEventListener("click", () => {
-        if (!allDone) return;
+        if (state.finalComplete) return;
+        if (!allPlaced) {
+          state.exitFeedback = "Place every crystal around the AI Brain first.";
+          renderExit();
+          return;
+        }
+        if (!modelReady || !reviewReady) {
+          state.exitFeedback = "Fill every empty slot before activating the brain.";
+          renderExit();
+          return;
+        }
+        if (!modelCorrect) {
+          state.exitFeedback = "The text-making order is not right yet. Training patterns come before tokens, prediction, and output.";
+          renderExit();
+          return;
+        }
+        if (!reviewCorrect) {
+          state.exitFeedback = "The checking order is not right yet. First verify facts, then check fairness, then use AI carefully.";
+          renderExit();
+          return;
+        }
         state.finalComplete = true;
+        state.exitPlaced = new Set(rooms.map((room) => room.crystal));
+        state.exitModel = [...finalModelOrder];
+        state.exitReview = [...finalReviewOrder];
+        state.exitFeedback = "";
         send("ESCAPE_ROOM_COMPLETE", { xp: 150 });
         renderExit();
       });
@@ -1389,6 +1759,10 @@
       if (data.type === "ESCAPE_ROOM_RESET") {
         state.completed.clear();
         state.crystals.clear();
+        state.exitPlaced.clear();
+        state.exitModel = [];
+        state.exitReview = [];
+        state.exitFeedback = "";
         state.finalComplete = false;
         openMap();
       }
