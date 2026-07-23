@@ -482,8 +482,7 @@ function Mission1({ progress, setProgress, navigate, notify }) {
     ["challenge", "Mini Challenge"],
     ["summary", "Summary"]
   ];
-  const summaryReached = Boolean(readSections.summary);
-  const nextReady = tryDone && challengeResult === "correct" && summaryReached;
+  const nextReady = tryDone && challengeResult === "correct";
   const tokenClass = (token) => colors[Math.max(0, challengeTokens.indexOf(token)) % colors.length];
   const tokenize = (text) => {
     const clean = text.trim();
@@ -674,7 +673,7 @@ function Mission1({ progress, setProgress, navigate, notify }) {
     <aside className="lesson-side page-timeline" aria-label="On this page">
       <div className="card timeline-card"><h2>On this page</h2><span className="timeline-rail" style={{ "--progress": `${(Math.max(0, sections.findIndex(([id]) => id === activeSection)) / (sections.length - 1)) * 100}%` }} />{sections.map(([id, label], index) => {
         const active = activeSection === id;
-        const read = Boolean(readSections[id]);
+        const read = Boolean(readSections[id]) || (id === "summary" && nextReady);
         const needsWork = id === "challenge" && tryDone && challengeResult !== "correct";
         return <button key={id} className={`${active ? "active" : ""} ${read ? "read" : ""} ${needsWork ? "work" : ""}`} onClick={() => scrollToSection(id)}><span>{read && !active ? <Icon name="check" /> : index + 1}</span>{label}</button>;
       })}</div>
@@ -774,8 +773,7 @@ function Mission2({ progress, setProgress, navigate, notify }) {
   const turnProbabilities = { mat: 62, moon: 21, car: 10, "ice cream": 7 };
   const adjustedProbabilities = temperatureScale(turnProbabilities, temp);
   const challengeExpected = ["cereal", "pizza", "water", "homework"];
-  const summaryReached = Boolean(readSections.summary);
-  const nextReady = submitted && challengeResult === "correct" && summaryReached;
+  const nextReady = submitted && challengeResult === "correct";
   React.useEffect(() => {
     const container = document.querySelector(".mission-2 .mission-content");
     if (!container) return undefined;
@@ -881,7 +879,7 @@ function Mission2({ progress, setProgress, navigate, notify }) {
   }
   function finishMission() {
     if (!nextReady) {
-      notify("Submit your guess, complete the mini challenge, and reach the recap first.");
+      notify("Submit your guess and complete the mini challenge first.");
       return;
     }
     markMission2(100, true);
@@ -952,7 +950,7 @@ function Mission2({ progress, setProgress, navigate, notify }) {
     <aside className="lesson-side page-timeline mission2-side" aria-label="On this page">
       <div className="card timeline-card"><h2>On this page</h2><span className="timeline-rail" style={{ "--progress": `${(Math.max(0, sections.findIndex(([id]) => id === activeSection)) / (sections.length - 1)) * 100}%` }} />{sections.map(([id, label], index) => {
         const active = activeSection === id;
-        const read = Boolean(readSections[id]);
+        const read = Boolean(readSections[id]) || (id === "summary" && nextReady);
         const needsWork = read && !active && ((id === "turn" && !submitted) || (id === "challenge" && challengeResult !== "correct"));
         return <button key={id} className={`${active ? "active" : ""} ${read ? "read" : ""} ${needsWork ? "work" : ""}`} onClick={() => scrollToSection(id)}><span>{read && !active ? <Icon name="check" /> : index + 1}</span>{label}</button>;
       })}</div>
@@ -1007,8 +1005,7 @@ function Mission3({ progress, setProgress, navigate, notify }) {
   const trickChoices = ["Blue", "Green", "Purple", "Orange"];
   const trueFacts = detectiveTrueFacts;
   const falseFacts = detectiveFalseFacts;
-  const summaryReached = Boolean(readSections.summary);
-  const nextReady = submitted && trickSubmitted && challengeDone && summaryReached;
+  const nextReady = submitted && trickSubmitted && challengeDone;
   React.useEffect(() => {
     const container = document.querySelector(".mission-3 .mission-content");
     if (!container) return undefined;
@@ -1116,7 +1113,7 @@ function Mission3({ progress, setProgress, navigate, notify }) {
   }
   function finishMission() {
     if (!nextReady) {
-      notify("Finish the tricky question, detective challenge, and summary first.");
+      notify("Finish the tricky question and detective challenge first.");
       return;
     }
     markProgress(100, true);
@@ -1176,7 +1173,7 @@ function Mission3({ progress, setProgress, navigate, notify }) {
     <aside className="lesson-side page-timeline mission3-side-panel" aria-label="On this page">
       <div className="card timeline-card"><h2>On this page</h2><span className="timeline-rail" style={{ "--progress": `${(Math.max(0, sections.findIndex(([id]) => id === activeSection)) / (sections.length - 1)) * 100}%` }} />{sections.map(([id, label], index) => {
         const active = activeSection === id;
-        const read = Boolean(readSections[id]);
+        const read = Boolean(readSections[id]) || (id === "summary" && nextReady);
         const needsWork = read && !active && ((id === "predict" && !submitted) || (id === "trick" && !trickSubmitted) || (id === "detective" && !challengeDone));
         return <button key={id} className={`${active ? "active" : ""} ${read ? "read" : ""} ${needsWork ? "work" : ""}`} onClick={() => scrollToSection(id)}><span>{read && !active ? <Icon name="check" /> : index + 1}</span>{label}</button>;
       })}</div>
@@ -1188,7 +1185,7 @@ function Mission3({ progress, setProgress, navigate, notify }) {
       ].map(([icon, title, text, tone, detail], i) => <button className={`flow-card ${tone} ${activeStep === i ? "open" : ""}`} onClick={() => setActiveStep(activeStep === i ? null : i)} key={title}><span className="flow-icon"><Icon name={icon} /></span><span className="flow-copy"><strong>{title}</strong><small>{text}</small>{activeStep === i && <em>{detail}</em>}</span></button>)}</section>
       <section className="card did-you-know"><h2>Did you know?</h2><p>ChatGPT can sound very confident, even when it is wrong. That’s why verification matters.</p><Mascot type="idea" /></section>
     </aside>
-    <footer className="course-bottom-nav"><button className="outline" onClick={() => navigate("/mission/2-next-token")}>‹ Previous</button><span>{nextReady ? "Mission 3 complete. Mission 4 is ready." : "Keep investigating. Finish the detective challenge and summary."}</span><button className="primary" disabled={!nextReady} onClick={finishMission}>Next: Mission 4 →</button></footer>
+    <footer className="course-bottom-nav"><button className="outline" onClick={() => navigate("/mission/2-next-token")}>‹ Previous</button><span>{nextReady ? "Mission 3 complete. Mission 4 is ready." : "Keep investigating. Finish the detective challenge."}</span><button className="primary" disabled={!nextReady} onClick={finishMission}>Next: Mission 4 →</button></footer>
   </MissionLayout>;
 }
 
@@ -1254,10 +1251,9 @@ function Mission4({ progress, setProgress, navigate, notify }) {
   const [hintVisible, setHintVisible] = useState(false);
   const [note, setNote] = useState(() => localStorage.getItem("mission4ContextNote") || "");
   const [noteSaved, setNoteSaved] = useState(false);
-  const summaryReached = Boolean(readSections.summary);
   const contextReady = selectedContexts.length >= 2;
   const challengeDone = challengeResult === "correct";
-  const nextReady = contextReady && Boolean(currentAnswer) && challengeDone && summaryReached;
+  const nextReady = contextReady && Boolean(currentAnswer) && challengeDone;
 
   React.useEffect(() => {
     const container = document.querySelector(".mission-4 .mission-content");
@@ -1423,7 +1419,7 @@ function Mission4({ progress, setProgress, navigate, notify }) {
   }
   function finishMission() {
     if (!nextReady) {
-      notify("Add context, finish the mini challenge, and reach the summary first.");
+      notify("Add context and finish the mini challenge first.");
       return;
     }
     markProgress(100, true);
@@ -1491,7 +1487,7 @@ function Mission4({ progress, setProgress, navigate, notify }) {
     <aside className="lesson-side page-timeline mission4-side-panel" aria-label="On this page">
       <div className="card timeline-card"><h2>On this page</h2><span className="timeline-rail" style={{ "--progress": `${(Math.max(0, sections.findIndex(([id]) => id === activeSection)) / (sections.length - 1)) * 100}%` }} />{sections.map(([id, label], index) => {
         const active = activeSection === id;
-        const read = Boolean(readSections[id]);
+        const read = Boolean(readSections[id]) || (id === "summary" && nextReady);
         const needsWork = read && !active && ((id === "turn" && !contextReady) || (id === "challenge" && !challengeDone));
         return <button key={id} className={`${active ? "active" : ""} ${read ? "read" : ""} ${needsWork ? "work" : ""}`} onClick={() => scrollToSection(id)}><span>{read && !active ? <Icon name="check" /> : index + 1}</span>{label}</button>;
       })}</div>
@@ -2310,13 +2306,12 @@ function Mission6({ progress, setProgress, navigate, notify }) {
   const challengeDone = challengeResult === "correct";
   const balancedEnough = fixedMaleCount >= 4 && fixedMaleCount <= 6;
   const turnDone = turnSubmitted && turnAnswer === turnPrediction;
-  const summaryReached = Boolean(readSections.summary) || activeSection === "summary" || saved.completed;
   const predictionReady = predictionSubmitted || saved.progress >= 34 || saved.completed;
   const dataReady = savedBalancedEnough || saved.progress >= 64 || saved.completed;
   const turnReady = turnDone || saved.progress >= 74 || saved.completed;
   const challengeReady = challengeDone || saved.progress >= 90 || saved.completed;
   const missionTasksDone = predictionReady && dataReady && turnReady && challengeReady;
-  const nextReady = saved.completed || challengeReady || missionTasksDone;
+  const nextReady = saved.completed || missionTasksDone;
 
   React.useEffect(() => {
     const container = document.querySelector(".mission-6 .mission-content");
@@ -2539,7 +2534,7 @@ function Mission6({ progress, setProgress, navigate, notify }) {
       <div className="card timeline-card"><h2>On this page</h2><span className="timeline-rail" style={{ "--progress": `${(timelineIndex / (sections.length - 1)) * 100}%` }} />{sections.map(([id, label], index) => {
         const IconComponent = sections[index][2];
         const active = activeSection === id;
-        const read = Boolean(readSections[id]);
+        const read = Boolean(readSections[id]) || (id === "summary" && nextReady);
         return <button key={id} className={`${active ? "active" : ""} ${read ? "read" : ""}`} onClick={() => scrollToSection(id)}><span>{read && !active ? <Icon name="check" /> : index + 1}</span>{label}</button>;
       })}</div>
       <section className="card bias-process-card"><h2>Bias process</h2>{sections.slice(0, 6).map(([id, label, IconComponent], index) => <button key={id} className={`${readSections[id] ? "lit" : ""} ${activeSection === id ? "active" : ""}`} onClick={() => scrollToSection(id)}><span><IconComponent aria-hidden="true" /></span><strong>{label}</strong></button>)}</section>
