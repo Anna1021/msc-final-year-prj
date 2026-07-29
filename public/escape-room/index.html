@@ -1059,14 +1059,14 @@
       transform: translateY(-1px);
       border-color: rgba(255,255,255,.54);
     }
-	    .sequence-piece:not(:disabled),
-	    .sequence-slot.filled:not(:disabled) {
-	      cursor: grab;
-	      touch-action: none;
-	      user-select: none;
-	      -webkit-user-select: none;
-	      -webkit-user-drag: none;
-	    }
+    .sequence-piece:not(:disabled),
+    .sequence-slot.filled:not(:disabled) {
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-user-drag: element;
+    }
     .sequence-piece:not(:disabled):active,
     .sequence-slot.filled:not(:disabled):active {
       cursor: grabbing;
@@ -2017,7 +2017,7 @@
           <div class="sequence-slots">
             ${order.map((_, index) => {
               const id = placed[index];
-              return `<button type="button" class="sequence-slot ${id ? "filled" : ""}" data-exit-slot="${kind}" data-index="${index}" data-piece="${id || ""}" draggable="false" ${state.finalComplete ? "disabled" : ""}>
+              return `<button type="button" class="sequence-slot ${id ? "filled" : ""}" data-exit-slot="${kind}" data-index="${index}" data-piece="${id || ""}" draggable="${id && !state.finalComplete ? "true" : "false"}" ${state.finalComplete ? "disabled" : ""}>
                 <small>${index + 1}</small>
                 <span>${id ? pieceLabel(pieces, id) : "Empty slot"}</span>
               </button>`;
@@ -2026,7 +2026,7 @@
           <div class="sequence-tray" aria-label="${title} cards">
             ${pieces.map((piece) => {
               const used = placed.includes(piece.id);
-              return `<button type="button" class="sequence-piece" data-exit-piece="${kind}" data-piece="${piece.id}" draggable="false" ${used || state.finalComplete ? "disabled" : ""}>
+              return `<button type="button" class="sequence-piece" data-exit-piece="${kind}" data-piece="${piece.id}" draggable="${used || state.finalComplete ? "false" : "true"}" ${used || state.finalComplete ? "disabled" : ""}>
                 <small>+</small>
                 <span>${piece.label}</span>
               </button>`;
@@ -2216,6 +2216,35 @@
         placeExitPiece(boardKind, payload.piece, requestedIndex, payload.fromIndex);
       };
 
+      const writeExitDragPayload = (event, payload, label) => {
+        if (!event.dataTransfer) return;
+        activeExitDrag = payload;
+        event.dataTransfer.effectAllowed = "move";
+        const serialised = JSON.stringify(payload);
+        event.dataTransfer.setData("application/x-ai-exit-piece", serialised);
+        event.dataTransfer.setData("text/plain", `${payload.kind}:${payload.piece}:${payload.fromIndex ?? ""}`);
+
+        const dragImage = document.createElement("div");
+        dragImage.className = "sequence-drag-ghost";
+        dragImage.textContent = label;
+        dragImage.style.left = "-1000px";
+        dragImage.style.top = "-1000px";
+        document.body.appendChild(dragImage);
+        event.dataTransfer.setDragImage(dragImage, 30, 24);
+        window.setTimeout(() => dragImage.remove(), 0);
+      };
+
+      const showNativeDropTarget = (event, boardKind, visualTarget) => {
+        if (state.finalComplete) return;
+        const payload = activeExitDrag || readExitDragPayload(event);
+        if (!payload) return;
+        event.preventDefault();
+        event.stopPropagation();
+        if (event.dataTransfer) event.dataTransfer.dropEffect = payload.kind === boardKind ? "move" : "none";
+        clearExitDropHighlights();
+        visualTarget.classList.add(payload.kind === boardKind ? "drop-ready" : "drop-error");
+      };
+
       const clearExitDropHighlights = () => {
         exitScreen.querySelectorAll(".drop-ready, .drop-error").forEach((node) => node.classList.remove("drop-ready", "drop-error"));
       };
@@ -2227,29 +2256,43 @@
         clientY <= rect.bottom
       );
 
-      const findExitDropTarget = (clientX, clientY) => {
-        const slots = Array.from(exitScreen.querySelectorAll("[data-exit-slot]"));
-        const directSlot = slots.find((slot) => pointInside(slot.getBoundingClientRect(), clientX, clientY));
-        if (directSlot) {
-          return {
-            kind: directSlot.dataset.exitSlot,
-            index: Number(directSlot.dataset.index),
-            element: directSlot
-          };
-        }
+      const findExitDropTarget = (clientX, clientY, preferredKind = null) => {
+        const allSlots = Array.from(exitScreen.querySelectorAll("[data-exit-slot]"));
+        const slots = preferredKind
+          ? allSlots.filter((slot) => slot.dataset.exitSlot === preferredKind)
+          : allSlots;
+        const allBoards = Array.from(exitScreen.querySelectorAll(".sequence-board"));
+        const boards = preferredKind
+          ? allBoards.filter((board) => board.querySelector(`[data-exit-slot="${preferredKind}"]`))
+          : allBoards;
 
-        const boards = Array.from(exitScreen.querySelectorAll(".sequence-board"));
+        const targetForSlot = (slot) => ({
+          kind: slot.dataset.exitSlot,
+          index: Number(slot.dataset.index),
+          element: slot
+        });
+
+        const targetForBoard = (board) => {
+          const selector = preferredKind ? `[data-exit-slot="${preferredKind}"]` : "[data-exit-slot]";
+          const firstSlot = board.querySelector(selector);
+          return firstSlot ? {
+            kind: firstSlot.dataset.exitSlot,
+            index: null,
+            element: board
+          } : null;
+        };
+
+        const distanceToRect = (rect) => {
+          const x = Math.max(rect.left, Math.min(clientX, rect.right));
+          const y = Math.max(rect.top, Math.min(clientY, rect.bottom));
+          return Math.hypot(clientX - x, clientY - y);
+        };
+
+        const directSlot = slots.find((slot) => pointInside(slot.getBoundingClientRect(), clientX, clientY));
+        if (directSlot) return targetForSlot(directSlot);
+
         const directBoard = boards.find((board) => pointInside(board.getBoundingClientRect(), clientX, clientY));
-        if (directBoard) {
-          const firstSlot = directBoard.querySelector("[data-exit-slot]");
-          if (firstSlot) {
-            return {
-              kind: firstSlot.dataset.exitSlot,
-              index: null,
-              element: directBoard
-            };
-          }
-        }
+        if (directBoard) return targetForBoard(directBoard);
 
         const elements = typeof document.elementsFromPoint === "function"
           ? document.elementsFromPoint(clientX, clientY)
@@ -2257,31 +2300,40 @@
         for (const element of elements) {
           if (!element || element.classList?.contains("sequence-drag-ghost")) continue;
           const slot = element.closest?.("[data-exit-slot]");
-          if (slot && exitScreen.contains(slot)) {
-            return {
-              kind: slot.dataset.exitSlot,
-              index: Number(slot.dataset.index),
-              element: slot
-            };
+          if (slot && exitScreen.contains(slot) && (!preferredKind || slot.dataset.exitSlot === preferredKind)) {
+            return targetForSlot(slot);
           }
           const board = element.closest?.(".sequence-board");
           if (board && exitScreen.contains(board)) {
-            const firstSlot = board.querySelector("[data-exit-slot]");
-            if (firstSlot) {
-              return {
-                kind: firstSlot.dataset.exitSlot,
-                index: null,
-                element: board
-              };
-            }
+            const boardTarget = targetForBoard(board);
+            if (boardTarget) return boardTarget;
           }
         }
+
+        let nearestSlot = null;
+        slots.forEach((slot) => {
+          const distance = distanceToRect(slot.getBoundingClientRect());
+          if (distance <= 140 && (!nearestSlot || distance < nearestSlot.distance)) {
+            nearestSlot = { slot, distance };
+          }
+        });
+        if (nearestSlot) return targetForSlot(nearestSlot.slot);
+
+        let nearestBoard = null;
+        boards.forEach((board) => {
+          const distance = distanceToRect(board.getBoundingClientRect());
+          if (distance <= 180 && (!nearestBoard || distance < nearestBoard.distance)) {
+            nearestBoard = { board, distance };
+          }
+        });
+        if (nearestBoard) return targetForBoard(nearestBoard.board);
+
         return null;
       };
 
       const highlightExitPointerTarget = (clientX, clientY, payload) => {
         clearExitDropHighlights();
-        const target = findExitDropTarget(clientX, clientY);
+        const target = findExitDropTarget(clientX, clientY, payload?.kind || null);
         lastExitPointerTarget = target;
         if (!target || !payload) return null;
         target.element.classList.add(target.kind === payload.kind ? "drop-ready" : "drop-error");
@@ -2319,8 +2371,10 @@
           dropEvent.preventDefault?.();
           dropEvent.stopPropagation?.();
           window.removeEventListener("pointermove", onMove);
-          window.removeEventListener("pointerup", onUp);
-	          window.removeEventListener("pointercancel", onCancel);
+          window.removeEventListener("pointerup", onUp, true);
+          window.removeEventListener("pointercancel", onCancel, true);
+          document.removeEventListener("pointerup", onUp, true);
+          document.removeEventListener("pointercancel", onCancel, true);
 	          try {
 	            sourceElement.releasePointerCapture?.(dropEvent.pointerId);
 	          } catch (error) {
@@ -2358,7 +2412,7 @@
 
           suppressExitClick = true;
           window.setTimeout(() => { suppressExitClick = false; }, 0);
-          const target = findExitDropTarget(dropEvent.clientX, dropEvent.clientY) || rememberedTarget;
+          const target = findExitDropTarget(dropEvent.clientX, dropEvent.clientY, payload.kind) || rememberedTarget;
           activeExitDrag = null;
           lastExitPointerTarget = null;
           if (!target) {
@@ -2385,8 +2439,10 @@
 
         moveGhost(startX, startY);
         window.addEventListener("pointermove", onMove, { passive: false });
-        window.addEventListener("pointerup", onUp);
-        window.addEventListener("pointercancel", onCancel);
+        window.addEventListener("pointerup", onUp, { capture: true });
+        window.addEventListener("pointercancel", onCancel, { capture: true });
+        document.addEventListener("pointerup", onUp, { capture: true });
+        document.addEventListener("pointercancel", onCancel, { capture: true });
       };
 
       exitScreen.querySelectorAll("[data-exit-piece]").forEach((button) => {
@@ -2406,7 +2462,24 @@
             button
           );
         });
-	      });
+        button.addEventListener("dragstart", (event) => {
+          if (!allPlaced || state.finalComplete || button.disabled) {
+            event.preventDefault();
+            return;
+          }
+          writeExitDragPayload(
+            event,
+            { kind: button.dataset.exitPiece, piece: button.dataset.piece, fromIndex: null },
+            button.textContent.trim()
+          );
+          button.classList.add("dragging");
+        });
+        button.addEventListener("dragend", () => {
+          button.classList.remove("dragging");
+          activeExitDrag = null;
+          clearExitDropHighlights();
+        });
+      });
 
       exitScreen.querySelectorAll("[data-exit-slot]").forEach((button) => {
         button.addEventListener("click", (event) => {
@@ -2436,8 +2509,49 @@
             button
           );
         });
-	      });
-	      exitScreen.querySelector("[data-action='complete']").addEventListener("click", () => {
+        button.addEventListener("dragstart", (event) => {
+          if (state.finalComplete || button.disabled) {
+            event.preventDefault();
+            return;
+          }
+          const target = exitTarget(button.dataset.exitSlot);
+          const index = Number(button.dataset.index);
+          const piece = target[index];
+          if (!piece) {
+            event.preventDefault();
+            return;
+          }
+          writeExitDragPayload(
+            event,
+            { kind: button.dataset.exitSlot, piece, fromIndex: index },
+            button.textContent.trim().replace(/^\d+\s*/, "")
+          );
+          button.classList.add("dragging");
+        });
+        button.addEventListener("dragend", () => {
+          button.classList.remove("dragging");
+          activeExitDrag = null;
+          clearExitDropHighlights();
+        });
+        button.addEventListener("dragenter", (event) => showNativeDropTarget(event, button.dataset.exitSlot, button));
+        button.addEventListener("dragover", (event) => showNativeDropTarget(event, button.dataset.exitSlot, button));
+        button.addEventListener("dragleave", () => button.classList.remove("drop-ready", "drop-error"));
+        button.addEventListener("drop", (event) => handleExitDrop(event, button.dataset.exitSlot, Number(button.dataset.index), button));
+      });
+
+      exitScreen.querySelectorAll(".sequence-board").forEach((board) => {
+        const firstSlot = board.querySelector("[data-exit-slot]");
+        const kind = firstSlot?.dataset.exitSlot;
+        if (!kind) return;
+        board.addEventListener("dragenter", (event) => showNativeDropTarget(event, kind, board));
+        board.addEventListener("dragover", (event) => showNativeDropTarget(event, kind, board));
+        board.addEventListener("dragleave", (event) => {
+          if (!board.contains(event.relatedTarget)) board.classList.remove("drop-ready", "drop-error");
+        });
+        board.addEventListener("drop", (event) => handleExitDrop(event, kind, null, board));
+      });
+
+      exitScreen.querySelector("[data-action='complete']").addEventListener("click", () => {
         if (state.finalComplete) return;
         if (!allPlaced) {
           state.exitFeedback = "Place every crystal around the AI Brain first.";
