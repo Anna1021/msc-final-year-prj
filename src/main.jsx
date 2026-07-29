@@ -589,10 +589,11 @@ function CrystalReward({ room, text, onNext, final }) {
 }
 
 function Shell({ route, progress, navigate, notify, resetProgress, children }) {
+  const showTopBar = !route.startsWith("/final-challenge");
   return <div className="app-shell">
     <Sidebar route={route} progress={progress} navigate={navigate} />
     <div className="main-shell">
-      <TopBar route={route} progress={progress} navigate={navigate} notify={notify} resetProgress={resetProgress} />
+      {showTopBar && <TopBar route={route} progress={progress} navigate={navigate} notify={notify} resetProgress={resetProgress} />}
       {children}
     </div>
   </div>;

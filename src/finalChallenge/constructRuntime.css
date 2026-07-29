@@ -8,14 +8,8 @@ body.escape-room-expanded {
   overflow: hidden;
 }
 
-.construct-wrapper-page .final-header {
-  position: sticky;
-  top: 0;
-  z-index: 30;
-}
-
 .construct-shell {
-  height: calc(100vh - 64px);
+  height: 100vh;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 18px;
@@ -33,10 +27,6 @@ body.escape-room-expanded {
   z-index: 1000;
   min-height: 100vh;
   background: #070917;
-}
-
-.construct-wrapper-page.is-expanded .final-header {
-  display: none;
 }
 
 .construct-wrapper-page.is-expanded .construct-shell {
@@ -60,13 +50,22 @@ body.escape-room-expanded {
 .construct-wrapper-page.is-expanded .construct-frame-header {
   min-height: 58px;
   padding: 10px 16px;
+  gap: 10px;
   color: #fff;
   background: rgba(7, 9, 23, 0.94);
   border-bottom-color: rgba(223, 214, 255, 0.15);
 }
 
+.construct-wrapper-page.is-expanded .construct-frame-header > div:first-child {
+  min-width: 0;
+}
+
 .construct-wrapper-page.is-expanded .construct-frame-header h1 {
   color: #fff;
+  max-width: 34vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .construct-wrapper-page.is-expanded .construct-iframe-wrap {
@@ -102,6 +101,18 @@ body.escape-room-expanded {
   border-bottom: 1px solid #e3e9f5;
 }
 
+.construct-frame-title {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.construct-back-button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
 .construct-frame-header span {
   display: block;
   color: #6f55f5;
@@ -133,6 +144,11 @@ body.escape-room-expanded {
   gap: 9px;
 }
 
+.construct-top-actions .language-selector,
+.construct-settings-button {
+  flex: 0 0 auto;
+}
+
 .construct-top-actions button {
   min-height: 38px;
   padding: 8px 13px;
@@ -148,6 +164,25 @@ body.escape-room-expanded {
   color: #fff;
   border-color: rgba(255,255,255,0.35);
   background: rgba(255,255,255,0.11);
+}
+
+.construct-wrapper-page.is-expanded .construct-top-actions {
+  flex-wrap: nowrap;
+  min-width: 0;
+  margin-left: auto;
+}
+
+.construct-wrapper-page.is-expanded .construct-top-actions button {
+  white-space: nowrap;
+}
+
+.construct-wrapper-page.is-expanded .construct-top-actions strong {
+  display: none !important;
+}
+
+.construct-wrapper-page.is-expanded .construct-top-actions .language-selector,
+.construct-wrapper-page.is-expanded .construct-settings-button {
+  display: none !important;
 }
 
 .construct-iframe-wrap {

@@ -305,16 +305,13 @@ export default function FinalChallenge({ progress: mainProgress, setProgress, na
   }
 
   return <div className={`final-challenge-page construct-wrapper-page ${isExpanded ? "is-expanded" : ""}`}>
-    <header className="mission-header final-header">
-      <button className="outline" onClick={() => navigate("/missions")}>‹ {t("escapeRoom.backToMissions")}</button>
-      <div className="mission-mid"><strong>{t("escapeRoom.pageTitle")}</strong><span className="mission-dots">{rooms.map((room) => <i key={room.id} className={escapeProgress.inventory.includes(room.crystalId) ? "filled" : ""} />)}</span></div>
-      <div className="mission-header-actions"><LanguageSelector compact /><button className="icon-button" aria-label={t("common.topbar.settings")} onClick={() => notify?.(t("escapeRoom.integrationInfo"))}>⚙</button></div>
-    </header>
-
     <main className="construct-shell">
       <section className="construct-game-frame">
         <div className="construct-frame-header">
-          <div><span>{t("escapeRoom.eyebrow")}</span><h1>{t("escapeRoom.runtimeTitle")}</h1></div>
+          <div className="construct-frame-title">
+            {!isExpanded && <button className="outline construct-back-button" onClick={() => navigate("/missions")}>‹ {t("escapeRoom.backToMissions")}</button>}
+            <div><span>{t("escapeRoom.eyebrow")}</span><h1>{t("escapeRoom.runtimeTitle")}</h1></div>
+          </div>
           <div className="construct-top-actions" aria-label="Escape Room navigation">
             <button type="button" className="outline" onClick={openHub}>{t("escapeRoom.roomMap")}</button>
             <button type="button" className="primary" onClick={continueAdventure}>{t("escapeRoom.continue")}</button>
@@ -327,7 +324,9 @@ export default function FinalChallenge({ progress: mainProgress, setProgress, na
             >
               {isExpanded ? t("escapeRoom.exitFullScreen") : t("escapeRoom.fullScreen")}
             </button>
-            <strong>{t("escapeRoom.roomsComplete", { completed: completedCount, total: rooms.length })}</strong>
+            {!isExpanded && <strong>{t("escapeRoom.roomsComplete", { completed: completedCount, total: rooms.length })}</strong>}
+            {!isExpanded && <LanguageSelector compact />}
+            {!isExpanded && <button className="icon-button construct-settings-button" aria-label={t("common.topbar.settings")} onClick={() => notify?.(t("escapeRoom.integrationInfo"))}>⚙</button>}
           </div>
         </div>
         <div className="construct-iframe-wrap">
