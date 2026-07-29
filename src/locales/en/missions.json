@@ -1,0 +1,55 @@
+{
+  "missionLabel": "Mission {{id}}",
+  "missionOf": "Mission {{mission}} of 6",
+  "learningPath": "Learning Path",
+  "allTitle": "All Missions",
+  "allIntro": "Complete missions step by step to understand how ChatGPT works.\nFinish all missions to unlock the Final Challenge!",
+  "yourProgress": "Your Progress",
+  "missionsCompleted": "Missions Completed",
+  "whatLearn": "What You’ll Learn",
+  "completePrevious": "Complete Mission {{mission}} first.",
+  "completeAllFirst": "Complete all 6 missions first.",
+  "completeAllToUnlock": "Complete all 6 missions to unlock the Final Challenge.",
+  "finalChallenge": "Final Challenge",
+  "finalTitle": "Final Challenge: AI Literacy Escape Room",
+  "finalShort": "AI Literacy Escape Room",
+  "finalDesc": "Complete all 6 missions to unlock the final challenge and test your AI knowledge!",
+  "items": {
+    "1": {
+      "title": "How does ChatGPT read?",
+      "short": "Tokens",
+      "desc": "Learn how text is broken into tokens.",
+      "skill": "Tokens & Tokenisation"
+    },
+    "2": {
+      "title": "Can you think like ChatGPT?",
+      "short": "Prediction",
+      "desc": "Predict the next token using probability.",
+      "skill": "Next-token Prediction"
+    },
+    "3": {
+      "title": "Why does ChatGPT make mistakes?",
+      "short": "Mistakes",
+      "desc": "Discover hallucinations and probabilistic errors.",
+      "skill": "Probability & Sampling"
+    },
+    "4": {
+      "title": "Why does context matter?",
+      "short": "Context",
+      "desc": "See how extra information changes the answer.",
+      "skill": "Context & Meaning"
+    },
+    "5": {
+      "title": "Train your own AI",
+      "short": "Training Data",
+      "desc": "Add training data and see how it changes the model.",
+      "skill": "Training Data Influence"
+    },
+    "6": {
+      "title": "Can AI be biased?",
+      "short": "Bias",
+      "desc": "Explore how bias in data leads to biased outputs.",
+      "skill": "Bias & Fairness"
+    }
+  }
+}

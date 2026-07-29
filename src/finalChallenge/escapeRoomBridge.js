@@ -1,4 +1,4 @@
-import { finalExitPanels, rooms } from "./escapeRoomData";
+import { finalExitPuzzle, rooms } from "./escapeRoomData";
 
 export const GAME_READY_TIMEOUT_MS = 10000;
 export const GAME_BASE_SRC = "/escape-room/index.html";
@@ -64,7 +64,6 @@ export function buildInitPayload(escapeProgress, mainProgress, preferredLanguage
     currentScreen: escapeProgress.currentScreen || "room-select",
     completedRooms,
     crystals: Array.isArray(escapeProgress.inventory) ? escapeProgress.inventory : [],
-    xp: Number(mainProgress?.xp) || 0,
     finalExitCompleted: Boolean(escapeProgress.finalCompleted),
     preferredLanguage,
     currentRoom: escapeProgress.currentRoom || null,
@@ -72,7 +71,7 @@ export function buildInitPayload(escapeProgress, mainProgress, preferredLanguage
     lastPlayedRoom: escapeProgress.lastPlayedRoom || null,
     progressVersion: escapeProgress.version,
     rooms: rooms.map(({ id, title, label, crystalId, crystalName, accent }) => ({ id, title, label, crystalId, crystalName, accent })),
-    finalExitPanels
+    finalExitPuzzle
   };
 }
 
@@ -94,8 +93,7 @@ function normaliseIncoming(data) {
   if (data?.type === "ESCAPE_ROOM_ROOM_COMPLETE") {
     return {
       roomId: normaliseRoomId(payload.roomId || data.roomId || payload.crystal || data.crystal),
-      crystal: payload.crystal || data.crystal,
-      xp: Number.isFinite(payload.xp) ? payload.xp : Number.isFinite(data.xp) ? data.xp : undefined
+      crystal: payload.crystal || data.crystal
     };
   }
   if (data?.type === "ESCAPE_ROOM_PROGRESS") {
@@ -121,7 +119,7 @@ function normaliseIncoming(data) {
     return { currentScreen: "room-select" };
   }
   if (data?.type === "ESCAPE_ROOM_COMPLETE") {
-    return { xp: Number.isFinite(payload.xp) ? payload.xp : Number.isFinite(data.xp) ? data.xp : undefined };
+    return {};
   }
   if (data?.type === "ESCAPE_ROOM_NAVIGATE") {
     const routeKey = payload.route || data.route;

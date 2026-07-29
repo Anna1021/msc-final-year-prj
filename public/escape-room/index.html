@@ -76,11 +76,14 @@
     }
 
     body.embedded .topbar { display: none; }
-    body.embedded .screen { min-height: calc(100vh - 36px); }
+    body.embedded .screen {
+      min-height: calc(100vh - 16px);
+      max-width: min(2100px, calc(100vw - 12px));
+    }
     body.embedded .room,
     body.embedded .room-inner,
-    body.embedded .exit { min-height: calc(100vh - 36px); }
-    body.embedded .stage { padding: 14px; }
+    body.embedded .exit { min-height: calc(100vh - 16px); }
+    body.embedded .stage { padding: 8px; }
     body.embedded .hero {
       min-height: 270px;
       padding: 28px 36px;
@@ -115,7 +118,7 @@
     .screen {
       min-height: calc(100vh - 104px);
       display: none;
-      max-width: 1280px;
+      max-width: min(1500px, calc(100vw - 36px));
       margin: 0 auto;
     }
 
@@ -387,6 +390,21 @@
     .token.selected { outline: 4px solid #ffe56a; transform: translateY(-4px); }
     .token.example-token { min-width: 62px; background: #eadcff; color: #241747; }
     .token.used { opacity: .45; }
+    .token[draggable="true"] { cursor: grab; }
+    .token[draggable="true"]:active { cursor: grabbing; }
+    .slot[draggable="true"] { cursor: grab; }
+    .slot[draggable="true"]:active { cursor: grabbing; }
+    .token.dragging {
+      opacity: .72;
+      transform: translateY(-6px) scale(1.03);
+      outline: 4px solid rgba(255,229,106,.75);
+    }
+    .slot.dragging {
+      opacity: .72;
+      transform: translateY(-5px) scale(1.03);
+      border-color: #ffe56a;
+      box-shadow: 0 0 0 5px rgba(255,229,106,.12), 0 0 24px rgba(255,229,106,.22);
+    }
     .slot {
       width: 76px;
       height: 54px;
@@ -399,6 +417,12 @@
       font-weight: 950;
     }
     .slot.filled { border-style: solid; border-color: color-mix(in srgb, var(--room) 55%, #fff); background: rgba(255,255,255,.14); }
+    .slot.drag-over {
+      border-style: solid;
+      border-color: #ffe56a;
+      background: rgba(255,229,106,.16);
+      box-shadow: 0 0 0 5px rgba(255,229,106,.12), 0 0 24px rgba(255,229,106,.22);
+    }
     .slot.error { border-color: #ff7083; animation: shake .25s ease; }
 
     .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -790,9 +814,18 @@
         radial-gradient(circle at 84% 16%, rgba(255,209,90,.22), transparent 24%),
         linear-gradient(135deg, #14112a, #080a19);
     }
+    body.embedded .exit {
+      min-height: calc(100vh - 16px);
+    }
+    .exit.review-mode {
+      background:
+        radial-gradient(circle at 50% 36%, rgba(124,244,178,.18), transparent 30%),
+        radial-gradient(circle at 84% 16%, rgba(255,209,90,.18), transparent 24%),
+        linear-gradient(135deg, #111927, #080a19);
+    }
     .brain-door {
       display: grid;
-      grid-template-columns: minmax(280px, .8fr) minmax(300px, 1fr);
+      grid-template-columns: minmax(360px, .9fr) minmax(460px, 1.1fr);
       gap: 18px;
       align-items: stretch;
     }
@@ -802,6 +835,7 @@
       background: rgba(255,255,255,.07);
       padding: 18px;
       min-height: 430px;
+      min-width: 0;
     }
     .brain-chamber {
       position: relative;
@@ -810,7 +844,7 @@
       overflow: hidden;
     }
     .brain-core {
-      width: min(300px, 68vw);
+      width: clamp(280px, 22vw, 410px);
       aspect-ratio: 1;
       border-radius: 50%;
       display: grid;
@@ -953,7 +987,7 @@
     }
     .brain-puzzle {
       display: grid;
-      grid-template-columns: 1.1fr .9fr;
+      grid-template-columns: minmax(0, 1.08fr) minmax(260px, .92fr);
       gap: 12px;
       margin-top: 14px;
     }
@@ -1015,9 +1049,40 @@
       transform: translateY(-1px);
       border-color: rgba(255,255,255,.54);
     }
+    .sequence-piece[draggable="true"] { cursor: grab; }
+    .sequence-piece[draggable="true"]:active { cursor: grabbing; }
+    .sequence-slot[draggable="true"] { cursor: grab; }
+    .sequence-slot[draggable="true"]:active { cursor: grabbing; }
+    .sequence-piece.dragging, .sequence-slot.dragging {
+      opacity: .74;
+      transform: translateY(-4px) scale(1.02);
+      border-color: rgba(255,229,106,.82);
+      box-shadow: 0 0 0 4px rgba(255,229,106,.12);
+    }
+    .sequence-slot.drop-ready {
+      border-style: solid;
+      border-color: #ffe56a;
+      background: rgba(255,229,106,.13);
+      box-shadow: 0 0 0 4px rgba(255,229,106,.09), 0 0 22px rgba(255,229,106,.16);
+    }
     .sequence-piece:disabled {
       opacity: .42;
       cursor: default;
+    }
+    .exit-guide {
+      margin: 14px 0 0;
+      padding: 12px 14px;
+      border: 1px solid rgba(124,244,178,.28);
+      border-radius: 16px;
+      color: #eafff2;
+      background: rgba(124,244,178,.12);
+      font-weight: 900;
+      line-height: 1.35;
+    }
+    .exit-guide.complete {
+      color: #15331f;
+      background: #7cf4b2;
+      border-color: rgba(124,244,178,.7);
     }
     .exit-actions {
       display: flex;
@@ -1025,9 +1090,63 @@
       gap: 10px;
       justify-content: flex-end;
       align-items: center;
+      margin-top: 14px;
+    }
+    .exit-actions .gold {
+      color: #271a02;
+      background: linear-gradient(135deg, #ffe07a, #ffbd38);
+      border-color: rgba(255,224,122,.7);
+    }
+    .exit-actions .ghost-reset {
+      color: #fff;
+      border-color: rgba(255,255,255,.28);
+      background: rgba(255,255,255,.08);
     }
     @media (max-width: 900px) {
       .brain-puzzle { grid-template-columns: 1fr; }
+    }
+    @media (min-width: 1500px) {
+      .screen {
+        max-width: min(1880px, calc(100vw - 44px));
+      }
+      body.embedded .stage {
+        padding: 10px;
+      }
+      body.embedded .screen {
+        max-width: min(2140px, calc(100vw - 16px));
+      }
+      .exit {
+        padding: clamp(24px, 2vw, 46px);
+        gap: 22px;
+      }
+      .brain-door {
+        grid-template-columns: minmax(620px, 1fr) minmax(740px, 1.15fr);
+        gap: 26px;
+      }
+      .brain-chamber,
+      .review-console {
+        min-height: 560px;
+        padding: 24px;
+      }
+      .crystal-token {
+        min-width: 146px;
+      }
+    }
+    @media (min-width: 1800px) {
+      .brain-door {
+        grid-template-columns: minmax(740px, 1.05fr) minmax(880px, 1.2fr);
+      }
+      .brain-core {
+        width: clamp(380px, 24vw, 520px);
+      }
+      .brain-slot {
+        width: 86px;
+        height: 86px;
+      }
+      .brain-slot img {
+        width: 68px;
+        height: 68px;
+      }
     }
 
     .debug-banner { position: fixed; left: 16px; top: 16px; z-index: 30; padding: 8px 12px; border-radius: 999px; color: #241747; background: #ffe58f; font-weight: 950; box-shadow: 0 10px 24px rgba(0,0,0,.25); }
@@ -1240,7 +1359,16 @@
     }
 
     function defaultRoomData(id) {
-      if (id === "token") return { inspected: false, tokenised: false, placed: [], tray: ["patterns", "AI", "pizza", "!", "from", "learns"], selected: null, feedback: "" };
+      if (id === "token") return {
+        inspected: false,
+        tokenised: false,
+        sentence: "Models split text into tokens!",
+        answer: ["Models", "split", "text", "into", "tokens", "!"],
+        placed: [],
+        tray: ["tokens", "Models", "answers", "!", "text", "into", "split"],
+        selected: null,
+        feedback: ""
+      };
       if (id === "prediction") return { inspected: false, choice: "", feedback: "" };
       if (id === "verification") return { selected: "", feedback: "" };
       if (id === "context") return { selected: [], feedback: "" };
@@ -1260,7 +1388,7 @@
       updateTop();
       send("ESCAPE_ROOM_SCREEN_CHANGED", { currentScreen: "completion", roomId: room.id, step: "completion" });
       if (!already) {
-        send("ESCAPE_ROOM_ROOM_COMPLETE", { roomId: room.id, crystal: room.crystal, xp: 100 });
+        send("ESCAPE_ROOM_ROOM_COMPLETE", { roomId: room.id, crystal: room.crystal });
       }
     }
 
@@ -1412,7 +1540,7 @@
           <span class="clue">Learning simulation</span>
           <div class="door-zone">
             <strong>The lock receives text as token pieces, not one whole block.</strong>
-            <p>Sentence: <b>AI learns from patterns!</b></p>
+            <p>Sentence: <b>${data.sentence}</b></p>
             ${!data.inspected ? `<button type="button" class="gold" data-action="inspect">Inspect door</button>` : !data.tokenised ? `<button type="button" data-action="tokenise">Activate tokeniser</button>` : `
               <div class="tokeniser-device">
                 <img src="/assets/img/final-challenge/room1/tokeniser-machine.png" alt="">
@@ -1423,17 +1551,20 @@
                   <p>Different AI models may split text differently.</p>
                 </div>
               </div>
-              <p><b>Your lock sentence:</b> AI learns from patterns!</p>
-              <p>Pick the pieces for this lock, then click the slots in order. One piece does not belong.</p>
-              <div class="slot-row">${[0,1,2,3,4].map((index) => `<button type="button" class="slot ${data.placed[index] ? "filled" : ""}" data-slot="${index}">${data.placed[index] || ""}</button>`).join("")}</div>
-              <div class="output-tokens">${data.tray.map((token, index) => `<button type="button" class="token ${data.selected === index ? "selected" : ""} ${data.placed.includes(token) ? "used" : ""}" data-token="${index}">${token}</button>`).join("")}</div>
+              <p><b>Your lock sentence:</b> ${data.sentence}</p>
+              <p>Drag pieces into the lock slots, or click a piece and then a slot. One piece does not belong.</p>
+              <div class="slot-row">${data.answer.map((_, index) => `<button type="button" class="slot ${data.placed[index] ? "filled" : ""}" data-slot="${index}" draggable="${data.placed[index] ? "true" : "false"}" aria-label="${data.placed[index] ? `Move ${data.placed[index]} from lock slot ${index + 1}` : `Lock slot ${index + 1}`}">${data.placed[index] || ""}</button>`).join("")}</div>
+              <div class="output-tokens">${data.tray.map((token, index) => {
+                const used = data.placed.includes(token);
+                return `<button type="button" class="token ${data.selected === index ? "selected" : ""} ${used ? "used" : ""}" data-token="${index}" draggable="${used ? "false" : "true"}" aria-label="${used ? `${token} already placed` : `Drag token ${token}`}">${token}</button>`;
+              }).join("")}</div>
               <button type="button" data-action="check">Activate lock</button>
               <button type="button" class="secondary" data-action="reset-room">Reset room</button>
             `}
           </div>
           <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "A token can be a whole word, part of a word, or punctuation."}</div>
         </section>
-        ${guide(step === 0 ? "Start by checking the door." : step === 1 ? "Run the machine to see a simple example." : "Now build the lock sentence from token pieces. One tray piece is a distractor.")}
+        ${guide(step === 0 ? "Start by checking the door." : step === 1 ? "Run the machine to see a simple example." : "Drag a token piece into each slot from left to right. You can also click a piece, then click a slot.")}
       </div>`;
     }
 
@@ -1651,22 +1782,91 @@
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "tokeniser-activated" });
       });
+      const placeTokenInSlot = (tokenIndex, slotIndex, sourceSlot = null) => {
+        const token = sourceSlot === null ? data.tray[tokenIndex] : data.placed[sourceSlot];
+        if (!token) return;
+        if (sourceSlot !== null) {
+          if (sourceSlot === slotIndex) return;
+          const displaced = data.placed[slotIndex] || "";
+          data.placed[slotIndex] = token;
+          data.placed[sourceSlot] = displaced;
+        } else {
+          const existingIndex = data.placed.indexOf(token);
+          if (existingIndex !== -1) data.placed[existingIndex] = "";
+          data.placed[slotIndex] = token;
+        }
+        data.selected = null;
+        data.feedback = "Piece placed. Fill the slots from left to right, then activate the lock.";
+        renderRoom(room);
+      };
       roomScreen.querySelectorAll("[data-token]").forEach((button) => button.addEventListener("click", () => {
         const index = Number(button.dataset.token);
         if (data.placed.includes(data.tray[index])) return;
         data.selected = data.selected === index ? null : index;
         renderRoom(room);
       }));
-      roomScreen.querySelectorAll("[data-slot]").forEach((button) => button.addEventListener("click", () => {
+      roomScreen.querySelectorAll("[data-token]").forEach((button) => {
+        button.addEventListener("dragstart", (event) => {
+          const index = Number(button.dataset.token);
+          if (data.placed.includes(data.tray[index])) {
+            event.preventDefault();
+            return;
+          }
+          button.classList.add("dragging");
+          event.dataTransfer.effectAllowed = "move";
+          event.dataTransfer.setData("application/x-ai-token-piece", JSON.stringify({ tokenIndex: index, sourceSlot: null }));
+          event.dataTransfer.setData("text/plain", String(index));
+        });
+        button.addEventListener("dragend", () => button.classList.remove("dragging"));
+      });
+      roomScreen.querySelectorAll("[data-slot]").forEach((button) => {
+        button.addEventListener("click", () => {
         const slot = Number(button.dataset.slot);
         if (data.selected === null) {
           if (data.placed[slot]) data.placed[slot] = "";
         } else {
-          data.placed[slot] = data.tray[data.selected];
-          data.selected = null;
+          placeTokenInSlot(data.selected, slot);
+          return;
         }
         renderRoom(room);
-      }));
+        });
+        button.addEventListener("dragstart", (event) => {
+          const slot = Number(button.dataset.slot);
+          if (!data.placed[slot]) {
+            event.preventDefault();
+            return;
+          }
+          button.classList.add("dragging");
+          event.dataTransfer.effectAllowed = "move";
+          event.dataTransfer.setData("application/x-ai-token-piece", JSON.stringify({ tokenIndex: null, sourceSlot: slot }));
+          event.dataTransfer.setData("text/plain", `slot:${slot}`);
+        });
+        button.addEventListener("dragend", () => button.classList.remove("dragging"));
+        button.addEventListener("dragover", (event) => {
+          event.preventDefault();
+          event.dataTransfer.dropEffect = "move";
+          button.classList.add("drag-over");
+        });
+        button.addEventListener("dragleave", () => button.classList.remove("drag-over"));
+        button.addEventListener("drop", (event) => {
+          event.preventDefault();
+          button.classList.remove("drag-over");
+          const slot = Number(button.dataset.slot);
+          let payload = {};
+          try {
+            payload = JSON.parse(event.dataTransfer.getData("application/x-ai-token-piece") || "{}");
+          } catch (error) {
+            payload = {};
+          }
+          if (payload.sourceSlot !== null && payload.sourceSlot !== undefined) {
+            placeTokenInSlot(null, slot, Number(payload.sourceSlot));
+            return;
+          }
+          const raw = event.dataTransfer.getData("text/plain");
+          const tokenIndex = Number(raw);
+          if (Number.isInteger(tokenIndex)) placeTokenInSlot(tokenIndex, slot);
+        });
+      });
     }
 
     function bindChoiceRoom(room, key) {
@@ -1703,8 +1903,8 @@
     function checkRoom(room) {
       const data = state.roomData;
       if (room.id === "token") {
-        const correct = ["AI", "learns", "from", "patterns", "!"];
-        if (data.placed.filter(Boolean).length < 5) data.feedback = "Some slots are empty. Fill all 5 slots.";
+        const correct = data.answer || [];
+        if (data.placed.filter(Boolean).length < correct.length) data.feedback = `Some slots are empty. Fill all ${correct.length} slots.`;
         else if (data.placed.join("|") !== correct.join("|")) data.feedback = "Not yet. Check the order and remember that one tray piece is a distractor.";
         else return roomComplete(room);
       }
@@ -1743,10 +1943,28 @@
       const reviewPlaced = state.finalComplete ? finalReviewOrder : state.exitReview;
       const modelCorrect = finalModelOrder.every((id, index) => modelPlaced[index] === id);
       const reviewCorrect = finalReviewOrder.every((id, index) => reviewPlaced[index] === id);
-      const modelReady = modelPlaced.length === finalModelOrder.length;
-      const reviewReady = reviewPlaced.length === finalReviewOrder.length;
+      const modelReady = finalModelOrder.every((_, index) => Boolean(modelPlaced[index]));
+      const reviewReady = finalReviewOrder.every((_, index) => Boolean(reviewPlaced[index]));
       const canTryFinal = allPlaced && modelReady && reviewReady;
       const finalReady = allPlaced && modelCorrect && reviewCorrect;
+      const exitComplete = state.finalComplete;
+      const hasPlacedCards = state.exitModel.length > 0 || state.exitReview.length > 0;
+      const titleText = exitComplete ? "AI Brain Door opened" : allDone ? "Power the AI Brain Door" : "Exit locked";
+      const leadText = exitComplete
+        ? "Review mode: the exit is already open. Replay the final lock if you want to solve it again."
+        : allDone
+          ? "Use the six crystals to rebuild the AI Brain, then open the door."
+          : "Collect all six room crystals before opening the final exit.";
+      const consoleTitle = exitComplete ? "Final model complete" : allPlaced ? "Build the final model" : "Place the crystals";
+      const consoleInstruction = exitComplete
+        ? "The puzzle is complete. Click Replay final puzzle to unlock the controls again."
+        : allPlaced
+          ? canTryFinal
+            ? "Both consoles are full. Click Activate AI Brain. If the order feels wrong, use Reset cards."
+            : "Drag cards into the slots, or click a card to fill the next empty slot. Click a filled slot to remove it."
+          : allDone
+            ? "Click each crystal chip. It will move into a slot around the AI Brain."
+            : "The brain door needs every room crystal.";
       const pieceLabel = (collection, id) => collection.find((piece) => piece.id === id)?.label || "";
       const renderSequence = (kind, pieces, order, placed, title, hint) => `
         <section class="sequence-board">
@@ -1755,7 +1973,7 @@
           <div class="sequence-slots">
             ${order.map((_, index) => {
               const id = placed[index];
-              return `<button type="button" class="sequence-slot ${id ? "filled" : ""}" data-exit-slot="${kind}" data-index="${index}" ${state.finalComplete ? "disabled" : ""}>
+              return `<button type="button" class="sequence-slot ${id ? "filled" : ""}" data-exit-slot="${kind}" data-index="${index}" data-piece="${id || ""}" draggable="${id && !state.finalComplete ? "true" : "false"}" ${state.finalComplete ? "disabled" : ""}>
                 <small>${index + 1}</small>
                 <span>${id ? pieceLabel(pieces, id) : "Empty slot"}</span>
               </button>`;
@@ -1764,18 +1982,18 @@
           <div class="sequence-tray" aria-label="${title} cards">
             ${pieces.map((piece) => {
               const used = placed.includes(piece.id);
-              return `<button type="button" class="sequence-piece" data-exit-piece="${kind}" data-piece="${piece.id}" ${used || state.finalComplete ? "disabled" : ""}>
+              return `<button type="button" class="sequence-piece" data-exit-piece="${kind}" data-piece="${piece.id}" draggable="${used || state.finalComplete ? "false" : "true"}" ${used || state.finalComplete ? "disabled" : ""}>
                 <small>+</small>
                 <span>${piece.label}</span>
               </button>`;
             }).join("")}
           </div>
         </section>`;
-      exitScreen.innerHTML = `<section class="exit">
+      exitScreen.innerHTML = `<section class="exit ${exitComplete ? "review-mode" : ""}">
         <div>
           <span class="clue">Final Exit</span>
-          <h1>${allDone ? "Power the AI Brain Door" : "Exit locked"}</h1>
-          <p>${allDone ? "Use the six crystals to rebuild the AI Brain, then open the door." : "Collect all six room crystals before opening the final exit."}</p>
+          <h1>${titleText}</h1>
+          <p>${leadText}</p>
           <div class="exit-steps" aria-label="Final exit steps">
             <span class="${allPlaced ? "done" : "active"}">1. Place crystals</span>
             <span class="${modelCorrect ? "done" : allPlaced ? "active" : ""}">2. Build text generation</span>
@@ -1796,8 +2014,15 @@
             <div class="brain-status">${state.finalComplete ? "Door open" : finalReady ? "Ready to open" : allPlaced ? "Brain charged" : "Waiting for crystals"}</div>
           </section>
           <section class="review-console">
-            <h2>${state.finalComplete ? "AI Brain restored" : "Final brain lock"}</h2>
-            <p>${allPlaced ? "Now click the cards into the correct order." : allDone ? "Click each crystal to place it around the AI Brain." : "The brain door needs every room crystal."}</p>
+            <h2>${consoleTitle}</h2>
+            <p>${consoleInstruction}</p>
+            <div class="exit-guide ${exitComplete ? "complete" : ""}">
+              ${exitComplete
+                ? "Complete. You can look back at the mental model here, or replay it to practise the final puzzle again."
+                : allPlaced
+                  ? "Step 2: build how LLMs make text. Step 3: build what people should check after an answer appears."
+                  : "Step 1: click the crystal chips below to power the AI Brain."}
+            </div>
             <div class="crystal-tray" aria-label="Collected crystals">
               ${rooms.map((room) => {
                 const collected = state.crystals.has(room.crystal);
@@ -1814,44 +2039,174 @@
             </div>
             <div class="exit-actions">
               <button type="button" class="secondary" data-action="map">Room Map</button>
-              <button type="button" class="success" data-action="complete" ${canTryFinal || state.finalComplete ? "" : "disabled"}>${state.finalComplete ? "Escape complete" : "Activate AI Brain"}</button>
+              ${!exitComplete && allPlaced ? `<button type="button" class="ghost-reset" data-action="clear-final" ${hasPlacedCards ? "" : "disabled"}>Reset cards</button>` : ""}
+              ${exitComplete ? `<button type="button" class="gold" data-action="replay-final">Replay final puzzle</button>` : ""}
+              <button type="button" class="success" data-action="complete" ${canTryFinal && !exitComplete ? "" : "disabled"}>${exitComplete ? "Exit is open" : "Activate AI Brain"}</button>
             </div>
           </section>
         </div>
         <div class="feedback ${finalReady || state.finalComplete ? "good" : "bad"}">${state.finalComplete ? "LLMs generate text by predicting tokens from learned patterns. Their answers depend on training data and context, so they can be useful but also wrong or biased and should be checked critically." : state.exitFeedback || (finalReady ? "The AI Brain is ready. Activate it to open the exit." : allPlaced ? "Build both sequences, then activate the AI Brain." : allDone ? "Place all six crystals around the brain door." : "The exit needs every room's crystal.")}</div>
       </section>`;
       exitScreen.querySelector("[data-action='map']").addEventListener("click", openMap);
+      const replayButton = exitScreen.querySelector("[data-action='replay-final']");
+      if (replayButton) replayButton.addEventListener("click", () => {
+        state.finalComplete = false;
+        state.exitPlaced = new Set();
+        state.exitModel = [];
+        state.exitReview = [];
+        state.exitFeedback = "Final lock reset. Place the six crystals, then rebuild the model.";
+        renderExit();
+      });
+      const clearButton = exitScreen.querySelector("[data-action='clear-final']");
+      if (clearButton) clearButton.addEventListener("click", () => {
+        state.exitModel = [];
+        state.exitReview = [];
+        state.exitFeedback = "Cards cleared. Start with how the model makes text, then add the human checks.";
+        renderExit();
+      });
       exitScreen.querySelectorAll("[data-exit-crystal]").forEach((button) => button.addEventListener("click", () => {
         if (!allDone || state.finalComplete) return;
         const crystal = button.dataset.exitCrystal;
         if (state.exitPlaced.has(crystal)) state.exitPlaced.delete(crystal);
         else state.exitPlaced.add(crystal);
-        state.exitFeedback = "";
+        state.exitFeedback = state.exitPlaced.size === rooms.length
+          ? "All crystals are placed. Now build the text-generation chain and the human-check chain."
+          : `${state.exitPlaced.size} / ${rooms.length} crystals placed. Keep powering the AI Brain.`;
         if (!state.exitPlaced.size) {
           state.exitModel = [];
           state.exitReview = [];
         }
         renderExit();
       }));
-      exitScreen.querySelectorAll("[data-exit-piece]").forEach((button) => button.addEventListener("click", () => {
+
+      const exitTarget = (kind) => kind === "review" ? state.exitReview : state.exitModel;
+      const exitLimit = (kind) => kind === "review" ? finalReviewOrder.length : finalModelOrder.length;
+      const placeExitPiece = (kind, piece, requestedIndex = null, fromIndex = null) => {
         if (!allPlaced || state.finalComplete) return;
-        const target = button.dataset.exitPiece === "review" ? state.exitReview : state.exitModel;
-        const limit = button.dataset.exitPiece === "review" ? finalReviewOrder.length : finalModelOrder.length;
-        const piece = button.dataset.piece;
-        if (target.includes(piece) || target.length >= limit) return;
-        target.push(piece);
-        state.exitFeedback = "";
+        const target = exitTarget(kind);
+        const limit = exitLimit(kind);
+        const safeIndex = (value) => {
+          const index = Number(value);
+          return Number.isInteger(index) && index >= 0 && index < limit ? index : null;
+        };
+        const destination = safeIndex(requestedIndex);
+        const source = safeIndex(fromIndex);
+
+        if (source === null && target.includes(piece)) return;
+        if (source !== null && target[source] !== piece) return;
+
+        if (destination !== null) {
+          if (source === destination) return;
+          if (source === null && target[destination]) {
+            state.exitFeedback = "That slot already has a card. Drag the card to swap, or choose an empty slot.";
+            renderExit();
+            return;
+          }
+          const displaced = target[destination];
+          target[destination] = piece;
+          if (source !== null) target[source] = displaced;
+        } else {
+          const emptyIndex = Array.from({ length: limit }, (_, index) => index).find((index) => !target[index]);
+          if (emptyIndex === undefined) return;
+          if (source !== null) target[source] = undefined;
+          target[emptyIndex] = piece;
+        }
+
+        state.exitFeedback = Array.from({ length: limit }, (_, index) => target[index]).filter(Boolean).length === limit
+          ? "This console is filled. Drag cards to change the order, or check the other console."
+          : "Card added. Keep filling the empty slots.";
         renderExit();
-      }));
-      exitScreen.querySelectorAll("[data-exit-slot]").forEach((button) => button.addEventListener("click", () => {
-        if (state.finalComplete) return;
-        const target = button.dataset.exitSlot === "review" ? state.exitReview : state.exitModel;
-        const index = Number(button.dataset.index);
-        if (!target[index]) return;
-        target.splice(index, 1);
-        state.exitFeedback = "Card removed. Try the order again.";
-        renderExit();
-      }));
+      };
+
+      exitScreen.querySelectorAll("[data-exit-piece]").forEach((button) => {
+        button.addEventListener("click", () => {
+          placeExitPiece(button.dataset.exitPiece, button.dataset.piece);
+        });
+        button.addEventListener("dragstart", (event) => {
+          if (!allPlaced || state.finalComplete || button.disabled) {
+            event.preventDefault();
+            return;
+          }
+          button.classList.add("dragging");
+          event.dataTransfer.effectAllowed = "move";
+          event.dataTransfer.setData("application/x-ai-exit-piece", JSON.stringify({
+            kind: button.dataset.exitPiece,
+            piece: button.dataset.piece,
+            fromIndex: null
+          }));
+          event.dataTransfer.setData("text/plain", `${button.dataset.exitPiece}:${button.dataset.piece}:`);
+        });
+        button.addEventListener("dragend", () => {
+          button.classList.remove("dragging");
+        });
+      });
+
+      exitScreen.querySelectorAll("[data-exit-slot]").forEach((button) => {
+        button.addEventListener("click", () => {
+          if (state.finalComplete) return;
+          const target = exitTarget(button.dataset.exitSlot);
+          const index = Number(button.dataset.index);
+          if (!target[index]) return;
+          target[index] = undefined;
+          state.exitFeedback = "Card removed. Try the order again.";
+          renderExit();
+        });
+        button.addEventListener("dragstart", (event) => {
+          if (state.finalComplete) {
+            event.preventDefault();
+            return;
+          }
+          const target = exitTarget(button.dataset.exitSlot);
+          const index = Number(button.dataset.index);
+          const piece = target[index];
+          if (!piece) {
+            event.preventDefault();
+            return;
+          }
+          button.classList.add("dragging");
+          event.dataTransfer.effectAllowed = "move";
+          event.dataTransfer.setData("application/x-ai-exit-piece", JSON.stringify({
+            kind: button.dataset.exitSlot,
+            piece,
+            fromIndex: index
+          }));
+          event.dataTransfer.setData("text/plain", `${button.dataset.exitSlot}:${piece}:${index}`);
+        });
+        button.addEventListener("dragend", () => {
+          button.classList.remove("dragging");
+        });
+        button.addEventListener("dragover", (event) => {
+          if (state.finalComplete) return;
+          event.preventDefault();
+          event.dataTransfer.dropEffect = "move";
+          button.classList.add("drop-ready");
+        });
+        button.addEventListener("dragleave", () => {
+          button.classList.remove("drop-ready");
+        });
+        button.addEventListener("drop", (event) => {
+          event.preventDefault();
+          button.classList.remove("drop-ready");
+          let payload = {};
+          try {
+            payload = JSON.parse(event.dataTransfer.getData("application/x-ai-exit-piece") || "{}");
+          } catch (error) {
+            payload = {};
+          }
+          if (!payload.kind || !payload.piece) {
+            const raw = event.dataTransfer.getData("text/plain") || "";
+            const [kind, piece, fromIndex] = raw.split(":");
+            payload = { kind, piece, fromIndex: fromIndex === "" || fromIndex === undefined ? null : Number(fromIndex) };
+          }
+          const slotKind = button.dataset.exitSlot;
+          if (payload.kind !== slotKind) {
+            state.exitFeedback = "Drop that card into the matching console.";
+            renderExit();
+            return;
+          }
+          placeExitPiece(slotKind, payload.piece, Number(button.dataset.index), payload.fromIndex ?? null);
+        });
+      });
       exitScreen.querySelector("[data-action='complete']").addEventListener("click", () => {
         if (state.finalComplete) return;
         if (!allPlaced) {
@@ -1879,7 +2234,7 @@
         state.exitModel = [...finalModelOrder];
         state.exitReview = [...finalReviewOrder];
         state.exitFeedback = "";
-        send("ESCAPE_ROOM_COMPLETE", { xp: 150 });
+        send("ESCAPE_ROOM_COMPLETE", {});
         renderExit();
       });
     }
@@ -1919,7 +2274,7 @@
       $("debugToggle").addEventListener("click", () => $("debugConsole").classList.toggle("open"));
       $("debugControls").innerHTML = rooms.map((room) => `<button type="button" data-debug-room="${room.id}">Complete R${room.number}</button>`).join("") + `<button type="button" data-debug-final>Final</button>`;
       $("debugControls").querySelectorAll("[data-debug-room]").forEach((button) => button.addEventListener("click", () => roomComplete(roomById(button.dataset.debugRoom))));
-      $("debugControls").querySelector("[data-debug-final]").addEventListener("click", () => send("ESCAPE_ROOM_COMPLETE", { xp: 150 }));
+      $("debugControls").querySelector("[data-debug-final]").addEventListener("click", () => send("ESCAPE_ROOM_COMPLETE", {}));
     }
 
     const startRoom = searchParams.get("room");

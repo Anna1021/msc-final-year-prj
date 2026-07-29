@@ -1,0 +1,147 @@
+{
+  "language": {
+    "label": "Langue",
+    "choose": "Choisir la langue"
+  },
+  "app": {
+    "name": "AI Explorer",
+    "tagline": "Comment ChatGPT pense"
+  },
+  "topbar": {
+    "backToMissions": "‹ Retour aux missions",
+    "backToProgress": "‹ Retour au progrès",
+    "yourProgress": "Votre progrès",
+    "allActivity": "Toute l’activité",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "resetProgress": "Réinitialiser",
+    "progressReset": "Progression réinitialisée.",
+    "settingsHelp": "Paramètres : taille du texte, vitesse des animations, son, mode sombre et réinitialisation."
+  },
+  "home": {
+    "welcomeTitle": "Bon retour, Explorateur ! 👋",
+    "welcomeLead": "Prêt à continuer votre aventure IA ?",
+    "welcomeCopy": "Reprenez où vous vous êtes arrêté ou explorez un nouveau sujet.",
+    "continueLearning": "Continuer",
+    "continueMission": "Continuer la mission",
+    "learningPath": "Parcours",
+    "whyTitle": "Pourquoi apprendre comment ChatGPT fonctionne ?",
+    "finalTitle": "Terminez toutes les missions pour devenir explorateur IA !",
+    "finalCopy": "Terminez le défi final et gagnez votre certificat.",
+    "seeFinalChallenge": "Voir le défi final",
+    "unlockFinal": "Terminez les 6 missions pour débloquer le défi final."
+  },
+  "why": {
+    "responsibleTitle": "Utiliser l’IA avec soin",
+    "responsibleText": "Comprendre les limites et éviter de trop faire confiance aux réponses.",
+    "criticalTitle": "Penser de façon critique",
+    "criticalText": "Évaluer les sorties de l’IA et repérer les erreurs possibles.",
+    "biasTitle": "Repérer les biais",
+    "biasText": "Comprendre comment les biais apparaissent et comment les réduire.",
+    "futureTitle": "Construire l’avenir",
+    "futureText": "La culture IA est une compétence importante pour demain."
+  },
+  "stats": {
+    "todaysGoal": "Objectif du jour",
+    "completeOneStep": "Terminer une étape",
+    "stepsCompleted": "{{done}} / 1 étape terminée",
+    "goalDone": "Bravo ! La prochaine mission est prête.",
+    "goalTodo": "Terminez une étape pour continuer.",
+    "yourStats": "Vos stats",
+    "missionCompleted": "Mission terminée",
+    "viewProgress": "Voir le progrès ›",
+    "missionsLeft": "Missions restantes",
+    "savedNotes": "Notes sauvegardées",
+    "alreadyProgress": "Vous avez déjà avancé.",
+    "startSmallActivity": "Commencez par une petite activité."
+  },
+  "activity": {
+    "recent": "Activité récente",
+    "viewAll": "Tout voir",
+    "readyMission": "Prêt à commencer la mission 1",
+    "completedMission": "Mission {{id}} terminée",
+    "startedMission": "Mission {{id}} commencée",
+    "today": "Aujourd’hui",
+    "yesterday": "Hier",
+    "daysAgo": "Il y a {{count}} jours"
+  },
+  "help": {
+    "needHelp": "Besoin d’aide ?",
+    "copy": "Utilise les missions et la page de progression pour savoir quoi faire ensuite.",
+    "goToMissions": "Aller aux missions",
+    "text": "Utilise les missions et la page de progression pour voir la prochaine étape."
+  },
+  "profile": {
+    "name": "Explorateur",
+    "level": "Niveau {{level}}",
+    "tipTitle": "Astuce du jour",
+    "tipCopy": "ChatGPT prédit les tokens un par un, pas des phrases entières !",
+    "missionsComplete": "{{completed}} / {{total}} missions terminées"
+  },
+  "status": {
+    "locked": "Verrouillé",
+    "inProgress": "En cours",
+    "completed": "Terminé",
+    "start": "Commencer",
+    "continue": "Continuer",
+    "percentComplete": "{{percent}} % terminé",
+    "ready": "Prêt"
+  },
+  "buttons": {
+    "viewAll": "Tout voir",
+    "clearAll": "Effacer",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "reset": "Réinitialiser",
+    "checkAnswer": "Vérifier"
+  },
+  "activityPage": {
+    "tabs": {
+      "all": "Toutes les activités",
+      "notes": "Mes notes"
+    },
+    "filters": {
+      "all": "Tout",
+      "missions": "Missions",
+      "quizzes": "Quiz",
+      "notes": "Notes",
+      "system": "Système",
+      "others": "Autres"
+    },
+    "dateRange": "12 mai - 18 mai 2025",
+    "dateFilterHelp": "Filtre de date : aujourd’hui, cette semaine, ce mois-ci ou plage personnalisée.",
+    "table": {
+      "activity": "Activité",
+      "details": "Détails",
+      "time": "Moment"
+    },
+    "notesTitle": "Mes notes",
+    "notesCopy": "Les réflexions sauvegardées dans les missions apparaissent ici.",
+    "noNotesTitle": "Aucune note pour le moment",
+    "noNotesCopy": "Sauvegarde une réflexion dans une mission pour la retrouver ici.",
+    "summary": "Résumé des activités",
+    "thisWeek": "Cette semaine (12 mai - 18 mai)",
+    "totalActivities": "Activités au total",
+    "quizzesTaken": "Quiz terminés",
+    "notesSaved": "Notes sauvegardées",
+    "filterActivity": "Filtrer les activités",
+    "clearAll": "Tout effacer",
+    "allActivityTypes": "Tous les types d’activité",
+    "allMissions": "Toutes les missions",
+    "allTime": "Toute la période",
+    "typeFilterHelp": "Utilise les filtres ci-dessus pour changer le type d’activité.",
+    "timeFilterHelp": "Filtre de temps : aujourd’hui, cette semaine, ce mois-ci.",
+    "missionOption": "Mission {{id}}"
+  },
+  "notes": {
+    "savedToActivity": "Enregistré dans Mes notes, dans Activité.",
+    "savedButton": "Enregistré dans Mes notes",
+    "saveNote": "Enregistrer la note",
+    "saveReflection": "Enregistrer la réflexion",
+    "viewInNotes": "Voir dans Mes notes",
+    "notesHeading": "Notes",
+    "notesPrompt": "Écris une chose apprise ou à retenir.",
+    "notePlaceholder": "Écris ta note ici...",
+    "saveNoteTitle": "Enregistrer la note"
+  }
+}

@@ -10,7 +10,7 @@ The current `index.html` is only a clean integration placeholder. It is not the 
 2. Export the project as HTML5.
 3. Replace the contents of `public/escape-room/` with the exported files.
 4. Keep the exported entry file named `index.html`.
-5. Preserve the bridge messages below so React can save progress, XP and crystals.
+5. Preserve the bridge messages below so React can save progress and crystals.
 
 The implementation handoff files are in `construct-export-kit/` at the project root. Use `construct-export-kit/construct-bridge.js` inside the Construct export, and follow `construct-export-kit/room1-event-sheet.md` for the Room 1 milestone.
 
@@ -30,7 +30,6 @@ React will respond with:
   payload: {
     completedRooms: ["token"],
     crystals: ["token"],
-    xp: 1300,
     finalExitCompleted: false,
     currentScreen: "room-select",
     preferredLanguage: "en",
@@ -56,7 +55,7 @@ React may send navigation commands at any time:
 { type: "ESCAPE_ROOM_RETURN_TO_HUB", payload: {} }
 ```
 
-When replaying a completed room, allow gameplay interactions but do not send extra rewards. If a completion message is sent again, React will ignore duplicate XP and duplicate crystals.
+When replaying a completed room, allow gameplay interactions but do not send extra rewards. If a completion message is sent again, React will ignore duplicate crystals and keep progress idempotent.
 
 When a room is completed, Construct should send:
 
@@ -65,8 +64,7 @@ window.parent.postMessage({
   type: "ESCAPE_ROOM_ROOM_COMPLETE",
   payload: {
     roomId: "token",
-    crystal: "token",
-    xp: 100
+    crystal: "token"
   }
 }, window.location.origin);
 ```
@@ -76,7 +74,7 @@ When the final exit is completed, Construct should send:
 ```js
 window.parent.postMessage({
   type: "ESCAPE_ROOM_COMPLETE",
-  payload: { xp: 150 }
+  payload: {}
 }, window.location.origin);
 ```
 
@@ -105,5 +103,5 @@ Do not start Rooms 2-6 until Room 1 works end-to-end inside the Construct export
 - inventory update
 - `ESCAPE_ROOM_ROOM_COMPLETE` message
 - transition back to RoomSelect or Room 2
-- replay mode with no duplicate XP
+- replay mode with no duplicate rewards
 - final completion never traps the learner away from RoomSelect

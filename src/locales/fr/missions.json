@@ -1,0 +1,55 @@
+{
+  "missionLabel": "Mission {{id}}",
+  "missionOf": "Mission {{mission}} sur 6",
+  "learningPath": "Parcours",
+  "allTitle": "Toutes les missions",
+  "allIntro": "Terminez les missions étape par étape pour comprendre ChatGPT.\nTerminez tout pour débloquer le défi final !",
+  "yourProgress": "Votre progrès",
+  "missionsCompleted": "Missions terminées",
+  "whatLearn": "Ce que vous apprendrez",
+  "completePrevious": "Terminez d’abord la mission {{mission}}.",
+  "completeAllFirst": "Terminez d’abord les 6 missions.",
+  "completeAllToUnlock": "Terminez les 6 missions pour débloquer le défi final.",
+  "finalChallenge": "Défi final",
+  "finalTitle": "Défi final : Escape Room de culture IA",
+  "finalShort": "Escape Room IA",
+  "finalDesc": "Terminez les 6 missions pour tester vos connaissances IA !",
+  "items": {
+    "1": {
+      "title": "Comment ChatGPT lit-il ?",
+      "short": "Tokens",
+      "desc": "Découvrez comment le texte est découpé en tokens.",
+      "skill": "Tokens et tokenisation"
+    },
+    "2": {
+      "title": "Pouvez-vous penser comme ChatGPT ?",
+      "short": "Prédiction",
+      "desc": "Prédisez le prochain token avec des probabilités.",
+      "skill": "Prédiction du token suivant"
+    },
+    "3": {
+      "title": "Pourquoi ChatGPT fait-il des erreurs ?",
+      "short": "Erreurs",
+      "desc": "Découvrez les hallucinations et les erreurs probabilistes.",
+      "skill": "Probabilité et échantillonnage"
+    },
+    "4": {
+      "title": "Pourquoi le contexte compte-t-il ?",
+      "short": "Contexte",
+      "desc": "Voyez comment des informations utiles changent la réponse.",
+      "skill": "Contexte et sens"
+    },
+    "5": {
+      "title": "Entraînez votre propre IA",
+      "short": "Données",
+      "desc": "Ajoutez des données et observez comment le modèle change.",
+      "skill": "Influence des données"
+    },
+    "6": {
+      "title": "L’IA peut-elle être biaisée ?",
+      "short": "Biais",
+      "desc": "Explorez comment les biais des données influencent les sorties.",
+      "skill": "Biais et équité"
+    }
+  }
+}

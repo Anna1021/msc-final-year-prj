@@ -41,12 +41,15 @@ body.escape-room-expanded {
 
 .construct-wrapper-page.is-expanded .construct-shell {
   height: 100vh;
+  width: 100vw;
   padding: 0;
   gap: 0;
   grid-template-columns: minmax(0, 1fr);
 }
 
 .construct-wrapper-page.is-expanded .construct-game-frame {
+  width: 100vw;
+  height: 100vh;
   border: 0;
   border-radius: 0;
   box-shadow: none;
@@ -67,7 +70,12 @@ body.escape-room-expanded {
 }
 
 .construct-wrapper-page.is-expanded .construct-iframe-wrap {
+  height: 100%;
   min-height: 0;
+}
+
+.construct-wrapper-page.is-expanded .construct-game-frame iframe {
+  height: 100%;
 }
 
 .construct-game-frame,
@@ -379,6 +387,14 @@ body.escape-room-expanded {
   }
 }
 
+@media (max-width: 1180px) {
+  .construct-wrapper-page.is-expanded .construct-game-frame iframe,
+  .construct-wrapper-page.is-expanded .construct-iframe-wrap {
+    height: 100%;
+    min-height: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .construct-wrapper-page *,
   .construct-wrapper-page *::before,
@@ -400,5 +416,20 @@ body.escape-room-expanded {
   .construct-game-frame iframe,
   .construct-iframe-wrap {
     height: min(68vh, 760px);
+  }
+
+  .construct-wrapper-page.is-expanded .construct-shell {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .construct-wrapper-page.is-expanded .construct-game-frame {
+    height: 100vh;
+  }
+
+  .construct-wrapper-page.is-expanded .construct-game-frame iframe,
+  .construct-wrapper-page.is-expanded .construct-iframe-wrap {
+    height: 100%;
+    min-height: 0;
   }
 }

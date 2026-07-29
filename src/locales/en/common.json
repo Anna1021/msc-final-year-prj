@@ -1,0 +1,147 @@
+{
+  "language": {
+    "label": "Language",
+    "choose": "Choose language"
+  },
+  "app": {
+    "name": "AI Explorer",
+    "tagline": "How ChatGPT Thinks"
+  },
+  "topbar": {
+    "backToMissions": "‹ Back to Missions",
+    "backToProgress": "‹ Back to Progress",
+    "yourProgress": "Your Progress",
+    "allActivity": "All Activity",
+    "profile": "Profile",
+    "settings": "Settings",
+    "resetProgress": "Reset Progress",
+    "progressReset": "Progress reset.",
+    "settingsHelp": "Settings: text size, animation speed, sound, dark mode, reset progress."
+  },
+  "home": {
+    "welcomeTitle": "Welcome back, Explorer! 👋",
+    "welcomeLead": "Ready to continue your AI learning adventure?",
+    "welcomeCopy": "Pick up where you left off or explore something new.",
+    "continueLearning": "Continue Learning",
+    "continueMission": "Continue Mission",
+    "learningPath": "Learning Path",
+    "whyTitle": "Why Learn About How ChatGPT Works?",
+    "finalTitle": "Finish all missions to become an AI Literacy Explorer!",
+    "finalCopy": "Complete the Final Challenge and earn your certificate.",
+    "seeFinalChallenge": "See Final Challenge",
+    "unlockFinal": "Complete all 6 missions to unlock the Final Challenge."
+  },
+  "why": {
+    "responsibleTitle": "Use AI Responsibly",
+    "responsibleText": "Understand limitations and avoid over-trusting AI answers.",
+    "criticalTitle": "Think Critically",
+    "criticalText": "Evaluate AI outputs and detect when it might be wrong.",
+    "biasTitle": "Spot Bias",
+    "biasText": "Learn how bias can appear in AI and how to reduce it.",
+    "futureTitle": "Build the Future",
+    "futureText": "AI literacy is a key skill for the world ahead."
+  },
+  "stats": {
+    "todaysGoal": "Today's Goal",
+    "completeOneStep": "Complete one mission step",
+    "stepsCompleted": "{{done}} / 1 step completed",
+    "goalDone": "Great job! Your next mission is ready.",
+    "goalTodo": "Complete one step to keep your learning moving.",
+    "yourStats": "Your Stats",
+    "missionCompleted": "Mission Completed",
+    "viewProgress": "View Progress ›",
+    "missionsLeft": "Missions left",
+    "savedNotes": "Saved notes",
+    "alreadyProgress": "You have already made progress.",
+    "startSmallActivity": "Start with one small activity."
+  },
+  "activity": {
+    "recent": "Recent Activity",
+    "viewAll": "View all",
+    "readyMission": "Ready to start Mission 1",
+    "completedMission": "Mission {{id}} completed",
+    "startedMission": "Started Mission {{id}}",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{count}} days ago"
+  },
+  "help": {
+    "needHelp": "Need help?",
+    "copy": "Use the missions and progress page to see what to do next.",
+    "goToMissions": "Go to Missions",
+    "text": "Use the mission pages and progress page to see what to do next."
+  },
+  "profile": {
+    "name": "Explorer",
+    "level": "Level {{level}}",
+    "tipTitle": "Tip of the day",
+    "tipCopy": "ChatGPT predicts tokens one by one, not whole sentences!",
+    "missionsComplete": "{{completed}} / {{total}} missions complete"
+  },
+  "status": {
+    "locked": "Locked",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "start": "Start",
+    "continue": "Continue",
+    "percentComplete": "{{percent}}% complete",
+    "ready": "Ready"
+  },
+  "buttons": {
+    "viewAll": "View all",
+    "clearAll": "Clear all",
+    "previous": "Previous",
+    "next": "Next",
+    "reset": "Reset",
+    "checkAnswer": "Check Answer"
+  },
+  "activityPage": {
+    "tabs": {
+      "all": "All Activity",
+      "notes": "My Notes"
+    },
+    "filters": {
+      "all": "All",
+      "missions": "Missions",
+      "quizzes": "Quizzes",
+      "notes": "Notes",
+      "system": "System",
+      "others": "Others"
+    },
+    "dateRange": "May 12 - May 18, 2025",
+    "dateFilterHelp": "Date filter: Today, This Week, This Month, Custom Range.",
+    "table": {
+      "activity": "Activity",
+      "details": "Details",
+      "time": "Time"
+    },
+    "notesTitle": "My Notes",
+    "notesCopy": "Saved reflections from mission activities appear here.",
+    "noNotesTitle": "No notes yet",
+    "noNotesCopy": "Save a reflection inside a mission and it will appear here.",
+    "summary": "Activity Summary",
+    "thisWeek": "This Week (May 12 - May 18)",
+    "totalActivities": "Total Activities",
+    "quizzesTaken": "Quizzes Taken",
+    "notesSaved": "Notes Saved",
+    "filterActivity": "Filter Activity",
+    "clearAll": "Clear all",
+    "allActivityTypes": "All Activity Types",
+    "allMissions": "All Missions",
+    "allTime": "All Time",
+    "typeFilterHelp": "Use the filter chips above to change activity type.",
+    "timeFilterHelp": "Time filter: Today, This Week, This Month.",
+    "missionOption": "Mission {{id}}"
+  },
+  "notes": {
+    "savedToActivity": "Saved to My Notes in Activity.",
+    "savedButton": "Saved to My Notes",
+    "saveNote": "Save note",
+    "saveReflection": "Save reflection",
+    "viewInNotes": "View in My Notes",
+    "notesHeading": "Notes",
+    "notesPrompt": "Write something you learned or want to remember.",
+    "notePlaceholder": "Type your note here...",
+    "saveNoteTitle": "Save Note"
+  }
+}

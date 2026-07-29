@@ -1,0 +1,147 @@
+{
+  "language": {
+    "label": "语言",
+    "choose": "选择语言"
+  },
+  "app": {
+    "name": "AI Explorer",
+    "tagline": "理解 ChatGPT 如何思考"
+  },
+  "topbar": {
+    "backToMissions": "‹ 返回任务",
+    "backToProgress": "‹ 返回进度",
+    "yourProgress": "你的进度",
+    "allActivity": "全部活动",
+    "profile": "个人资料",
+    "settings": "设置",
+    "resetProgress": "重置进度",
+    "progressReset": "进度已重置。",
+    "settingsHelp": "设置：文字大小、动画速度、声音、深色模式和重置进度。"
+  },
+  "home": {
+    "welcomeTitle": "欢迎回来，探索者！👋",
+    "welcomeLead": "准备继续你的 AI 学习冒险了吗？",
+    "welcomeCopy": "从上次的位置继续，或探索新的内容。",
+    "continueLearning": "继续学习",
+    "continueMission": "继续任务",
+    "learningPath": "学习路径",
+    "whyTitle": "为什么要学习 ChatGPT 的工作方式？",
+    "finalTitle": "完成所有任务，成为 AI 素养探索者！",
+    "finalCopy": "完成最终挑战并获得证书。",
+    "seeFinalChallenge": "查看最终挑战",
+    "unlockFinal": "完成 6 个任务后解锁最终挑战。"
+  },
+  "why": {
+    "responsibleTitle": "负责任地使用 AI",
+    "responsibleText": "理解 AI 的限制，不要过度相信它的回答。",
+    "criticalTitle": "批判性思考",
+    "criticalText": "判断 AI 输出，并发现它可能出错的地方。",
+    "biasTitle": "发现偏见",
+    "biasText": "了解 AI 中偏见如何出现，以及如何减少偏见。",
+    "futureTitle": "面向未来",
+    "futureText": "AI 素养是未来世界的重要能力。"
+  },
+  "stats": {
+    "todaysGoal": "今日目标",
+    "completeOneStep": "完成一个任务步骤",
+    "stepsCompleted": "已完成 {{done}} / 1 个步骤",
+    "goalDone": "做得好！下一个任务已经准备好了。",
+    "goalTodo": "完成一个步骤，让学习继续前进。",
+    "yourStats": "你的统计",
+    "missionCompleted": "已完成任务",
+    "viewProgress": "查看进度 ›",
+    "missionsLeft": "剩余任务",
+    "savedNotes": "保存的笔记",
+    "alreadyProgress": "你已经开始学习了。",
+    "startSmallActivity": "从一个小活动开始。"
+  },
+  "activity": {
+    "recent": "最近活动",
+    "viewAll": "查看全部",
+    "readyMission": "准备开始任务 1",
+    "completedMission": "完成任务 {{id}}",
+    "startedMission": "开始任务 {{id}}",
+    "today": "今天",
+    "yesterday": "昨天",
+    "daysAgo": "{{count}} 天前"
+  },
+  "help": {
+    "needHelp": "需要帮助？",
+    "copy": "使用任务页面和进度页面查看下一步该做什么。",
+    "goToMissions": "前往任务",
+    "text": "你可以用任务页和进度页查看下一步要做什么。"
+  },
+  "profile": {
+    "name": "探索者",
+    "level": "等级 {{level}}",
+    "tipTitle": "今日提示",
+    "tipCopy": "ChatGPT 是一个 token 一个 token 地预测，而不是一次读完整个句子！",
+    "missionsComplete": "已完成 {{completed}} / {{total}} 个任务"
+  },
+  "status": {
+    "locked": "未解锁",
+    "inProgress": "进行中",
+    "completed": "已完成",
+    "start": "开始",
+    "continue": "继续",
+    "percentComplete": "{{percent}}% 完成",
+    "ready": "可开始"
+  },
+  "buttons": {
+    "viewAll": "查看全部",
+    "clearAll": "清空",
+    "previous": "上一页",
+    "next": "下一页",
+    "reset": "重置",
+    "checkAnswer": "检查答案"
+  },
+  "activityPage": {
+    "tabs": {
+      "all": "全部活动",
+      "notes": "我的笔记"
+    },
+    "filters": {
+      "all": "全部",
+      "missions": "任务",
+      "quizzes": "小测验",
+      "notes": "笔记",
+      "system": "系统",
+      "others": "其他"
+    },
+    "dateRange": "2025 年 5 月 12 日 - 5 月 18 日",
+    "dateFilterHelp": "日期筛选：今天、本周、本月或自定义范围。",
+    "table": {
+      "activity": "活动",
+      "details": "详情",
+      "time": "时间"
+    },
+    "notesTitle": "我的笔记",
+    "notesCopy": "任务活动中保存的反思会显示在这里。",
+    "noNotesTitle": "还没有笔记",
+    "noNotesCopy": "在任务里保存一条反思，它就会出现在这里。",
+    "summary": "活动概览",
+    "thisWeek": "本周（5 月 12 日 - 5 月 18 日）",
+    "totalActivities": "活动总数",
+    "quizzesTaken": "完成测验",
+    "notesSaved": "保存笔记",
+    "filterActivity": "筛选活动",
+    "clearAll": "清空",
+    "allActivityTypes": "全部活动类型",
+    "allMissions": "全部任务",
+    "allTime": "全部时间",
+    "typeFilterHelp": "使用上方筛选标签切换活动类型。",
+    "timeFilterHelp": "时间筛选：今天、本周、本月。",
+    "missionOption": "任务 {{id}}"
+  },
+  "notes": {
+    "savedToActivity": "已保存到 Activity 里的 My Notes。",
+    "savedButton": "已保存到 My Notes",
+    "saveNote": "保存笔记",
+    "saveReflection": "保存反思",
+    "viewInNotes": "在 My Notes 中查看",
+    "notesHeading": "笔记",
+    "notesPrompt": "写下你学到的内容，或想记住的想法。",
+    "notePlaceholder": "在这里输入你的笔记...",
+    "saveNoteTitle": "保存笔记"
+  }
+}

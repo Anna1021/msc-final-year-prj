@@ -1,4 +1,4 @@
-import { ESCAPE_PROGRESS_VERSION, ESCAPE_STORAGE_KEY, MAIN_PROGRESS_KEY, rooms } from "./escapeRoomData";
+import { ESCAPE_PROGRESS_VERSION, ESCAPE_STORAGE_KEY, rooms } from "./escapeRoomData";
 
 const validScreens = new Set(["room-select", "room", "final-exit"]);
 
@@ -21,7 +21,6 @@ function defaultEscapeProgress() {
     crystalCollected: {},
     inventory: [],
     completedRooms: {},
-    xpAwardedRooms: {},
     roomState: {
       token: {
         inspectedDoor: false,
@@ -45,7 +44,6 @@ function normaliseProgress(raw) {
     currentScreen: validScreens.has(rawScreen) ? rawScreen : "room-select",
     crystalCollected: { ...base.crystalCollected, ...(raw.crystalCollected || {}) },
     completedRooms: { ...base.completedRooms, ...(raw.completedRooms || {}) },
-    xpAwardedRooms: { ...base.xpAwardedRooms, ...(raw.xpAwardedRooms || {}) },
     roomState: { ...base.roomState, ...(raw.roomState || {}) },
     inventory: Array.isArray(raw.inventory) ? raw.inventory : []
   };
@@ -125,25 +123,6 @@ export function updateEscapeNavigation(patch) {
   };
   writeEscapeProgress(next);
   return readEscapeProgress();
-}
-
-export function awardRoomXpOnce(roomId, amount, setProgress) {
-  const escapeProgress = readEscapeProgress();
-  if (escapeProgress.xpAwardedRooms[roomId]) return false;
-
-  let awarded = false;
-  setProgress?.((prev) => {
-    const next = structuredClone(prev);
-    next.xp = (next.xp || 0) + amount;
-    localStorage.setItem(MAIN_PROGRESS_KEY, JSON.stringify(next));
-    awarded = true;
-    return next;
-  });
-
-  const after = readEscapeProgress();
-  after.xpAwardedRooms[roomId] = true;
-  writeEscapeProgress(after);
-  return awarded;
 }
 
 export function collectCrystalTransaction(progress, roomId) {

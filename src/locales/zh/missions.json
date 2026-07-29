@@ -1,0 +1,55 @@
+{
+  "missionLabel": "任务 {{id}}",
+  "missionOf": "任务 {{mission}} / 6",
+  "learningPath": "学习路径",
+  "allTitle": "全部任务",
+  "allIntro": "按步骤完成任务，理解 ChatGPT 如何工作。\n完成全部任务后解锁最终挑战！",
+  "yourProgress": "你的进度",
+  "missionsCompleted": "已完成任务",
+  "whatLearn": "你会学到什么",
+  "completePrevious": "请先完成任务 {{mission}}。",
+  "completeAllFirst": "请先完成全部 6 个任务。",
+  "completeAllToUnlock": "完成 6 个任务后解锁最终挑战。",
+  "finalChallenge": "最终挑战",
+  "finalTitle": "最终挑战：AI 素养密室逃脱",
+  "finalShort": "AI 素养密室逃脱",
+  "finalDesc": "完成 6 个任务后，解锁最终挑战，测试你的 AI 知识！",
+  "items": {
+    "1": {
+      "title": "ChatGPT 是怎么读文字的？",
+      "short": "Token",
+      "desc": "学习文字如何被拆成 token。",
+      "skill": "Token 与分词"
+    },
+    "2": {
+      "title": "你能像 ChatGPT 一样预测吗？",
+      "short": "预测",
+      "desc": "用概率预测下一个 token。",
+      "skill": "下一个 token 预测"
+    },
+    "3": {
+      "title": "为什么 ChatGPT 会犯错？",
+      "short": "错误",
+      "desc": "认识幻觉和概率带来的错误。",
+      "skill": "概率与采样"
+    },
+    "4": {
+      "title": "为什么上下文很重要？",
+      "short": "上下文",
+      "desc": "看看更多信息如何改变回答。",
+      "skill": "上下文与含义"
+    },
+    "5": {
+      "title": "训练你自己的 AI",
+      "short": "训练数据",
+      "desc": "添加训练数据，观察模型如何变化。",
+      "skill": "训练数据影响"
+    },
+    "6": {
+      "title": "AI 会有偏见吗？",
+      "short": "偏见",
+      "desc": "探索数据偏见如何影响输出。",
+      "skill": "偏见与公平"
+    }
+  }
+}

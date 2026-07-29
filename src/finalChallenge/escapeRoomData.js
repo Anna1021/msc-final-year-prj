@@ -1,6 +1,5 @@
 export const ESCAPE_STORAGE_KEY = "aiExplorerEscapeRoomProgress";
 export const ESCAPE_PROGRESS_VERSION = 1;
-export const MAIN_PROGRESS_KEY = "aiExplorerProgress";
 
 export const tokenRoom = {
   id: "token",
@@ -9,9 +8,9 @@ export const tokenRoom = {
   crystalName: "Token Crystal",
   crystalId: "token",
   accent: "#9b6cff",
-  sentence: "AI learns from patterns!",
-  correctTokens: ["AI", "learns", "from", "patterns", "!"],
-  trayTokens: ["patterns", "AI", "pizza", "!", "from", "learns"],
+  sentence: "Models split text into tokens!",
+  correctTokens: ["Models", "split", "text", "into", "tokens", "!"],
+  trayTokens: ["tokens", "Models", "answers", "!", "text", "into", "split"],
   simulationNote: "Simplified tokenisation example. Different models may split text differently.",
   learningGoal: "A token may be a word, part of a word, or punctuation."
 };
@@ -25,23 +24,26 @@ export const rooms = [
   { id: "fairness", label: "Room 6", title: "Fairness Chamber", crystalId: "fairness", crystalName: "Fairness Crystal", accent: "#a855f7", locked: true }
 ];
 
-export const finalExitPanels = {
-  model: [
-    "Patterns learned from training data",
-    "Input tokens + relevant context",
-    "Next-token prediction",
+export const finalExitPuzzle = {
+  title: "Power the AI Brain Door",
+  steps: ["Place crystals", "Build text generation", "Add human checks"],
+  modelSequence: [
+    "Training data teaches patterns",
+    "Input becomes tokens + useful context",
+    "The model predicts next tokens",
     "Generated output"
   ],
-  human: [
-    "Generated output",
-    "May be inaccurate → Verify sources",
-    "May reflect bias → Check fairness",
+  humanReview: [
+    "Verify important facts",
+    "Check for bias",
     "Use AI critically"
-  ]
+  ],
+  completionMessage:
+    "LLMs generate text by predicting tokens from learned patterns. Their answers depend on training data and context, so they can be useful but also wrong or biased and should be checked critically."
 };
 
 export const tokenHintLevels = [
   "Start by rebuilding the sentence from left to right.",
   "A token can be a whole word, part of a word, or punctuation. One tray piece does not belong.",
-  "For this learning simulation, use: AI → learns → from → patterns → !"
+  "For this learning simulation, use: Models → split → text → into → tokens → !"
 ];

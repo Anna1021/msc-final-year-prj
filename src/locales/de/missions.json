@@ -1,0 +1,55 @@
+{
+  "missionLabel": "Mission {{id}}",
+  "missionOf": "Mission {{mission}} von 6",
+  "learningPath": "Lernpfad",
+  "allTitle": "Alle Missionen",
+  "allIntro": "Schließe Missionen Schritt für Schritt ab, um ChatGPT zu verstehen.\nSchließe alles ab, um die finale Challenge freizuschalten!",
+  "yourProgress": "Dein Fortschritt",
+  "missionsCompleted": "Missionen abgeschlossen",
+  "whatLearn": "Das lernst du",
+  "completePrevious": "Schließe zuerst Mission {{mission}} ab.",
+  "completeAllFirst": "Schließe zuerst alle 6 Missionen ab.",
+  "completeAllToUnlock": "Schließe alle 6 Missionen ab, um die finale Challenge freizuschalten.",
+  "finalChallenge": "Finale Challenge",
+  "finalTitle": "Finale Challenge: KI-Escape-Room",
+  "finalShort": "KI-Escape-Room",
+  "finalDesc": "Schließe alle 6 Missionen ab und teste dein KI-Wissen!",
+  "items": {
+    "1": {
+      "title": "Wie liest ChatGPT?",
+      "short": "Tokens",
+      "desc": "Lerne, wie Text in Tokens zerlegt wird.",
+      "skill": "Tokens und Tokenisierung"
+    },
+    "2": {
+      "title": "Kannst du wie ChatGPT denken?",
+      "short": "Vorhersage",
+      "desc": "Sage das nächste Token mit Wahrscheinlichkeit voraus.",
+      "skill": "Next-Token-Vorhersage"
+    },
+    "3": {
+      "title": "Warum macht ChatGPT Fehler?",
+      "short": "Fehler",
+      "desc": "Entdecke Halluzinationen und probabilistische Fehler.",
+      "skill": "Wahrscheinlichkeit und Sampling"
+    },
+    "4": {
+      "title": "Warum ist Kontext wichtig?",
+      "short": "Kontext",
+      "desc": "Sieh, wie hilfreiche Infos die Antwort verändern.",
+      "skill": "Kontext und Bedeutung"
+    },
+    "5": {
+      "title": "Trainiere deine eigene KI",
+      "short": "Trainingsdaten",
+      "desc": "Füge Trainingsdaten hinzu und sieh, wie sich das Modell verändert.",
+      "skill": "Einfluss von Trainingsdaten"
+    },
+    "6": {
+      "title": "Kann KI voreingenommen sein?",
+      "short": "Bias",
+      "desc": "Erkunde, wie Datenbias Ausgaben beeinflusst.",
+      "skill": "Bias und Fairness"
+    }
+  }
+}
