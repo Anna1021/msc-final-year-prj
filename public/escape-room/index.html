@@ -997,6 +997,11 @@
       padding: 14px;
       background: rgba(255,255,255,.06);
     }
+    .sequence-board.drop-ready {
+      border-color: rgba(255,229,106,.68);
+      background: rgba(255,229,106,.08);
+      box-shadow: 0 0 0 4px rgba(255,229,106,.08);
+    }
     .sequence-board h3 { margin-bottom: 4px; }
     .sequence-board p {
       color: rgba(232,223,255,.76);
@@ -1006,6 +1011,11 @@
     .sequence-slots, .sequence-tray {
       display: grid;
       gap: 8px;
+    }
+    .sequence-slots {
+      padding: 8px;
+      border-radius: 16px;
+      background: rgba(7,6,22,.18);
     }
     .sequence-slot, .sequence-piece {
       width: 100%;
@@ -1064,6 +1074,11 @@
       border-color: #ffe56a;
       background: rgba(255,229,106,.13);
       box-shadow: 0 0 0 4px rgba(255,229,106,.09), 0 0 22px rgba(255,229,106,.16);
+    }
+    .sequence-slot.drop-error {
+      border-style: solid;
+      border-color: rgba(255,90,118,.8);
+      background: rgba(255,90,118,.16);
     }
     .sequence-piece:disabled {
       opacity: .42;
@@ -1961,7 +1976,7 @@
         : allPlaced
           ? canTryFinal
             ? "Both consoles are full. Click Activate AI Brain. If the order feels wrong, use Reset cards."
-            : "Drag cards into the slots, or click a card to fill the next empty slot. Click a filled slot to remove it."
+            : "Drag each card into an empty slot. You can also click a card to fill the next empty slot. Click a filled slot to remove it."
           : allDone
             ? "Click each crystal chip. It will move into a slot around the AI Brain."
             : "The brain door needs every room crystal.";
@@ -2113,9 +2128,51 @@
         }
 
         state.exitFeedback = Array.from({ length: limit }, (_, index) => target[index]).filter(Boolean).length === limit
-          ? "This console is filled. Drag cards to change the order, or check the other console."
-          : "Card added. Keep filling the empty slots.";
+          ? "This console is filled. Drag cards to change the order, or fill the other console."
+          : "Card added to a slot. Keep filling the empty slots.";
         renderExit();
+      };
+
+      const readExitDragPayload = (event) => {
+        const json = event.dataTransfer.getData("application/x-ai-exit-piece");
+        if (json) {
+          try {
+            const payload = JSON.parse(json);
+            if (payload.kind && payload.piece) {
+              return {
+                kind: payload.kind,
+                piece: payload.piece,
+                fromIndex: payload.fromIndex === null || payload.fromIndex === undefined ? null : Number(payload.fromIndex)
+              };
+            }
+          } catch (error) {
+            // Fall back to text/plain below.
+          }
+        }
+        const raw = event.dataTransfer.getData("text/plain") || "";
+        const [kind, piece, fromIndex] = raw.split(":");
+        if (!kind || !piece) return null;
+        return { kind, piece, fromIndex: fromIndex === "" || fromIndex === undefined ? null : Number(fromIndex) };
+      };
+
+      const handleExitDrop = (event, boardKind, requestedIndex = null, visualTarget = null) => {
+        if (state.finalComplete) return;
+        event.preventDefault();
+        event.stopPropagation();
+        exitScreen.querySelectorAll(".drop-ready, .drop-error").forEach((node) => node.classList.remove("drop-ready", "drop-error"));
+        const payload = readExitDragPayload(event);
+        if (!payload) {
+          state.exitFeedback = "I could not read that card. Try dragging it again, or click it instead.";
+          renderExit();
+          return;
+        }
+        if (payload.kind !== boardKind) {
+          if (visualTarget) visualTarget.classList.add("drop-error");
+          state.exitFeedback = "That card belongs in the other console. Match the card to its console title.";
+          renderExit();
+          return;
+        }
+        placeExitPiece(boardKind, payload.piece, requestedIndex, payload.fromIndex);
       };
 
       exitScreen.querySelectorAll("[data-exit-piece]").forEach((button) => {
@@ -2178,6 +2235,7 @@
         button.addEventListener("dragover", (event) => {
           if (state.finalComplete) return;
           event.preventDefault();
+          event.stopPropagation();
           event.dataTransfer.dropEffect = "move";
           button.classList.add("drop-ready");
         });
@@ -2185,26 +2243,26 @@
           button.classList.remove("drop-ready");
         });
         button.addEventListener("drop", (event) => {
+          handleExitDrop(event, button.dataset.exitSlot, Number(button.dataset.index), button);
+        });
+      });
+      exitScreen.querySelectorAll(".sequence-board").forEach((board) => {
+        const firstSlot = board.querySelector("[data-exit-slot]");
+        if (!firstSlot) return;
+        const boardKind = firstSlot.dataset.exitSlot;
+        board.addEventListener("dragover", (event) => {
+          if (state.finalComplete) return;
           event.preventDefault();
-          button.classList.remove("drop-ready");
-          let payload = {};
-          try {
-            payload = JSON.parse(event.dataTransfer.getData("application/x-ai-exit-piece") || "{}");
-          } catch (error) {
-            payload = {};
-          }
-          if (!payload.kind || !payload.piece) {
-            const raw = event.dataTransfer.getData("text/plain") || "";
-            const [kind, piece, fromIndex] = raw.split(":");
-            payload = { kind, piece, fromIndex: fromIndex === "" || fromIndex === undefined ? null : Number(fromIndex) };
-          }
-          const slotKind = button.dataset.exitSlot;
-          if (payload.kind !== slotKind) {
-            state.exitFeedback = "Drop that card into the matching console.";
-            renderExit();
-            return;
-          }
-          placeExitPiece(slotKind, payload.piece, Number(button.dataset.index), payload.fromIndex ?? null);
+          event.dataTransfer.dropEffect = "move";
+          board.classList.add("drop-ready");
+        });
+        board.addEventListener("dragleave", (event) => {
+          if (!board.contains(event.relatedTarget)) board.classList.remove("drop-ready");
+        });
+        board.addEventListener("drop", (event) => {
+          const slot = event.target.closest("[data-exit-slot]");
+          if (slot && board.contains(slot)) return;
+          handleExitDrop(event, boardKind, null, board);
         });
       });
       exitScreen.querySelector("[data-action='complete']").addEventListener("click", () => {
