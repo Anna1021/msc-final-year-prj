@@ -2130,6 +2130,7 @@
         const target = exitTarget(kind);
         const limit = exitLimit(kind);
         const safeIndex = (value) => {
+          if (value === null || value === undefined || value === "") return null;
           const index = Number(value);
           return Number.isInteger(index) && index >= 0 && index < limit ? index : null;
         };
@@ -2352,6 +2353,8 @@
 	      const startX = event.clientX;
 	      const startY = event.clientY;
 	      let moved = false;
+	      let finished = false;
+	      let lastPoint = { clientX: startX, clientY: startY };
 	      try {
 	        sourceElement.setPointerCapture?.(event.pointerId);
 	      } catch (error) {
@@ -2368,6 +2371,8 @@
         };
 
         const finish = (dropEvent, cancelled = false) => {
+          if (finished) return;
+          finished = true;
           dropEvent.preventDefault?.();
           dropEvent.stopPropagation?.();
           window.removeEventListener("pointermove", onMove);
@@ -2391,7 +2396,9 @@
             return;
           }
 
-          const distance = Math.hypot(dropEvent.clientX - startX, dropEvent.clientY - startY);
+          const finalX = Number.isFinite(dropEvent.clientX) ? dropEvent.clientX : lastPoint.clientX;
+          const finalY = Number.isFinite(dropEvent.clientY) ? dropEvent.clientY : lastPoint.clientY;
+          const distance = Math.hypot(finalX - startX, finalY - startY);
           if (!moved || distance < 8) {
             suppressExitClick = true;
             window.setTimeout(() => { suppressExitClick = false; }, 0);
@@ -2412,7 +2419,7 @@
 
           suppressExitClick = true;
           window.setTimeout(() => { suppressExitClick = false; }, 0);
-          const target = findExitDropTarget(dropEvent.clientX, dropEvent.clientY, payload.kind) || rememberedTarget;
+          const target = rememberedTarget || findExitDropTarget(finalX, finalY, payload.kind);
           activeExitDrag = null;
           lastExitPointerTarget = null;
           if (!target) {
@@ -2431,6 +2438,7 @@
         const onMove = (moveEvent) => {
           moveEvent.preventDefault();
           moved = true;
+          lastPoint = { clientX: moveEvent.clientX, clientY: moveEvent.clientY };
           moveGhost(moveEvent.clientX, moveEvent.clientY);
           highlightExitPointerTarget(moveEvent.clientX, moveEvent.clientY, payload);
         };

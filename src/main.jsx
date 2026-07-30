@@ -1,84 +1,29 @@
 import React, { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { AlertTriangle, BrainCircuit, Database, Globe2, Lightbulb, Scale, ShieldCheck, TrendingUp, Users, Wrench } from "lucide-react";
+import { AlertTriangle, BadgeCheck, BrainCircuit, Database, Globe2, Lightbulb, Scale, ShieldCheck, TrendingUp, Users, Wrench } from "lucide-react";
 import "./styles.css";
 import FinalChallenge from "./finalChallenge/FinalChallenge.jsx";
 import LanguageSelector from "./components/LanguageSelector.jsx";
 import { LanguageProvider, translateMission, useI18n } from "./i18n/index.jsx";
-
-const STORAGE_KEY = "aiExplorerProgress";
-
-const missionData = [
-  { id: 1, title: "How does ChatGPT read?", short: "How does ChatGPT read?", desc: "Learn how text is broken into tokens.", route: "/mission/1-tokenisation", skill: "Tokens & Tokenisation", icon: "wand" },
-  { id: 2, title: "Can you think like ChatGPT?", short: "Can you think like ChatGPT?", desc: "Predict the next token using probability.", route: "/mission/2-next-token", skill: "Next-token Prediction", icon: "bolt" },
-  { id: 3, title: "Why does ChatGPT make mistakes?", short: "Why does ChatGPT make mistakes?", desc: "Discover hallucinations and probabilistic errors.", route: "/mission/3-hallucination", skill: "Probability & Sampling", icon: "question" },
-  { id: 4, title: "Why does context matter?", short: "Why does context matter?", desc: "See how earlier words change the meaning.", route: "/mission/4-context", skill: "Context & Meaning", icon: "link" },
-  { id: 5, title: "Train your own AI", short: "Train your own AI", desc: "Add training data and see how it changes the model.", route: "/mission/5-training-data", skill: "Training Data Influence", icon: "database" },
-  { id: 6, title: "Can AI be biased?", short: "Can AI be biased?", desc: "Explore how bias in data leads to biased outputs.", route: "/mission/6-bias", skill: "Bias & Fairness", icon: "scale" }
-];
-
-const questions = [
-  { context: "The cat sat on the", display: "The cat sat on the ____.", options: ["mat", "moon", "pizza", "computer"], correct: "mat", base: { mat: 72, floor: 18, chair: 7, pizza: 3 } },
-  { context: "I drink coffee every", display: "I drink coffee every ____.", options: ["morning", "planet", "shoe", "keyboard"], correct: "morning", base: { morning: 68, day: 17, night: 10, week: 5 } },
-  { context: "She opened the book and started to", display: "She opened the book and started to ____.", options: ["read", "swim", "melt", "sleep"], correct: "read", base: { read: 64, write: 16, learn: 12, sleep: 8 } },
-  { context: "The teacher wrote on the", display: "The teacher wrote on the ____.", options: ["board", "cloud", "sandwich", "moon"], correct: "board", base: { board: 70, paper: 17, screen: 9, wall: 4 } },
-  { context: "For homework, check your", display: "For homework, check your ____.", options: ["answer", "banana", "spaceship", "pillow"], correct: "answer", base: { answer: 62, work: 20, source: 13, spelling: 5 } },
-  { context: "The dog chased the", display: "The dog chased the ____.", options: ["ball", "planet", "keyboard", "cloud"], correct: "ball", base: { ball: 66, cat: 15, stick: 12, car: 7 } },
-  { context: "Please close the", display: "Please close the ____.", options: ["door", "banana", "river", "idea"], correct: "door", base: { door: 74, window: 17, book: 6, file: 3 } },
-  { context: "She wore a warm", display: "She wore a warm ____.", options: ["coat", "computer", "pizza", "question"], correct: "coat", base: { coat: 69, jacket: 18, scarf: 10, hat: 3 } }
-];
-
-const detectiveCards = ["Penguins can fly.", "The Sun is made of ice.", "Water freezes at 0°C.", "The Moon orbits Earth."];
-const detectiveTrueFacts = ["Water freezes at 0°C.", "The Moon orbits Earth."];
-const detectiveFalseFacts = ["Penguins can fly.", "The Sun is made of ice."];
-
-function shuffleList(items) {
-  return [...items].sort(() => Math.random() - 0.5);
-}
-
-function defaultProgress() {
-  return {
-    missions: Object.fromEntries(missionData.map((m) => [m.id, { progress: 0, completed: false }]))
-  };
-}
-
-function readProgress() {
-  const base = defaultProgress();
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-    return { ...base, ...saved, missions: { ...base.missions, ...(saved.missions || {}) } };
-  } catch {
-    return base;
-  }
-}
-
-function writeProgress(next) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-}
-
-function readLearningNotes() {
-  try {
-    const notes = JSON.parse(localStorage.getItem("aiExplorerLearningNotes") || "[]");
-    if (Array.isArray(notes)) return notes;
-  } catch {
-    // Ignore malformed local notes and fall back to an empty list.
-  }
-  return [];
-}
-
-function saveLearningNote(note) {
-  const notes = readLearningNotes();
-  const next = [
-    { ...note, savedAt: new Date().toISOString() },
-    ...notes.filter((item) => item.id !== note.id)
-  ];
-  localStorage.setItem("aiExplorerLearningNotes", JSON.stringify(next));
-  return next;
-}
-
-function completedCount(progress) {
-  return missionData.filter((mission) => progress.missions[mission.id]?.completed).length;
-}
+import {
+  detectiveCards,
+  detectiveFalseFacts,
+  detectiveTrueFacts,
+  missionData,
+  nextTokenQuestions as questions,
+  shuffleList
+} from "./data/courseData.js";
+import {
+  activityRecords,
+  completedCount,
+  defaultProgress,
+  isUnlocked,
+  readLearningNotes,
+  readProgress,
+  saveLearningNote,
+  writeProgress
+} from "./state/progress.js";
+import { routeGroup } from "./utils/routes.js";
 
 function Icon({ name, className = "" }) {
   const paths = {
@@ -248,13 +193,6 @@ function Sidebar({ route, progress, navigate }) {
   </aside>;
 }
 
-function routeGroup(route) {
-  if (route === "/" || route === "/dashboard") return "dashboard";
-  if (route === "/missions" || route.startsWith("/mission") || route === "/final-challenge") return "missions";
-  if (route === "/activity" || route.startsWith("/progress")) return "progress";
-  return route.replace("/", "") || "dashboard";
-}
-
 function TopBar({ route, progress, navigate, notify, resetProgress }) {
   const { t } = useI18n();
   const isMission = route.startsWith("/mission/") || route === "/final-challenge";
@@ -315,10 +253,6 @@ function Dashboard({ progress, navigate, notify }) {
 
 function Why({ icon, title, text, tone = "purple" }) {
   return <button className="why-item"><StickerIcon name={icon} tone={tone} /><strong>{title}</strong><small>{text}</small></button>;
-}
-
-function isUnlocked(progress, id) {
-  return id === 1 || progress.missions[id - 1]?.completed;
 }
 
 function PathStatus({ type, children }) {
@@ -392,18 +326,6 @@ function ProgressActivity({ progress, navigate, notify }) {
   });
   if (!activities.length) activities.push(["wand", "Ready to start", "Begin Mission 1 to build your first concept.", "Start", "/mission/1-tokenisation", "Today"]);
   return <div className="card progress-activity"><div className="section-heading"><div><p className="eyebrow">Activity</p><h2>Recent learning</h2></div><button onClick={() => navigate("/activity")}>View all</button></div>{activities.slice(0, 5).map((item, index) => <button key={index} onClick={() => navigate(item[4])}><Icon name={item[0]} /><span><b>{item[1]}</b><small>{item[2]}</small></span><em>{item[3]}<small>{item[5]}</small></em></button>)}</div>;
-}
-
-function activityRecords(progress) {
-  const missionRecords = missionData.flatMap((mission) => {
-    const state = progress.missions[mission.id];
-    if (state.completed) return [{ type: "Missions", title: "Completed Mission " + mission.id, detail: translateMission(mission, "title"), route: mission.route, time: "Today" }];
-    if (state.progress > 0) return [{ type: "Missions", title: "Worked on Mission " + mission.id, detail: translateMission(mission, "title"), route: mission.route, time: "Today" }];
-    return [];
-  });
-  const noteRecords = readLearningNotes().map((note) => ({ type: "Notes", title: note.title || "Saved reflection", detail: note.text || note.answer || "Reflection saved", route: "/activity", time: note.savedAt ? new Date(note.savedAt).toLocaleDateString() : "Saved" }));
-  const fallback = [{ type: "System", title: "Learning path ready", detail: "Start Mission 1 when you are ready.", route: "/mission/1-tokenisation", time: "Today" }];
-  return [...missionRecords, ...noteRecords, ...(missionRecords.length || noteRecords.length ? [] : fallback)].map((item, index) => ({ id: index + 1, ...item }));
 }
 
 function ActivityPage({ progress, navigate, notify }) {
