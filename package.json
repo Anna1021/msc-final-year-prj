@@ -9,9 +9,20 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build && node scripts/create-spa-route-fallbacks.mjs",
-    "preview": "vite preview --host 127.0.0.1"
+    "preview": "vite preview --host 127.0.0.1",
+    "tokenizer:validate": "node scripts/validate-qwen-tokenizer.mjs",
+    "tokenizer:fixtures": "node scripts/generate-qwen-tokenizer-fixtures.mjs",
+    "test:tokenizer": "node scripts/test-qwen-tokenizer.mjs",
+    "test:mission1": "node scripts/test-mission1.mjs",
+    "token-lab:fixtures": "node scripts/generate-token-lab-fixtures.mjs",
+    "test:token-lab": "node scripts/test-token-lab.mjs",
+    "test:numbers-stage": "node scripts/test-numbers-stage.mjs",
+    "test:context-stage": "node scripts/test-context-stage.mjs",
+    "test:prediction-stage": "node scripts/test-prediction-stage.mjs",
+    "test:compare-stage": "node scripts/test-compare-stage.mjs"
   },
   "dependencies": {
+    "@huggingface/tokenizers": "0.1.3",
     "@vitejs/plugin-react": "^4.3.4",
     "lucide-react": "^1.24.0",
     "react": "^19.0.0",

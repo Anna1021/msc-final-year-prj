@@ -23,6 +23,9 @@
     "welcomeLead": "Bereit für dein nächstes KI-Abenteuer?",
     "welcomeCopy": "Mach dort weiter, wo du aufgehört hast, oder erkunde etwas Neues.",
     "continueLearning": "Weiterlernen",
+    "completeStatus": "Du hast alle sechs Missionen abgeschlossen. Die finale Herausforderung ist bereit.",
+    "nextMission": "Als Nächstes: {{title}}.",
+    "startFinalChallenge": "Finale Herausforderung starten",
     "continueMission": "Mission fortsetzen",
     "learningPath": "Lernpfad",
     "whyTitle": "Warum lernen, wie ChatGPT funktioniert?",
@@ -73,7 +76,6 @@
   },
   "profile": {
     "name": "Explorer",
-    "level": "Level {{level}}",
     "tipTitle": "Tipp des Tages",
     "tipCopy": "ChatGPT sagt Token für Token voraus, nicht ganze Sätze auf einmal!",
     "missionsComplete": "{{completed}} / {{total}} Missionen abgeschlossen"
@@ -120,9 +122,7 @@
     "noNotesTitle": "Noch keine Notizen",
     "noNotesCopy": "Speichere in einer Mission eine Reflexion, dann erscheint sie hier.",
     "summary": "Aktivitätsübersicht",
-    "thisWeek": "Diese Woche (12. Mai - 18. Mai)",
     "totalActivities": "Aktivitäten gesamt",
-    "quizzesTaken": "Quizze abgeschlossen",
     "notesSaved": "Notizen gespeichert",
     "filterActivity": "Aktivitäten filtern",
     "clearAll": "Alles löschen",

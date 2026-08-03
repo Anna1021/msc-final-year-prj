@@ -14,9 +14,9 @@ The project has evolved from separate static HTML pages into a React single-page
 - Mission 4: Context, currently a functional draft.
 - Mission 5: Training data, split into get data, learn patterns, and make predictions pages.
 - Mission 6: Bias, currently a functional draft.
-- Progress and Activity pages that prototype learner records, saved reflections, XP, and badge-style rewards.
+- Progress and Activity pages that show mission completion, learning activity, and saved reflections.
 
-Some surrounding features such as XP, badges, and activity records are design prototypes rather than final learning analytics. They are included to explore how the tool might motivate learners and make progress visible, but still need evaluation and refinement.
+Activity records are intentionally lightweight and are based on real mission progress. The interface does not present inferred learning time or placeholder reward totals as learner analytics.
 
 ## Technology
 

@@ -9,7 +9,10 @@ const sourceIndex = path.join(distDir, "index.html");
 const routes = [
   "dashboard",
   "missions",
+  "ai-lab",
+  "token-lab",
   "progress",
+  "activity",
   "about",
   "profile",
   "badges",

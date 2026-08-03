@@ -23,6 +23,9 @@
     "welcomeLead": "准备继续你的 AI 学习冒险了吗？",
     "welcomeCopy": "从上次的位置继续，或探索新的内容。",
     "continueLearning": "继续学习",
+    "completeStatus": "你已经完成全部六个任务。最终挑战已准备好。",
+    "nextMission": "下一步：{{title}}。",
+    "startFinalChallenge": "开始最终挑战",
     "continueMission": "继续任务",
     "learningPath": "学习路径",
     "whyTitle": "为什么要学习 ChatGPT 的工作方式？",
@@ -73,7 +76,6 @@
   },
   "profile": {
     "name": "探索者",
-    "level": "等级 {{level}}",
     "tipTitle": "今日提示",
     "tipCopy": "ChatGPT 是一个 token 一个 token 地预测，而不是一次读完整个句子！",
     "missionsComplete": "已完成 {{completed}} / {{total}} 个任务"
@@ -120,9 +122,7 @@
     "noNotesTitle": "还没有笔记",
     "noNotesCopy": "在任务里保存一条反思，它就会出现在这里。",
     "summary": "活动概览",
-    "thisWeek": "本周（5 月 12 日 - 5 月 18 日）",
     "totalActivities": "活动总数",
-    "quizzesTaken": "完成测验",
     "notesSaved": "保存笔记",
     "filterActivity": "筛选活动",
     "clearAll": "清空",

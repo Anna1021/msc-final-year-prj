@@ -23,6 +23,9 @@
     "welcomeLead": "Ready to continue your AI learning adventure?",
     "welcomeCopy": "Pick up where you left off or explore something new.",
     "continueLearning": "Continue Learning",
+    "completeStatus": "You have completed all six missions. Your Final Challenge is ready.",
+    "nextMission": "Next: {{title}}.",
+    "startFinalChallenge": "Start Final Challenge",
     "continueMission": "Continue Mission",
     "learningPath": "Learning Path",
     "whyTitle": "Why Learn About How ChatGPT Works?",
@@ -73,7 +76,6 @@
   },
   "profile": {
     "name": "Explorer",
-    "level": "Level {{level}}",
     "tipTitle": "Tip of the day",
     "tipCopy": "ChatGPT predicts tokens one by one, not whole sentences!",
     "missionsComplete": "{{completed}} / {{total}} missions complete"
@@ -120,9 +122,7 @@
     "noNotesTitle": "No notes yet",
     "noNotesCopy": "Save a reflection inside a mission and it will appear here.",
     "summary": "Activity Summary",
-    "thisWeek": "This Week (May 12 - May 18)",
     "totalActivities": "Total Activities",
-    "quizzesTaken": "Quizzes Taken",
     "notesSaved": "Notes Saved",
     "filterActivity": "Filter Activity",
     "clearAll": "Clear all",
