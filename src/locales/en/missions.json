@@ -1,55 +1,14 @@
 {
-  "missionLabel": "Mission {{id}}",
-  "missionOf": "Mission {{mission}} of 6",
-  "learningPath": "Learning Path",
-  "allTitle": "All Missions",
-  "allIntro": "Complete missions step by step to understand how ChatGPT works.\nFinish all missions to unlock the Final Challenge!",
-  "yourProgress": "Your Progress",
-  "missionsCompleted": "Missions Completed",
-  "whatLearn": "What You’ll Learn",
-  "completePrevious": "Complete Mission {{mission}} first.",
-  "completeAllFirst": "Complete all 6 missions first.",
-  "completeAllToUnlock": "Complete all 6 missions to unlock the Final Challenge.",
-  "finalChallenge": "Final Challenge",
-  "finalTitle": "Final Challenge: AI Literacy Escape Room",
-  "finalShort": "AI Literacy Escape Room",
-  "finalDesc": "Complete all 6 missions to unlock the final challenge and test your AI knowledge!",
+  "missionLabel": "Mission {{id}}", "missionOf": "Mission {{mission}} of 5", "learningPath": "Learning Path", "allTitle": "All Missions",
+  "allIntro": "Complete five missions to explore how language models process text, predict and learn.\nFinish all missions to unlock the Final Challenge!",
+  "yourProgress": "Your Progress", "missionsCompleted": "Missions Completed", "whatLearn": "What You’ll Learn",
+  "completePrevious": "Complete Mission {{mission}} first.", "completeAllFirst": "Complete all 5 missions first.", "completeAllToUnlock": "Complete all 5 missions to unlock the Final Challenge.",
+  "finalChallenge": "Final Challenge", "finalTitle": "Final Challenge: AI Literacy Escape Room", "finalShort": "AI Literacy Escape Room", "finalDesc": "Complete all 5 missions to unlock the final challenge and test your AI knowledge!",
   "items": {
-    "1": {
-      "title": "How does ChatGPT read?",
-      "short": "Tokens",
-      "desc": "Learn how text is broken into tokens.",
-      "skill": "Tokens & Tokenisation"
-    },
-    "2": {
-      "title": "Can you think like ChatGPT?",
-      "short": "Prediction",
-      "desc": "Predict the next token using probability.",
-      "skill": "Next-token Prediction"
-    },
-    "3": {
-      "title": "Why does ChatGPT make mistakes?",
-      "short": "Mistakes",
-      "desc": "Discover hallucinations and probabilistic errors.",
-      "skill": "Probability & Sampling"
-    },
-    "4": {
-      "title": "Why does context matter?",
-      "short": "Context",
-      "desc": "See how extra information changes the answer.",
-      "skill": "Context & Meaning"
-    },
-    "5": {
-      "title": "Train your own AI",
-      "short": "Training Data",
-      "desc": "Add training data and see how it changes the model.",
-      "skill": "Training Data Influence"
-    },
-    "6": {
-      "title": "Can AI be biased?",
-      "short": "Bias",
-      "desc": "Explore how bias in data leads to biased outputs.",
-      "skill": "Bias & Fairness"
-    }
+    "1": { "title": "How does a language model process text?", "short": "Text processing", "desc": "Explore tokens and numerical representations.", "skill": "Tokens & Numerical Representations" },
+    "2": { "title": "Which words can a language model see?", "short": "Reading context", "desc": "Explore the context window and the text available to the model.", "skill": "Reading Context" },
+    "3": { "title": "Which words help a language model most?", "short": "Finding clues", "desc": "Explore how useful clues connect across the current context.", "skill": "Finding Helpful Clues" },
+    "4": { "title": "How does a language model choose what comes next?", "short": "Next-token prediction", "desc": "Compare possible next Tokens, their chances and one-Token-at-a-time generation.", "skill": "Predicting the Next Token" },
+    "5": { "title": "How does a language model learn from examples?", "short": "Training", "desc": "Follow prediction, correction and repetition to see how useful patterns are learned.", "skill": "Learning from Training Examples" }
   }
 }

@@ -1,55 +1,14 @@
 {
-  "missionLabel": "Mission {{id}}",
-  "missionOf": "Mission {{mission}} sur 6",
-  "learningPath": "Parcours",
-  "allTitle": "Toutes les missions",
-  "allIntro": "Terminez les missions étape par étape pour comprendre ChatGPT.\nTerminez tout pour débloquer le défi final !",
-  "yourProgress": "Votre progrès",
-  "missionsCompleted": "Missions terminées",
-  "whatLearn": "Ce que vous apprendrez",
-  "completePrevious": "Terminez d’abord la mission {{mission}}.",
-  "completeAllFirst": "Terminez d’abord les 6 missions.",
-  "completeAllToUnlock": "Terminez les 6 missions pour débloquer le défi final.",
-  "finalChallenge": "Défi final",
-  "finalTitle": "Défi final : Escape Room de culture IA",
-  "finalShort": "Escape Room IA",
-  "finalDesc": "Terminez les 6 missions pour tester vos connaissances IA !",
+  "missionLabel": "Mission {{id}}", "missionOf": "Mission {{mission}} sur 5", "learningPath": "Parcours", "allTitle": "Toutes les missions",
+  "allIntro": "Termine cinq missions pour explorer comment les modèles de langage traitent le texte, prédisent et apprennent.\nTermine tout pour débloquer le défi final !",
+  "yourProgress": "Votre progrès", "missionsCompleted": "Missions terminées", "whatLearn": "Ce que vous apprendrez",
+  "completePrevious": "Terminez d’abord la mission {{mission}}.", "completeAllFirst": "Terminez d’abord les 5 missions.", "completeAllToUnlock": "Terminez les 5 missions pour débloquer le défi final.",
+  "finalChallenge": "Défi final", "finalTitle": "Défi final : Escape Room de culture IA", "finalShort": "Escape Room IA", "finalDesc": "Terminez les 5 missions pour tester vos connaissances IA !",
   "items": {
-    "1": {
-      "title": "Comment ChatGPT lit-il ?",
-      "short": "Tokens",
-      "desc": "Découvrez comment le texte est découpé en tokens.",
-      "skill": "Tokens et tokenisation"
-    },
-    "2": {
-      "title": "Pouvez-vous penser comme ChatGPT ?",
-      "short": "Prédiction",
-      "desc": "Prédisez le prochain token avec des probabilités.",
-      "skill": "Prédiction du token suivant"
-    },
-    "3": {
-      "title": "Pourquoi ChatGPT fait-il des erreurs ?",
-      "short": "Erreurs",
-      "desc": "Découvrez les hallucinations et les erreurs probabilistes.",
-      "skill": "Probabilité et échantillonnage"
-    },
-    "4": {
-      "title": "Pourquoi le contexte compte-t-il ?",
-      "short": "Contexte",
-      "desc": "Voyez comment des informations utiles changent la réponse.",
-      "skill": "Contexte et sens"
-    },
-    "5": {
-      "title": "Entraînez votre propre IA",
-      "short": "Données",
-      "desc": "Ajoutez des données et observez comment le modèle change.",
-      "skill": "Influence des données"
-    },
-    "6": {
-      "title": "L’IA peut-elle être biaisée ?",
-      "short": "Biais",
-      "desc": "Explorez comment les biais des données influencent les sorties.",
-      "skill": "Biais et équité"
-    }
+    "1": { "title": "Comment un modèle de langage traite-t-il le texte ?", "short": "Traitement du texte", "desc": "Explore les tokens et les représentations numériques.", "skill": "Tokens et représentations numériques" },
+    "2": { "title": "Quels mots un modèle de langage peut-il voir ?", "short": "Lire le contexte", "desc": "Explore la fenêtre de contexte et le texte disponible pour le modèle.", "skill": "Lire le contexte" },
+    "3": { "title": "Quels mots aident le plus un modèle de langage ?", "short": "Trouver les indices", "desc": "Explore comment les indices utiles se relient dans le contexte actuel.", "skill": "Trouver les indices utiles" },
+    "4": { "title": "Comment un modèle choisit-il la suite ?", "short": "Prédiction du prochain jeton", "desc": "Compare les jetons possibles, leurs chances et la génération jeton par jeton.", "skill": "Prédire le prochain jeton" },
+    "5": { "title": "Comment un modèle apprend-il avec des exemples ?", "short": "Entraînement", "desc": "Suis la prédiction, la correction et la répétition pour voir comment des schémas sont appris.", "skill": "Apprendre avec des exemples" }
   }
 }

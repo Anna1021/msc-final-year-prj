@@ -1,10 +1,9 @@
 export const missionData = [
-  { id: 1, title: "How does ChatGPT read?", short: "How does ChatGPT read?", desc: "Learn how text is broken into tokens.", route: "/mission/1-tokenisation", skill: "Tokens & Tokenisation", icon: "wand" },
-  { id: 2, title: "Can you think like ChatGPT?", short: "Can you think like ChatGPT?", desc: "Predict the next token using probability.", route: "/mission/2-next-token", skill: "Next-token Prediction", icon: "bolt" },
-  { id: 3, title: "Why does ChatGPT make mistakes?", short: "Why does ChatGPT make mistakes?", desc: "Discover hallucinations and probabilistic errors.", route: "/mission/3-hallucination", skill: "Probability & Sampling", icon: "question" },
-  { id: 4, title: "Why does context matter?", short: "Why does context matter?", desc: "See how earlier words change the meaning.", route: "/mission/4-context", skill: "Context & Meaning", icon: "link" },
-  { id: 5, title: "Train your own AI", short: "Train your own AI", desc: "Add training data and see how it changes the model.", route: "/mission/5-training-data", skill: "Training Data Influence", icon: "database" },
-  { id: 6, title: "Can AI be biased?", short: "Can AI be biased?", desc: "Explore how bias in data leads to biased outputs.", route: "/mission/6-bias", skill: "Bias & Fairness", icon: "scale" }
+  { id: 1, order: 1, title: "How does a language model process text?", short: "Text processing", desc: "Explore tokens and numerical representations.", route: "/mission/1-tokenisation-paged", skill: "Tokens & Numerical Representations", icon: "wand" },
+  { id: 2, order: 2, title: "Which words can a language model see?", short: "Reading context", desc: "Explore the context window and the text available to the model.", route: "/mission/2-prediction-paged", skill: "Reading Context", icon: "bolt" },
+  { id: 3, order: 3, title: "Which words help a language model most?", short: "Finding clues", desc: "Explore how useful clues connect across the current context.", route: "/mission/3-hallucination-paged", skill: "Finding Helpful Clues", icon: "question" },
+  { id: 5, order: 4, title: "How does a language model choose what comes next?", short: "Next-token prediction", desc: "Compare possible next Tokens, their chances and one-Token-at-a-time generation.", route: "/mission/4-training-data-paged", skill: "Predicting the Next Token", icon: "database" },
+  { id: 6, order: 5, title: "How does a language model learn from examples?", short: "Training", desc: "Follow prediction, correction and repetition to see how useful patterns are learned.", route: "/mission/5-bias-paged", skill: "Learning from Training Examples", icon: "database" }
 ];
 
 export const nextTokenQuestions = [

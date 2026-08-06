@@ -8,6 +8,14 @@ export const predictionExamples=[
 ];
 export const predictionContinuationSets=[[[" and",38],[".",32],[" with",18],[" because",12]],[[" the",44],[" a",28],[" two",17],[" bright",11]],[[" friends",36],[" story",29],[" game",23],[" robot",12]],[[".",55],["!",21],[" today",16],[" again",8]]];
 
+// Reviewed classroom examples only. These probabilities are not Qwen output.
+export const greedyTeachingExamples={
+en:{prompt:"I feel very",candidates:[[" happy",46],[" tired",27],[" excited",17],[" nervous",10]]},
+zh:{prompt:"我今天感到很",candidates:[["开心",46],["累",27],["兴奋",17],["紧张",10]]},
+fr:{prompt:"Aujourd’hui, je me sens très",candidates:[[" heureux",46],[" fatigué",27],[" enthousiaste",17],[" nerveux",10]]},
+de:{prompt:"Heute fühle ich mich sehr",candidates:[[" glücklich",46],[" müde",27],[" aufgeregt",17],[" nervös",10]]}
+};
+
 export function transformProbabilities(candidates,temperature=50){const power=temperature<50?1.8-temperature/62.5:1-(temperature-50)/125;const weights=candidates.map(([,p])=>p**power);const total=weights.reduce((a,b)=>a+b,0);const raw=weights.map(value=>value/total*100);const rounded=raw.map(Math.round);rounded[0]+=100-rounded.reduce((a,b)=>a+b,0);return candidates.map(([token],index)=>({token,probability:rounded[index]}))}
 export function weightedChoice(distribution,random=Math.random){let point=random()*100;for(const item of distribution){point-=item.probability;if(point<0)return item.token}return distribution.at(-1).token}
 export function likelihood(probability){return probability>=45?"more":probability>=15?"possible":"less"}

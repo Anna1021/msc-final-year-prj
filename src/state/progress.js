@@ -2,9 +2,18 @@ import { missionData } from "../data/courseData.js";
 
 export const STORAGE_KEY = "aiExplorerProgress";
 export const NOTES_STORAGE_KEY = "aiExplorerLearningNotes";
+export const CURRICULUM_VERSION = 2;
+
+function cleanMissionState(saved = {}) {
+  const completed = saved.completed === true;
+  const numericProgress = Number(saved.progress);
+  const progress = completed ? 100 : Number.isFinite(numericProgress) ? Math.min(100, Math.max(0, numericProgress)) : 0;
+  return { progress, completed };
+}
 
 export function defaultProgress() {
   return {
+    curriculumVersion: CURRICULUM_VERSION,
     missions: Object.fromEntries(missionData.map((mission) => [mission.id, { progress: 0, completed: false }]))
   };
 }
@@ -12,14 +21,26 @@ export function defaultProgress() {
 export function normaliseProgress(raw) {
   const base = defaultProgress();
   const savedMissions = raw && typeof raw === "object" && raw.missions && typeof raw.missions === "object" ? raw.missions : {};
+  if (raw?.curriculumVersion === CURRICULUM_VERSION) return {
+    curriculumVersion: CURRICULUM_VERSION,
+    missions: Object.fromEntries(missionData.map((mission) => [mission.id, cleanMissionState(savedMissions[mission.id])]))
+  };
+
+  const old2 = cleanMissionState(savedMissions[2]);
+  const old4 = cleanMissionState(savedMissions[4]);
+  const combinedMission2 = {
+    completed: old2.completed && old4.completed,
+    progress: old2.completed && old4.completed ? 100 : Math.round((old2.progress + old4.progress) / 2)
+  };
   return {
-    missions: Object.fromEntries(missionData.map((mission) => {
-      const saved = savedMissions[mission.id] && typeof savedMissions[mission.id] === "object" ? savedMissions[mission.id] : {};
-      const completed = saved.completed === true;
-      const numericProgress = Number(saved.progress);
-      const progress = completed ? 100 : Number.isFinite(numericProgress) ? Math.min(100, Math.max(0, numericProgress)) : 0;
-      return [mission.id, { progress, completed }];
-    }))
+    curriculumVersion: CURRICULUM_VERSION,
+    missions: {
+      1: cleanMissionState(savedMissions[1]),
+      2: combinedMission2,
+      3: cleanMissionState(savedMissions[3]),
+      5: cleanMissionState(savedMissions[5]),
+      6: cleanMissionState(savedMissions[6])
+    }
   };
 }
 
@@ -60,12 +81,26 @@ export function completedCount(progress) {
 }
 
 export function isUnlocked(progress, id) {
-  if (id === 1) return true;
-  return progress.missions[id - 1]?.completed;
+  return missionData.some((mission) => mission.id === id);
 }
 
-export function canAccessMission(progress, id, qaMode = false) {
-  return qaMode || isUnlocked(progress, id);
+export function canAccessMission(_progress, id, _qaMode = false) {
+  return missionData.some((mission) => mission.id === id);
+}
+
+export function recommendedMissionId(progress) {
+  return missionData.find((mission) => !progress.missions[mission.id]?.completed)?.id ?? null;
+}
+
+export function missionLearningState(progress, id, visitedIds = []) {
+  const missionState = progress.missions[id] || { progress: 0, completed: false };
+  return {
+    available: canAccessMission(progress, id),
+    recommended: recommendedMissionId(progress) === id,
+    visited: visitedIds instanceof Set ? visitedIds.has(id) : visitedIds.includes?.(id) === true,
+    activityComplete: missionState.progress > 0 || missionState.completed,
+    missionComplete: missionState.completed === true
+  };
 }
 
 export function canAccessFinalChallenge(progress, qaMode = false) {
@@ -78,7 +113,7 @@ export function activityRecords(progress, notes = readLearningNotes()) {
     if (state.completed) {
       return [{
         type: "Missions",
-        title: `Completed Mission ${mission.id}`,
+        title: `Completed Mission ${mission.order}`,
         detail: mission.title,
         route: mission.route,
         time: "Today"
@@ -87,7 +122,7 @@ export function activityRecords(progress, notes = readLearningNotes()) {
     if (state.progress > 0) {
       return [{
         type: "Missions",
-        title: `Worked on Mission ${mission.id}`,
+        title: `Worked on Mission ${mission.order}`,
         detail: mission.title,
         route: mission.route,
         time: "Today"
@@ -108,7 +143,7 @@ export function activityRecords(progress, notes = readLearningNotes()) {
     type: "System",
     title: "Learning path ready",
     detail: "Start Mission 1 when you are ready.",
-    route: "/mission/1-tokenisation",
+    route: "/mission/1-tokenisation-paged",
     time: "Today"
   }];
 

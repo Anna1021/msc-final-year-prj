@@ -23,7 +23,7 @@
     "welcomeLead": "Ready to continue your AI learning adventure?",
     "welcomeCopy": "Pick up where you left off or explore something new.",
     "continueLearning": "Continue Learning",
-    "completeStatus": "You have completed all six missions. Your Final Challenge is ready.",
+    "completeStatus": "You have completed all five missions. Your Final Challenge is ready.",
     "nextMission": "Next: {{title}}.",
     "startFinalChallenge": "Start Final Challenge",
     "continueMission": "Continue Mission",
@@ -32,7 +32,7 @@
     "finalTitle": "Finish all missions to become an AI Literacy Explorer!",
     "finalCopy": "Complete the Final Challenge and earn your certificate.",
     "seeFinalChallenge": "See Final Challenge",
-    "unlockFinal": "Complete all 6 missions to unlock the Final Challenge."
+    "unlockFinal": "Complete all 5 missions to unlock the Final Challenge."
   },
   "why": {
     "responsibleTitle": "Use AI Responsibly",

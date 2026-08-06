@@ -1,55 +1,14 @@
 {
-  "missionLabel": "Mission {{id}}",
-  "missionOf": "Mission {{mission}} von 6",
-  "learningPath": "Lernpfad",
-  "allTitle": "Alle Missionen",
-  "allIntro": "Schließe Missionen Schritt für Schritt ab, um ChatGPT zu verstehen.\nSchließe alles ab, um die finale Challenge freizuschalten!",
-  "yourProgress": "Dein Fortschritt",
-  "missionsCompleted": "Missionen abgeschlossen",
-  "whatLearn": "Das lernst du",
-  "completePrevious": "Schließe zuerst Mission {{mission}} ab.",
-  "completeAllFirst": "Schließe zuerst alle 6 Missionen ab.",
-  "completeAllToUnlock": "Schließe alle 6 Missionen ab, um die finale Challenge freizuschalten.",
-  "finalChallenge": "Finale Challenge",
-  "finalTitle": "Finale Challenge: KI-Escape-Room",
-  "finalShort": "KI-Escape-Room",
-  "finalDesc": "Schließe alle 6 Missionen ab und teste dein KI-Wissen!",
+  "missionLabel": "Mission {{id}}", "missionOf": "Mission {{mission}} von 5", "learningPath": "Lernpfad", "allTitle": "Alle Missionen",
+  "allIntro": "Schließe fünf Missionen ab und erkunde, wie Sprachmodelle Text verarbeiten, vorhersagen und lernen.\nSchließe alles ab, um die finale Challenge freizuschalten!",
+  "yourProgress": "Dein Fortschritt", "missionsCompleted": "Missionen abgeschlossen", "whatLearn": "Das lernst du",
+  "completePrevious": "Schließe zuerst Mission {{mission}} ab.", "completeAllFirst": "Schließe zuerst alle 5 Missionen ab.", "completeAllToUnlock": "Schließe alle 5 Missionen ab, um die finale Challenge freizuschalten.",
+  "finalChallenge": "Finale Challenge", "finalTitle": "Finale Challenge: KI-Escape-Room", "finalShort": "KI-Escape-Room", "finalDesc": "Schließe alle 5 Missionen ab und teste dein KI-Wissen!",
   "items": {
-    "1": {
-      "title": "Wie liest ChatGPT?",
-      "short": "Tokens",
-      "desc": "Lerne, wie Text in Tokens zerlegt wird.",
-      "skill": "Tokens und Tokenisierung"
-    },
-    "2": {
-      "title": "Kannst du wie ChatGPT denken?",
-      "short": "Vorhersage",
-      "desc": "Sage das nächste Token mit Wahrscheinlichkeit voraus.",
-      "skill": "Next-Token-Vorhersage"
-    },
-    "3": {
-      "title": "Warum macht ChatGPT Fehler?",
-      "short": "Fehler",
-      "desc": "Entdecke Halluzinationen und probabilistische Fehler.",
-      "skill": "Wahrscheinlichkeit und Sampling"
-    },
-    "4": {
-      "title": "Warum ist Kontext wichtig?",
-      "short": "Kontext",
-      "desc": "Sieh, wie hilfreiche Infos die Antwort verändern.",
-      "skill": "Kontext und Bedeutung"
-    },
-    "5": {
-      "title": "Trainiere deine eigene KI",
-      "short": "Trainingsdaten",
-      "desc": "Füge Trainingsdaten hinzu und sieh, wie sich das Modell verändert.",
-      "skill": "Einfluss von Trainingsdaten"
-    },
-    "6": {
-      "title": "Kann KI voreingenommen sein?",
-      "short": "Bias",
-      "desc": "Erkunde, wie Datenbias Ausgaben beeinflusst.",
-      "skill": "Bias und Fairness"
-    }
+    "1": { "title": "Wie verarbeitet ein Sprachmodell Text?", "short": "Textverarbeitung", "desc": "Erkunde Tokens und numerische Darstellungen.", "skill": "Tokens und numerische Darstellungen" },
+    "2": { "title": "Welche Wörter kann ein Sprachmodell sehen?", "short": "Kontext lesen", "desc": "Erkunde das Kontextfenster und den Text, der dem Modell zur Verfügung steht.", "skill": "Kontext lesen" },
+    "3": { "title": "Welche Wörter helfen einem Sprachmodell am meisten?", "short": "Hinweise finden", "desc": "Erkunde, wie hilfreiche Hinweise im aktuellen Kontext verbunden werden.", "skill": "Hilfreiche Hinweise finden" },
+    "4": { "title": "Wie wählt ein Sprachmodell, was als Nächstes kommt?", "short": "Next-Token-Vorhersage", "desc": "Vergleiche mögliche Token, ihre Chancen und die Erzeugung Token für Token.", "skill": "Das nächste Token vorhersagen" },
+    "5": { "title": "Wie lernt ein Sprachmodell aus Beispielen?", "short": "Training", "desc": "Verfolge Vorhersage, Korrektur und Wiederholung und entdecke, wie Muster gelernt werden.", "skill": "Aus Trainingsbeispielen lernen" }
   }
 }

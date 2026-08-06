@@ -23,7 +23,7 @@
     "welcomeLead": "Prêt à continuer votre aventure IA ?",
     "welcomeCopy": "Reprenez où vous vous êtes arrêté ou explorez un nouveau sujet.",
     "continueLearning": "Continuer",
-    "completeStatus": "Tu as terminé les six missions. Le défi final est prêt.",
+    "completeStatus": "Tu as terminé les cinq missions. Le défi final est prêt.",
     "nextMission": "Prochaine étape : {{title}}.",
     "startFinalChallenge": "Commencer le défi final",
     "continueMission": "Continuer la mission",
@@ -32,7 +32,7 @@
     "finalTitle": "Terminez toutes les missions pour devenir explorateur IA !",
     "finalCopy": "Terminez le défi final et gagnez votre certificat.",
     "seeFinalChallenge": "Voir le défi final",
-    "unlockFinal": "Terminez les 6 missions pour débloquer le défi final."
+    "unlockFinal": "Terminez les 5 missions pour débloquer le défi final."
   },
   "why": {
     "responsibleTitle": "Utiliser l’IA avec soin",

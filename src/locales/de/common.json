@@ -23,7 +23,7 @@
     "welcomeLead": "Bereit für dein nächstes KI-Abenteuer?",
     "welcomeCopy": "Mach dort weiter, wo du aufgehört hast, oder erkunde etwas Neues.",
     "continueLearning": "Weiterlernen",
-    "completeStatus": "Du hast alle sechs Missionen abgeschlossen. Die finale Herausforderung ist bereit.",
+    "completeStatus": "Du hast alle fünf Missionen abgeschlossen. Die finale Herausforderung ist bereit.",
     "nextMission": "Als Nächstes: {{title}}.",
     "startFinalChallenge": "Finale Herausforderung starten",
     "continueMission": "Mission fortsetzen",
@@ -32,7 +32,7 @@
     "finalTitle": "Schließe alle Missionen ab und werde KI-Explorer!",
     "finalCopy": "Schließe die Abschluss-Challenge ab und erhalte dein Zertifikat.",
     "seeFinalChallenge": "Finale Challenge ansehen",
-    "unlockFinal": "Schließe alle 6 Missionen ab, um die finale Challenge freizuschalten."
+    "unlockFinal": "Schließe alle 5 Missionen ab, um die finale Challenge freizuschalten."
   },
   "why": {
     "responsibleTitle": "KI verantwortungsvoll nutzen",
