@@ -33,8 +33,6 @@ import {
 } from "./data/courseData.js";
 import {
   activityRecords,
-  canAccessFinalChallenge,
-  canAccessMission,
   completedCount,
   defaultProgress,
   missionLearningState,
@@ -300,7 +298,6 @@ function TopBar({ route, navigate, resetProgress, qaToolsVisible, qaMode, setQaM
 function Dashboard({ progress, navigate, notify, qaMode }) {
   const completed = completedCount(progress);
   const recommendedId = recommendedMissionId(progress);
-  const finalAvailable = canAccessFinalChallenge(progress, qaMode);
   const lessonPresentation = [
     { title: "Text becomes Tokens", description: "See how text is split into pieces the model can work with.", Icon: Braces },
     { title: "Reading Context", description: "Discover which earlier words the model can see right now.", Icon: Layers3 },
@@ -326,11 +323,7 @@ function Dashboard({ progress, navigate, notify, qaMode }) {
   }
 
   function openFinalChallenge() {
-    if (finalAvailable) {
-      navigate("/final-challenge");
-      return;
-    }
-    notify("The Final Challenge brings all five lessons together. Complete the lessons first for the best experience.");
+    navigate("/final-challenge");
   }
 
   return <main className="dashboard-learning-journey">
@@ -396,7 +389,7 @@ function Dashboard({ progress, navigate, notify, qaMode }) {
       <span className="learn-final-door" aria-hidden="true"><DoorOpen /></span>
       <div className="learn-final-copy">
         <span>Put everything together</span>
-        <h2 id="learn-final-title">AI Literacy Escape Room</h2>
+        <h2 id="learn-final-title">Language Model Escape Room</h2>
         <p>Complete the five lessons for the best experience, then use everything you learned in one final challenge.</p>
       </div>
       <div className="learn-final-guide" aria-hidden="true"><Mascot type="missions" /></div>
@@ -433,7 +426,7 @@ function LearningPath({ progress, navigate, notify, compact = false, qaMode = fa
             <strong>{m.order}</strong><small>{m.short}</small><ProgressPill type={done ? "done" : current ? "current" : "available"}>{done ? t("common.status.completed") : current ? t("learningMode.recommended") : t("learningMode.available")}</ProgressPill>
           </button>;
         })}
-        <button className="path-step final-path-step" onClick={() => canAccessFinalChallenge(progress, qaMode) ? navigate("/final-challenge") : notify(t("missions.completeAllFirst"))}><span className="path-node final-node">{canAccessFinalChallenge(progress, qaMode) ? <Trophy /> : <LockKeyhole />}</span><strong>{t("missions.finalChallenge")}</strong><small>{t("missions.finalShort")}</small><ProgressPill type={canAccessFinalChallenge(progress, qaMode) ? "current" : "locked"}>{canAccessFinalChallenge(progress, qaMode) ? t("common.status.ready") : t("common.status.locked")}</ProgressPill></button>
+        <button className="path-step final-path-step" onClick={() => navigate("/final-challenge")}><span className="path-node final-node"><Trophy /></span><strong>{t("missions.finalChallenge")}</strong><small>{t("missions.finalShort")}</small><ProgressPill type="current">{t("common.status.ready")}</ProgressPill></button>
       </div>
     </section>
   );
@@ -491,7 +484,6 @@ function MissionJourneyCard({ mission, progress, navigate, recommended, visited 
 function MissionsPage({ progress, navigate, notify, qaMode, visitedMissionIds }) {
   const { t } = useI18n();
   const completed = completedCount(progress);
-  const finalUnlocked = canAccessFinalChallenge(progress, qaMode);
   const [learningMode, setLearningMode] = useState("guided");
   const recommendedId = recommendedMissionId(progress);
 
@@ -517,13 +509,13 @@ function MissionsPage({ progress, navigate, notify, qaMode, visitedMissionIds })
               <MissionJourneyCard key={baseMission.id} mission={translateMission(baseMission, t)} progress={progress} navigate={navigate} recommended={learningMode === "guided" && recommendedId === baseMission.id} visited={visitedMissionIds.has(baseMission.id)} />
             ))}
             <button
-              className={`final-mission-card ${finalUnlocked ? "unlocked-final" : ""}`}
+              className="final-mission-card unlocked-final"
               type="button"
-              onClick={() => finalUnlocked ? navigate("/final-challenge") : notify(t("missions.completeAllToUnlock"))}
+              onClick={() => navigate("/final-challenge")}
             >
               <span className="final-challenge-icon"><Target /></span>
               <span><strong>{t("missions.finalTitle")}</strong><small>{t("missions.finalDesc")}</small></span>
-              <span className={finalUnlocked ? "final-challenge-action" : "final-locked-pill"}>{finalUnlocked ? <>Start Final Challenge<ArrowRight /></> : <><LockKeyhole />Locked</>}</span>
+              <span className="final-challenge-action">Explore Final Challenge<ArrowRight /></span>
             </button>
           </section>
         </div>
@@ -534,7 +526,7 @@ function MissionsPage({ progress, navigate, notify, qaMode, visitedMissionIds })
             <button className="missions-progress-ring" type="button" style={{ "--mission-progress-angle": `${(completed / missionData.length) * 360}deg` }} onClick={() => navigate("/progress")}>
               <strong>{completed} / {missionData.length}</strong><small>Missions Completed</small>
             </button>
-            <p className="missions-progress-copy">{completed === missionData.length ? "Final Challenge available" : finalUnlocked ? `${missionData.length - completed} mission${missionData.length - completed === 1 ? "" : "s"} remaining · QA access enabled` : `${missionData.length - completed} mission${missionData.length - completed === 1 ? "" : "s"} remaining · Final Challenge locked`}</p>
+            <p className="missions-progress-copy">{completed === missionData.length ? "All lessons complete · Final Challenge ready" : `${missionData.length - completed} lesson${missionData.length - completed === 1 ? "" : "s"} remaining · Challenge available to explore`}</p>
           </section>
 
           <section className="missions-panel learn-panel">
@@ -559,14 +551,13 @@ function ProgressPage({ progress, navigate, notify, qaMode }) {
   const available = missionData.filter((mission) => !progress.missions[mission.id]?.completed).length;
   const notes = readLearningNotes();
   const overall = Math.round((completed / missionData.length) * 100);
-  const finalAvailable = canAccessFinalChallenge(progress, qaMode);
   const stats = [
     [CheckCircle2, completed, "Missions completed", () => navigate("/missions")],
     [CircleGauge, `${overall}%`, "Overall completion", () => navigate("/missions")],
     [NotebookPen, notes.length, "Saved reflections", () => openProgressNotes(navigate)],
-    [finalAvailable ? Trophy : LockKeyhole, finalAvailable ? "Ready" : "Locked", "Final Challenge", () => finalAvailable ? navigate("/final-challenge") : notify("Complete all five missions first.")]
+    [Trophy, completed === missionData.length ? "Ready" : "Explore", "Final Challenge", () => navigate("/final-challenge")]
   ];
-  return <div className="progress-page"><section className="progress-main"><div className="progress-summary-grid"><section className="card overall-card"><h2><CircleGauge />Overall Progress</h2><div className="overall-inner"><div className="progress-ring big" style={{ "--angle": `${overall / 100 * 360}deg` }}><strong>{overall}%</strong><small>Completed</small></div><div className="progress-legend"><span><i className="purple-dot" />Completed<b>{completed} / {missionData.length} Missions</b></span><span><i className="gold-dot" />In Progress<b>{inProgress} Mission{inProgress === 1 ? "" : "s"}</b></span><span><i />Available<b>{available} Mission{available === 1 ? "" : "s"}</b></span></div></div></section><section className="card progress-stats-card"><h2><CircleGauge />Learning Summary</h2><div className="progress-stats-grid">{stats.map(([StatIcon, value, label, action]) => <button key={label} onClick={action}><span className="progress-icon-box"><StatIcon /></span><strong>{value}</strong><small>{label}</small></button>)}</div></section></div><section className="card mission-progress-card"><h2><BookOpen />Mission Progress</h2><div className="mission-table-head"><span>Mission</span><span>Progress</span><span>Status</span></div><div className="mission-progress-list">{missionData.map((mission) => <ProgressMissionRow key={mission.id} mission={mission} progress={progress} navigate={navigate} notify={notify} t={t} qaMode={qaMode} />)}</div><button className="progress-final-banner" onClick={() => finalAvailable ? navigate("/final-challenge") : notify(`Complete all five Missions to enter the Final Challenge.`)}><span className="progress-icon-box"><Trophy /></span><span><strong>{finalAvailable ? "Final Challenge available" : "Complete all missions to unlock the Final Challenge"}</strong><small>{finalAvailable ? "You can enter the AI Literacy Escape Room." : `${missionData.length - completed} mission${missionData.length - completed === 1 ? "" : "s"} remaining.`}</small></span>{finalAvailable ? <ArrowRight /> : <LockKeyhole />}</button></section></section><aside className="progress-right"><ProgressActivity progress={progress} navigate={navigate} t={t} /><section className="card progress-notes-card"><div className="row-title"><h2><NotebookPen />Saved Notes</h2><button onClick={() => openProgressNotes(navigate)}>View all</button></div><p>{notes.length ? `${notes.length} reflection${notes.length === 1 ? "" : "s"} saved from your mission activities.` : "Save a reflection inside a mission and it will appear here."}</p>{notes.slice(0, 2).map((note) => <button className="progress-note-preview" key={note.id} onClick={() => openProgressNotes(navigate)}><strong>{note.mission} · {note.title}</strong><small>{note.note}</small></button>)}<button className="outline progress-open-notes" onClick={() => openProgressNotes(navigate)}>Open Notes</button></section></aside></div>;
+  return <div className="progress-page"><section className="progress-main"><div className="progress-summary-grid"><section className="card overall-card"><h2><CircleGauge />Overall Progress</h2><div className="overall-inner"><div className="progress-ring big" style={{ "--angle": `${overall / 100 * 360}deg` }}><strong>{overall}%</strong><small>Completed</small></div><div className="progress-legend"><span><i className="purple-dot" />Completed<b>{completed} / {missionData.length} Missions</b></span><span><i className="gold-dot" />In Progress<b>{inProgress} Mission{inProgress === 1 ? "" : "s"}</b></span><span><i />Available<b>{available} Mission{available === 1 ? "" : "s"}</b></span></div></div></section><section className="card progress-stats-card"><h2><CircleGauge />Learning Summary</h2><div className="progress-stats-grid">{stats.map(([StatIcon, value, label, action]) => <button key={label} onClick={action}><span className="progress-icon-box"><StatIcon /></span><strong>{value}</strong><small>{label}</small></button>)}</div></section></div><section className="card mission-progress-card"><h2><BookOpen />Mission Progress</h2><div className="mission-table-head"><span>Mission</span><span>Progress</span><span>Status</span></div><div className="mission-progress-list">{missionData.map((mission) => <ProgressMissionRow key={mission.id} mission={mission} progress={progress} navigate={navigate} notify={notify} t={t} qaMode={qaMode} />)}</div><button className="progress-final-banner" onClick={() => navigate("/final-challenge")}><span className="progress-icon-box"><Trophy /></span><span><strong>{completed === missionData.length ? "Final Challenge ready" : "Explore the Final Challenge"}</strong><small>{completed === missionData.length ? "Bring together the full language-model journey." : "Recommended after all five lessons, but available now."}</small></span><ArrowRight /></button></section></section><aside className="progress-right"><ProgressActivity progress={progress} navigate={navigate} t={t} /><section className="card progress-notes-card"><div className="row-title"><h2><NotebookPen />Saved Notes</h2><button onClick={() => openProgressNotes(navigate)}>View all</button></div><p>{notes.length ? `${notes.length} reflection${notes.length === 1 ? "" : "s"} saved from your mission activities.` : "Save a reflection inside a mission and it will appear here."}</p>{notes.slice(0, 2).map((note) => <button className="progress-note-preview" key={note.id} onClick={() => openProgressNotes(navigate)}><strong>{note.mission} · {note.title}</strong><small>{note.note}</small></button>)}<button className="outline progress-open-notes" onClick={() => openProgressNotes(navigate)}>Open Notes</button></section></aside></div>;
 }
 
 function openProgressNotes(navigate) {
@@ -574,13 +565,12 @@ function openProgressNotes(navigate) {
   navigate("/activity");
 }
 
-function ProgressMissionRow({ mission, progress, navigate, notify, t, qaMode }) {
+function ProgressMissionRow({ mission, progress, navigate, t }) {
   const state = progress.missions[mission.id] || { progress: 0, completed: false };
   const translated = translateMission(mission, t);
-  const unlocked = canAccessMission(progress, mission.id, qaMode);
-  const status = state.completed ? "Completed" : state.progress > 0 ? "In Progress" : unlocked ? "Start" : "Locked";
+  const status = state.completed ? "Completed" : state.progress > 0 ? "In Progress" : "Start";
   const MissionIcon = progressMissionIcons[mission.id] || BookOpen;
-  return <button className={`progress-mission-row ${state.completed ? "done" : ""} ${state.progress > 0 && !state.completed ? "current" : ""}`} onClick={() => unlocked ? navigate(mission.route) : notify(`Complete Mission ${mission.order - 1} first.`)}><span className="mission-number">{mission.order}</span><span className="mission-art compact"><MissionIcon /></span><span className="mission-copy"><strong>{translated.title}</strong><small>{translated.skill || mission.skill}</small></span><span className="mini-bar"><span style={{ width: `${state.completed ? 100 : state.progress}%` }} /></span><ProgressPill type={state.completed ? "done" : unlocked ? "current" : "locked"}>{status}</ProgressPill>{unlocked ? <ExternalLink /> : <LockKeyhole />}</button>;
+  return <button className={`progress-mission-row ${state.completed ? "done" : ""} ${state.progress > 0 && !state.completed ? "current" : ""}`} onClick={() => navigate(mission.route)}><span className="mission-number">{mission.order}</span><span className="mission-art compact"><MissionIcon /></span><span className="mission-copy"><strong>{translated.title}</strong><small>{translated.skill || mission.skill}</small></span><span className="mini-bar"><span style={{ width: `${state.completed ? 100 : state.progress}%` }} /></span><ProgressPill type={state.completed ? "done" : "current"}>{status}</ProgressPill><ExternalLink /></button>;
 }
 
 const progressMissionIcons = {
@@ -2809,10 +2799,6 @@ function missionIdFromRoute(route) {
   return missionData.find((mission) => mission.route === route)?.id || null;
 }
 
-function AccessGuardPage({ finalChallenge = false, navigate }) {
-  return <div className="placeholder access-guard-page"><div className="card"><LockKeyhole /><h1>{finalChallenge ? "Final Challenge locked" : "Mission locked"}</h1><p>{finalChallenge ? "Complete all five missions to enter the Final Challenge." : "Complete the previous mission before opening this one."}</p><button className="primary" onClick={() => navigate("/missions")}>Back to Missions</button></div></div>;
-}
-
 function Shell({ route, progress, navigate, resetProgress, qaToolsVisible, qaMode, setQaMode, children }) {
   const isPagedMissionPrototype = route.endsWith("-paged");
   const isImmersivePage = (route.startsWith("/mission/") && !isPagedMissionPrototype) || route === "/final-challenge";
@@ -2931,7 +2917,6 @@ function App() {
   else if (route === "/mission/5/learn-patterns") page = <Mission5Patterns progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
   else if (route === "/mission/5/make-predictions") page = <Mission5Predictions progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
   else if (route === "/mission/6-bias") page = <Mission6 progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
-  else if (route === "/final-challenge" && !canAccessFinalChallenge(progress, qaMode)) page = <AccessGuardPage finalChallenge navigate={navigate} />;
   else if (route === "/final-challenge") page = <FinalChallenge progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
   else page = <PlaceholderPage route={route} />;
   return <Shell route={route} progress={progress} navigate={navigate} resetProgress={resetProgress} qaToolsVisible={qaToolsVisible} qaMode={qaMode} setQaMode={setQaMode}>{page}{toast && <div className="toast show">{toast}</div>}</Shell>;

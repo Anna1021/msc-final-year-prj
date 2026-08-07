@@ -108,11 +108,11 @@ function ProgressPanel({ progress, debug, status, onReset, onReload }) {
     </section>
     <section>
       <h3>Final Exit</h3>
-      <p>The final door is an AI Brain puzzle. Learners place all six crystals, build how text is generated, then add the human checking steps.</p>
+      <p>The final door brings together the language-model journey. Learners place six crystals, build the generation path, then build the separate training loop.</p>
       <div className="construct-room-list compact">
-        <span><b>1</b><em>Place crystals around the AI Brain</em></span>
+        <span><b>1</b><em>Place crystals around the language model</em></span>
         <span><b>2</b><em>Build the generation chain</em></span>
-        <span><b>3</b><em>Verify, check bias, and use AI critically</em></span>
+        <span><b>3</b><em>Build the separate training loop</em></span>
       </div>
     </section>
     {debug && <div className="construct-panel-actions">
@@ -122,7 +122,7 @@ function ProgressPanel({ progress, debug, status, onReset, onReload }) {
   </aside>;
 }
 
-export default function FinalChallenge({ progress: mainProgress, setProgress, navigate, notify }) {
+export default function FinalChallenge({ progress: mainProgress, navigate, notify }) {
   const { t, language } = useI18n();
   const iframeRef = useRef(null);
   const readyTimerRef = useRef(null);

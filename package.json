@@ -20,6 +20,7 @@
     "test:mission4-paged": "node scripts/test-mission4-paged.mjs",
     "test:mission5-paged": "node scripts/test-mission5-paged.mjs",
     "test:p13-acceptance": "node scripts/test-p13-acceptance.mjs",
+    "test:p14-final-challenge": "node scripts/test-p14-final-challenge.mjs",
     "test:paged-missions": "node scripts/test-paged-missions.mjs",
     "test:paged-navigation": "node scripts/test-paged-navigation.mjs",
     "test:curriculum": "node scripts/test-five-mission-curriculum.mjs",

@@ -1,7 +1,7 @@
 {
-  "pageTitle": "最终挑战：AI 素养密室逃脱",
+  "pageTitle": "最终挑战：语言模型密室逃脱",
   "eyebrow": "可玩的 HTML5 密室逃脱",
-  "runtimeTitle": "AI 素养密室逃脱",
+  "runtimeTitle": "语言模型密室逃脱",
   "roomMap": "房间地图",
   "continue": "继续",
   "fullScreen": "全屏",
@@ -20,5 +20,5 @@
   "completeSaved": "逃脱完成。进度已保存。",
   "completeAlready": "逃脱已完成。最终奖励已保存。",
   "inventory": "水晶",
-  "tips": "用你在任务 1 到 6 学到的知识逃出每个房间。"
+  "tips": "沿着六个概念，从 Token 和数字走到预测与训练。"
 }

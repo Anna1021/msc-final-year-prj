@@ -36,7 +36,8 @@ assert.match(prototypeSource, /history\.pushState/, "Next and Back create browse
 assert.match(shellSource, /currentPage \+ 1/, "Next advances through Pages 3, 4, and 5");
 assert.match(shellSource, /currentPage - 1/, "Back returns through Pages 5, 4, and 3");
 assert.doesNotMatch(shellSource, /!canAdvance/, "page navigation never hard-locks access behind an activity");
-assert.match(shellSource, /disabled=\{currentPage === pageCount\}/, "only the final page has no forward page");
+assert.match(shellSource, /disabled=\{currentPage === pageCount && !onEnd\}/, "the final-page action remains available when an onward route is supplied");
+assert.match(prototypeSource, /onEnd=\{\(\) => navigate\("\/mission\/2-prediction-paged"\)\}/, "Lesson 1 can continue directly to Lesson 2 without completion gating");
 assert.match(shellSource, /mission-lesson-recommendation[\s\S]*onGoRecommended[\s\S]*onContinue/, "later pages use a non-blocking recommendation notice");
 assert.match(prototypeSource, /addEventListener\("popstate"/, "browser Back and Forward update the page");
 assert.match(shellSource, /headingRef\.current\?\.focus/, "page changes move focus to the heading");

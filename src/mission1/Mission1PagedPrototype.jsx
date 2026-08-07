@@ -140,7 +140,7 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
     onContinue: () => setContinuedPages((current) => new Set(current).add(currentPage))
   };
 
-  return <MissionLessonShell currentPage={currentPage} pageCount={MISSION_1_PAGED_PAGES.length} onPageChange={changePage} onBackToMissions={() => navigate("/missions")} title={t(page.titleKey)} subtitle={pageSubtitle} labels={shellLabels} recommendation={recommendation}>
+  return <MissionLessonShell currentPage={currentPage} pageCount={MISSION_1_PAGED_PAGES.length} onPageChange={changePage} onEnd={() => navigate("/mission/2-prediction-paged")} onBackToMissions={() => navigate("/missions")} title={t(page.titleKey)} subtitle={pageSubtitle} labels={{...shellLabels, prototypeEndAction: t("mission1.actions.nextMission")}} recommendation={recommendation}>
     {currentPage === 1 ? <section id="m1-intro" className="course-section mission-1-paged__lesson" data-lesson-page="1">
       <div className="course-section-head"><h2><span>1</span>{t("mission1.sections.intro")}</h2></div>
       <p>{t("mission1.intro.body")}</p>

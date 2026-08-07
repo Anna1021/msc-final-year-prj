@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Literacy Escape Room</title>
+  <title>How Language Models Work — Escape Room</title>
   <style>
     :root {
       color-scheme: dark;
@@ -1198,6 +1198,21 @@
     .debug-controls button { padding: 9px 10px; font-size: .78rem; }
     .log { white-space: pre-wrap; color: #dcd4ff; font-weight: 700; font-size: .78rem; line-height: 1.4; text-align: left; }
 
+    .journey-strip, .training-demo { display:grid; grid-template-columns:minmax(140px,1fr) auto minmax(140px,1fr) auto minmax(210px,1.35fr); gap:12px; align-items:center; margin:18px 0; }
+    .journey-strip button, .training-demo>div { display:grid; gap:7px; min-height:108px; align-content:center; border:1px solid rgba(114,91,203,.3); border-bottom:5px solid rgba(78,61,156,.55); border-radius:18px; padding:16px; color:#201846; background:rgba(255,255,255,.9); text-align:center; }
+    .journey-strip button.selected { color:#fff; background:linear-gradient(135deg,#7256d8,#458ed9); }
+    .journey-strip small, .training-demo small { font-weight:900; text-transform:uppercase; letter-spacing:.05em; opacity:.72; }
+    .journey-strip strong, .training-demo strong { font-size:clamp(1rem,2vw,1.35rem); }
+    .journey-strip>span, .training-demo>span { color:var(--room); font-size:1.7rem; font-weight:950; }
+    .simulation-note { border-radius:14px; padding:12px 14px; color:#45516d; background:rgba(255,255,255,.72); }
+    .context-story { display:grid; gap:10px; margin:18px 0; }
+    .context-story p { margin:0; }
+    .context-story .outside { border:2px dashed #aeb7c8; border-radius:16px; padding:14px 18px; color:#78849b; background:rgba(238,241,247,.74); opacity:.67; }
+    .context-story .inside { border:3px solid var(--room); border-radius:18px; padding:15px 18px; background:rgba(232,252,249,.86); box-shadow:0 8px 0 rgba(39,145,150,.2); }
+    .context-story small { display:block; margin-bottom:7px; font-weight:950; text-transform:uppercase; letter-spacing:.05em; }
+    .training-demo { grid-template-columns:1fr auto 1fr auto 1fr; }
+    @media (max-width:760px) { .journey-strip,.training-demo { grid-template-columns:1fr; }.journey-strip>span,.training-demo>span { transform:rotate(90deg); text-align:center; } }
+
     @keyframes float { 50% { transform: translateY(-8px); } }
     @keyframes crystalRise {
       from { opacity: 0; transform: translateY(18px) scale(.72); }
@@ -1233,7 +1248,7 @@
 <body>
   <div class="app">
     <header class="topbar">
-      <div class="brand"><span>Playable HTML5 Runtime</span><strong>AI Literacy Escape Room</strong></div>
+      <div class="brand"><span>Final learning challenge</span><strong>Language Model Escape Room</strong></div>
       <div class="top-actions">
         <button class="secondary" type="button" id="topMap">Room Map</button>
         <button type="button" id="topContinue">Continue</button>
@@ -1261,23 +1276,27 @@
     if (window.parent !== window) document.body.classList.add("embedded");
     const targetOrigin = window.location.origin;
     const rooms = [
-      { id: "token", number: 1, title: "Token Door", power: "Tokenisation", crystal: "token", colour: "#9b6cff", aim: "A token may be a word, part of a word, or punctuation." },
-      { id: "prediction", number: 2, title: "Prediction Machine", power: "Next-token prediction", crystal: "prediction", colour: "#ffbf3d", aim: "Use the sentence clue to choose the next token." },
-      { id: "verification", number: 3, title: "Hallucination Archive", power: "Verification", crystal: "verification", colour: "#ff5a70", aim: "Check confident claims before trusting them." },
-      { id: "context", number: 4, title: "Context Lens", power: "Context", crystal: "context", colour: "#38c47f", aim: "Add useful clues, not random details." },
-      { id: "patterns", number: 5, title: "Training Lab", power: "Training patterns", crystal: "patterns", colour: "#3a8bff", aim: "Choose examples that teach a clear pattern." },
-      { id: "fairness", number: 6, title: "Fairness Chamber", power: "Bias and fairness", crystal: "fairness", colour: "#a855f7", aim: "The model follows the data it was given. Fairer data can lead to fairer outputs." }
+      { id: "token", number: 1, title: "Token Workshop", power: "Tokens", crystal: "token", colour: "#9b6cff", aim: "Rebuild a sentence from the text pieces a model can process." },
+      { id: "numbers", number: 2, title: "Number Lookup", power: "Numbers", crystal: "numbers", colour: "#3a8bff", aim: "Follow a token ID to one learned row of numbers." },
+      { id: "context", number: 3, title: "Context Window", power: "Context", crystal: "context", colour: "#38c4c9", aim: "See which earlier tokens are available right now." },
+      { id: "connections", number: 4, title: "Connection Lab", power: "Connections", crystal: "connections", colour: "#ff9d3d", aim: "Find the visible tokens that provide the most helpful clues." },
+      { id: "prediction", number: 5, title: "Next-Token Machine", power: "Prediction", crystal: "prediction", colour: "#ff5f9e", aim: "Choose one possible next token, add it, and predict again." },
+      { id: "training", number: 6, title: "Training Workshop", power: "Training", crystal: "training", colour: "#46b86f", aim: "Follow prediction, answer, adjustment and repetition during training." }
     ];
     const finalModelPieces = [
-      { id: "training", label: "Training data teaches patterns" },
-      { id: "tokens", label: "Input becomes tokens + useful context" },
-      { id: "prediction", label: "The model predicts next tokens" },
-      { id: "output", label: "Generated output" }
+      { id: "tokens", label: "Text becomes tokens" },
+      { id: "numbers", label: "Tokens point to numbers" },
+      { id: "context", label: "Context keeps earlier tokens available" },
+      { id: "connections", label: "Helpful tokens shape the current representation" },
+      { id: "prediction", label: "Predict one next token" },
+      { id: "repeat", label: "Add it to the text and repeat" }
     ];
     const finalReviewPieces = [
-      { id: "verify", label: "Verify important facts" },
-      { id: "bias", label: "Check for bias" },
-      { id: "critical", label: "Use AI critically" }
+      { id: "examples", label: "Read a training example" },
+      { id: "train-predict", label: "Predict its next token" },
+      { id: "actual", label: "Reveal the actual token" },
+      { id: "adjust", label: "Adjust internal parameters" },
+      { id: "train-repeat", label: "Repeat across many examples" }
     ];
     const finalModelOrder = finalModelPieces.map((piece) => piece.id);
     const finalReviewOrder = finalReviewPieces.map((piece) => piece.id);
@@ -1406,18 +1425,18 @@
       if (id === "token") return {
         inspected: false,
         tokenised: false,
-        sentence: "Models split text into tokens!",
-        answer: ["Models", "split", "text", "into", "tokens", "!"],
+        sentence: "Robots learn surprisingly fast.",
+        answer: ["Robots", "learn", "surprisingly", "fast", "."],
         placed: [],
-        tray: ["tokens", "Models", "answers", "!", "text", "into", "split"],
+        tray: ["surprisingly", "Robots", ".", "learn", "answers", "fast"],
         selected: null,
         feedback: ""
       };
-      if (id === "prediction") return { inspected: false, choice: "", feedback: "" };
-      if (id === "verification") return { selected: "", feedback: "" };
-      if (id === "context") return { selected: [], feedback: "" };
-      if (id === "patterns") return { selected: [], feedback: "" };
-      if (id === "fairness") return { ratio: 8, removed: false, tested: false, feedback: "" };
+      if (id === "numbers") return { step: 0, feedback: "" };
+      if (id === "context") return { choice: "", feedback: "" };
+      if (id === "connections") return { selected: [], feedback: "" };
+      if (id === "prediction") return { round: 0, choice: "", generated: [], feedback: "" };
+      if (id === "training") return { step: 0, feedback: "" };
       return {};
     }
 
@@ -1463,8 +1482,8 @@
         <section class="hero">
           <div>
             <span class="clue">Final Challenge</span>
-            <h1>AI Literacy Escape Room</h1>
-            <p>Help the robot restore six crystals. Each room uses one idea from Missions 1-6, but as a small puzzle instead of a quiz.</p>
+            <h1>Language Model Escape Room</h1>
+            <p>Help the robot restore six crystals. Each room follows one step in how a language model processes text, predicts, and learns.</p>
             <button type="button" class="gold" data-action="continue">${completedCount ? "Continue adventure" : "Start Room 1"}</button>
           </div>
           <img class="robot" src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot">
@@ -1501,7 +1520,7 @@
     function renderRoom(room, replay = false, completedView = false) {
       const data = state.roomData;
       roomScreen.innerHTML = `
-        <section class="room ${room.id === "token" ? "room-bg-token" : ""}" style="--room:${room.colour}; --tilt:${room.id === "fairness" ? (data.ratio - 5) * 4 + "deg" : "0deg"}">
+        <section class="room ${room.id === "token" ? "room-bg-token" : ""}" style="--room:${room.colour}; --tilt:0deg">
           <div class="room-inner">
             <header class="room-head">
               <div class="room-objective">
@@ -1546,16 +1565,23 @@
       if (room.crystal === "token") {
         return "/assets/img/final-challenge/room1/token-crystal-clean.png";
       }
-      return `/assets/img/final-challenge/crystals/crystal-${room.crystal}.png`;
+      const reusedArtwork = {
+        numbers: "prediction",
+        context: "context",
+        connections: "verification",
+        prediction: "patterns",
+        training: "fairness"
+      };
+      return `/assets/img/final-challenge/crystals/crystal-${reusedArtwork[room.crystal] || room.crystal}.png`;
     }
 
     function puzzleMarkup(room, data) {
       if (room.id === "token") return tokenPuzzle(data);
-      if (room.id === "prediction") return predictionPuzzle(data);
-      if (room.id === "verification") return verificationPuzzle(data);
-      if (room.id === "context") return contextPuzzle(data);
-      if (room.id === "patterns") return trainingPuzzle(data);
-      if (room.id === "fairness") return fairnessPuzzle(data);
+      if (room.id === "numbers") return numbersPuzzle(data);
+      if (room.id === "context") return contextWindowPuzzle(data);
+      if (room.id === "connections") return connectionsPuzzle(data);
+      if (room.id === "prediction") return nextTokenPuzzle(data);
+      if (room.id === "training") return trainingLoopPuzzle(data);
       return "";
     }
 
@@ -1609,6 +1635,112 @@
           <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "A token can be a whole word, part of a word, or punctuation."}</div>
         </section>
         ${guide(step === 0 ? "Start by checking the door." : step === 1 ? "Run the machine to see a simple example." : "Drag a token piece into each slot from left to right. You can also click a piece, then click a slot.")}
+      </div>`;
+    }
+
+    function numbersPuzzle(data) {
+      const step = data.step || 0;
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(["Choose token", "Read its ID", "Open number row", "Explain it"], Math.min(step, 3))}
+          <span class="clue">Teaching lookup</span>
+          <h2>How does a text piece become something the model can calculate with?</h2>
+          <p>Follow one token through a lookup. Each click reveals the next link.</p>
+          <div class="journey-strip">
+            <button type="button" class="${step >= 1 ? "selected" : ""}" data-action="numbers-step" ${step === 0 ? "" : "disabled"}><small>Token</small><strong>robot</strong></button>
+            <span>→</span>
+            <button type="button" class="${step >= 2 ? "selected" : ""}" data-action="numbers-step" ${step === 1 ? "" : "disabled"}><small>Token ID</small><strong>${step >= 1 ? "305" : "?"}</strong></button>
+            <span>→</span>
+            <button type="button" class="${step >= 3 ? "selected" : ""}" data-action="numbers-step" ${step === 2 ? "" : "disabled"}><small>Learned row</small><strong>${step >= 2 ? "[ 0.18, −0.42, 0.73, … ]" : "[ ?, ?, ?, … ]"}</strong></button>
+          </div>
+          <div class="feedback ${step >= 3 ? "good" : ""}">${step === 0 ? "Start with the token. Its ID is only a label." : step === 1 ? "305 labels this token. It is not a score or meaning." : step === 2 ? "The ID points to one learned row of numbers. Open it." : "The model calculates with number patterns instead of reading the written word like a person."}</div>
+          <p class="simulation-note"><b>Teaching example:</b> these short values are illustrative. A real model uses a much larger learned row from its model weights.</p>
+          <button type="button" data-action="check" ${step >= 3 ? "" : "disabled"}>Collect the Numbers Crystal</button>
+        </section>
+        ${guide(step < 3 ? "Follow the arrows one step at a time: token, label, then learned number row." : "The ID finds the row. The row gives the model numbers it can work with.")}
+      </div>`;
+    }
+
+    function contextWindowPuzzle(data) {
+      const options = [
+        ["umbrella", "umbrella at home"],
+        ["clouds", "dark clouds"],
+        ["outside", "looked outside"]
+      ];
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(["Read growing text", "Find the boundary", "Choose missing clue"], data.choice ? 2 : 1)}
+          <span class="clue">Current reading window</span>
+          <h2>Which earlier clue has moved outside the model's current view?</h2>
+          <div class="context-story">
+            <p class="outside"><small>Outside the window</small>Mia left her <b>umbrella</b> at home.</p>
+            <div class="inside"><small>Inside the window</small><p>Dark clouds covered the sky.</p><p>She looked outside and ...</p></div>
+          </div>
+          <div class="choice-grid">${options.map(([id, text]) => `<button type="button" class="${data.choice === id ? "selected" : ""}" data-choice="${id}">${text}</button>`).join("")}</div>
+          <button type="button" data-action="check">Check the context window</button>
+          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "The context window is the group of earlier tokens available for the current step."}</div>
+        </section>
+        ${guide("Look for the faded line outside the outlined reading window.")}
+      </div>`;
+    }
+
+    function connectionsPuzzle(data) {
+      const tokens = ["The", "tired", "dog", "slept", "beside", "the", "warm", "fire", "."];
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(["Read the task", "Connect two clues", "Explain the answer"], data.selected.length >= 2 ? 2 : 1)}
+          <span class="clue">All tokens are visible</span>
+          <h2>What is likely to be sleeping?</h2>
+          <p>Choose the two tokens that connect most directly to this question.</p>
+          <div class="chip-grid">${tokens.map((token, index) => `<button type="button" class="${data.selected.includes(token) ? "selected" : ""}" data-chip="${token}">${token}</button>`).join("")}</div>
+          <button type="button" data-action="check">Test the connections</button>
+          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "Visible tokens do not all help equally. The current task changes which connections matter most."}</div>
+        </section>
+        ${guide("Choose the thing that can sleep and the action that tells you it slept.")}
+      </div>`;
+    }
+
+    function nextTokenPuzzle(data) {
+      const firstRound = data.round === 0;
+      const options = firstRound
+        ? [["door",45],["box",30],["book",18],["banana",7]]
+        : [["inside",50],["away",25],["slowly",18],["banana",7]];
+      const sentence = firstRound ? "The robot opened the ___" : `The robot opened the ${data.generated[0] || "door"} and stepped ___`;
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(["Compare candidates", "Add one token", "Predict again"], firstRound ? (data.choice ? 1 : 0) : 2)}
+          <span class="clue">Reviewed classroom probabilities</span>
+          <h2>${sentence}</h2>
+          <p>Several tokens are possible. Pick the strongest classroom candidate, then add it to the text.</p>
+          <div class="choice-grid">${options.map(([token, chance]) => `<button type="button" class="${data.choice === token ? "selected" : ""}" data-choice="${token}"><strong>${token}</strong><small>${chance}%</small></button>`).join("")}</div>
+          <button type="button" data-action="check">${firstRound ? "Add selected token" : "Add token and finish"}</button>
+          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "These values are reviewed teaching data, not live Qwen output. A higher chance is not a guarantee."}</div>
+        </section>
+        ${guide(firstRound ? "Choose the highest reviewed chance. After it joins the sentence, the model predicts again." : "The new token changes the text available for the next prediction.")}
+      </div>`;
+    }
+
+    function trainingLoopPuzzle(data) {
+      const step = data.step || 0;
+      const labels = ["Predict next token", "Reveal actual token", "Compare", "Adjust parameters", "Repeat example"];
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(labels, step)}
+          <span class="clue">Teaching training loop</span>
+          <h2>The puppy chased the ___</h2>
+          <div class="training-demo">
+            <div><small>Model prediction</small><strong>${step >= 1 ? "cat" : "?"}</strong></div>
+            <span>→</span>
+            <div><small>Actual token</small><strong>${step >= 2 ? "ball" : "?"}</strong></div>
+            <span>→</span>
+            <div><small>Internal parameters</small><strong>${step >= 4 ? "adjusted" : "waiting"}</strong></div>
+          </div>
+          <button type="button" data-action="training-step" ${step >= 5 ? "disabled" : ""}>${labels[Math.min(step, 4)]}</button>
+          <button type="button" data-action="check" ${step >= 5 ? "" : "disabled"}>Collect the Training Crystal</button>
+          <div class="feedback ${step >= 5 ? "good" : ""}">${step === 0 ? "First the model makes a prediction from a training example." : step === 1 ? "Now reveal the actual next token supplied by the training text." : step === 2 ? "The prediction and actual token are compared." : step === 3 ? "The difference guides a tiny adjustment to many internal parameters." : step === 4 ? "Training repeats across many examples." : "Training happens before normal text generation. This browser is demonstrating the loop, not training Qwen."}</div>
+          <p class="simulation-note"><b>Important:</b> this is a simplified visual demonstration. No model weights are trained in your browser.</p>
+        </section>
+        ${guide("Observe one step, click, then see what changed. Training repeats this cycle across many examples.")}
       </div>`;
     }
 
@@ -1805,10 +1937,10 @@
       roomScreen.querySelector("[data-action='reset-room']")?.addEventListener("click", () => openRoom(room.id, false));
 
       if (room.id === "token") bindTokenRoom(room);
-      if (room.id === "prediction") bindChoiceRoom(room, "choice");
-      if (room.id === "verification") bindChoiceRoom(room, "selected");
-      if (room.id === "context" || room.id === "patterns") bindChipRoom(room);
-      if (room.id === "fairness") bindFairnessRoom(room);
+      if (room.id === "numbers") bindNumbersRoom(room);
+      if (room.id === "context" || room.id === "prediction") bindChoiceRoom(room, "choice");
+      if (room.id === "connections") bindChipRoom(room);
+      if (room.id === "training") bindTrainingRoom(room);
       roomScreen.querySelector("[data-action='check']")?.addEventListener("click", () => checkRoom(room));
     }
 
@@ -1929,6 +2061,20 @@
       }));
     }
 
+    function bindNumbersRoom(room) {
+      roomScreen.querySelector("[data-action='numbers-step']")?.addEventListener("click", () => {
+        state.roomData.step = Math.min(3, (state.roomData.step || 0) + 1);
+        renderRoom(room);
+      });
+    }
+
+    function bindTrainingRoom(room) {
+      roomScreen.querySelector("[data-action='training-step']")?.addEventListener("click", () => {
+        state.roomData.step = Math.min(5, (state.roomData.step || 0) + 1);
+        renderRoom(room);
+      });
+    }
+
     function bindFairnessRoom(room) {
       roomScreen.querySelector("[data-slider='ratio']")?.addEventListener("input", (event) => {
         state.roomData.ratio = Number(event.target.value);
@@ -1952,29 +2098,35 @@
         else if (data.placed.join("|") !== correct.join("|")) data.feedback = "Not yet. Check the order and remember that one tray piece is a distractor.";
         else return roomComplete(room);
       }
-      if (room.id === "prediction") {
-        if (data.choice === "umbrella") return roomComplete(room);
-        data.feedback = "Look at the rain clue. What would you take?";
-      }
-      if (room.id === "verification") {
-        if (data.selected === "verify") return roomComplete(room);
-        data.feedback = "Not safe yet. A claim with no source should be checked.";
+      if (room.id === "numbers") {
+        if (data.step >= 3) return roomComplete(room);
+        data.feedback = "Follow the token to its ID, then open the learned number row.";
       }
       if (room.id === "context") {
-        const selected = new Set(data.selected);
-        if (selected.has("weather") && selected.has("location") && selected.has("event") && !selected.has("pet")) return roomComplete(room);
-        data.feedback = "Pick clues about tomorrow. Leave out random facts.";
+        if (data.choice === "umbrella") return roomComplete(room);
+        data.feedback = "Look at the faded line outside the current window.";
       }
-      if (room.id === "patterns") {
+      if (room.id === "connections") {
         const selected = new Set(data.selected);
-        if (selected.has("many") && selected.has("varied") && !selected.has("wrong") && !selected.has("one")) return roomComplete(room);
-        data.feedback = "Choose many correct examples. Avoid wrong or tiny data.";
+        if (selected.size === 2 && selected.has("dog") && selected.has("slept")) return roomComplete(room);
+        data.feedback = "Choose exactly two clues: who can sleep, and which action confirms it?";
       }
-      if (room.id === "fairness") {
-        data.tested = true;
-        if (data.ratio === 5 && data.removed) return roomComplete(room);
-        if (data.ratio !== 5) data.feedback = "The examples are not balanced yet. Move the slider to 5 and 5.";
-        else data.feedback = "The examples are balanced, but the unfair sentence is still teaching a bad shortcut.";
+      if (room.id === "prediction") {
+        const expected = data.round === 0 ? "door" : "inside";
+        if (data.choice === expected && data.round === 0) {
+          data.generated = [data.choice];
+          data.round = 1;
+          data.choice = "";
+          data.feedback = "Good. The selected token joins the text, so the model predicts again.";
+          renderRoom(room);
+          return;
+        }
+        if (data.choice === expected && data.round === 1) return roomComplete(room);
+        data.feedback = "Compare the reviewed chances and choose the strongest candidate.";
+      }
+      if (room.id === "training") {
+        if (data.step >= 5) return roomComplete(room);
+        data.feedback = "Complete each part of the training loop before collecting the crystal.";
       }
       renderRoom(room);
     }
@@ -1993,21 +2145,21 @@
       const finalReady = allPlaced && modelCorrect && reviewCorrect;
       const exitComplete = state.finalComplete;
       const hasPlacedCards = state.exitModel.length > 0 || state.exitReview.length > 0;
-      const titleText = exitComplete ? "AI Brain Door opened" : allDone ? "Power the AI Brain Door" : "Exit locked";
+      const titleText = exitComplete ? "Language Model Door opened" : allDone ? "Power the Language Model Door" : "Final room not ready";
       const leadText = exitComplete
         ? "Review mode: the exit is already open. Replay the final lock if you want to solve it again."
         : allDone
-          ? "Use the six crystals to rebuild the AI Brain, then open the door."
+          ? "Use the six crystals to rebuild the generation path and the separate training loop."
           : "Collect all six room crystals before opening the final exit.";
       const consoleTitle = exitComplete ? "Final model complete" : allPlaced ? "Build the final model" : "Place the crystals";
       const consoleInstruction = exitComplete
         ? "The puzzle is complete. Click Replay final puzzle to unlock the controls again."
         : allPlaced
           ? canTryFinal
-            ? "Both consoles are full. Click Activate AI Brain. If the order feels wrong, use Reset cards."
+            ? "Both paths are full. Click Activate Language Model. If the order feels wrong, use Reset cards."
             : "Drag each card into an empty slot. You can also click a card to fill the next empty slot. Click a filled slot to remove it."
           : allDone
-            ? "Click each crystal chip. It will move into a slot around the AI Brain."
+            ? "Click each crystal chip. It will move into a slot around the language model."
             : "The brain door needs every room crystal.";
       const pieceLabel = (collection, id) => collection.find((piece) => piece.id === id)?.label || "";
       const renderSequence = (kind, pieces, order, placed, title, hint) => `
@@ -2040,12 +2192,12 @@
           <p>${leadText}</p>
           <div class="exit-steps" aria-label="Final exit steps">
             <span class="${allPlaced ? "done" : "active"}">1. Place crystals</span>
-            <span class="${modelCorrect ? "done" : allPlaced ? "active" : ""}">2. Build text generation</span>
-            <span class="${reviewCorrect ? "done" : modelReady ? "active" : ""}">3. Add human checks</span>
+            <span class="${modelCorrect ? "done" : allPlaced ? "active" : ""}">2. Build the generation path</span>
+            <span class="${reviewCorrect ? "done" : modelReady ? "active" : ""}">3. Build the training loop</span>
           </div>
         </div>
         <div class="brain-door">
-          <section class="brain-chamber" aria-label="AI Brain Door">
+          <section class="brain-chamber" aria-label="Language Model Door">
             <div class="brain-core ${allPlaced ? "charged" : ""} ${finalReady ? "ready" : ""}">
               <span>AI</span>
             </div>
@@ -2062,10 +2214,10 @@
             <p>${consoleInstruction}</p>
             <div class="exit-guide ${exitComplete ? "complete" : ""}">
               ${exitComplete
-                ? "Complete. You can look back at the mental model here, or replay it to practise the final puzzle again."
+                ? "Complete. Review both paths here, or replay the final puzzle to practise again."
                 : allPlaced
-                  ? "Step 2: build how LLMs make text. Step 3: build what people should check after an answer appears."
-                  : "Step 1: click the crystal chips below to power the AI Brain."}
+                  ? "Step 2: build how a model generates text. Step 3: build the earlier training loop. Training does not happen during each reply."
+                  : "Step 1: click the crystal chips below to power the Language Model Door."}
             </div>
             <div class="crystal-tray" aria-label="Collected crystals">
               ${rooms.map((room) => {
@@ -2078,18 +2230,18 @@
               }).join("")}
             </div>
             <div class="brain-puzzle" ${allPlaced ? "" : "hidden"}>
-              ${renderSequence("model", finalModelPieces, finalModelOrder, modelPlaced, "AI Brain sequence", "How does the model make text?")}
-              ${renderSequence("review", finalReviewPieces, finalReviewOrder, reviewPlaced, "Human Review console", "What should people do after output appears?")}
+              ${renderSequence("model", finalModelPieces, finalModelOrder, modelPlaced, "Generation path", "What happens while the model makes a reply?")}
+              ${renderSequence("review", finalReviewPieces, finalReviewOrder, reviewPlaced, "Training loop", "What happened earlier while the model learned from examples?")}
             </div>
             <div class="exit-actions">
               <button type="button" class="secondary" data-action="map">Room Map</button>
               ${!exitComplete && allPlaced ? `<button type="button" class="ghost-reset" data-action="clear-final" ${hasPlacedCards ? "" : "disabled"}>Reset cards</button>` : ""}
               ${exitComplete ? `<button type="button" class="gold" data-action="replay-final">Replay final puzzle</button>` : ""}
-              <button type="button" class="success" data-action="complete" ${canTryFinal && !exitComplete ? "" : "disabled"}>${exitComplete ? "Exit is open" : "Activate AI Brain"}</button>
+              <button type="button" class="success" data-action="complete" ${canTryFinal && !exitComplete ? "" : "disabled"}>${exitComplete ? "Exit is open" : "Activate Language Model"}</button>
             </div>
           </section>
         </div>
-        <div class="feedback ${finalReady || state.finalComplete ? "good" : "bad"}">${state.finalComplete ? "LLMs generate text by predicting tokens from learned patterns. Their answers depend on training data and context, so they can be useful but also wrong or biased and should be checked critically." : state.exitFeedback || (finalReady ? "The AI Brain is ready. Activate it to open the exit." : allPlaced ? "Build both sequences, then activate the AI Brain." : allDone ? "Place all six crystals around the brain door." : "The exit needs every room's crystal.")}</div>
+        <div class="feedback ${finalReady || state.finalComplete ? "good" : "bad"}">${state.finalComplete ? "You followed the full path: text becomes tokens and numbers; context and helpful connections shape one next-token prediction; the chosen token is added and the process repeats. Training is a separate earlier loop that adjusts the model across many examples." : state.exitFeedback || (finalReady ? "Both paths are correct. Activate the Language Model Door." : allPlaced ? "Build the generation path and the separate training loop." : allDone ? "Place all six crystals around the model door." : "The final room needs every room crystal.")}</div>
       </section>`;
       exitScreen.querySelector("[data-action='map']").addEventListener("click", openMap);
       const replayButton = exitScreen.querySelector("[data-action='replay-final']");
@@ -2105,7 +2257,7 @@
       if (clearButton) clearButton.addEventListener("click", () => {
         state.exitModel = [];
         state.exitReview = [];
-        state.exitFeedback = "Cards cleared. Start with how the model makes text, then add the human checks.";
+        state.exitFeedback = "Cards cleared. Build the generation path, then the separate training loop.";
         renderExit();
       });
       exitScreen.querySelectorAll("[data-exit-crystal]").forEach((button) => button.addEventListener("click", () => {
@@ -2114,8 +2266,8 @@
         if (state.exitPlaced.has(crystal)) state.exitPlaced.delete(crystal);
         else state.exitPlaced.add(crystal);
         state.exitFeedback = state.exitPlaced.size === rooms.length
-          ? "All crystals are placed. Now build the text-generation chain and the human-check chain."
-          : `${state.exitPlaced.size} / ${rooms.length} crystals placed. Keep powering the AI Brain.`;
+          ? "All crystals are placed. Now build the generation path and the training loop."
+          : `${state.exitPlaced.size} / ${rooms.length} crystals placed. Keep powering the Language Model Door.`;
         if (!state.exitPlaced.size) {
           state.exitModel = [];
           state.exitReview = [];
@@ -2562,7 +2714,7 @@
       exitScreen.querySelector("[data-action='complete']").addEventListener("click", () => {
         if (state.finalComplete) return;
         if (!allPlaced) {
-          state.exitFeedback = "Place every crystal around the AI Brain first.";
+          state.exitFeedback = "Place every crystal around the Language Model Door first.";
           renderExit();
           return;
         }
@@ -2572,12 +2724,12 @@
           return;
         }
         if (!modelCorrect) {
-          state.exitFeedback = "The text-making order is not right yet. Training patterns come before tokens, prediction, and output.";
+          state.exitFeedback = "The generation order is not right yet. Start with tokens and numbers, then use context and connections before predicting and repeating.";
           renderExit();
           return;
         }
         if (!reviewCorrect) {
-          state.exitFeedback = "The checking order is not right yet. First verify facts, then check fairness, then use AI carefully.";
+          state.exitFeedback = "The training order is not right yet. Start with an example, predict, reveal the actual token, adjust, then repeat.";
           renderExit();
           return;
         }

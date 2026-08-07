@@ -45,17 +45,20 @@ export default function Lesson3Paged({ setProgress, navigate, notify }) {
   const complete=REQUIRED.every((key)=>activities.has(key))&&visited.has(6);
   const labels={backToMissions:t("mission3.shell.backToLearn"),missionCount:t("mission3.shell.lessonCount"),topicLabel:t("mission3.shell.topic"),pageCount:t("mission3.shell.pageCount",{current:currentPage,total:6}),back:t("mission3.shell.back"),next:t("mission3.shell.next"),prototypeEndAction:t("mission3.shell.incomplete"),prototypeLabel:t("mission3.shell.topic"),robotAlt:t("mission3.shell.robotAlt")};
 
-  function finish() {
-    setProgress((previous)=>{const next=structuredClone(previous);next.missions[3]={progress:100,completed:true};writeProgress(next);return next;});
-    notify?.(t("mission3.actions.completedNotice"));navigate("/missions");
+  function continueToNextLesson() {
+    if (complete) {
+      setProgress((previous)=>{const next=structuredClone(previous);next.missions[3]={progress:100,completed:true};writeProgress(next);return next;});
+      notify?.(t("mission3.actions.completedNotice"));
+    }
+    navigate("/mission/4-training-data-paged");
   }
 
-  return <MissionLessonShell currentPage={currentPage} pageCount={6} onPageChange={changePage} onBackToMissions={()=>navigate("/missions")} title={t(page[1])} subtitle={t(page[2])} labels={labels} recommendation={recommendation} rootClassName={`lesson-3-paged l3-page-${page[0]} paged-mission-playful playful-learning-scope`} robotImage={`/assets/img/${ROBOTS[currentPage-1]}`}>
+  return <MissionLessonShell currentPage={currentPage} pageCount={6} onPageChange={changePage} onEnd={continueToNextLesson} onBackToMissions={()=>navigate("/missions")} title={t(page[1])} subtitle={t(page[2])} labels={{...labels, prototypeEndAction:"Next Lesson"}} recommendation={recommendation} rootClassName={`lesson-3-paged l3-page-${page[0]} paged-mission-playful playful-learning-scope`} robotImage={`/assets/img/${ROBOTS[currentPage-1]}`}>
     <Lesson3Page1 active={currentPage===1} t={t}/>
     <Lesson3Page2 active={currentPage===2} t={t} onComplete={()=>mark("task-focus")}/>
     <Lesson3Page3 active={currentPage===3} t={t} onComplete={()=>mark("combined-clues")}/>
     <Lesson3Page4 active={currentPage===4} t={t}/>
     <Lesson3Page5 active={currentPage===5} t={t} onComplete={()=>mark("clue-practice")}/>
-    <Lesson3Page6 active={currentPage===6} t={t} complete={complete} onComplete={finish}/>
+    <Lesson3Page6 active={currentPage===6} t={t} complete={complete} onContinue={continueToNextLesson}/>
   </MissionLessonShell>;
 }

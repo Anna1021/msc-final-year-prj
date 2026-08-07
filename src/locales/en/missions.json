@@ -1,9 +1,9 @@
 {
   "missionLabel": "Mission {{id}}", "missionOf": "Mission {{mission}} of 5", "learningPath": "Learning Path", "allTitle": "All Missions",
-  "allIntro": "Complete five missions to explore how language models process text, predict and learn.\nFinish all missions to unlock the Final Challenge!",
+  "allIntro": "Explore five lessons about how language models process text, predict and learn.\nThe suggested order helps the ideas build naturally, but every lesson is available.",
   "yourProgress": "Your Progress", "missionsCompleted": "Missions Completed", "whatLearn": "What You’ll Learn",
-  "completePrevious": "Complete Mission {{mission}} first.", "completeAllFirst": "Complete all 5 missions first.", "completeAllToUnlock": "Complete all 5 missions to unlock the Final Challenge.",
-  "finalChallenge": "Final Challenge", "finalTitle": "Final Challenge: AI Literacy Escape Room", "finalShort": "AI Literacy Escape Room", "finalDesc": "Complete all 5 missions to unlock the final challenge and test your AI knowledge!",
+  "completePrevious": "Lesson {{mission}} is recommended first.", "completeAllFirst": "All lessons are recommended before the challenge.", "completeAllToUnlock": "The Final Challenge is available now and works best after all five lessons.",
+  "finalChallenge": "Final Challenge", "finalTitle": "Final Challenge: Language Model Escape Room", "finalShort": "Language Model Escape Room", "finalDesc": "Bring together tokens, numbers, context, connections, prediction and training. Recommended after all five lessons.",
   "items": {
     "1": { "title": "How does a language model process text?", "short": "Text processing", "desc": "Explore tokens and numerical representations.", "skill": "Tokens & Numerical Representations" },
     "2": { "title": "Which words can a language model see?", "short": "Reading context", "desc": "Explore the context window and the text available to the model.", "skill": "Reading Context" },

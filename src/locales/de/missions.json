@@ -1,9 +1,9 @@
 {
   "missionLabel": "Mission {{id}}", "missionOf": "Mission {{mission}} von 5", "learningPath": "Lernpfad", "allTitle": "Alle Missionen",
-  "allIntro": "Schließe fünf Missionen ab und erkunde, wie Sprachmodelle Text verarbeiten, vorhersagen und lernen.\nSchließe alles ab, um die finale Challenge freizuschalten!",
+  "allIntro": "Erkunde in fünf Lektionen, wie Sprachmodelle Text verarbeiten, vorhersagen und lernen.\nDie empfohlene Reihenfolge baut die Ideen auf, aber jede Lektion ist verfügbar.",
   "yourProgress": "Dein Fortschritt", "missionsCompleted": "Missionen abgeschlossen", "whatLearn": "Das lernst du",
-  "completePrevious": "Schließe zuerst Mission {{mission}} ab.", "completeAllFirst": "Schließe zuerst alle 5 Missionen ab.", "completeAllToUnlock": "Schließe alle 5 Missionen ab, um die finale Challenge freizuschalten.",
-  "finalChallenge": "Finale Challenge", "finalTitle": "Finale Challenge: KI-Escape-Room", "finalShort": "KI-Escape-Room", "finalDesc": "Schließe alle 5 Missionen ab und teste dein KI-Wissen!",
+  "completePrevious": "Lektion {{mission}} wird zuerst empfohlen.", "completeAllFirst": "Alle Lektionen werden vor der Challenge empfohlen.", "completeAllToUnlock": "Die finale Challenge ist jetzt verfügbar und funktioniert nach allen fünf Lektionen am besten.",
+  "finalChallenge": "Finale Challenge", "finalTitle": "Finale Challenge: Sprachmodell-Escape-Room", "finalShort": "Sprachmodell-Escape-Room", "finalDesc": "Verbinde Tokens, Zahlen, Kontext, Verbindungen, Vorhersage und Training. Empfohlen nach allen fünf Lektionen.",
   "items": {
     "1": { "title": "Wie verarbeitet ein Sprachmodell Text?", "short": "Textverarbeitung", "desc": "Erkunde Tokens und numerische Darstellungen.", "skill": "Tokens und numerische Darstellungen" },
     "2": { "title": "Welche Wörter kann ein Sprachmodell sehen?", "short": "Kontext lesen", "desc": "Erkunde das Kontextfenster und den Text, der dem Modell zur Verfügung steht.", "skill": "Kontext lesen" },

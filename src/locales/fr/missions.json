@@ -1,9 +1,9 @@
 {
   "missionLabel": "Mission {{id}}", "missionOf": "Mission {{mission}} sur 5", "learningPath": "Parcours", "allTitle": "Toutes les missions",
-  "allIntro": "Termine cinq missions pour explorer comment les modèles de langage traitent le texte, prédisent et apprennent.\nTermine tout pour débloquer le défi final !",
+  "allIntro": "Explore cinq leçons sur la façon dont les modèles de langage traitent le texte, prédisent et apprennent.\nL’ordre conseillé aide à construire les idées, mais toutes les leçons sont disponibles.",
   "yourProgress": "Votre progrès", "missionsCompleted": "Missions terminées", "whatLearn": "Ce que vous apprendrez",
-  "completePrevious": "Terminez d’abord la mission {{mission}}.", "completeAllFirst": "Terminez d’abord les 5 missions.", "completeAllToUnlock": "Terminez les 5 missions pour débloquer le défi final.",
-  "finalChallenge": "Défi final", "finalTitle": "Défi final : Escape Room de culture IA", "finalShort": "Escape Room IA", "finalDesc": "Terminez les 5 missions pour tester vos connaissances IA !",
+  "completePrevious": "La leçon {{mission}} est conseillée d’abord.", "completeAllFirst": "Toutes les leçons sont conseillées avant le défi.", "completeAllToUnlock": "Le défi final est disponible maintenant et fonctionne mieux après les cinq leçons.",
+  "finalChallenge": "Défi final", "finalTitle": "Défi final : Escape Room du modèle de langage", "finalShort": "Escape Room du modèle de langage", "finalDesc": "Réunis tokens, nombres, contexte, connexions, prédiction et entraînement. Conseillé après les cinq leçons.",
   "items": {
     "1": { "title": "Comment un modèle de langage traite-t-il le texte ?", "short": "Traitement du texte", "desc": "Explore les tokens et les représentations numériques.", "skill": "Tokens et représentations numériques" },
     "2": { "title": "Quels mots un modèle de langage peut-il voir ?", "short": "Lire le contexte", "desc": "Explore la fenêtre de contexte et le texte disponible pour le modèle.", "skill": "Lire le contexte" },

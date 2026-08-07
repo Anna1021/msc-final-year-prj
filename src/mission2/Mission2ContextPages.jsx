@@ -234,7 +234,7 @@ export function Mission2SizePage({ active, t, onComplete }) {
   </section>;
 }
 
-export function Mission2SummaryPage({ active, t, complete, onComplete }) {
+export function Mission2SummaryPage({ active, t, complete, onContinue }) {
   return <section hidden={!active} className="mission-2-paged__lesson m2-reading-page" data-lesson-page="6">
     <LessonQuestion number="6" label={t("mission2.page6.eyebrow")}>{t("mission2.page6.question")}</LessonQuestion>
     <p className="m2-reading-intro">{t("mission2.page6.intro")}</p>
@@ -245,6 +245,7 @@ export function Mission2SummaryPage({ active, t, complete, onComplete }) {
     </div>
     <div className="m2-discovery-list"><h3>{t("mission2.page6.discovered")}</h3><p><Check />{t("mission2.page6.point1")}</p><p><Check />{t("mission2.page6.point2")}</p><p><Check />{t("mission2.page6.point3")}</p></div>
     <div className="m2-next-lesson"><img src="/assets/img/mission-robot-pointing.png" alt="A robot shines a light on helpful words." /><div><small>{t("mission2.page6.nextLabel")}</small><strong>{t("mission2.page6.nextTitle")}</strong><p>{t("mission2.page6.next")}</p></div></div>
-    <button type="button" className="primary m2-complete-lesson" disabled={!complete} onClick={onComplete}>{complete ? t("mission2.actions.complete") : t("mission2.actions.incomplete")}</button>
+    {!complete && <p className="lesson-summary-advisory">You can continue now. Return later to complete the recommended activities.</p>}
+    <button type="button" className="primary m2-complete-lesson" onClick={onContinue}>Next Lesson <ArrowRight /></button>
   </section>;
 }

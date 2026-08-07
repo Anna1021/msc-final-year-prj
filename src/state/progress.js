@@ -103,8 +103,10 @@ export function missionLearningState(progress, id, visitedIds = []) {
   };
 }
 
-export function canAccessFinalChallenge(progress, qaMode = false) {
-  return qaMode || completedCount(progress) === missionData.length;
+export function canAccessFinalChallenge() {
+  // Access and completion are deliberately separate. The challenge is always
+  // explorable; completedCount() is still used for recommendations and records.
+  return true;
 }
 
 export function activityRecords(progress, notes = readLearningNotes()) {

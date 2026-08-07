@@ -8,7 +8,8 @@ const curriculumCss = await readFile(new URL("../src/pagedMissions/pagedCurricul
 
 assert.match(shell, /<nav className="mission-lesson-paged__nav"/, "shared footer is always rendered by the shell");
 assert.match(shell, /disabled=\{currentPage === 1\}[\s\S]*onPageChange\(currentPage - 1\)/, "Back targets the previous page and is disabled only on Page 1");
-assert.match(shell, /disabled=\{currentPage === pageCount\}[\s\S]*onPageChange\(currentPage \+ 1\)/, "Next targets the following page and is disabled only on the final page");
+assert.match(shell, /disabled=\{currentPage === pageCount && !onEnd\}[\s\S]*onPageChange\(currentPage \+ 1\)/, "Next targets the following page and the final action remains available when an onward route exists");
+assert.match(shell, /currentPage === pageCount \? onEnd\?\.\(\)/, "the final page delegates to its non-blocking onward action");
 assert.match(shell, /currentPage === pageCount \? labels\.prototypeEndAction : labels\.next/, "final page has a distinct final-page label");
 assert.doesNotMatch(shell, /canAdvance|activityComplete.*mission-lesson-paged__nav/, "activity state cannot remove or lock page navigation");
 

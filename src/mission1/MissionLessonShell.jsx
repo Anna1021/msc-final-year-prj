@@ -7,7 +7,7 @@ export function parseLessonPage(search, pageCount) {
   return Number.isInteger(page) && page >= 1 && page <= pageCount ? page : 1;
 }
 
-export default function MissionLessonShell({ currentPage, pageCount, onPageChange, onBackToMissions, title, subtitle, labels, recommendation = null, rootClassName = "mission-1-paged mission-1 playful-learning-scope", robotImage = "/assets/img/mission-robot-reading.png", children }) {
+export default function MissionLessonShell({ currentPage, pageCount, onPageChange, onEnd, onBackToMissions, title, subtitle, labels, recommendation = null, rootClassName = "mission-1-paged mission-1 playful-learning-scope", robotImage = "/assets/img/mission-robot-reading.png", children }) {
   const headingRef = useRef(null);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function MissionLessonShell({ currentPage, pageCount, onPageChang
     <nav className="mission-lesson-paged__nav" aria-label="Lesson pages">
       <button type="button" className="outline" disabled={currentPage === 1} onClick={() => onPageChange(currentPage - 1)}><ArrowLeft size={18} strokeWidth={1.8} />{labels.back}</button>
       <span><strong>{pageLabel}</strong><small>{labels.prototypeLabel}</small></span>
-      <button type="button" className="primary" disabled={currentPage === pageCount} onClick={() => onPageChange(currentPage + 1)}>{currentPage === pageCount ? labels.prototypeEndAction : labels.next}{currentPage < pageCount && <ArrowRight size={18} strokeWidth={1.8} />}</button>
+      <button type="button" className="primary" disabled={currentPage === pageCount && !onEnd} onClick={() => currentPage === pageCount ? onEnd?.() : onPageChange(currentPage + 1)}>{currentPage === pageCount ? labels.prototypeEndAction : labels.next}<ArrowRight size={18} strokeWidth={1.8} /></button>
     </nav>
   </div>;
 }

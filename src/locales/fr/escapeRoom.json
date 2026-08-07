@@ -1,7 +1,7 @@
 {
-  "pageTitle": "Défi final : Escape Room de culture IA",
+  "pageTitle": "Défi final : Escape Room du modèle de langage",
   "eyebrow": "Escape Room HTML5 jouable",
-  "runtimeTitle": "Escape Room de culture IA",
+  "runtimeTitle": "Escape Room du modèle de langage",
   "roomMap": "Carte des salles",
   "continue": "Continuer",
   "fullScreen": "Plein écran",
@@ -20,5 +20,5 @@
   "completeSaved": "Évasion terminée. Progression enregistrée.",
   "completeAlready": "Évasion déjà terminée. Récompense déjà enregistrée.",
   "inventory": "Cristaux",
-  "tips": "Utilise ce que tu as appris dans les missions 1 à 6 pour sortir de chaque salle."
+  "tips": "Suis les six idées, des tokens et nombres à la prédiction et à l’entraînement."
 }

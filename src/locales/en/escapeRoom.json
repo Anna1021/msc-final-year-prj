@@ -1,7 +1,7 @@
 {
-  "pageTitle": "Final Challenge: AI Literacy Escape Room",
+  "pageTitle": "Final Challenge: Language Model Escape Room",
   "eyebrow": "Playable HTML5 Escape Room",
-  "runtimeTitle": "AI Literacy Escape Room",
+  "runtimeTitle": "Language Model Escape Room",
   "roomMap": "Room Map",
   "continue": "Continue",
   "fullScreen": "Full Screen",
@@ -20,5 +20,5 @@
   "completeSaved": "Escape complete. Progress saved.",
   "completeAlready": "Escape complete. Final reward already saved.",
   "inventory": "Crystals",
-  "tips": "Escape each room by using what you learned in Missions 1 to 6."
+  "tips": "Follow the six ideas from tokens and numbers to prediction and training."
 }

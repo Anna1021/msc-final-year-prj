@@ -84,25 +84,28 @@ export default function Mission2PagedPrototype({ setProgress, navigate, notify }
   };
   const complete = REQUIRED_ACTIVITIES.every((key) => activities.has(key)) && visitedPages.has(6);
 
-  function completeLesson() {
-    setProgress((previous) => {
-      const next = structuredClone(previous);
-      next.missions[2] = { progress: 100, completed: true };
-      writeProgress(next);
-      return next;
-    });
-    notify?.(t("mission2.actions.completedNotice"));
-    navigate("/missions");
+  function continueToNextLesson() {
+    if (complete) {
+      setProgress((previous) => {
+        const next = structuredClone(previous);
+        next.missions[2] = { progress: 100, completed: true };
+        writeProgress(next);
+        return next;
+      });
+      notify?.(t("mission2.actions.completedNotice"));
+    }
+    navigate("/mission/3-hallucination-paged");
   }
 
   return <MissionLessonShell
     currentPage={currentPage}
     pageCount={MISSION_2_PAGED_PAGES.length}
     onPageChange={changePage}
+    onEnd={continueToNextLesson}
     onBackToMissions={() => navigate("/missions")}
     title={t(page.titleKey)}
     subtitle={t(page.subtitleKey)}
-    labels={labels}
+    labels={{ ...labels, prototypeEndAction: "Next Lesson" }}
     recommendation={recommendation}
     rootClassName={`mission-2-paged mission-2-reading-context mission-2-open-hero m2-reading-page-${currentPage} m2-hero-page-${currentPage} paged-mission-playful playful-learning-scope`}
     robotImage={HERO_ROBOTS[currentPage - 1]}
@@ -112,6 +115,6 @@ export default function Mission2PagedPrototype({ setProgress, navigate, notify }
     <Mission2GrowingTextPage active={currentPage === 3} t={t} onComplete={() => mark("grow-text")} />
     <Mission2OutsidePage active={currentPage === 4} t={t} onComplete={() => mark("visible-clue")} />
     <Mission2SizePage active={currentPage === 5} t={t} onComplete={() => mark("resize-window")} />
-    <Mission2SummaryPage active={currentPage === 6} t={t} complete={complete} onComplete={completeLesson} />
+    <Mission2SummaryPage active={currentPage === 6} t={t} complete={complete} onContinue={continueToNextLesson} />
   </MissionLessonShell>;
 }

@@ -18,7 +18,7 @@ assert.deepEqual(legacy.missions[2], { progress: 75, completed: false }, "combin
 assert.deepEqual(legacy.missions[5], { progress: 100, completed: true }, "old Training maps to new Mission 4");
 assert.deepEqual(legacy.missions[6], { progress: 100, completed: true }, "old Bias maps to new Mission 5");
 assert.equal(completedCount(legacy), 3);
-assert.equal(canAccessFinalChallenge(legacy), false);
+assert.equal(canAccessFinalChallenge(legacy), true, "Final Challenge access is independent from completion");
 for (const mission of missionData) assert.equal(canAccessMission(legacy, mission.id), true, `Mission ${mission.order} is always available`);
 assert.equal(isUnlocked(legacy, 3), true, "legacy unlock helper no longer creates a hard route lock");
 assert.equal(recommendedMissionId(legacy), 2, "the first incomplete Mission remains the recommendation");
@@ -26,12 +26,12 @@ assert.deepEqual(missionLearningState(legacy, 3, new Set([3])), { available:true
 
 const allLegacyComplete = normaliseProgress({ missions: Object.fromEntries([1, 2, 3, 4, 5, 6].map((id) => [id, { progress: 100, completed: true }])) });
 assert.equal(completedCount(allLegacyComplete), 5);
-assert.equal(canAccessFinalChallenge(allLegacyComplete), true, "five migrated Missions unlock the Final Challenge");
+assert.equal(canAccessFinalChallenge(allLegacyComplete), true, "completed learners can also enter the Final Challenge");
 
 const appSource = await readFile(new URL("../src/main.jsx", import.meta.url), "utf8");
 assert.match(appSource, /learningMode === "guided"[\s\S]*learningMode === "explore"/, "Missions overview offers Guided Path and Explore Freely modes");
 assert.doesNotMatch(appSource, /missionId && !canAccessMission/, "runtime routing has no Mission access guard");
-assert.match(appSource, /canAccessFinalChallenge\(progress, qaMode\)/, "Final Challenge keeps its genuine completion guard");
+assert.doesNotMatch(appSource, /route === "\/final-challenge" && !canAccessFinalChallenge/, "Final Challenge route has no completion guard");
 
 function leafPaths(value, prefix = "") {
   return Object.entries(value).flatMap(([key, child]) => {

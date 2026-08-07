@@ -1,9 +1,9 @@
 {
   "missionLabel": "任务 {{id}}", "missionOf": "任务 {{mission}} / 5", "learningPath": "学习路径", "allTitle": "全部任务",
-  "allIntro": "通过五个任务探索语言模型如何处理文字、预测和学习。\n完成全部任务后解锁最终挑战！",
+  "allIntro": "通过五节课探索语言模型如何处理文字、预测和学习。\n推荐顺序能让概念自然衔接，但所有课程都可以直接进入。",
   "yourProgress": "你的进度", "missionsCompleted": "已完成任务", "whatLearn": "你会学到什么",
-  "completePrevious": "请先完成任务 {{mission}}。", "completeAllFirst": "请先完成全部 5 个任务。", "completeAllToUnlock": "完成 5 个任务后解锁最终挑战。",
-  "finalChallenge": "最终挑战", "finalTitle": "最终挑战：AI 素养密室逃脱", "finalShort": "AI 素养密室逃脱", "finalDesc": "完成 5 个任务后，解锁最终挑战并测试你的 AI 知识！",
+  "completePrevious": "建议先学习第 {{mission}} 课。", "completeAllFirst": "建议完成全部课程后再挑战。", "completeAllToUnlock": "最终挑战现在即可进入，完成五节课后体验更佳。",
+  "finalChallenge": "最终挑战", "finalTitle": "最终挑战：语言模型密室逃脱", "finalShort": "语言模型密室逃脱", "finalDesc": "把 Token、数字、上下文、连接、预测和训练串起来。建议完成五节课后体验。",
   "items": {
     "1": { "title": "语言模型如何处理文字？", "short": "文字处理", "desc": "探索 token 和数字表示。", "skill": "Token 与数字表示" },
     "2": { "title": "语言模型能看到哪些文字？", "short": "阅读上下文", "desc": "探索上下文窗口和模型当前可以使用的文字。", "skill": "阅读上下文" },

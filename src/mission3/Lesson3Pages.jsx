@@ -8,7 +8,6 @@ import {
   GitBranch,
   Lightbulb,
   Link2,
-  LockKeyhole,
   ScanSearch,
   Sparkles
 } from "lucide-react";
@@ -195,9 +194,9 @@ export function Lesson3Page5({ active, t, onComplete }) {
   </section>;
 }
 
-export function Lesson3Page6({ active, t, complete, onComplete }) {
+export function Lesson3Page6({ active, t, complete, onContinue }) {
   const steps = [
-    [Eye,"window","context"], [ScanSearch,"clues","helpful"], [GitBranch,"combine","relationships"], [Sparkles,"updated","representation"], [LockKeyhole,"next","prediction"]
+    [Eye,"window","context"], [ScanSearch,"clues","helpful"], [GitBranch,"combine","relationships"], [Sparkles,"updated","representation"], [CircleDot,"next","prediction"]
   ];
   return <section hidden={!active} className="lesson-3-page l3-page-six">
     <Question number="6" eyebrow={t("mission3.page6.eyebrow")}>{t("mission3.page6.question")}</Question>
@@ -205,7 +204,8 @@ export function Lesson3Page6({ active, t, complete, onComplete }) {
     <div className="l3-discovery-route">{steps.map(([Icon,key,className],index)=><React.Fragment key={key}><article className={`is-${className}`}><span>{index+1}</span><Icon/><strong>{t(`mission3.page6.${key}`)}</strong><small>{t(`mission3.page6.${key}Note`)}</small></article>{index<steps.length-1&&<ArrowRight/>}</React.Fragment>)}</div>
     <div className="l3-summary-points"><h3>{t("mission3.page6.discovered")}</h3>{[1,2,3,4,5].map((number)=><p key={number}><Check/>{t(`mission3.page6.point${number}`)}</p>)}</div>
     <div className="l3-accuracy-map"><img src="/assets/img/mission-robot-reading.png" alt="" aria-hidden="true"/><p><strong>{t("mission3.page6.accuracyTitle")}</strong>{t("mission3.page6.accuracy")}</p></div>
-    <div className="l3-next-gate"><span><LockKeyhole/></span><div><small>{t("mission3.page6.nextLabel")}</small><strong>{t("mission3.page6.nextTitle")}</strong><p>{t("mission3.page6.next")}</p></div></div>
-    <button type="button" className="primary l3-complete" disabled={!complete} onClick={onComplete}>{complete ? t("mission3.actions.complete") : t("mission3.actions.incomplete")}</button>
+    <div className="l3-next-gate"><span><ArrowRight/></span><div><small>{t("mission3.page6.nextLabel")}</small><strong>{t("mission3.page6.nextTitle")}</strong><p>{t("mission3.page6.next")}</p></div></div>
+    {!complete && <p className="lesson-summary-advisory">You can continue now. Return later to complete the recommended activities.</p>}
+    <button type="button" className="primary l3-complete" onClick={onContinue}>Next Lesson <ArrowRight /></button>
   </section>;
 }
