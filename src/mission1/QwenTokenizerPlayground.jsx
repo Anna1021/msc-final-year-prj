@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AlertCircle, ArrowDown, ChevronDown, ChevronUp, FlaskConical, LoaderCircle, Play, RefreshCcw, RotateCcw } from "lucide-react";
-import { QWEN_TOKENIZER, tokenizeWithQwen, validateQwenTokenizerInput } from "./qwenTokenizer.js";
+import { LIVE_TOKENIZER, tokenizeWithLiveModel, validateLiveTokenizerInput } from "./liveTokenizerClient.js";
 import TokenPieces from "./TokenPieces.jsx";
 
 const PRESETS = {
@@ -38,7 +38,7 @@ export default function QwenTokenizerPlayground({ language, t, onSuccessfulRun, 
   }, [exploreIndex, presets]);
 
   async function runTokenizer() {
-    const validation = validateQwenTokenizerInput(input);
+    const validation = validateLiveTokenizerInput(input);
     if (validation === "empty") {
       setStatus("validation-error");
       setError(t("mission1.playground.emptyError"));
@@ -52,7 +52,7 @@ export default function QwenTokenizerPlayground({ language, t, onSuccessfulRun, 
     setError("");
     setStatus(loaded ? "tokenizing" : "loading-tokenizer");
     try {
-      const next = await tokenizeWithQwen(input);
+      const next = await tokenizeWithLiveModel(input);
       if (next.decoded !== input) throw new Error("Tokenizer round-trip validation failed.");
       setLoaded(true);
       setResult(next);
@@ -87,7 +87,7 @@ export default function QwenTokenizerPlayground({ language, t, onSuccessfulRun, 
   const busy = status === "loading-tokenizer" || status === "tokenizing";
   return <div className={`m1-playground ${visualVariant === "paged" ? "m1-playground--paged" : ""}`.trim()}>
     <div className="m1-playground-scene" aria-hidden="true"><FlaskConical size={22} strokeWidth={1.8} /><img src={visualVariant === "paged" ? "/assets/img/mission-robot-pointing.png" : "/assets/img/mission-robot-reading.png"} alt="" /></div>
-    {showModelNote && <div className="m1-model-note"><span>{t("mission1.playground.modelLabel")}</span><strong>{QWEN_TOKENIZER.checkpoint}</strong></div>}
+    {showModelNote && <div className="m1-model-note"><span>{t("mission1.playground.modelLabel")}</span><strong>{LIVE_TOKENIZER.checkpoint}</strong></div>}
     <div className="m1-preset-row" aria-label={t("mission1.playground.presetsLabel")}>
       {presets.map((preset, index) => <button type="button" className={`m1-preset ${visualVariant === "paged" && input === preset ? "is-selected" : ""}`.trim()} aria-pressed={visualVariant === "paged" ? input === preset : undefined} key={preset} onClick={() => { setInput(preset); setResult(null); setStatus("ready"); }}><Play size={15} strokeWidth={1.8} />{visualVariant === "paged" ? <span><small>{t("mission1.playground.preset", { number: index + 1 })}</small><strong>{preset}</strong></span> : t("mission1.playground.preset", { number: index + 1 })}</button>)}
     </div>

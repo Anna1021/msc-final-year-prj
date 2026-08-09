@@ -120,7 +120,7 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
     : currentPage === 2
       ? t("mission1.demo.body")
       : currentPage === 3
-        ? t("mission1.playground.intro")
+        ? t("mission1.liveTokenizerIntro")
         : currentPage === 4
           ? t("mission1.paged.conceptInstruction")
           : currentPage === 5

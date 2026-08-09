@@ -892,7 +892,7 @@ function Mission1({ progress, setProgress, navigate, notify }) {
         <div className="playful-model-note"><span><Icon name="info" /></span><div><strong>{t("mission1.demo.model")}</strong><small>{t("mission1.demo.different")}</small></div></div>
       </CourseSection>
       <CourseSection id="m1-playground" n="3" title={t("mission1.sections.playground")}>
-        <p>{t("mission1.playground.intro")}</p>
+        <p>{t("mission1.liveTokenizerIntro")}</p>
         <QwenTokenizerPlayground language={language} t={t} onSuccessfulRun={() => markCore("playgroundRun")} exploreIndex={exploreIndex} resetKey={resetKey} />
       </CourseSection>
       <CourseSection id="m1-check" n="4" title={t("mission1.sections.quickCheck")}>

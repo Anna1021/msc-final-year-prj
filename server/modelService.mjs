@@ -28,6 +28,32 @@ async function loadTokenizer() {
   return tokenizerPromise;
 }
 
+export async function tokenizeText(value) {
+  const text = typeof value?.text === "string" ? value.text : "";
+  if (!text.trim()) throw new TypeError("text must contain at least one visible character");
+  if (text.length > 200) throw new RangeError("text must be 200 characters or fewer");
+  const tokenizer = await loadTokenizer();
+  const encoded = await tokenizer(text, { add_special_tokens:false });
+  const ids = Array.from(encoded.input_ids.data, Number);
+  const decode = (tokenIds) => tokenizer.decode(tokenIds, { skip_special_tokens:false, clean_up_tokenization_spaces:false });
+  const pieces = ids.map((id, index) => {
+    const decodedPiece = decode([id]);
+    return { index, id, rawPiece:visualiseToken(decodedPiece), decodedPiece };
+  });
+  const visualGroups = [];
+  for (let index = 0; index < pieces.length;) {
+    let end = index + 1;
+    let decodedPiece = decode(ids.slice(index, end));
+    while (decodedPiece.includes("�") && end < pieces.length) {
+      end += 1;
+      decodedPiece = decode(ids.slice(index, end));
+    }
+    visualGroups.push({ startIndex:index, tokenCount:end-index, ids:ids.slice(index,end), rawPieces:pieces.slice(index,end).map((piece)=>piece.rawPiece), decodedPiece });
+    index = end;
+  }
+  return { text, checkpoint:LIVE_MODEL.id, revision:LIVE_MODEL.revision, count:ids.length, ids, rawPieces:pieces.map((piece)=>piece.rawPiece), pieces, visualGroups, decoded:decode(ids) };
+}
+
 async function loadModel() {
   if (!modelPromise) {
     modelLoadCount += 1;
