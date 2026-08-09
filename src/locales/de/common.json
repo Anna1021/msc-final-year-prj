@@ -4,7 +4,7 @@
     "choose": "Sprache wählen"
   },
   "app": {
-    "name": "AI Explorer",
+    "name": "LLM Explorer",
     "tagline": "Wie Sprachmodelle funktionieren"
   },
   "topbar": {
@@ -17,6 +17,30 @@
     "resetProgress": "Fortschritt zurücksetzen",
     "progressReset": "Fortschritt zurückgesetzt.",
     "settingsHelp": "Einstellungen: Textgröße, Animationsgeschwindigkeit, Ton, Dunkelmodus und Fortschritt zurücksetzen."
+  },
+  "homeExplorer": {
+    "heroTitleStart": "Verstehe, wie",
+    "heroTitleAccent": "LLMs",
+    "heroTitleEnd": "funktionieren.",
+    "heroCopy": "Entdecke in 5 interaktiven Lektionen, wie LLMs Tokens und Kontext nutzen, Muster finden und das nächste Token vorhersagen.",
+    "startLesson": "Mit Lektion 1 beginnen",
+    "flowLabel": "Wie ein Sprachmodell Text erzeugt",
+    "flow": { "text": "Text", "tokens": "Tokens", "context": "Kontext", "patterns": "Muster", "nextToken": "Nächstes Token", "repeat": "Wiederholen" },
+    "lessonsTitle": "Lektionen entdecken",
+    "lessonsCopy": "Klicke auf eine Lektion, um zu beginnen.",
+    "duration": "5–7 Min.",
+    "lessons": {
+      "tokens": { "title": "Tokens", "subtitle": "Text wird zu Tokens" },
+      "context": { "title": "Kontext", "subtitle": "Was kann ein LLM sehen?" },
+      "patterns": { "title": "Muster und Verbindungen", "subtitle": "Wie hängen Tokens zusammen?" },
+      "prediction": { "title": "Vorhersage des nächsten Tokens", "subtitle": "Was kommt als Nächstes?" },
+      "learning": { "title": "Lernen", "subtitle": "Woher kommen Muster?" }
+    },
+    "finalChallenge": "Finale Challenge",
+    "escapeTitle": "Entkomme dem LLM",
+    "escapeCopy": "Nutze alles Gelernte, löse 6 Räume und sammle die Kristalle.",
+    "enterChallenge": "Challenge betreten",
+    "footer": "Bleib neugierig"
   },
   "home": {
     "welcomeTitle": "Willkommen zurück, Explorer! 👋",

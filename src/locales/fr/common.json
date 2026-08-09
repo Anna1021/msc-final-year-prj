@@ -4,7 +4,7 @@
     "choose": "Choisir la langue"
   },
   "app": {
-    "name": "AI Explorer",
+    "name": "LLM Explorer",
     "tagline": "Comment fonctionnent les modèles de langage"
   },
   "topbar": {
@@ -17,6 +17,30 @@
     "resetProgress": "Réinitialiser",
     "progressReset": "Progression réinitialisée.",
     "settingsHelp": "Paramètres : taille du texte, vitesse des animations, son, mode sombre et réinitialisation."
+  },
+  "homeExplorer": {
+    "heroTitleStart": "Comprendre comment",
+    "heroTitleAccent": "les LLM",
+    "heroTitleEnd": "fonctionnent.",
+    "heroCopy": "Explore 5 leçons interactives pour découvrir comment les LLM utilisent les tokens et le contexte, trouvent des motifs et prédisent la suite.",
+    "startLesson": "Commencer par la leçon 1",
+    "flowLabel": "Comment un modèle de langage génère du texte",
+    "flow": { "text": "Texte", "tokens": "Tokens", "context": "Contexte", "patterns": "Motifs", "nextToken": "Token suivant", "repeat": "Répéter" },
+    "lessonsTitle": "Explorer les leçons",
+    "lessonsCopy": "Clique sur une leçon pour commencer.",
+    "duration": "5–7 min",
+    "lessons": {
+      "tokens": { "title": "Tokens", "subtitle": "Le texte devient des tokens" },
+      "context": { "title": "Contexte", "subtitle": "Que peut voir un LLM ?" },
+      "patterns": { "title": "Motifs et connexions", "subtitle": "Comment les tokens sont-ils liés ?" },
+      "prediction": { "title": "Prédiction du token suivant", "subtitle": "Quelle est la suite ?" },
+      "learning": { "title": "Apprentissage", "subtitle": "D'où viennent les motifs ?" }
+    },
+    "finalChallenge": "Défi final",
+    "escapeTitle": "Échapper au LLM",
+    "escapeCopy": "Utilise tout ce que tu as découvert pour résoudre 6 salles et collecter les cristaux.",
+    "enterChallenge": "Entrer dans le défi",
+    "footer": "Reste curieux"
   },
   "home": {
     "welcomeTitle": "Bon retour, Explorateur ! 👋",
