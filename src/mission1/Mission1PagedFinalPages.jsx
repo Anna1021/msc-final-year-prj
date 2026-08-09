@@ -11,7 +11,7 @@ export function Mission1PagedNumbersPage({ active, t }) {
     <div className="mission-paged-page-heading"><div className="course-section-head"><h2><span>6</span>{t("mission1.paged.numbersTitle")}</h2></div><span className="mission-paged-heading-sticker" aria-hidden="true"><Hash /><Database /></span></div>
     <div className="mission-paged-number-intro"><img src="/assets/img/mission-robot-pointing.png" alt="" aria-hidden="true" /><p>{t("mission1.paged.numbersIntro")}</p></div>
     <div className={`mission-paged-number-flow lookup-step-${lookupStep}`} aria-live="polite">
-      <button type="button" className="mission-paged-number-tokens" onClick={advanceLookup}><Blocks size={24} strokeWidth={1.8} /><strong>{t("mission1Learning.tokenPiece")}</strong><span><b>robot</b></span><small>{t("mission1Learning.tokenPiece")}</small></button>
+      <button type="button" className="mission-paged-number-tokens" onClick={advanceLookup}><Blocks size={24} strokeWidth={1.8} /><strong>{t("mission1Learning.tokenPiece")}</strong><span><b>reader</b></span><small>{t("mission1Learning.tokenPiece")}</small></button>
       <ArrowRight aria-hidden="true" />
       <button type="button" disabled={lookupStep < 1} className="mission-paged-id-tag" onClick={advanceLookup}><Tag size={24} strokeWidth={1.8} /><strong>{t("mission1Learning.idLabel")}</strong><span className="mission-paged-teaching-badge">{t("mission1Learning.teachingExample")}</span><b>{lookupStep >= 1 ? "ID 305" : "ID ?"}</b><small>{t("mission1Learning.idOnlyLabel")}</small></button>
       <ArrowRight aria-hidden="true" />

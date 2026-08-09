@@ -24,6 +24,7 @@ assert.match(prototypeSource, /visitedPages\.has\(6\)/, "opening the final page 
 
 assert.match(pagesSource, /Can the model see|mission2\.page1\.question/, "Page 1 starts from the learner question");
 assert.match(pagesSource, /Flashlight/, "Page 1 uses the flashlight analogy as an explanatory visual");
+assert.match(pagesSource, /import[\s\S]*ChevronDown[\s\S]*from "lucide-react"/, "every rendered Lesson 2 icon, including the technical-details chevron, is imported");
 assert.match(pagesSource, /ContextFrame/, "the context boundary is represented consistently");
 assert.match(pagesSource, /function ContextTrack[\s\S]*scrollTo/, "context tracks keep the active window visible on narrow screens");
 assert.match(pagesSource, /addToken[\s\S]*setCount/, "Page 3 demonstrates the moving window by adding tokens");

@@ -5,8 +5,8 @@ import { completeMission1Progress, createMission1CoreProgress, isMission1CoreCom
 import { readFile } from "node:fs/promises";
 
 const intro = getMission1IntroFixture();
-assert.equal(intro.text, "The uncharacteristically quiet robot smiled.");
-assert.deepEqual(intro.rawPieces, ["The", "Ġun", "character", "istically", "Ġquiet", "Ġrobot", "Ġsmiled", "."]);
+assert.equal(intro.text, "The uncharacteristically quiet reader smiled.");
+assert.deepEqual(intro.rawPieces, ["The", "Ġun", "character", "istically", "Ġquiet", "Ġreader", "Ġsmiled", "."]);
 assert.equal(intro.count, 8);
 
 for (const language of ["en", "zh", "fr", "de"]) {

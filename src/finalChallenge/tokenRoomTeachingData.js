@@ -12,10 +12,10 @@ export const TOKEN_ROOM_EXAMPLE = Object.freeze({
 });
 
 export const TOKEN_ROOM_CHALLENGE = Object.freeze({
-  sentence: "The robot found an unhelpful clue.",
+  sentence: "The reader found an unhelpful clue.",
   targetWord: "unhelpful",
-  sentenceIds: Object.freeze([785, 12305, 1730, 458, 650, 8653, 1262, 29989, 13]),
-  sentenceRawPieces: Object.freeze(["The", "Ġrobot", "Ġfound", "Ġan", "Ġun", "help", "ful", "Ġclue", "."]),
+  sentenceIds: Object.freeze([785, 6604, 1730, 458, 650, 8653, 1262, 29989, 13]),
+  sentenceRawPieces: Object.freeze(["The", "Ġreader", "Ġfound", "Ġan", "Ġun", "help", "ful", "Ġclue", "."]),
   targetIds: Object.freeze([650, 8653, 1262]),
   targetRawPieces: Object.freeze(["Ġun", "help", "ful"]),
   targetDecodedPieces: Object.freeze([" un", "help", "ful"]),

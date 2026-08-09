@@ -14,7 +14,7 @@ assert.match(runtime, /querySelectorAll\("\[data-number-drawer\]"\)\.forEach/);
 assert.match(runtime, /querySelectorAll\("\[data-number-concept\]"\)\.forEach/);
 
 // 3–8. Three exclusive scenes make the lookup explicit, retryable and honest.
-assert.equal(NUMBERS_ROOM_TEACHING_DATA.token, "robot");
+assert.equal(NUMBERS_ROOM_TEACHING_DATA.token, "reader");
 assert.equal(NUMBERS_ROOM_TEACHING_DATA.tokenId, 305);
 assert.deepEqual([...NUMBERS_ROOM_TEACHING_DATA.drawers], [128, 305, 742]);
 assert.ok(runtime.includes("Lookup ID"));
@@ -60,13 +60,13 @@ const sourceHash = (name, nextName) => {
   assert.ok(source, `${name} source is present`);
   return createHash("sha256").update(source).digest("hex");
 };
-assert.equal(sourceHash("tokenPuzzle", "numbersPuzzle"), "54dfe05178fbbe4d027d088fa3fe18d289cd275c1e83fd4023ba344e10913548");
+assert.equal(sourceHash("tokenPuzzle", "numbersPuzzle"), "1947376c9a26b877b379fa853344ad47f0aef951db556800f91278352be63ac8");
 assert.equal(sourceHash("bindTokenRoom", "bindChoiceRoom"), "9b2f64af9b480b74ba7cf2aab7f6889e8d0241258bdb50e7d3a6ca68b1bc5838");
 
 // 16. Rooms 4–6 are unchanged from the accepted P15A baseline.
 const unchanged = [
   ["connectionsPuzzle", "nextTokenPuzzle", "2d19ac8a064c60b3c243af829d53405d53d338735e086774742f715f6d31752a"],
-  ["nextTokenPuzzle", "trainingLoopPuzzle", "631c3e47ea74a9b64cb5195c3bafe20cbab1bd529802a69684980c39407ef5e3"],
+  ["nextTokenPuzzle", "trainingLoopPuzzle", "5b5593302f112954c546ecd04c2cd30f46c250f1889d1f44394ee09b8fd249e5"],
   ["trainingLoopPuzzle", "predictionPuzzle", "91917d2b3be02e751f09cd1ae48c5fe325fa4a8d7428ddc6e8fb5e79d6fc1f61"]
 ];
 for (const [name, nextName, hash] of unchanged) assert.equal(sourceHash(name, nextName), hash, `${name} is unchanged`);

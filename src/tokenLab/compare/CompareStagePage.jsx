@@ -36,7 +36,7 @@ export default function CompareStagePage({ transientContract, onRunComparison, o
   const [pairIndex, setPairIndex] = useState(0);
   const [swapped, setSwapped] = useState(false);
   const [custom, setCustom] = useState(false);
-  const [customInputs, setCustomInputs] = useState([transientContract?.input || "Robots can learn patterns.", "Robots learn useful patterns from examples."]);
+  const [customInputs, setCustomInputs] = useState([transientContract?.input || "Models can learn patterns.", "Models learn useful patterns from examples."]);
   const [results, setResults] = useState(null);
   const [layer, setLayer] = useState("text");
   const [status, setStatus] = useState("idle");
@@ -64,7 +64,7 @@ export default function CompareStagePage({ transientContract, onRunComparison, o
     setReplaying(false); requestAnimationFrame(() => setReplaying(true));
   }
   function another() { choosePair((pairIndex + 1) % comparePairs.length); }
-  function restart() { setPairIndex(0); setSwapped(false); setCustom(false); setCustomInputs([transientContract?.input || "Robots can learn patterns.", "Robots learn useful patterns from examples."]); clearRun(); }
+  function restart() { setPairIndex(0); setSwapped(false); setCustom(false); setCustomInputs([transientContract?.input || "Models can learn patterns.", "Models learn useful patterns from examples."]); clearRun(); }
   function replay() { setReplaying(false); requestAnimationFrame(() => setReplaying(true)); }
   function startCustom() { setCustom(true); setSwapped(false); clearRun(); }
   function moveLayerTab(event) {

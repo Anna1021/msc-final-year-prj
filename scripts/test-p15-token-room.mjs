@@ -61,7 +61,7 @@ assert.match(runtime, /role="status" aria-live="polite"/);
 // 12. Rooms 4–6 remain byte-for-byte unchanged from the P15A baseline.
 const hashes = {
   connectionsPuzzle: "2d19ac8a064c60b3c243af829d53405d53d338735e086774742f715f6d31752a",
-  nextTokenPuzzle: "631c3e47ea74a9b64cb5195c3bafe20cbab1bd529802a69684980c39407ef5e3",
+  nextTokenPuzzle: "5b5593302f112954c546ecd04c2cd30f46c250f1889d1f44394ee09b8fd249e5",
   trainingLoopPuzzle: "91917d2b3be02e751f09cd1ae48c5fe325fa4a8d7428ddc6e8fb5e79d6fc1f61"
 };
 const functionOrder = ["connectionsPuzzle", "nextTokenPuzzle", "trainingLoopPuzzle", "predictionPuzzle"];

@@ -6,7 +6,7 @@ import { toyEmbeddingData } from "../src/tokenLab/numbers/toyEmbeddingData.js";
 
 const assets = new URL("../public/tokenizers/qwen2.5-0.5b-instruct/", import.meta.url);
 const tokenizer = createQwenTokenizer(JSON.parse(await readFile(new URL("tokenizer.json", assets), "utf8")), JSON.parse(await readFile(new URL("tokenizer_config.json", assets), "utf8")));
-const realResult = encodeWithTokenizer(tokenizer, "Robots learn quickly!");
+const realResult = encodeWithTokenizer(tokenizer, "Readers learn quickly!");
 const defaultContract = getDefaultNumbersContract();
 assert.equal(defaultContract.input, realResult.text);
 assert.deepEqual(defaultContract.ids, realResult.ids, "default IDs come from verified tokenizer output");
