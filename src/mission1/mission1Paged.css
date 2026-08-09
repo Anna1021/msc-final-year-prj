@@ -245,6 +245,129 @@
   .mission-lesson-paged.mission-1-paged .mission-paged-number-flow{padding:14px}
   .mission-lesson-paged.mission-1-paged .mission-paged-summary-strip{padding:13px}
 }
+
+/* Page 1 only — extend the existing building-block scene without changing its shared visual system. */
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__intro-scene{
+  grid-template-columns:minmax(0,1fr) 150px;
+}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__intro-scene .playful-scene-copy{
+  gap:14px;
+  padding:22px 4px 20px 24px;
+}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__intro-grid{
+  display:grid;
+  grid-template-columns:minmax(260px,.42fr) minmax(460px,.58fr);
+  gap:18px;
+  min-width:0;
+}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__why-tokens,
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__example-tokens{
+  min-width:0;
+  border:1px solid rgba(94,77,177,.16);
+  border-radius:19px;
+  padding:15px 16px;
+  background:rgba(255,255,255,.42);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.72),0 8px 16px rgba(57,56,108,.06);
+}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__why-tokens h3{
+  margin:0 0 7px;
+  color:#1f2040;
+  font-size:1rem;
+}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__why-tokens>p{
+  margin:3px 0;
+  color:#424965;
+  font-size:.76rem;
+  font-weight:700;
+  line-height:1.42;
+}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__token-flow{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr) 18px minmax(0,1fr);
+  gap:5px;
+  align-items:center;
+  margin-top:11px;
+}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__token-flow>div{
+  display:grid;
+  gap:6px;
+  min-width:0;
+  min-height:68px;
+  align-content:center;
+  border:1px solid rgba(92,75,178,.15);
+  border-bottom:4px solid rgba(91,72,181,.35);
+  border-radius:13px;
+  padding:8px;
+  color:#2f3150;
+  background:rgba(255,255,255,.66);
+  text-align:center;
+}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__token-flow>svg{color:#5c49ba;transform:rotate(-90deg)}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__token-flow small{
+  color:#645994;
+  font-size:.62rem;
+  font-weight:900;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__token-flow>div>span{font-size:.7rem;font-weight:850;overflow-wrap:anywhere}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__mini-blocks,
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__id-blocks,
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__compare-pieces{display:flex;flex-wrap:wrap;justify-content:center;gap:4px}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] :is(.mission-1-paged__mini-blocks,.mission-1-paged__id-blocks,.mission-1-paged__compare-pieces)>b{
+  border:1px solid rgba(92,74,181,.24);
+  border-bottom:3px solid rgba(88,69,177,.46);
+  border-radius:8px;
+  padding:3px 5px;
+  color:#3f3590;
+  background:linear-gradient(145deg,rgba(255,255,255,.9),#ded5ff);
+  font-size:.64rem;
+}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__id-blocks>b{border-color:#88b8d7;border-bottom-color:#5b98c0;color:#245d83;background:linear-gradient(145deg,#fff,#d4efff)}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__example-note{display:block;margin-top:6px;color:#555c77;font-size:.64rem;line-height:1.35}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__example-tokens{display:grid;gap:9px}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__example-tokens>small{color:#4f4485;font-size:.66rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__example-tokens>strong{color:#17182f;font-size:clamp(1rem,1.6vw,1.3rem);line-height:1.35}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__example-tokens .playful-block-row{gap:10px 8px}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__example-tokens .playful-token-block{min-height:43px;padding:9px 11px 6px;font-size:.78rem}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__tokenizer-compare{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px 8px;
+  align-items:center;
+  border-top:1px solid rgba(90,76,164,.17);
+  padding-top:9px;
+}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__tokenizer-compare>div{display:grid;gap:4px;min-width:0;text-align:center}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__tokenizer-compare>div>span:first-child{color:#62588f;font-size:.62rem;font-weight:900;text-transform:uppercase}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__tokenizer-compare>div>strong{font-size:.72rem;overflow-wrap:anywhere}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__tokenizer-compare>small{grid-column:1/3;color:#596078;font-size:.62rem;line-height:1.35}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__tokenizer-compare>strong{justify-self:end;color:#356852;font-size:.7rem}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__intro-scene .playful-scene-art{min-height:360px}
+.mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__intro-scene .playful-scene-art img{width:140px;max-height:150px}
+
+@media(max-width:980px){
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__intro-grid{grid-template-columns:1fr}
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__intro-scene .playful-scene-art{min-height:250px}
+}
+@media(max-width:760px){
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"]{min-width:0;max-width:100%;overflow:hidden}
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__intro-scene{grid-template-columns:minmax(0,1fr);width:100%;max-width:100%}
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__intro-scene .playful-scene-copy{padding:18px}
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__intro-grid{grid-template-columns:minmax(0,1fr);width:100%;max-width:100%}
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] :is(.mission-1-paged__why-tokens,.mission-1-paged__example-tokens){width:100%;max-width:100%;overflow:hidden}
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] :is(.mission-1-paged__example-tokens>strong,.mission-1-paged__why-tokens>p){overflow-wrap:anywhere}
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__intro-scene .playful-scene-art{min-height:105px;place-items:center end;padding-right:16px}
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__intro-scene .playful-scene-art img{width:110px;height:100px}
+}
+@media(max-width:520px){
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__token-flow{grid-template-columns:1fr;justify-items:stretch}
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__token-flow>svg{justify-self:center;transform:none}
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__token-flow>div{min-height:58px}
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__tokenizer-compare{grid-template-columns:1fr}
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__tokenizer-compare>small{grid-column:auto}
+  .mission-lesson-paged.mission-1-paged [data-lesson-page="1"] .mission-1-paged__tokenizer-compare>strong{justify-self:start}
+}
 .mission-lesson-paged.mission-1-paged .mission-paged-accuracy-note summary{display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:8px;outline:none}
 .mission-lesson-paged.mission-1-paged .mission-paged-accuracy-note summary:focus-visible{box-shadow:0 0 0 3px rgba(104,82,207,.28)}
 .mission-lesson-paged.mission-1-paged .mission-paged-accuracy-note summary svg{transition:transform .18s ease}
