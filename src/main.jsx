@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { AlertTriangle, ArrowRight, BadgeCheck, BookOpen, BrainCircuit, Braces, CheckCircle2, ChevronRight, CircleDot, CircleGauge, Clock3, Database, DoorOpen, ExternalLink, FlaskConical, Globe2, GraduationCap, Layers3, Lightbulb, LockKeyhole, NotebookPen, RefreshCcw, Scale, Search, Share2, ShieldAlert, ShieldCheck, Target, TrendingUp, Trophy, Type, Users, Wrench } from "lucide-react";
 import "./styles.css";
+import "./home.css";
 import FinalChallenge from "./finalChallenge/FinalChallenge.jsx";
 import LanguageSelector from "./components/LanguageSelector.jsx";
 import Mission1QuickCheckA from "./mission1/Mission1QuickCheckA.jsx";
@@ -92,6 +93,10 @@ function RobotLogo() {
   return <span className="robot-logo"><span className="antenna" /><span className="robot-face"><span /></span></span>;
 }
 
+function LlmExplorerMark() {
+  return <span className="llm-explorer-mark" aria-hidden="true">{Array.from({ length: 12 }, (_, index) => <i key={index} />)}</span>;
+}
+
 function Avatar({ small = false }) {
   return <span className={`avatar ${small ? "small-avatar" : ""}`}><span className="avatar-hair" /><span className="avatar-face" /></span>;
 }
@@ -103,9 +108,8 @@ const FEATURES = Object.freeze({
 function globalNavItems(t) {
   return [
     { key: "dashboard", label: t("navigation.home"), href: "/dashboard", icon: "home", visible: true },
-    { key: "missions", label: t("navigation.missions"), href: "/missions", icon: "target", visible: true },
     { key: "ai-lab", label: t("navigation.aiLab"), href: "/ai-lab", icon: FlaskConical, visible: FEATURES.aiLabNavigation },
-    { key: "progress", label: t("navigation.progress"), href: "/progress", icon: "chart", visible: true }
+    { key: "final-challenge", label: t("common.homeExplorer.finalChallenge"), href: "/final-challenge", icon: "award", visible: true }
   ].filter((item) => item.visible !== false);
 }
 
@@ -207,7 +211,7 @@ function Sidebar({ route, progress, navigate }) {
     <aside className="sidebar">
       <button className="logo reset-buttonish" onClick={() => navigate("/dashboard")}>
         <RobotLogo />
-        <span><strong>AI Explorer</strong><small>{t("common.app.tagline")}</small></span>
+        <span><strong>LLM Explorer</strong><small>{t("common.app.tagline")}</small></span>
       </button>
       <nav className="side-nav">
         {nav.map(({ key, label, href, icon }) => (
@@ -276,7 +280,7 @@ function TopBar({ route, navigate, resetProgress, qaToolsVisible, qaMode, setQaM
   </div>;
 
   if (lesson) return <header className="global-topbar lesson-shell-header">
-    <button type="button" className="lesson-topbar-back" onClick={() => navigate("/missions")}><span aria-hidden="true">←</span><span>{t("mission2.shell.backToMissions")}</span></button>
+    <button type="button" className="lesson-topbar-back" onClick={() => navigate("/dashboard")}><span aria-hidden="true">←</span><span>{t("navigation.home")}</span></button>
     <strong className="lesson-topbar-title">Lesson {lesson.number} · {lesson.topic}</strong>
     <div className="lesson-topbar-status"><span>{currentPage} / {lesson.total}</span><span className="lesson-topbar-progress" aria-label={`Page ${currentPage} of ${lesson.total}`}>{Array.from({ length: lesson.total }, (_, index) => <i className={index < currentPage ? "active" : ""} key={index} />)}</span></div>
     {actions}
@@ -284,7 +288,7 @@ function TopBar({ route, navigate, resetProgress, qaToolsVisible, qaMode, setQaM
 
   return <>
     <header className="global-topbar standard-topbar">
-      <button type="button" className="global-brand reset-buttonish" onClick={() => navigate("/dashboard")}><RobotLogo /><span><strong>AI Explorer</strong><small>{t("common.app.tagline")}</small></span></button>
+      <button type="button" className="global-brand reset-buttonish" onClick={() => navigate("/dashboard")}><LlmExplorerMark /><span><strong>{t("common.app.name")}</strong></span></button>
       <nav className="global-primary-nav" aria-label="Primary navigation">
         {nav.map(({ key, label, href }) => <button type="button" key={key} className={routeGroup(route) === key ? "active" : ""} onClick={() => navigate(href)}>{label}</button>)}
       </nav>
@@ -297,66 +301,50 @@ function TopBar({ route, navigate, resetProgress, qaToolsVisible, qaMode, setQaM
 }
 
 function Dashboard({ progress, navigate, notify, qaMode }) {
-  const completed = completedCount(progress);
-  const recommendedId = recommendedMissionId(progress);
   const lessonPresentation = [
-    { title: "Text becomes Tokens", description: "See how text is split into pieces the model can work with.", Icon: Braces },
-    { title: "Reading Context", description: "Discover which earlier words the model can see right now.", Icon: Layers3 },
-    { title: "Connecting the Tokens", description: "See how visible Tokens combine information before prediction.", Icon: Share2 },
-    { title: "Predicting the Next Token", description: "Compare possible next tokens and see how one is chosen.", Icon: CircleDot },
-    { title: "Learning from Examples", description: "See how prediction and correction help the model learn patterns.", Icon: GraduationCap }
+    { key: "tokens", Icon: Braces },
+    { key: "context", Icon: Layers3 },
+    { key: "patterns", Icon: Share2 },
+    { key: "prediction", Icon: TrendingUp },
+    { key: "learning", Icon: Database }
   ];
   const flowSteps = [
-    { label: "Text", Icon: Type, tone: "violet" },
-    { label: "Tokens", Icon: Braces, tone: "violet" },
-    { label: "Context", Icon: Layers3, tone: "blue" },
-    { label: "Connections", Icon: Share2, tone: "orange" },
-    { label: "Next Token", Icon: CircleDot, tone: "pink" },
-    { label: "Learning", Icon: GraduationCap, tone: "green" }
+    { key: "text", Icon: Type },
+    { key: "tokens", Icon: Braces },
+    { key: "context", Icon: Layers3 },
+    { key: "patterns", Icon: Share2 },
+    { key: "nextToken", Icon: TrendingUp },
+    { key: "repeat", Icon: RefreshCcw }
   ];
 
-  function lessonAction(mission) {
-    const state = progress.missions[mission.id] || { progress: 0, completed: false };
-    if (state.completed) return "Review";
-    if (state.progress > 0) return "Continue";
-    if (mission.id === recommendedId) return "Start";
-    return "Explore";
-  }
-
-  function openFinalChallenge() {
-    navigate("/final-challenge");
-  }
+  const { t } = useI18n();
 
   return <main className="dashboard-learning-journey">
     <section className="learn-journey-hero" aria-labelledby="learn-journey-title">
       <div className="learn-hero-copy">
-        <span className="learn-eyebrow">Interactive learning journey</span>
-        <h1 id="learn-journey-title">See how language models turn text into a reply</h1>
-        <p>Follow one sentence from text and Tokens to context, prediction and learning.</p>
+        <h1 id="learn-journey-title">{t("common.homeExplorer.heroTitleStart")}<br /><span>{t("common.homeExplorer.heroTitleAccent")}</span> {t("common.homeExplorer.heroTitleEnd")}</h1>
+        <p>{t("common.homeExplorer.heroCopy")}</p>
         <button className="learn-primary-action" type="button" onClick={() => navigate(missionData[0].route)}>
-          Start Lesson 1 <ArrowRight />
+          {t("common.homeExplorer.startLesson")} <ArrowRight />
         </button>
       </div>
 
-      <ol className="learn-model-flow" aria-label="The language model learning journey">
-        {flowSteps.map(({ label, Icon: FlowIcon, tone }, index) => <React.Fragment key={label}>
-          <li className={`learn-flow-step learn-tone-${tone}`}>
+      <ol className="learn-model-flow" aria-label={t("common.homeExplorer.flowLabel")}>
+        {flowSteps.map(({ key, Icon: FlowIcon }, index) => <React.Fragment key={key}>
+          <li className="learn-flow-step">
             <span><FlowIcon /></span>
-            <strong>{label}</strong>
+            <strong>{t(`common.homeExplorer.flow.${key}`)}</strong>
           </li>
           {index < flowSteps.length - 1 && <ArrowRight className="learn-flow-arrow" aria-hidden="true" />}
         </React.Fragment>)}
       </ol>
-
-      <div className="learn-hero-guide" aria-hidden="true"><Mascot type="reading" /></div>
     </section>
 
     <section className="learn-lessons" aria-labelledby="learn-lessons-title">
       <header className="learn-section-heading">
-        <span className="learn-section-icon"><BookOpen /></span>
         <div>
-          <h2 id="learn-lessons-title">Learn the core ideas</h2>
-          <p>Follow the suggested order, or explore any lesson when you are curious.</p>
+          <h2 id="learn-lessons-title">{t("common.homeExplorer.lessonsTitle")}</h2>
+          <p>{t("common.homeExplorer.lessonsCopy")}</p>
         </div>
       </header>
 
@@ -364,41 +352,36 @@ function Dashboard({ progress, navigate, notify, qaMode }) {
         {missionData.map((mission, index) => {
           const presentation = lessonPresentation[index];
           const state = progress.missions[mission.id] || { progress: 0, completed: false };
-          const isRecommended = mission.id === recommendedId;
           const ActionIcon = presentation.Icon;
-          const action = lessonAction(mission);
-          return <article className={`learn-lesson-card learn-lesson-${index + 1} ${isRecommended ? "is-recommended" : ""}`} key={mission.id}>
-            <span className="learn-lesson-number" aria-label={`Lesson ${index + 1}`}><small>Lesson</small>{index + 1}</span>
+          return <button className={`learn-lesson-card learn-lesson-${index + 1}`} type="button" onClick={() => navigate(mission.route)} key={mission.id}>
+            <span className="learn-lesson-number" aria-label={`Lesson ${index + 1}`}>{String(index + 1).padStart(2, "0")}</span>
+            <span className="learn-lesson-symbol" aria-hidden="true"><ActionIcon /></span>
             <div className="learn-lesson-copy">
               <div className="learn-lesson-title-row">
-                <h3>{presentation.title}</h3>
-                {isRecommended && !state.completed && <span className="learn-recommended-label">Recommended</span>}
-                {state.completed && <span className="learn-complete-label"><CheckCircle2 /> Complete</span>}
+                <h3>{t(`common.homeExplorer.lessons.${presentation.key}.title`)}</h3>
+                {state.completed && <span className="learn-complete-label"><CheckCircle2 /> {t("common.status.completed")}</span>}
               </div>
-              <p>{presentation.description}</p>
+              <p>{t(`common.homeExplorer.lessons.${presentation.key}.subtitle`)}</p>
             </div>
-            <button className="learn-lesson-action" type="button" onClick={() => navigate(mission.route)}>
-              {action}<ArrowRight />
-            </button>
-            <span className="learn-lesson-symbol" aria-hidden="true"><ActionIcon /></span>
-          </article>;
+            <span className="learn-lesson-meta"><Clock3 />{t("common.homeExplorer.duration")}</span>
+            <ArrowRight className="learn-lesson-arrow" aria-hidden="true" />
+          </button>;
         })}
       </div>
     </section>
 
     <section className="learn-final-challenge" aria-labelledby="learn-final-title">
-      <span className="learn-final-door" aria-hidden="true"><DoorOpen /></span>
+      <span className="learn-final-door" aria-hidden="true"><img src="/assets/img/final-challenge/room1/door-open-light.png" alt="" /></span>
       <div className="learn-final-copy">
-        <span>Put everything together</span>
-        <h2 id="learn-final-title">Language Model Escape Room</h2>
-        <p>Complete the five lessons for the best experience, then use everything you learned in one final challenge.</p>
+        <h2 id="learn-final-title">{t("common.homeExplorer.finalChallenge")}</h2>
+        <strong>{t("common.homeExplorer.escapeTitle")}</strong>
+        <p>{t("common.homeExplorer.escapeCopy")}</p>
       </div>
-      <div className="learn-final-guide" aria-hidden="true"><Mascot type="missions" /></div>
       <div className="learn-final-action-wrap">
-        <button type="button" onClick={openFinalChallenge}>Preview Challenge <ArrowRight /></button>
-        <small>{completed === missionData.length ? "You are ready to begin." : "Recommended after all lessons."}</small>
+        <button type="button" onClick={() => navigate("/final-challenge")}>{t("common.homeExplorer.enterChallenge")} <ArrowRight /></button>
       </div>
     </section>
+    <footer className="learn-home-footer"><span>{t("common.app.name")}</span><i />{t("common.app.tagline")}<i />{t("common.homeExplorer.footer")}</footer>
   </main>;
 }
 
@@ -2811,6 +2794,7 @@ function PlaceholderPage({ route }) {
 
 function resolveRuntimeRoute(pathname) {
   if (pathname === "/" || pathname === "/about" || pathname === "/glossary") return "/dashboard";
+  if (pathname === "/missions" || pathname === "/progress" || pathname === "/badges") return "/dashboard";
   if (pathname === "/token-lab") return "/ai-lab";
   const canonicalLesson = resolveLegacyLessonRoute(pathname);
   if (canonicalLesson) return canonicalLesson;
@@ -2882,6 +2866,7 @@ function App() {
       target.search = keepQa ? "?qa=1" : "";
     }
     const resolvedRoute = resolveRuntimeRoute(target.pathname);
+    if (target.pathname === "/missions" || target.pathname === "/progress" || target.pathname === "/badges") target.pathname = "/dashboard";
     if (resolvedRoute === "/final-challenge" && completedCount(progress) < missionData.length && !skipFinalAdvisory && !finalChallengeAcknowledged) {
       setShowFinalChallengeAdvisory(true);
       return;
@@ -2905,7 +2890,7 @@ function App() {
   function reviewLessonsBeforeChallenge() {
     setShowFinalChallengeAdvisory(false);
     setFinalChallengeAcknowledged(false);
-    navigate("/missions");
+    navigate("/dashboard");
   }
   function notify(message) {
     setToast(message);
@@ -2921,6 +2906,10 @@ function App() {
   React.useEffect(() => {
     const initialCanonicalLocation = canonicalLessonLocation(window.location.pathname, window.location.search);
     if (initialCanonicalLocation) window.history.replaceState({}, "", initialCanonicalLocation);
+    if (window.location.pathname === "/missions" || window.location.pathname === "/progress" || window.location.pathname === "/badges") {
+      const suffix = qaToolsVisible ? "?qa=1" : "";
+      window.history.replaceState({}, "", `/dashboard${suffix}`);
+    }
     if (window.location.pathname === "/about" || window.location.pathname === "/glossary") {
       const suffix = qaToolsVisible ? "?qa=1" : "";
       window.history.replaceState({}, "", `/${suffix}`);
@@ -2946,6 +2935,10 @@ function App() {
       }
       if (pathname === "/about" || pathname === "/glossary") {
         window.history.replaceState({}, "", `/${toolsVisible ? "?qa=1" : ""}`);
+      }
+      if (pathname === "/missions" || pathname === "/progress" || pathname === "/badges") {
+        window.history.replaceState({}, "", `/dashboard${toolsVisible ? "?qa=1" : ""}`);
+        pathname = "/dashboard";
       }
       setRoute(resolveRuntimeRoute(pathname));
       if (!wasLegacyLesson) {

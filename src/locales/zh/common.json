@@ -4,7 +4,7 @@
     "choose": "选择语言"
   },
   "app": {
-    "name": "AI Explorer",
+    "name": "LLM Explorer",
     "tagline": "了解语言模型如何工作"
   },
   "topbar": {
@@ -17,6 +17,30 @@
     "resetProgress": "重置进度",
     "progressReset": "进度已重置。",
     "settingsHelp": "设置：文字大小、动画速度、声音、深色模式和重置进度。"
+  },
+  "homeExplorer": {
+    "heroTitleStart": "理解",
+    "heroTitleAccent": "LLM",
+    "heroTitleEnd": "如何工作。",
+    "heroCopy": "通过 5 节互动课程，探索 LLM 如何处理 Token、使用上下文、发现模式并预测下一个 Token。",
+    "startLesson": "从第 1 课开始",
+    "flowLabel": "语言模型如何生成文字",
+    "flow": { "text": "文字", "tokens": "Token", "context": "上下文", "patterns": "模式", "nextToken": "下一个 Token", "repeat": "重复" },
+    "lessonsTitle": "探索课程",
+    "lessonsCopy": "点击任意课程开始学习。",
+    "duration": "5–7 分钟",
+    "lessons": {
+      "tokens": { "title": "Token", "subtitle": "文字变成 Token" },
+      "context": { "title": "上下文", "subtitle": "LLM 能看到什么？" },
+      "patterns": { "title": "模式与连接", "subtitle": "Token 如何相互关联？" },
+      "prediction": { "title": "下一个 Token 预测", "subtitle": "接下来会是什么？" },
+      "learning": { "title": "学习", "subtitle": "模式从哪里来？" }
+    },
+    "finalChallenge": "最终挑战",
+    "escapeTitle": "逃离 LLM",
+    "escapeCopy": "运用你发现的一切，解开 6 个房间并收集水晶。",
+    "enterChallenge": "进入挑战",
+    "footer": "保持好奇"
   },
   "home": {
     "welcomeTitle": "欢迎回来，探索者！👋",

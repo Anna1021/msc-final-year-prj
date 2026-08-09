@@ -51,6 +51,6 @@ export const finalExitPuzzle = {
 
 export const tokenHintLevels = [
   "Look for an option that splits the highlighted word into more than one Token.",
-  "The tokenizer used in AI Explorer makes three Token pieces here.",
+  "The tokenizer used in LLM Explorer makes three Token pieces here.",
   "The first Token also contains the space before the highlighted word."
 ];

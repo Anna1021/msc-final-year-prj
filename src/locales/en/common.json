@@ -4,7 +4,7 @@
     "choose": "Choose language"
   },
   "app": {
-    "name": "AI Explorer",
+    "name": "LLM Explorer",
     "tagline": "How Language Models Work"
   },
   "topbar": {
@@ -17,6 +17,30 @@
     "resetProgress": "Reset Progress",
     "progressReset": "Progress reset.",
     "settingsHelp": "Settings: text size, animation speed, sound, dark mode, reset progress."
+  },
+  "homeExplorer": {
+    "heroTitleStart": "Understand how",
+    "heroTitleAccent": "LLMs",
+    "heroTitleEnd": "work.",
+    "heroCopy": "Explore 5 interactive lessons to discover how LLMs work with tokens, use context, find patterns and predict what comes next.",
+    "startLesson": "Start with Lesson 1",
+    "flowLabel": "How a language model generates text",
+    "flow": { "text": "Text", "tokens": "Tokens", "context": "Context", "patterns": "Patterns", "nextToken": "Next token", "repeat": "Repeat" },
+    "lessonsTitle": "Explore the lessons",
+    "lessonsCopy": "Click any lesson to start learning.",
+    "duration": "5–7 min",
+    "lessons": {
+      "tokens": { "title": "Tokens", "subtitle": "Text becomes tokens" },
+      "context": { "title": "Context", "subtitle": "What can an LLM see?" },
+      "patterns": { "title": "Patterns & Connections", "subtitle": "How are tokens related?" },
+      "prediction": { "title": "Next Token Prediction", "subtitle": "What comes next?" },
+      "learning": { "title": "Learning", "subtitle": "Where do patterns come from?" }
+    },
+    "finalChallenge": "Final Challenge",
+    "escapeTitle": "Escape the LLM",
+    "escapeCopy": "Use everything you've discovered to solve 6 rooms and collect the crystals.",
+    "enterChallenge": "Enter the Challenge",
+    "footer": "Be curious"
   },
   "home": {
     "welcomeTitle": "Welcome back, Explorer! 👋",

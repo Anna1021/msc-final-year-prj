@@ -13,7 +13,7 @@
   "errorCopy": "Das Spiel hat innerhalb von 10 Sekunden kein READY gesendet. Versuche es erneut oder kehre zu den Missionen zurück.",
   "retry": "Erneut versuchen",
   "backToMissions": "Zurück zu Missionen",
-  "integrationInfo": "Das Construct-Spiel sendet Fortschritt zurück an AI Explorer.",
+  "integrationInfo": "Das Construct-Spiel sendet Fortschritt zurück an LLM Explorer.",
   "resetSaved": "Escape-Room-Fortschritt zurückgesetzt.",
   "mapOpened": "Raumkarte geöffnet.",
   "allRoomsComplete": "Alle Räume sind abgeschlossen. Zurück zur Raumkarte.",

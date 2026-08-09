@@ -92,7 +92,7 @@ function ProgressPanel({ progress, debug, status, onReset, onReload }) {
       <p>Status: <strong>{status}</strong></p>
       <p>Screen: <strong>{progress.currentScreen || "room-select"}</strong></p>
       <p>Final Exit: <strong>{progress.finalCompleted ? "completed and reviewable" : "not completed"}</strong></p>
-      <p>The escape room runs inside the iframe. AI Explorer stores crystals and progress outside the game.</p>
+      <p>The escape room runs inside the iframe. LLM Explorer stores crystals and progress outside the game.</p>
     </section>
     <section>
       <h3>Crystals</h3>
