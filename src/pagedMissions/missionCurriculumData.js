@@ -7,36 +7,32 @@ export const PAGED_MISSION_ROUTES = Object.freeze({
 
 export const PAGED_MISSIONS = Object.freeze({
   3: {
-    order: 3, topic: "Finding Helpful Clues", robot: "/assets/img/mission3-robot-hallucination.png",
+    order: 3, topic: "Connecting the Tokens", robot: "/assets/img/mission3-robot-hallucination.png",
     pages: [
-      ["equal", "Some clues help more", "Visible tokens do not all help equally for the same task."],
-      ["task", "The task changes the clues", "Useful token relationships change with the current task."],
-      ["combine", "Clues can work together", "Several earlier tokens can contribute at the same time."],
-      ["order", "Order changes relationships", "The same words can describe a different relationship in a new order."],
-      ["practice", "Find the helpful clues", "Use reviewed examples to practise clue finding."],
-      ["summary", "Lesson discovery", "Connect visible context and useful relationships to prediction."]
+      ["transformer", "Meet the Transformer", "See how visible Tokens can combine information."],
+      ["attention", "Some connections contribute more", "Observe different simplified connection strengths."],
+      ["representation", "Build a context-aware Token", "Update a simplified Token representation."],
+      ["position", "Position changes relationships", "See how order changes Token relationships."],
+      ["process", "Watch the Transformer process a sentence", "Run one controlled mechanism demonstration."],
+      ["summary", "Before prediction", "Connect contextual processing to the prediction gate."]
     ]
   },
   5: {
     order: 4, topic: "Predicting the Next Token", robot: "/assets/img/missions-robot-target.png",
     pages: [
-      ["candidates", "Several Tokens could come next", "Compare possible continuations for one next position."],
-      ["scores", "Candidates get different chances", "Reveal reviewed scores and probabilities."],
-      ["choose", "One rule chooses one Token", "Compare highest-chance selection and sampling."],
-      ["add", "Add the Token to the text", "Place the chosen Token into the updated context."],
-      ["repeat", "Predict, add and repeat", "Generate a reviewed story one Token at a time."],
-      ["summary", "Lesson discovery", "Connect the full next-token prediction loop."]
+      ["predict", "How does the model predict the next Token?", "Connect candidate scores to probabilities."],
+      ["choose", "How does the model choose one Token?", "Compare selection rules and add the chosen Token."],
+      ["live", "Live Next Token Lab", "Run genuine next-token inference in your browser."],
+      ["check", "Check what you discovered", "Explain the next-token generation loop."]
     ]
   },
   6: {
-    order: 5, topic: "Learning from Training Examples", robot: "/assets/img/mission5-robot-training.png",
+    order: 5, topic: "How the Model Learns to Predict", robot: "/assets/img/mission5-robot-training.png",
     pages: [
-      ["practice", "Practise predicting the next token", "Training begins with existing text."],
-      ["compare", "Compare prediction and answer", "The actual token creates a correction signal."],
-      ["adjust", "Adjust many numbers slightly", "Small distributed changes improve predictions."],
-      ["repeat", "Repeat with many examples", "Corrections accumulate into patterns."],
-      ["generalise", "Patterns are not perfect memory", "Apply learning to related new text."],
-      ["summary", "The complete training loop", "Connect training with all five lessons."]
+      ["origin", "Where do prediction probabilities come from?", "Compare a prediction with the real next Token."],
+      ["adjust", "How does the model improve a prediction?", "Nudge many adjustable numbers by tiny amounts."],
+      ["repeat", "Why does training use so many examples?", "Repeat prediction, comparison and adjustment."],
+      ["connect", "Training vs Generation", "Connect learned parameters with later generation."]
     ]
   }
 });

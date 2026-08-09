@@ -16,7 +16,7 @@ export default function QwenTokenizerPlayground({ language, t, onSuccessfulRun, 
   const [status, setStatus] = useState("idle");
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
-  const [technicalOpen, setTechnicalOpen] = useState(false);
+  const [technicalOpen, setTechnicalOpen] = useState(true);
   const [loaded, setLoaded] = useState(false);
   const resultRef = useRef(null);
 
@@ -25,7 +25,7 @@ export default function QwenTokenizerPlayground({ language, t, onSuccessfulRun, 
     setResult(null);
     setError("");
     setStatus("idle");
-    setTechnicalOpen(false);
+    setTechnicalOpen(true);
   }, [language, resetKey, presets]);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function QwenTokenizerPlayground({ language, t, onSuccessfulRun, 
     setResult(null);
     setError("");
     setStatus("idle");
-    setTechnicalOpen(false);
+    setTechnicalOpen(true);
   }, [exploreIndex, presets]);
 
   async function runTokenizer() {
@@ -69,7 +69,7 @@ export default function QwenTokenizerPlayground({ language, t, onSuccessfulRun, 
     setResult(null);
     setError("");
     setStatus("ready");
-    setTechnicalOpen(false);
+    setTechnicalOpen(true);
   }
 
   useEffect(() => {
@@ -105,8 +105,8 @@ export default function QwenTokenizerPlayground({ language, t, onSuccessfulRun, 
       <TokenPieces groups={result.visualGroups} visualVariant={visualVariant === "paged" ? "verified" : "default"} t={t} />
       <p className="m1-space-legend"><span>␠</span>{t("mission1.tokens.spaceLegend")}</p>
       {visualVariant === "paged" && <p className="m1-playground-discovery"><strong>{t("mission1.paged.discoveryCount", { count: result.count })}</strong><span>{t("mission1.paged.discoveryNotice")}</span><em>{t("mission1Learning.changeDiscovery")}</em></p>}
-      <button type="button" className="m1-technical-toggle" aria-expanded={technicalOpen} onClick={() => setTechnicalOpen((open) => !open)}>{technicalOpen ? <ChevronUp size={17} strokeWidth={1.8} /> : <ChevronDown size={17} strokeWidth={1.8} />}{technicalOpen ? t("mission1.playground.hideTechnical") : t("mission1.playground.showTechnical")}</button>
-      {technicalOpen && <div className="m1-technical-details"><p>{t("mission1.playground.technicalOptional")}</p>{result.pieces.map((piece) => <code key={`${piece.index}-${piece.id}`}><span>#{piece.index + 1}</span><b>{piece.rawPiece}</b><small>ID {piece.id}</small></code>)}</div>}
+      <button type="button" className="m1-technical-toggle" aria-expanded={technicalOpen} aria-controls="mission1-tokenizer-technical-details" onClick={() => setTechnicalOpen((open) => !open)}>{technicalOpen ? <ChevronUp size={17} strokeWidth={1.8} /> : <ChevronDown size={17} strokeWidth={1.8} />}{technicalOpen ? t("mission1.playground.hideTechnical") : t("mission1.playground.showTechnical")}</button>
+      {technicalOpen && <div id="mission1-tokenizer-technical-details" className="m1-technical-details"><p>{t("mission1.playground.technicalOptional")}</p>{result.pieces.map((piece) => <code key={`${piece.index}-${piece.id}`}><span>#{piece.index + 1}</span><b>{piece.rawPiece}</b><small>ID {piece.id}</small></code>)}</div>}
     </div>}
   </div>;
 }

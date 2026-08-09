@@ -24,7 +24,7 @@ assert.match(app, /onClick=\{\(\) => navigate\("\/final-challenge"\)\}/, "Final 
 assert.match(shell, /currentPage === pageCount \? onEnd\?\.\(\)/, "final-page footer uses an available continuation action");
 for (const source of lessonSources) {
   assert.doesNotMatch(source, /disabled=\{!complete\}/, "summary continuation is never disabled by completion");
-  assert.match(source, /navigate\("\/mission\/|navigate\("\/final-challenge"\)/, "summary has a direct onward route");
+  assert.match(source, /navigate\("\/mission\/|navigate\("\/final-challenge"\)|navigate\("\/missions"\)/, "summary has a direct onward route");
 }
 
 assert.equal(ESCAPE_PROGRESS_VERSION, 2, "incompatible legacy room progress is safely versioned");
@@ -36,7 +36,7 @@ assert.match(finalExitPuzzle.completionMessage, /Training is a separate earlier 
 for (const visibleIdea of ["Token Workshop", "Number Lookup", "Context Window", "Connection Lab", "Next-Token Machine", "Training Workshop", "Generation path", "Training loop"]) {
   assert.ok(runtime.includes(visibleIdea), `runtime includes ${visibleIdea}`);
 }
-assert.match(runtime, /Teaching example:[\s\S]*illustrative/);
+assert.match(runtime, /Simplified teaching row[\s\S]*real models use much larger learned representations/);
 assert.match(runtime, /No model weights are trained in your browser/);
 assert.match(runtime, /Training does not happen during each reply/);
 assert.match(runtime, /data-exit-crystal/);

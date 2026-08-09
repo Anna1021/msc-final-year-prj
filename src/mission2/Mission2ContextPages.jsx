@@ -14,6 +14,7 @@ import {
   Plus,
   ScanLine,
 } from "lucide-react";
+import { didContextWindowShift } from "./contextWindowProgress.js";
 
 const STORY_TOKENS = ["The", "small", "robot", "found", "a", "silver", "key", "under", "the", "bridge", "."];
 const WINDOW_SIZE = 5;
@@ -115,6 +116,7 @@ export function Mission2OpeningPage({ active, t, onComplete }) {
 
 export function Mission2WindowPage({ active, t, onComplete }) {
   const [revealed, setRevealed] = useState(false);
+  const [technicalOpen, setTechnicalOpen] = useState(true);
 
   function reveal() {
     setRevealed(true);
@@ -137,7 +139,10 @@ export function Mission2WindowPage({ active, t, onComplete }) {
         <ScanLine />{revealed ? t("mission2.actions.revealed") : t("mission2.actions.showBoundary")}
       </button>
     </div>
-    <div className="m2-simple-definition"><strong>{t("mission2.page2.term")}</strong><p>{t("mission2.page2.definition")}</p></div>
+    <details className="m2-simple-definition" open={technicalOpen} onToggle={(event) => setTechnicalOpen(event.currentTarget.open)}>
+      <summary aria-expanded={technicalOpen} aria-controls="mission2-context-window-definition"><span>{t("mission2.page2.technicalWord")}</span><strong>{t("mission2.page2.term")}</strong><ChevronDown aria-hidden="true" /></summary>
+      <div id="mission2-context-window-definition"><p>{t("mission2.page2.definition")}</p></div>
+    </details>
     {revealed && <Takeaway>{t("mission2.page2.takeaway")}</Takeaway>}
     <ReadingBridge>{t("mission2.page2.bridge")}</ReadingBridge>
   </section>;
@@ -151,8 +156,9 @@ export function Mission2GrowingTextPage({ active, t, onComplete }) {
 
   function addToken() {
     if (finished) return;
-    setCount((current) => current + 1);
-    onComplete?.();
+    const nextCount = Math.min(STORY_TOKENS.length, count + 1);
+    setCount(nextCount);
+    if (didContextWindowShift(count, nextCount, WINDOW_SIZE)) onComplete?.();
   }
 
   return <section hidden={!active} className="mission-2-paged__lesson m2-reading-page" data-lesson-page="3">
@@ -245,7 +251,7 @@ export function Mission2SummaryPage({ active, t, complete, onContinue }) {
     </div>
     <div className="m2-discovery-list"><h3>{t("mission2.page6.discovered")}</h3><p><Check />{t("mission2.page6.point1")}</p><p><Check />{t("mission2.page6.point2")}</p><p><Check />{t("mission2.page6.point3")}</p></div>
     <div className="m2-next-lesson"><img src="/assets/img/mission-robot-pointing.png" alt="A robot shines a light on helpful words." /><div><small>{t("mission2.page6.nextLabel")}</small><strong>{t("mission2.page6.nextTitle")}</strong><p>{t("mission2.page6.next")}</p></div></div>
-    {!complete && <p className="lesson-summary-advisory">You can continue now. Return later to complete the recommended activities.</p>}
-    <button type="button" className="primary m2-complete-lesson" onClick={onContinue}>Next Lesson <ArrowRight /></button>
+    {!complete && <p className="lesson-summary-advisory">{t("learningMode.notice")}</p>}
+    <button type="button" className="primary m2-complete-lesson" onClick={onContinue}>{t("mission2.shell.next")} <ArrowRight /></button>
   </section>;
 }

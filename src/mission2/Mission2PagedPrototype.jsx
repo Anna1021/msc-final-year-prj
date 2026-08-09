@@ -105,7 +105,7 @@ export default function Mission2PagedPrototype({ setProgress, navigate, notify }
     onBackToMissions={() => navigate("/missions")}
     title={t(page.titleKey)}
     subtitle={t(page.subtitleKey)}
-    labels={{ ...labels, prototypeEndAction: "Next Lesson" }}
+    labels={{ ...labels, prototypeEndAction: t("mission2.shell.nextLesson") }}
     recommendation={recommendation}
     rootClassName={`mission-2-paged mission-2-reading-context mission-2-open-hero m2-reading-page-${currentPage} m2-hero-page-${currentPage} paged-mission-playful playful-learning-scope`}
     robotImage={HERO_ROBOTS[currentPage - 1]}

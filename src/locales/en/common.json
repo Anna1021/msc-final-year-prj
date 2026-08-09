@@ -5,10 +5,10 @@
   },
   "app": {
     "name": "AI Explorer",
-    "tagline": "How ChatGPT Thinks"
+    "tagline": "How Language Models Work"
   },
   "topbar": {
-    "backToMissions": "‹ Back to Missions",
+    "backToMissions": "‹ Back to Lessons",
     "backToProgress": "‹ Back to Progress",
     "yourProgress": "Your Progress",
     "allActivity": "All Activity",
@@ -20,40 +20,51 @@
   },
   "home": {
     "welcomeTitle": "Welcome back, Explorer! 👋",
-    "welcomeLead": "Ready to continue your AI learning adventure?",
+    "welcomeLead": "Ready to continue your language-model learning journey?",
     "welcomeCopy": "Pick up where you left off or explore something new.",
     "continueLearning": "Continue Learning",
-    "completeStatus": "You have completed all five missions. Your Final Challenge is ready.",
+    "completeStatus": "You have completed all five lessons. Your Final Challenge is ready.",
     "nextMission": "Next: {{title}}.",
     "startFinalChallenge": "Start Final Challenge",
-    "continueMission": "Continue Mission",
-    "learningPath": "Learning Path",
-    "whyTitle": "Why Learn About How ChatGPT Works?",
-    "finalTitle": "Finish all missions to become an AI Literacy Explorer!",
+    "continueMission": "Continue Lesson",
+    "learningPath": "Learning Journey",
+    "whyTitle": "Why Learn How Language Models Work?",
+    "finalTitle": "Complete all five lessons to understand the full language-model journey!",
     "finalCopy": "Complete the Final Challenge and earn your certificate.",
     "seeFinalChallenge": "See Final Challenge",
     "unlockFinal": "The Final Challenge is available now and is recommended after all five lessons."
   },
+  "finalAdvisory": {
+    "eyebrow": "Final Challenge",
+    "title": "Before you enter",
+    "copy": "The Escape Room brings together ideas from all five lessons. We recommend reviewing them first, but this is guidance—not a lock.",
+    "reviewed": "I’ve reviewed the five lessons",
+    "reviewedHelp": "Enter the Final Challenge.",
+    "understand": "I haven’t finished them, but I understand the ideas",
+    "understandHelp": "Continue without changing your lesson progress.",
+    "reviewFirst": "Review the lessons first",
+    "noProgressChange": "Your choice here will not mark any lesson as complete."
+  },
   "why": {
-    "responsibleTitle": "Use AI Responsibly",
-    "responsibleText": "Understand limitations and avoid over-trusting AI answers.",
-    "criticalTitle": "Think Critically",
-    "criticalText": "Evaluate AI outputs and detect when it might be wrong.",
-    "biasTitle": "Spot Bias",
-    "biasText": "Learn how bias can appear in AI and how to reduce it.",
-    "futureTitle": "Build the Future",
-    "futureText": "AI literacy is a key skill for the world ahead."
+    "responsibleTitle": "Follow the Process",
+    "responsibleText": "See how text becomes Tokens and numerical representations.",
+    "criticalTitle": "Connect the Context",
+    "criticalText": "Discover how visible Tokens share useful information.",
+    "biasTitle": "Predict What Comes Next",
+    "biasText": "See how a language model compares and selects possible next Tokens.",
+    "futureTitle": "Understand Learning",
+    "futureText": "Follow how prediction, correction and repetition shape learned patterns."
   },
   "stats": {
     "todaysGoal": "Today's Goal",
-    "completeOneStep": "Complete one mission step",
+    "completeOneStep": "Complete one lesson step",
     "stepsCompleted": "{{done}} / 1 step completed",
-    "goalDone": "Great job! Your next mission is ready.",
+    "goalDone": "Great job! Your next lesson is ready.",
     "goalTodo": "Complete one step to keep your learning moving.",
     "yourStats": "Your Stats",
-    "missionCompleted": "Mission Completed",
+    "missionCompleted": "Lesson Completed",
     "viewProgress": "View Progress ›",
-    "missionsLeft": "Missions left",
+    "missionsLeft": "Lessons left",
     "savedNotes": "Saved notes",
     "alreadyProgress": "You have already made progress.",
     "startSmallActivity": "Start with one small activity."
@@ -61,24 +72,24 @@
   "activity": {
     "recent": "Recent Activity",
     "viewAll": "View all",
-    "readyMission": "Ready to start Mission 1",
-    "completedMission": "Mission {{id}} completed",
-    "startedMission": "Started Mission {{id}}",
+    "readyMission": "Ready to start Lesson 1",
+    "completedMission": "Lesson {{id}} completed",
+    "startedMission": "Started Lesson {{id}}",
     "today": "Today",
     "yesterday": "Yesterday",
     "daysAgo": "{{count}} days ago"
   },
   "help": {
     "needHelp": "Need help?",
-    "copy": "Use the missions and progress page to see what to do next.",
-    "goToMissions": "Go to Missions",
-    "text": "Use the mission pages and progress page to see what to do next."
+    "copy": "Use the Lessons and Progress pages to see what to do next.",
+    "goToMissions": "Go to Lessons",
+    "text": "Use the Lessons and Progress pages to see what to do next."
   },
   "profile": {
     "name": "Explorer",
     "tipTitle": "Tip of the day",
-    "tipCopy": "ChatGPT predicts tokens one by one, not whole sentences!",
-    "missionsComplete": "{{completed}} / {{total}} missions complete"
+    "tipCopy": "A language model generates text by predicting one Token at a time.",
+    "missionsComplete": "{{completed}} / {{total}} lessons complete"
   },
   "status": {
     "locked": "Locked",

@@ -43,6 +43,7 @@ import {
   writeProgress
 } from "./state/progress.js";
 import { routeGroup } from "./utils/routes.js";
+import { canonicalLessonLocation, resolveLegacyLessonRoute } from "./utils/legacyLessonRoutes.js";
 
 function Icon({ name, className = "" }) {
   const paths = {
@@ -231,7 +232,7 @@ function pagedLessonMeta(route, t) {
     "/mission/1-tokenisation-paged": { number: 1, total: 7, topic: t("mission1.paged.tokenisation") },
     "/mission/2-prediction-paged": { number: 2, total: 6, topic: t("mission2.shell.topic") },
     "/mission/3-hallucination-paged": { number: 3, total: 6, topic: t("mission3.shell.topic") },
-    "/mission/4-training-data-paged": { number: 4, total: 6, topic: t("mission4.shell.topic") },
+    "/mission/4-training-data-paged": { number: 4, total: 4, topic: t("mission4.shell.topic") },
     "/mission/5-bias-paged": { number: 5, total: 6, topic: t("mission5.shell.topic") }
   };
   return lessons[route] || null;
@@ -275,7 +276,7 @@ function TopBar({ route, navigate, resetProgress, qaToolsVisible, qaMode, setQaM
   </div>;
 
   if (lesson) return <header className="global-topbar lesson-shell-header">
-    <button type="button" className="lesson-topbar-back" onClick={() => navigate("/missions")}><span aria-hidden="true">←</span><span>Back to Missions</span></button>
+    <button type="button" className="lesson-topbar-back" onClick={() => navigate("/missions")}><span aria-hidden="true">←</span><span>{t("mission2.shell.backToMissions")}</span></button>
     <strong className="lesson-topbar-title">Lesson {lesson.number} · {lesson.topic}</strong>
     <div className="lesson-topbar-status"><span>{currentPage} / {lesson.total}</span><span className="lesson-topbar-progress" aria-label={`Page ${currentPage} of ${lesson.total}`}>{Array.from({ length: lesson.total }, (_, index) => <i className={index < currentPage ? "active" : ""} key={index} />)}</span></div>
     {actions}
@@ -301,7 +302,7 @@ function Dashboard({ progress, navigate, notify, qaMode }) {
   const lessonPresentation = [
     { title: "Text becomes Tokens", description: "See how text is split into pieces the model can work with.", Icon: Braces },
     { title: "Reading Context", description: "Discover which earlier words the model can see right now.", Icon: Layers3 },
-    { title: "Finding Helpful Clues", description: "Find the words that provide the most useful clues.", Icon: Share2 },
+    { title: "Connecting the Tokens", description: "See how visible Tokens combine information before prediction.", Icon: Share2 },
     { title: "Predicting the Next Token", description: "Compare possible next tokens and see how one is chosen.", Icon: CircleDot },
     { title: "Learning from Examples", description: "See how prediction and correction help the model learn patterns.", Icon: GraduationCap }
   ];
@@ -309,7 +310,7 @@ function Dashboard({ progress, navigate, notify, qaMode }) {
     { label: "Text", Icon: Type, tone: "violet" },
     { label: "Tokens", Icon: Braces, tone: "violet" },
     { label: "Context", Icon: Layers3, tone: "blue" },
-    { label: "Helpful Clues", Icon: Share2, tone: "orange" },
+    { label: "Connections", Icon: Share2, tone: "orange" },
     { label: "Next Token", Icon: CircleDot, tone: "pink" },
     { label: "Learning", Icon: GraduationCap, tone: "green" }
   ];
@@ -330,8 +331,8 @@ function Dashboard({ progress, navigate, notify, qaMode }) {
     <section className="learn-journey-hero" aria-labelledby="learn-journey-title">
       <div className="learn-hero-copy">
         <span className="learn-eyebrow">Interactive learning journey</span>
-        <h1 id="learn-journey-title">Understand how language models work</h1>
-        <p>Follow one sentence through every step of a language model.</p>
+        <h1 id="learn-journey-title">See how language models turn text into a reply</h1>
+        <p>Follow one sentence from text and Tokens to context, prediction and learning.</p>
         <button className="learn-primary-action" type="button" onClick={() => navigate(missionData[0].route)}>
           Start Lesson 1 <ArrowRight />
         </button>
@@ -504,7 +505,7 @@ function MissionsPage({ progress, navigate, notify, qaMode, visitedMissionIds })
             <button type="button" className={learningMode === "explore" ? "active" : ""} aria-pressed={learningMode === "explore"} onClick={() => setLearningMode("explore")}><strong>{t("learningMode.explore")}</strong><small>{t("learningMode.exploreHelp")}</small></button>
           </div>
 
-          <section className="mission-sequence" aria-label="Mission learning journey">
+          <section className="mission-sequence" aria-label="Lesson learning journey">
             {missionData.map((baseMission) => (
               <MissionJourneyCard key={baseMission.id} mission={translateMission(baseMission, t)} progress={progress} navigate={navigate} recommended={learningMode === "guided" && recommendedId === baseMission.id} visited={visitedMissionIds.has(baseMission.id)} />
             ))}
@@ -524,7 +525,7 @@ function MissionsPage({ progress, navigate, notify, qaMode, visitedMissionIds })
           <section className="missions-panel progress-summary">
             <h2><CircleGauge />Your Progress</h2>
             <button className="missions-progress-ring" type="button" style={{ "--mission-progress-angle": `${(completed / missionData.length) * 360}deg` }} onClick={() => navigate("/progress")}>
-              <strong>{completed} / {missionData.length}</strong><small>Missions Completed</small>
+              <strong>{completed} / {missionData.length}</strong><small>{t("missions.missionsCompleted")}</small>
             </button>
             <p className="missions-progress-copy">{completed === missionData.length ? "All lessons complete · Final Challenge ready" : `${missionData.length - completed} lesson${missionData.length - completed === 1 ? "" : "s"} remaining · Challenge available to explore`}</p>
           </section>
@@ -552,12 +553,12 @@ function ProgressPage({ progress, navigate, notify, qaMode }) {
   const notes = readLearningNotes();
   const overall = Math.round((completed / missionData.length) * 100);
   const stats = [
-    [CheckCircle2, completed, "Missions completed", () => navigate("/missions")],
+    [CheckCircle2, completed, "Lessons completed", () => navigate("/missions")],
     [CircleGauge, `${overall}%`, "Overall completion", () => navigate("/missions")],
     [NotebookPen, notes.length, "Saved reflections", () => openProgressNotes(navigate)],
     [Trophy, completed === missionData.length ? "Ready" : "Explore", "Final Challenge", () => navigate("/final-challenge")]
   ];
-  return <div className="progress-page"><section className="progress-main"><div className="progress-summary-grid"><section className="card overall-card"><h2><CircleGauge />Overall Progress</h2><div className="overall-inner"><div className="progress-ring big" style={{ "--angle": `${overall / 100 * 360}deg` }}><strong>{overall}%</strong><small>Completed</small></div><div className="progress-legend"><span><i className="purple-dot" />Completed<b>{completed} / {missionData.length} Missions</b></span><span><i className="gold-dot" />In Progress<b>{inProgress} Mission{inProgress === 1 ? "" : "s"}</b></span><span><i />Available<b>{available} Mission{available === 1 ? "" : "s"}</b></span></div></div></section><section className="card progress-stats-card"><h2><CircleGauge />Learning Summary</h2><div className="progress-stats-grid">{stats.map(([StatIcon, value, label, action]) => <button key={label} onClick={action}><span className="progress-icon-box"><StatIcon /></span><strong>{value}</strong><small>{label}</small></button>)}</div></section></div><section className="card mission-progress-card"><h2><BookOpen />Mission Progress</h2><div className="mission-table-head"><span>Mission</span><span>Progress</span><span>Status</span></div><div className="mission-progress-list">{missionData.map((mission) => <ProgressMissionRow key={mission.id} mission={mission} progress={progress} navigate={navigate} notify={notify} t={t} qaMode={qaMode} />)}</div><button className="progress-final-banner" onClick={() => navigate("/final-challenge")}><span className="progress-icon-box"><Trophy /></span><span><strong>{completed === missionData.length ? "Final Challenge ready" : "Explore the Final Challenge"}</strong><small>{completed === missionData.length ? "Bring together the full language-model journey." : "Recommended after all five lessons, but available now."}</small></span><ArrowRight /></button></section></section><aside className="progress-right"><ProgressActivity progress={progress} navigate={navigate} t={t} /><section className="card progress-notes-card"><div className="row-title"><h2><NotebookPen />Saved Notes</h2><button onClick={() => openProgressNotes(navigate)}>View all</button></div><p>{notes.length ? `${notes.length} reflection${notes.length === 1 ? "" : "s"} saved from your mission activities.` : "Save a reflection inside a mission and it will appear here."}</p>{notes.slice(0, 2).map((note) => <button className="progress-note-preview" key={note.id} onClick={() => openProgressNotes(navigate)}><strong>{note.mission} · {note.title}</strong><small>{note.note}</small></button>)}<button className="outline progress-open-notes" onClick={() => openProgressNotes(navigate)}>Open Notes</button></section></aside></div>;
+  return <div className="progress-page"><section className="progress-main"><div className="progress-summary-grid"><section className="card overall-card"><h2><CircleGauge />Overall Progress</h2><div className="overall-inner"><div className="progress-ring big" style={{ "--angle": `${overall / 100 * 360}deg` }}><strong>{overall}%</strong><small>Completed</small></div><div className="progress-legend"><span><i className="purple-dot" />Completed<b>{completed} / {missionData.length} Lessons</b></span><span><i className="gold-dot" />In Progress<b>{inProgress} Lesson{inProgress === 1 ? "" : "s"}</b></span><span><i />Available<b>{available} Lesson{available === 1 ? "" : "s"}</b></span></div></div></section><section className="card progress-stats-card"><h2><CircleGauge />Learning Summary</h2><div className="progress-stats-grid">{stats.map(([StatIcon, value, label, action]) => <button key={label} onClick={action}><span className="progress-icon-box"><StatIcon /></span><strong>{value}</strong><small>{label}</small></button>)}</div></section></div><section className="card mission-progress-card"><h2><BookOpen />Lesson Progress</h2><div className="mission-table-head"><span>Lesson</span><span>Progress</span><span>Status</span></div><div className="mission-progress-list">{missionData.map((mission) => <ProgressMissionRow key={mission.id} mission={mission} progress={progress} navigate={navigate} notify={notify} t={t} qaMode={qaMode} />)}</div><button className="progress-final-banner" onClick={() => navigate("/final-challenge")}><span className="progress-icon-box"><Trophy /></span><span><strong>{completed === missionData.length ? "Final Challenge ready" : "Explore the Final Challenge"}</strong><small>{completed === missionData.length ? "Bring together the full language-model journey." : "Recommended after all five lessons, but available now."}</small></span><ArrowRight /></button></section></section><aside className="progress-right"><ProgressActivity progress={progress} navigate={navigate} t={t} /><section className="card progress-notes-card"><div className="row-title"><h2><NotebookPen />Saved Notes</h2><button onClick={() => openProgressNotes(navigate)}>View all</button></div><p>{notes.length ? `${notes.length} reflection${notes.length === 1 ? "" : "s"} saved from your lesson activities.` : "Save a reflection inside a lesson and it will appear here."}</p>{notes.slice(0, 2).map((note) => <button className="progress-note-preview" key={note.id} onClick={() => openProgressNotes(navigate)}><strong>{note.mission} · {note.title}</strong><small>{note.note}</small></button>)}<button className="outline progress-open-notes" onClick={() => openProgressNotes(navigate)}>Open Notes</button></section></aside></div>;
 }
 
 function openProgressNotes(navigate) {
@@ -2795,7 +2796,6 @@ function missionIdFromRoute(route) {
   if (route === "/mission/3-hallucination-paged") return 3;
   if (route === "/mission/4-training-data-paged") return 5;
   if (route === "/mission/5-bias-paged") return 6;
-  if (route.startsWith("/mission/5/") || route === "/mission/5-training-data") return 5;
   return missionData.find((mission) => mission.route === route)?.id || null;
 }
 
@@ -2812,15 +2812,54 @@ function PlaceholderPage({ route }) {
 function resolveRuntimeRoute(pathname) {
   if (pathname === "/" || pathname === "/about" || pathname === "/glossary") return "/dashboard";
   if (pathname === "/token-lab") return "/ai-lab";
-  if (pathname === "/mission/4-context") return "/mission/2-next-token";
+  const canonicalLesson = resolveLegacyLessonRoute(pathname);
+  if (canonicalLesson) return canonicalLesson;
   return pathname;
+}
+
+function FinalChallengeAdvisory({ onEnter, onReview, onDismiss }) {
+  const { t } = useI18n();
+
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.key === "Escape") onDismiss();
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onDismiss]);
+
+  return <div className="final-advisory-backdrop">
+    <section className="final-advisory-dialog" role="dialog" aria-modal="true" aria-labelledby="final-advisory-title" aria-describedby="final-advisory-copy">
+      <header>
+        <span className="final-advisory-icon" aria-hidden="true"><DoorOpen /></span>
+        <div><small>{t("common.finalAdvisory.eyebrow")}</small><h2 id="final-advisory-title">{t("common.finalAdvisory.title")}</h2></div>
+      </header>
+      <p id="final-advisory-copy">{t("common.finalAdvisory.copy")}</p>
+      <div className="final-advisory-options">
+        <button type="button" className="final-advisory-choice primary-choice" onClick={onEnter} autoFocus>
+          <span><CheckCircle2 /></span><span><strong>{t("common.finalAdvisory.reviewed")}</strong><small>{t("common.finalAdvisory.reviewedHelp")}</small></span><ArrowRight />
+        </button>
+        <button type="button" className="final-advisory-choice" onClick={onEnter}>
+          <span><Lightbulb /></span><span><strong>{t("common.finalAdvisory.understand")}</strong><small>{t("common.finalAdvisory.understandHelp")}</small></span><ArrowRight />
+        </button>
+        <button type="button" className="final-advisory-review" onClick={onReview}><BookOpen />{t("common.finalAdvisory.reviewFirst")}</button>
+      </div>
+      <p className="final-advisory-note">{t("common.finalAdvisory.noProgressChange")}</p>
+    </section>
+  </div>;
 }
 
 function App() {
   const [route, setRoute] = useState(() => resolveRuntimeRoute(window.location.pathname));
   const [progress, setProgress] = useState(readProgress);
-  const [visitedMissionIds, setVisitedMissionIds] = useState(() => { const id = missionIdFromRoute(resolveRuntimeRoute(window.location.pathname)); return new Set(id ? [id] : []); });
+  const [visitedMissionIds, setVisitedMissionIds] = useState(() => {
+    if (resolveLegacyLessonRoute(window.location.pathname)) return new Set();
+    const id = missionIdFromRoute(resolveRuntimeRoute(window.location.pathname));
+    return new Set(id ? [id] : []);
+  });
   const [toast, setToast] = useState("");
+  const [showFinalChallengeAdvisory, setShowFinalChallengeAdvisory] = useState(false);
+  const [finalChallengeAcknowledged, setFinalChallengeAcknowledged] = useState(false);
   const [qaToolsVisible, setQaToolsVisible] = useState(() => new URLSearchParams(window.location.search).get("qa") === "1");
   const [qaMode, setQaModeState] = useState(() => {
     const requested = new URLSearchParams(window.location.search).get("qa") === "1";
@@ -2833,15 +2872,40 @@ function App() {
     sessionStorage.setItem("aiExplorerQaMode", next ? "1" : "0");
   }
 
-  function navigate(next) {
+  function navigate(next, { skipFinalAdvisory = false } = {}) {
     const target = new URL(next, window.location.origin);
     if (target.pathname === "/about" || target.pathname === "/glossary") target.pathname = "/";
+    const legacyTarget = resolveLegacyLessonRoute(target.pathname);
+    if (legacyTarget) {
+      target.pathname = legacyTarget;
+      const keepQa = target.searchParams.get("qa") === "1" || qaToolsVisible;
+      target.search = keepQa ? "?qa=1" : "";
+    }
     const resolvedRoute = resolveRuntimeRoute(target.pathname);
-    const visitedMissionId = missionIdFromRoute(resolvedRoute);
-    if (visitedMissionId) setVisitedMissionIds((current) => new Set(current).add(visitedMissionId));
+    if (resolvedRoute === "/final-challenge" && completedCount(progress) < missionData.length && !skipFinalAdvisory && !finalChallengeAcknowledged) {
+      setShowFinalChallengeAdvisory(true);
+      return;
+    }
+    if (resolvedRoute !== "/final-challenge") setFinalChallengeAcknowledged(false);
+    if (!legacyTarget) {
+      const visitedMissionId = missionIdFromRoute(resolvedRoute);
+      if (visitedMissionId) setVisitedMissionIds((current) => new Set(current).add(visitedMissionId));
+    }
     if (qaToolsVisible) target.searchParams.set("qa", "1");
     setRoute(resolvedRoute);
     window.history.pushState({}, "", `${target.pathname}${target.search}`);
+  }
+
+  function enterFinalChallenge() {
+    setShowFinalChallengeAdvisory(false);
+    setFinalChallengeAcknowledged(true);
+    if (route !== "/final-challenge") navigate("/final-challenge", { skipFinalAdvisory: true });
+  }
+
+  function reviewLessonsBeforeChallenge() {
+    setShowFinalChallengeAdvisory(false);
+    setFinalChallengeAcknowledged(false);
+    navigate("/missions");
   }
   function notify(message) {
     setToast(message);
@@ -2855,6 +2919,8 @@ function App() {
     notify("Progress reset.");
   }
   React.useEffect(() => {
+    const initialCanonicalLocation = canonicalLessonLocation(window.location.pathname, window.location.search);
+    if (initialCanonicalLocation) window.history.replaceState({}, "", initialCanonicalLocation);
     if (window.location.pathname === "/about" || window.location.pathname === "/glossary") {
       const suffix = qaToolsVisible ? "?qa=1" : "";
       window.history.replaceState({}, "", `/${suffix}`);
@@ -2866,7 +2932,13 @@ function App() {
     }
     const onPop = () => {
       const toolsVisible = new URLSearchParams(window.location.search).get("qa") === "1";
-      const pathname = window.location.pathname;
+      let pathname = window.location.pathname;
+      const canonicalLocation = canonicalLessonLocation(pathname, window.location.search);
+      const wasLegacyLesson = Boolean(canonicalLocation);
+      if (canonicalLocation) {
+        window.history.replaceState({}, "", canonicalLocation);
+        pathname = window.location.pathname;
+      }
       if (pathname === "/token-lab") {
         const legacyParams = new URLSearchParams(window.location.search);
         legacyParams.set("stage", "tokenize");
@@ -2876,8 +2948,10 @@ function App() {
         window.history.replaceState({}, "", `/${toolsVisible ? "?qa=1" : ""}`);
       }
       setRoute(resolveRuntimeRoute(pathname));
-      const visitedMissionId = missionIdFromRoute(resolveRuntimeRoute(pathname));
-      if (visitedMissionId) setVisitedMissionIds((current) => new Set(current).add(visitedMissionId));
+      if (!wasLegacyLesson) {
+        const visitedMissionId = missionIdFromRoute(resolveRuntimeRoute(pathname));
+        if (visitedMissionId) setVisitedMissionIds((current) => new Set(current).add(visitedMissionId));
+      }
       setQaToolsVisible(toolsVisible);
       if (!toolsVisible) {
         setQaModeState(false);
@@ -2889,6 +2963,9 @@ function App() {
     window.addEventListener("navigate", onNavigate);
     return () => { window.removeEventListener("popstate", onPop); window.removeEventListener("navigate", onNavigate); };
   }, []);
+  React.useEffect(() => {
+    if (route === "/final-challenge" && completedCount(progress) < missionData.length && !finalChallengeAcknowledged) setShowFinalChallengeAdvisory(true);
+  }, [route, progress, finalChallengeAcknowledged]);
   React.useEffect(() => {
     if (route !== "/badges") return;
     const suffix = qaToolsVisible ? "?qa=1" : "";
@@ -2908,18 +2985,9 @@ function App() {
   else if (route === "/mission/3-hallucination-paged") page = <Lesson3Paged progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
   else if (route === "/mission/4-training-data-paged") page = <Lesson4Paged progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
   else if (route === "/mission/5-bias-paged") page = <Lesson5Paged progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
-  // Legacy scrolling Mission 1 remains available for regression safety; learner navigation uses the paged route above.
-  else if (route === "/mission/1-tokenisation") page = <Mission1 progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
-  else if (route === "/mission/2-next-token") page = <Mission2 progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
-  else if (route === "/mission/3-hallucination") page = <Mission3 progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
-  else if (route === "/mission/4-context") page = <Mission4 progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
-  else if (route === "/mission/5-training-data" || route === "/mission/5/get-training-data") page = <Mission5 progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
-  else if (route === "/mission/5/learn-patterns") page = <Mission5Patterns progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
-  else if (route === "/mission/5/make-predictions") page = <Mission5Predictions progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
-  else if (route === "/mission/6-bias") page = <Mission6 progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
   else if (route === "/final-challenge") page = <FinalChallenge progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
   else page = <PlaceholderPage route={route} />;
-  return <Shell route={route} progress={progress} navigate={navigate} resetProgress={resetProgress} qaToolsVisible={qaToolsVisible} qaMode={qaMode} setQaMode={setQaMode}>{page}{toast && <div className="toast show">{toast}</div>}</Shell>;
+  return <><Shell route={route} progress={progress} navigate={navigate} resetProgress={resetProgress} qaToolsVisible={qaToolsVisible} qaMode={qaMode} setQaMode={setQaMode}>{page}{toast && <div className="toast show">{toast}</div>}</Shell>{showFinalChallengeAdvisory && <FinalChallengeAdvisory onEnter={enterFinalChallenge} onReview={reviewLessonsBeforeChallenge} onDismiss={reviewLessonsBeforeChallenge} />}</>;
 }
 
 createRoot(document.getElementById("root")).render(

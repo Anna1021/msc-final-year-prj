@@ -94,7 +94,8 @@ assert.match(finalPagesSource, /mission-paged-next-mission[\s\S]*onClick=\{onNex
 assert.doesNotMatch(finalPagesSource, /disabled=\{!complete\}[\s\S]*onClick=\{onNextMission\}/, "next-Mission access is not coupled to Mission completion");
 assert.match(appSource, /\/mission\/1-tokenisation-paged/, "isolated prototype route is registered");
 assert.match(courseSource, /id:\s*1[\s\S]*route:\s*"\/mission\/1-tokenisation-paged"/, "the production Missions overview opens the paged Mission 1");
-assert.match(appSource, /Legacy scrolling Mission 1[\s\S]*route === "\/mission\/1-tokenisation"/, "the old scrolling Mission 1 remains explicitly available as legacy");
+assert.doesNotMatch(appSource, /route === "\/mission\/1-tokenisation"\) page =/, "the old scrolling Lesson 1 is no longer a learner-facing renderer");
+assert.match(appSource, /resolveLegacyLessonRoute/, "legacy Lesson 1 requests use the canonical redirect layer");
 assert.match(progressSource, /route:\s*"\/mission\/1-tokenisation-paged"/, "new learning-path activity links use the official paged route");
 assert.match(fallbackSource, /mission\/1-tokenisation-paged/, "direct production loads have an SPA fallback");
 assert.match(pagedCss, /^\.mission-lesson-paged\.mission-1-paged/m, "paged CSS is rooted in the dedicated scope");

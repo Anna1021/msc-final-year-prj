@@ -124,7 +124,7 @@ assert.doesNotMatch(playfulStageSource, /\.token-lab-experiment\s*\{[^}]*(?:heig
 assert.doesNotMatch(playfulStageSource, /\.ai-lab-input-sticker\s*\{[^}]*position\s*:\s*absolute/s, "Input robot stays in normal layout flow");
 assert.doesNotMatch(playfulStageSource, /\.token-lab-notice\s*\{[^}]*position\s*:\s*(?:fixed|absolute|sticky)/s, "Try this next stays in document flow");
 for (const staleSelector of ["token-lab-hero-mark", "numbers-stage-mark", "context-mascot", "predict-workspace", "response-preview"]) assert.equal(sharedPlayfulSource.includes(staleSelector), false, `Superseded ${staleSelector} styling is removed`);
-for (const preserved of ["maxLength={200}", "runAgain", "retry", "restartLab", "tokenLab.result", "why-split", "technical", "TokenLabChallenge", "trySuitable", "token-lab-notice", "/mission/1-tokenisation"]) {
+for (const preserved of ["maxLength={200}", "runAgain", "retry", "restartLab", "tokenLab.result", "why-split", "technical", "TokenLabChallenge", "trySuitable", "token-lab-notice", "/mission/1-tokenisation-paged"]) {
   assert.ok(pageSource.includes(preserved), `Tokenize preserves ${preserved}`);
 }
 assert.doesNotMatch(playfulStageSource, /(^|[},]\s*)\.(card|button|token|robot)(?=[\s,{:.#])/m, "Stage 1 adds no forbidden global selectors");

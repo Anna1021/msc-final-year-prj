@@ -5,10 +5,10 @@
   },
   "app": {
     "name": "AI Explorer",
-    "tagline": "理解 ChatGPT 如何思考"
+    "tagline": "了解语言模型如何工作"
   },
   "topbar": {
-    "backToMissions": "‹ 返回任务",
+    "backToMissions": "‹ 返回课程",
     "backToProgress": "‹ 返回进度",
     "yourProgress": "你的进度",
     "allActivity": "全部活动",
@@ -20,40 +20,51 @@
   },
   "home": {
     "welcomeTitle": "欢迎回来，探索者！👋",
-    "welcomeLead": "准备继续你的 AI 学习冒险了吗？",
+    "welcomeLead": "准备继续探索语言模型的学习旅程了吗？",
     "welcomeCopy": "从上次的位置继续，或探索新的内容。",
     "continueLearning": "继续学习",
-    "completeStatus": "你已经完成全部六个任务。最终挑战已准备好。",
+    "completeStatus": "你已经完成全部五节课程。最终挑战已准备好。",
     "nextMission": "下一步：{{title}}。",
     "startFinalChallenge": "开始最终挑战",
-    "continueMission": "继续任务",
-    "learningPath": "学习路径",
-    "whyTitle": "为什么要学习 ChatGPT 的工作方式？",
-    "finalTitle": "完成所有任务，成为 AI 素养探索者！",
+    "continueMission": "继续课程",
+    "learningPath": "学习旅程",
+    "whyTitle": "为什么要了解语言模型如何工作？",
+    "finalTitle": "完成五节课程，串起语言模型的完整工作流程！",
     "finalCopy": "完成最终挑战并获得证书。",
     "seeFinalChallenge": "查看最终挑战",
     "unlockFinal": "最终挑战现在即可进入，建议完成五节课后体验。"
   },
+  "finalAdvisory": {
+    "eyebrow": "最终挑战",
+    "title": "进入之前",
+    "copy": "密室逃脱会综合运用前五节课的概念。我们建议先看完课程，但这只是学习建议，不是强制解锁条件。",
+    "reviewed": "我已经看完五节课程",
+    "reviewedHelp": "直接进入最终挑战。",
+    "understand": "我还没全部完成，但已经理解这些概念",
+    "understandHelp": "继续进入，不改变课程进度。",
+    "reviewFirst": "先回去看看课程",
+    "noProgressChange": "这里的选择不会把任何课程标记为已完成。"
+  },
   "why": {
-    "responsibleTitle": "负责任地使用 AI",
-    "responsibleText": "理解 AI 的限制，不要过度相信它的回答。",
-    "criticalTitle": "批判性思考",
-    "criticalText": "判断 AI 输出，并发现它可能出错的地方。",
-    "biasTitle": "发现偏见",
-    "biasText": "了解 AI 中偏见如何出现，以及如何减少偏见。",
-    "futureTitle": "面向未来",
-    "futureText": "AI 素养是未来世界的重要能力。"
+    "responsibleTitle": "跟随处理流程",
+    "responsibleText": "看看文字如何变成 Token 和数字表示。",
+    "criticalTitle": "连接上下文",
+    "criticalText": "了解可见的 Token 如何分享有用信息。",
+    "biasTitle": "预测接下来的内容",
+    "biasText": "看看语言模型如何比较并选择可能的下一个 Token。",
+    "futureTitle": "理解学习过程",
+    "futureText": "沿着预测、修正和重复，理解模型如何学到模式。"
   },
   "stats": {
     "todaysGoal": "今日目标",
-    "completeOneStep": "完成一个任务步骤",
+    "completeOneStep": "完成一个课程步骤",
     "stepsCompleted": "已完成 {{done}} / 1 个步骤",
-    "goalDone": "做得好！下一个任务已经准备好了。",
+    "goalDone": "做得好！下一节课程已经准备好了。",
     "goalTodo": "完成一个步骤，让学习继续前进。",
     "yourStats": "你的统计",
-    "missionCompleted": "已完成任务",
+    "missionCompleted": "已完成课程",
     "viewProgress": "查看进度 ›",
-    "missionsLeft": "剩余任务",
+    "missionsLeft": "剩余课程",
     "savedNotes": "保存的笔记",
     "alreadyProgress": "你已经开始学习了。",
     "startSmallActivity": "从一个小活动开始。"
@@ -61,24 +72,24 @@
   "activity": {
     "recent": "最近活动",
     "viewAll": "查看全部",
-    "readyMission": "准备开始任务 1",
-    "completedMission": "完成任务 {{id}}",
-    "startedMission": "开始任务 {{id}}",
+    "readyMission": "准备开始第 1 课",
+    "completedMission": "完成第 {{id}} 课",
+    "startedMission": "开始第 {{id}} 课",
     "today": "今天",
     "yesterday": "昨天",
     "daysAgo": "{{count}} 天前"
   },
   "help": {
     "needHelp": "需要帮助？",
-    "copy": "使用任务页面和进度页面查看下一步该做什么。",
-    "goToMissions": "前往任务",
-    "text": "你可以用任务页和进度页查看下一步要做什么。"
+    "copy": "使用课程页面和进度页面查看下一步该做什么。",
+    "goToMissions": "前往课程",
+    "text": "你可以用课程页和进度页查看下一步要做什么。"
   },
   "profile": {
     "name": "探索者",
     "tipTitle": "今日提示",
-    "tipCopy": "ChatGPT 是一个 token 一个 token 地预测，而不是一次读完整个句子！",
-    "missionsComplete": "已完成 {{completed}} / {{total}} 个任务"
+    "tipCopy": "语言模型通过一次预测一个 Token 来生成文字。",
+    "missionsComplete": "已完成 {{completed}} / {{total}} 节课程"
   },
   "status": {
     "locked": "未解锁",

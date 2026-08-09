@@ -1,9 +1,9 @@
 export const missionData = [
   { id: 1, order: 1, title: "How does a language model process text?", short: "Text processing", desc: "Explore tokens and numerical representations.", route: "/mission/1-tokenisation-paged", skill: "Tokens & Numerical Representations", icon: "wand" },
   { id: 2, order: 2, title: "Which words can a language model see?", short: "Reading context", desc: "Explore the context window and the text available to the model.", route: "/mission/2-prediction-paged", skill: "Reading Context", icon: "bolt" },
-  { id: 3, order: 3, title: "Which words help a language model most?", short: "Finding clues", desc: "Explore how useful clues connect across the current context.", route: "/mission/3-hallucination-paged", skill: "Finding Helpful Clues", icon: "question" },
+  { id: 3, order: 3, title: "How does a language model connect words together?", short: "Connecting Tokens", desc: "See how Tokens inside the Context Window combine information before the model predicts what comes next.", route: "/mission/3-hallucination-paged", skill: "Connecting the Tokens", icon: "question" },
   { id: 5, order: 4, title: "How does a language model choose what comes next?", short: "Next-token prediction", desc: "Compare possible next Tokens, their chances and one-Token-at-a-time generation.", route: "/mission/4-training-data-paged", skill: "Predicting the Next Token", icon: "database" },
-  { id: 6, order: 5, title: "How does a language model learn from examples?", short: "Training", desc: "Follow prediction, correction and repetition to see how useful patterns are learned.", route: "/mission/5-bias-paged", skill: "Learning from Training Examples", icon: "database" }
+  { id: 6, order: 5, title: "How does a language model learn to predict?", short: "Training", desc: "Compare predictions with real text, adjust many parameters slightly and repeat across many examples.", route: "/mission/5-bias-paged", skill: "How the Model Learns", icon: "database" }
 ];
 
 export const nextTokenQuestions = [

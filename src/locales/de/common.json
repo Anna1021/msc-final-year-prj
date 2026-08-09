@@ -5,10 +5,10 @@
   },
   "app": {
     "name": "AI Explorer",
-    "tagline": "Wie ChatGPT denkt"
+    "tagline": "Wie Sprachmodelle funktionieren"
   },
   "topbar": {
-    "backToMissions": "‹ Zurück zu Missionen",
+    "backToMissions": "‹ Zurück zu Lektionen",
     "backToProgress": "‹ Zurück zum Fortschritt",
     "yourProgress": "Dein Fortschritt",
     "allActivity": "Alle Aktivitäten",
@@ -20,40 +20,51 @@
   },
   "home": {
     "welcomeTitle": "Willkommen zurück, Explorer! 👋",
-    "welcomeLead": "Bereit für dein nächstes KI-Abenteuer?",
+    "welcomeLead": "Bereit, deinen Lernweg über Sprachmodelle fortzusetzen?",
     "welcomeCopy": "Mach dort weiter, wo du aufgehört hast, oder erkunde etwas Neues.",
     "continueLearning": "Weiterlernen",
-    "completeStatus": "Du hast alle fünf Missionen abgeschlossen. Die finale Herausforderung ist bereit.",
+    "completeStatus": "Du hast alle fünf Lektionen abgeschlossen. Die finale Herausforderung ist bereit.",
     "nextMission": "Als Nächstes: {{title}}.",
     "startFinalChallenge": "Finale Herausforderung starten",
-    "continueMission": "Mission fortsetzen",
-    "learningPath": "Lernpfad",
-    "whyTitle": "Warum lernen, wie ChatGPT funktioniert?",
-    "finalTitle": "Schließe alle Missionen ab und werde KI-Explorer!",
+    "continueMission": "Lektion fortsetzen",
+    "learningPath": "Lernweg",
+    "whyTitle": "Warum lernen, wie Sprachmodelle funktionieren?",
+    "finalTitle": "Schließe alle fünf Lektionen ab und verstehe den gesamten Sprachmodell-Lernweg!",
     "finalCopy": "Schließe die Abschluss-Challenge ab und erhalte dein Zertifikat.",
     "seeFinalChallenge": "Finale Challenge ansehen",
     "unlockFinal": "Die finale Challenge ist jetzt verfügbar und wird nach allen fünf Lektionen empfohlen."
   },
+  "finalAdvisory": {
+    "eyebrow": "Finale Challenge",
+    "title": "Bevor du eintrittst",
+    "copy": "Der Escape Room verbindet die Ideen aus allen fünf Lektionen. Wir empfehlen, sie zuerst anzusehen, aber diese Empfehlung ist keine Sperre.",
+    "reviewed": "Ich habe alle fünf Lektionen angesehen",
+    "reviewedHelp": "Die finale Challenge betreten.",
+    "understand": "Ich habe sie noch nicht beendet, verstehe aber die Ideen",
+    "understandHelp": "Fortfahren, ohne den Lektionsfortschritt zu ändern.",
+    "reviewFirst": "Zuerst die Lektionen ansehen",
+    "noProgressChange": "Diese Auswahl markiert keine Lektion als abgeschlossen."
+  },
   "why": {
-    "responsibleTitle": "KI verantwortungsvoll nutzen",
-    "responsibleText": "Grenzen verstehen und KI-Antworten nicht blind vertrauen.",
-    "criticalTitle": "Kritisch denken",
-    "criticalText": "KI-Ausgaben prüfen und mögliche Fehler erkennen.",
-    "biasTitle": "Bias erkennen",
-    "biasText": "Lernen, wie Bias in KI entstehen und reduziert werden kann.",
-    "futureTitle": "Zukunft gestalten",
-    "futureText": "KI-Kompetenz ist eine wichtige Fähigkeit für die Zukunft."
+    "responsibleTitle": "Dem Prozess folgen",
+    "responsibleText": "Sieh, wie Text zu Tokens und numerischen Darstellungen wird.",
+    "criticalTitle": "Kontext verbinden",
+    "criticalText": "Entdecke, wie sichtbare Tokens nützliche Informationen teilen.",
+    "biasTitle": "Das Nächste vorhersagen",
+    "biasText": "Sieh, wie ein Sprachmodell mögliche nächste Tokens vergleicht und auswählt.",
+    "futureTitle": "Lernen verstehen",
+    "futureText": "Verfolge, wie Vorhersage, Korrektur und Wiederholung gelernte Muster formen."
   },
   "stats": {
     "todaysGoal": "Heutiges Ziel",
-    "completeOneStep": "Einen Missionsschritt abschließen",
+    "completeOneStep": "Einen Lektionsschritt abschließen",
     "stepsCompleted": "{{done}} / 1 Schritt abgeschlossen",
-    "goalDone": "Gut gemacht! Die nächste Mission ist bereit.",
+    "goalDone": "Gut gemacht! Die nächste Lektion ist bereit.",
     "goalTodo": "Schließe einen Schritt ab, um weiterzulernen.",
     "yourStats": "Deine Statistik",
-    "missionCompleted": "Mission abgeschlossen",
+    "missionCompleted": "Lektion abgeschlossen",
     "viewProgress": "Fortschritt ansehen ›",
-    "missionsLeft": "Missionen übrig",
+    "missionsLeft": "Lektionen übrig",
     "savedNotes": "Gespeicherte Notizen",
     "alreadyProgress": "Du hast schon Fortschritte gemacht.",
     "startSmallActivity": "Beginne mit einer kleinen Aktivität."
@@ -61,24 +72,24 @@
   "activity": {
     "recent": "Letzte Aktivität",
     "viewAll": "Alle anzeigen",
-    "readyMission": "Bereit für Mission 1",
-    "completedMission": "Mission {{id}} abgeschlossen",
-    "startedMission": "Mission {{id}} gestartet",
+    "readyMission": "Bereit für Lektion 1",
+    "completedMission": "Lektion {{id}} abgeschlossen",
+    "startedMission": "Lektion {{id}} gestartet",
     "today": "Heute",
     "yesterday": "Gestern",
     "daysAgo": "Vor {{count}} Tagen"
   },
   "help": {
     "needHelp": "Brauchst du Hilfe?",
-    "copy": "Nutze die Missionen und die Fortschrittsseite, um den nächsten Schritt zu sehen.",
-    "goToMissions": "Zu den Missionen",
-    "text": "Nutze die Missions- und Fortschrittsseiten, um den nächsten Schritt zu sehen."
+    "copy": "Nutze die Lektionen und die Fortschrittsseite, um den nächsten Schritt zu sehen.",
+    "goToMissions": "Zu den Lektionen",
+    "text": "Nutze die Lektions- und Fortschrittsseiten, um den nächsten Schritt zu sehen."
   },
   "profile": {
     "name": "Explorer",
     "tipTitle": "Tipp des Tages",
-    "tipCopy": "ChatGPT sagt Token für Token voraus, nicht ganze Sätze auf einmal!",
-    "missionsComplete": "{{completed}} / {{total}} Missionen abgeschlossen"
+    "tipCopy": "Ein Sprachmodell erzeugt Text, indem es jeweils ein Token vorhersagt.",
+    "missionsComplete": "{{completed}} / {{total}} Lektionen abgeschlossen"
   },
   "status": {
     "locked": "Gesperrt",

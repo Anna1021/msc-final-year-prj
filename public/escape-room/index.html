@@ -252,6 +252,20 @@
         url('/assets/img/final-challenge/room1/room-bg.png') center / cover;
     }
 
+    .room-bg-numbers {
+      background:
+        linear-gradient(105deg, rgba(6, 10, 30, .9), rgba(18, 25, 67, .72) 54%, rgba(9, 9, 29, .9)),
+        radial-gradient(circle at 72% 18%, rgba(91, 158, 255, .34), transparent 28%),
+        url('/assets/img/final-challenge/room1/room-bg.png') center / cover;
+    }
+
+    .room-bg-context {
+      background:
+        linear-gradient(105deg, rgba(5, 12, 29, .92), rgba(11, 38, 58, .74) 58%, rgba(8, 12, 34, .9)),
+        radial-gradient(circle at 76% 20%, rgba(56, 196, 201, .3), transparent 28%),
+        url('/assets/img/final-challenge/room1/room-bg.png') center / cover;
+    }
+
     .room-inner {
       min-height: calc(100vh - 104px);
       display: grid;
@@ -437,6 +451,427 @@
     .choice-grid button.selected, .chip-grid button.selected {
       border-color: color-mix(in srgb, var(--room) 62%, #fff);
       background: color-mix(in srgb, var(--room) 24%, rgba(255,255,255,.1));
+    }
+
+    .room-bg-token .door-zone { align-content: start; }
+    .token-split-challenge {
+      width: min(820px, 100%);
+      display: grid;
+      gap: 13px;
+      margin-top: 6px;
+      border: 1px solid rgba(215, 201, 255, .25);
+      border-radius: 20px;
+      padding: 18px;
+      color: #f8f6ff;
+      background: rgba(11, 10, 34, .48);
+      box-shadow: inset 0 0 28px rgba(155, 108, 255, .1);
+      text-align: left;
+    }
+    .token-question-badge {
+      width: fit-content;
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: #241747;
+      background: #eadcff;
+      font-size: .78rem;
+      font-weight: 950;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .token-split-challenge h2, .token-split-challenge p { margin: 0; }
+    .token-target-sentence {
+      border-radius: 14px;
+      padding: 13px 15px;
+      color: #282044;
+      background: rgba(255,255,255,.94);
+      font-size: 1.2rem;
+      font-weight: 850;
+    }
+    .token-target-sentence mark {
+      border-radius: 7px;
+      padding: 2px 5px;
+      color: #3e2386;
+      background: #e9dcff;
+      box-shadow: 0 3px 0 #aa86ef;
+    }
+    .token-split-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .token-split-option {
+      min-height: 90px;
+      display: grid;
+      align-content: center;
+      gap: 9px;
+      border: 1px solid rgba(225, 215, 255, .28);
+      border-bottom: 5px solid rgba(157, 126, 225, .48);
+      border-radius: 16px;
+      padding: 12px;
+      color: #f9f7ff;
+      background: rgba(255,255,255,.08);
+      text-align: left;
+    }
+    .token-split-option small { color: #cdc3e9; font-weight: 900; }
+    .token-split-option > span { display: flex; flex-wrap: wrap; gap: 5px; }
+    .token-split-option b, .token-comparison span {
+      border-radius: 9px;
+      padding: 6px 8px;
+      color: #2a1b50;
+      background: #eee4ff;
+      box-shadow: 0 3px 0 #a986e8;
+    }
+    .token-split-option:hover { border-color: #cbb6ff; background: rgba(155,108,255,.17); }
+    .token-split-option.selected {
+      border-color: #ffe56a;
+      border-bottom-color: #cda72d;
+      background: rgba(255,229,106,.13);
+      box-shadow: 0 0 0 3px rgba(255,229,106,.12);
+    }
+    .token-split-option:focus-visible { outline: 3px solid #ffe76d; outline-offset: 3px; }
+    .token-comparison {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      border-radius: 16px;
+      padding: 13px;
+      color: #2a2442;
+      background: rgba(255,255,255,.94);
+    }
+    .token-comparison > div { display: grid; gap: 7px; }
+    .token-comparison small { color: #635879; font-weight: 950; text-transform: uppercase; letter-spacing: .04em; }
+    .token-comparison div > div { display: flex; flex-wrap: wrap; gap: 5px; }
+    .token-comparison em { color: #665d78; font-size: .78rem; font-style: normal; font-weight: 800; }
+    .token-comparison > b { color: #6f55cb; }
+    .token-hint { border-left: 4px solid #ffe56a; border-radius: 10px; padding: 9px 11px; background: rgba(255,229,106,.1); }
+    .token-room-actions { display: flex; flex-wrap: wrap; gap: 9px; }
+    .token-lock-accepts { margin: 0; color: #d7ffe8; font-weight: 950; }
+    .token-success-chain {
+      display: grid;
+      grid-template-columns: minmax(110px,1fr) auto minmax(110px,1fr) auto minmax(190px,1.4fr);
+      align-items: center;
+      gap: 10px;
+      width: min(760px, 100%);
+    }
+    .token-success-chain > span { display: grid; gap: 5px; border-radius: 14px; padding: 11px; background: rgba(255,255,255,.1); }
+    .token-success-chain small { color: #d5cced; font-weight: 900; text-transform: uppercase; }
+    .token-success-chain i { color: #c3adff; font-size: 1.3rem; font-style: normal; font-weight: 950; }
+
+    .numbers-room-body {
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+      align-items: start;
+    }
+    .room-bg-numbers .numbers-puzzle-intro {
+      border-color: rgba(184, 167, 255, .32);
+      background: linear-gradient(145deg, rgba(12, 15, 43, .9), rgba(16, 28, 65, .78));
+      box-shadow: inset 0 0 56px rgba(105, 87, 230, .11), 0 18px 44px rgba(0, 0, 0, .24);
+    }
+    .room-bg-numbers .guide-panel {
+      min-height: 0;
+      grid-template-columns: 76px minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      column-gap: 14px;
+      row-gap: 6px;
+      align-items: center;
+      align-self: start;
+      border-color: rgba(194, 179, 255, .3);
+      padding: 16px;
+      background: linear-gradient(145deg, rgba(18, 15, 50, .94), rgba(11, 18, 43, .9));
+      box-shadow: inset 0 0 30px rgba(138, 106, 255, .09), 0 14px 34px rgba(0,0,0,.22);
+    }
+    .room-bg-numbers .guide-panel img {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      width: 72px;
+    }
+    .room-bg-numbers .guide-panel h2,
+    .room-bg-numbers .guide-panel p { grid-column: 2; }
+    .room-bg-numbers .guide-panel h2 { font-size: 1.15rem; }
+    .room-bg-numbers .guide-panel p { color: #ded8f5; font-size: .9rem; line-height: 1.42; }
+    .numbers-workspace {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 15px;
+      border: 1px solid rgba(184, 167, 255, .25);
+      border-radius: 22px;
+      padding: 18px;
+      background: linear-gradient(155deg, rgba(8, 12, 35, .9), rgba(13, 23, 56, .82));
+      box-shadow: inset 0 0 54px rgba(77, 118, 224, .08), 0 18px 44px rgba(0,0,0,.2);
+    }
+    .numbers-intro { margin: 0; max-width: 820px; color: #d9e7ff; }
+    .numbers-lookup-chain {
+      display: grid;
+      grid-template-columns: minmax(130px, .75fr) auto minmax(160px, .9fr) auto minmax(210px, 1.3fr);
+      gap: 11px;
+      align-items: center;
+      border: 1px solid rgba(181, 166, 255, .36);
+      border-radius: 20px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(98, 77, 220, .22), rgba(67, 151, 236, .18));
+      box-shadow: inset 0 0 30px rgba(142, 118, 255, .08);
+    }
+    .numbers-lookup-node {
+      min-height: 92px;
+      display: grid;
+      align-content: center;
+      gap: 7px;
+      border: 1px solid rgba(221, 234, 255, .3);
+      border-bottom: 5px solid rgba(86, 151, 231, .62);
+      border-radius: 17px;
+      padding: 13px 15px;
+      color: #162342;
+      background: #f7faff;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, .2);
+    }
+    .numbers-lookup-node small { color: #52678c; font-weight: 950; text-transform: uppercase; letter-spacing: .05em; }
+    .numbers-lookup-node strong { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+    .numbers-lookup-node.id { color: #fff; border-color: rgba(213, 201, 255, .58); border-bottom-color: #5338bd; background: linear-gradient(145deg, #8068f2, #4f73dc); }
+    .numbers-lookup-node.id small { color: #eaf4ff; }
+    .numbers-lookup-node.destination { color: #dbe9ff; border-style: dashed; border-bottom-width: 1px; background: rgba(255,255,255,.08); box-shadow: none; }
+    .numbers-chain-arrow { color: #c2afff; font-size: 1.5rem; font-weight: 950; text-align: center; }
+    .numbers-drawer-lab {
+      display: grid;
+      gap: 13px;
+      border: 1px solid rgba(204, 192, 255, .26);
+      border-radius: 20px;
+      padding: 17px;
+      background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(114,91,203,.07));
+    }
+    .numbers-drawer-lab h3, .numbers-concept-check h3 { margin: 0; }
+    .numbers-drawers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .numbers-drawer {
+      min-height: 100px;
+      display: grid;
+      place-items: center;
+      gap: 7px;
+      border: 1px solid rgba(211, 228, 255, .3);
+      border-bottom: 6px solid rgba(92, 94, 185, .76);
+      border-radius: 17px;
+      padding: 13px;
+      color: #172546;
+      background: linear-gradient(180deg, #fbfaff, #e5e3ff);
+      box-shadow: 0 11px 22px rgba(0,0,0,.24), inset 0 1px 0 #fff;
+      text-align: center;
+    }
+    .numbers-drawer small { color: #5c6f92; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; }
+    .numbers-drawer strong { font-size: 1.55rem; }
+    .numbers-drawer:hover { transform: translateY(-2px); border-color: #bcaaff; box-shadow: 0 14px 28px rgba(0,0,0,.28), 0 0 0 3px rgba(163,135,255,.1); }
+    .numbers-drawer:focus-visible, .numbers-concept-option:focus-visible, .numbers-short-choice:focus-visible { outline: 3px solid #ffe56a; outline-offset: 3px; }
+    .numbers-drawer.wrong { color: #5b1725; border-color: #ff879a; border-bottom-color: #b93651; background: #ffe8ed; animation: shake .25s ease; }
+    .numbers-drawer.correct { color: #123a28; border-color: #7cf4b2; border-bottom-color: #289365; background: linear-gradient(180deg, #effff6, #d7fbe7); }
+    .numbers-row-reveal {
+      display: grid;
+      gap: 12px;
+      border: 1px solid rgba(124,244,178,.34);
+      border-radius: 20px;
+      padding: 17px;
+      color: #eafff2;
+      background: linear-gradient(135deg, rgba(31, 123, 93, .2), rgba(51, 98, 151, .14));
+      box-shadow: inset 0 0 30px rgba(124,244,178,.06);
+      animation: softReveal .28s ease both;
+    }
+    .numbers-row-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 9px; align-items: center; }
+    .numbers-row-header span { border-radius: 999px; padding: 6px 10px; color: #123622; background: #9ff7c5; font-weight: 950; }
+    .numbers-values { display: flex; flex-wrap: wrap; gap: 9px; }
+    .numbers-values b { min-width: 66px; border-radius: 13px; padding: 11px; color: #18233e; background: #f8fbff; box-shadow: 0 5px 0 rgba(82, 126, 193, .55); text-align: center; }
+    .numbers-row-explanation { margin: 0; color: #e2ecff; font-weight: 850; }
+    .numbers-accuracy-note { margin: 0; border-left: 4px solid #ffe56a; border-radius: 9px; padding: 9px 11px; color: #fff5bf; background: rgba(255,229,106,.09); font-size: .88rem; font-weight: 850; }
+    .numbers-concept-check { display: grid; gap: 12px; border: 1px solid rgba(194, 179, 255, .28); border-radius: 20px; padding: 17px; background: linear-gradient(145deg, rgba(31, 27, 76, .72), rgba(16, 29, 65, .82)); }
+    .numbers-concept-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .numbers-concept-option { display: grid; grid-template-columns: 34px minmax(0,1fr); gap: 10px; align-items: center; min-height: 82px; border: 1px solid rgba(215,205,255,.3); border-bottom: 4px solid rgba(108,92,180,.52); border-radius: 15px; padding: 12px 13px; color: #f8f6ff; background: rgba(255,255,255,.09); text-align: left; box-shadow: 0 8px 18px rgba(0,0,0,.16); }
+    .numbers-concept-option span { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 10px; color: #16305d; background: #cfe5ff; font-weight: 950; }
+    .numbers-concept-option.selected { border-color: #ffe56a; background: rgba(255,229,106,.12); box-shadow: 0 0 0 3px rgba(255,229,106,.08); }
+    .numbers-concept-option.correct { border-color: #7cf4b2; background: rgba(32,155,93,.18); }
+    .numbers-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .numbers-status-panel { border: 1px solid rgba(151,190,244,.25); border-radius: 16px; padding: 12px 14px; color: #cbdcf6; background: rgba(255,255,255,.06); font-weight: 900; }
+    .numbers-collect { color: #132518; border-color: rgba(124,244,178,.7); background: linear-gradient(135deg, #a9ffd0, #65dfa0); box-shadow: 0 8px 0 #258458, 0 15px 30px rgba(59,220,133,.2); }
+
+    .room-bg-numbers .room-head h1 { font-size: clamp(2.15rem, 4vw, 3.7rem); }
+    .numbers-scene-wrap { display: grid; place-items: start center; }
+    .numbers-scene-card {
+      width: min(1080px, 100%);
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(208, 198, 255, .68);
+      border-radius: 26px;
+      padding: clamp(22px, 3vw, 38px);
+      color: #171b3c;
+      background:
+        radial-gradient(circle at 92% 8%, rgba(112, 91, 230, .17), transparent 27%),
+        linear-gradient(145deg, rgba(245,243,255,.93), rgba(229,239,255,.9));
+      box-shadow: 0 0 38px rgba(111, 91, 230, .14), 0 24px 58px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.72);
+      backdrop-filter: blur(14px);
+    }
+    .numbers-scene-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: linear-gradient(#886cf2, #4d9ff1, #42c7b1);
+    }
+    .numbers-scene-card h2, .numbers-scene-card h3, .numbers-scene-card p { margin: 0; }
+    .numbers-scene-card h2 { color: #171b3c; font-size: clamp(1.9rem, 3vw, 2.65rem); text-align: center; }
+    .numbers-scene-card > p { max-width: 720px; color: #53617f; text-align: center; }
+    .numbers-scene-card .clue { color: #fff; background: linear-gradient(135deg, #7657dd, #4a8de0); }
+    .numbers-scene-progress { position: absolute; top: 18px; right: 20px; display: flex; align-items: center; gap: 7px; color: #63708e; font-size: .8rem; }
+    .numbers-scene-progress b { margin-right: 3px; }
+    .numbers-scene-progress span { width: 9px; height: 9px; border-radius: 999px; background: #d9deeb; }
+    .numbers-scene-progress span.active { background: #735be0; box-shadow: 0 0 0 3px rgba(115,91,224,.12); }
+    .numbers-simple-path { display: grid; justify-items: center; gap: 9px; min-width: min(360px, 100%); }
+    .numbers-simple-path > span, .numbers-down-arrow { color: #6679b5; font-size: 1.45rem; font-weight: 950; }
+    .numbers-object { min-width: 210px; display: grid; justify-items: center; gap: 5px; border-radius: 18px; padding: 14px 22px; box-shadow: 0 8px 0 rgba(59,49,139,.25), 0 15px 28px rgba(56,53,116,.16); }
+    .numbers-object small { font-weight: 950; letter-spacing: .06em; text-transform: uppercase; }
+    .numbers-object strong { font-size: 1.65rem; }
+    .token-object { color: #382570; border: 1px solid #cbbcff; background: #eee9ff; }
+    .id-object { color: #12376c; border: 1px solid #9bc9ff; background: #ddecff; box-shadow: 0 8px 0 #5d98d7, 0 15px 28px rgba(51,119,191,.18); }
+    .numbers-id-with-guide { position: relative; }
+    .numbers-path-robot { position: absolute; width: 66px; right: -82px; bottom: -4px; filter: drop-shadow(0 10px 14px rgba(48,42,98,.2)); }
+    .numbers-find-scene > h3 { color: #5c3cae; font-size: 1.08rem; text-transform: uppercase; letter-spacing: .06em; }
+    .numbers-drawers-scene { width: 100%; }
+    .numbers-drawers-scene .numbers-drawer {
+      min-height: 124px;
+      color: #5e4317;
+      border: 1px solid #eacb84;
+      border-bottom: 7px solid #bd8428;
+      background: linear-gradient(180deg, #fffaf0, #ffe8b4);
+      box-shadow: 0 13px 26px rgba(96,61,18,.18), inset 0 1px 0 #fff;
+    }
+    .numbers-drawers-scene .numbers-drawer:hover { border-color: #d7a744; box-shadow: 0 16px 30px rgba(96,61,18,.22), 0 0 0 4px rgba(235,180,64,.12); }
+    .numbers-drawers-scene .numbers-drawer.wrong { color: #722234; border-color: #f08ca0; border-bottom-color: #bd4059; background: #ffe7ec; }
+    .numbers-lucide { width: 28px; height: 28px; }
+    .numbers-robot-nudge { width: min(620px, 100%); display: grid; grid-template-columns: 62px minmax(0,1fr); gap: 12px; align-items: center; border: 1px solid #edc36b; border-radius: 18px; padding: 11px 15px; color: #61470e; background: #fff6d9; }
+    .numbers-robot-nudge img { width: 58px; }
+    .numbers-robot-nudge p { color: #61470e; text-align: left; }
+    .numbers-reveal-layout { width: 100%; display: grid; grid-template-columns: minmax(0,1.25fr) minmax(250px,.75fr); gap: 24px; align-items: center; }
+    .numbers-complete-path { display: grid; justify-items: center; gap: 8px; }
+    .numbers-open-drawer { width: min(620px, 100%); display: grid; gap: 14px; border: 1px solid #73d5c4; border-bottom: 7px solid #249a87; border-radius: 20px; padding: 18px; color: #123f3a; background: linear-gradient(145deg, #e8fff9, #c9f5eb); box-shadow: 0 15px 30px rgba(32,139,120,.18); }
+    .numbers-reveal-scene .numbers-open-drawer { animation: drawerOpen .34s ease both; }
+    .numbers-open-drawer > div:first-child { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .numbers-open-drawer small { font-weight: 950; text-transform: uppercase; letter-spacing: .06em; }
+    .numbers-open-drawer strong { font-size: 1.55rem; }
+    .numbers-open-drawer .numbers-values b { color: #17433c; background: #fff; box-shadow: 0 5px 0 #5ebaaa; }
+    .numbers-robot-bubble { position: relative; display: grid; justify-items: center; gap: 9px; }
+    .numbers-robot-bubble img { width: 110px; filter: drop-shadow(0 14px 20px rgba(46,38,96,.24)); }
+    .numbers-robot-bubble p { position: relative; border: 1px solid #d9cef9; border-radius: 18px; padding: 14px 16px; color: #43346e; background: #f5f0ff; text-align: left; box-shadow: 0 10px 22px rgba(68,51,127,.12); }
+    .numbers-row-use { color: #234e4b !important; font-weight: 900; }
+    .numbers-tiny-accuracy { border-radius: 999px; padding: 7px 12px; color: #6b7185 !important; background: #edf0f6; font-size: .78rem !important; font-weight: 800; }
+    .numbers-continue { min-width: 170px; }
+    .numbers-check-scene { min-height: 470px; align-content: center; }
+    .numbers-short-choices { width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 13px; }
+    .numbers-short-choice { min-height: 116px; display: grid; justify-items: center; align-content: center; gap: 11px; border: 1px solid #d9d9ed; border-bottom: 6px solid #aaa9cf; border-radius: 18px; color: #2a3051; background: #fff; box-shadow: 0 12px 24px rgba(45,48,91,.12); text-align: center; }
+    .numbers-short-choice:hover { transform: translateY(-2px); border-color: #aa98ef; box-shadow: 0 16px 28px rgba(60,47,117,.16); }
+    .numbers-short-choice.selected { color: #45298a; border-color: #9075ed; border-bottom-color: #5d42bf; background: #f1edff; }
+    .numbers-short-choice.correct { color: #154a35; border-color: #63d49b; border-bottom-color: #289365; background: #e5faef; }
+    .numbers-final-feedback { min-height: 44px; display: grid; place-items: center; border-radius: 14px; padding: 10px 14px; color: #64708a; background: #edf1f8; font-weight: 850; text-align: center; }
+    .numbers-final-feedback.bad { color: #8b2d3d; background: #ffe8ed; }
+    .numbers-final-feedback.good { color: #15583b; background: #e4faee; }
+    .numbers-crystal-ready { display: grid; justify-items: center; gap: 8px; border: 1px solid #91e8b7; border-radius: 20px; padding: 15px 22px; color: #17452f; background: #eafff2; box-shadow: 0 12px 26px rgba(47,160,98,.14); }
+    .numbers-crystal-ready strong { font-size: 1.2rem; }
+    .numbers-crystal-ready p { color: #35624e; }
+
+    @keyframes drawerOpen {
+      from { opacity: .4; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(8px); }
+    }
+
+    .room-bg-context .room-head h1 { font-size: clamp(2.15rem, 4vw, 3.7rem); }
+    .context-scene-wrap { display: grid; place-items: start center; }
+    .context-scene-card {
+      width: min(1180px, 100%);
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: 18px;
+      border: 1px solid rgba(133, 226, 232, .34);
+      border-radius: 26px;
+      padding: clamp(22px, 3vw, 36px);
+      background: linear-gradient(145deg, rgba(10, 23, 48, .78), rgba(13, 31, 55, .68));
+      box-shadow: 0 0 42px rgba(56,196,201,.1), 0 24px 58px rgba(0,0,0,.28), inset 0 1px 0 rgba(220,252,255,.12);
+      backdrop-filter: blur(14px);
+    }
+    .context-scene-card h2, .context-scene-card p { margin: 0; }
+    .context-scene-card h2 { color: #f7fbff; font-size: clamp(1.85rem, 3vw, 2.65rem); text-align: center; }
+    .context-scene-card > p { max-width: 760px; color: #e2edf6; text-align: center; }
+    .context-scene-card .clue { color: #082c36; border-color: rgba(190,252,255,.65); background: linear-gradient(135deg, #8ee8ec, #68cfd9); }
+    .context-scene-progress { position: absolute; top: 18px; right: 20px; display: flex; align-items: center; gap: 7px; color: #d2e4ed; font-size: .8rem; }
+    .context-scene-progress b { margin-right: 3px; }
+    .context-scene-progress span { width: 9px; height: 9px; border-radius: 999px; background: rgba(216,239,244,.24); }
+    .context-scene-progress span.active { background: #72dbe0; box-shadow: 0 0 0 3px rgba(114,219,224,.13); }
+    .context-reading-stage {
+      width: 100%;
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(230px, .72fr) 58px minmax(410px, 1.28fr);
+      gap: 0;
+      align-items: stretch;
+      border: 1px solid rgba(139, 220, 229, .25);
+      border-radius: 23px;
+      padding: 27px 22px 22px;
+      background: linear-gradient(135deg, rgba(5,13,32,.66), rgba(23,62,79,.42));
+      box-shadow: inset 0 0 38px rgba(45,170,178,.07);
+    }
+    .context-track { position: absolute; left: 7%; right: 7%; top: 12px; display: grid; grid-template-columns: 1fr auto; align-items: center; color: #d9a843; }
+    .context-track span { height: 3px; border-radius: 999px; background: linear-gradient(90deg, rgba(218,173,73,.25), #e3b44f 58%, #62d4dc); }
+    .context-lucide { width: 24px; height: 24px; }
+    .context-old-zone, .context-current-window { position: relative; display: grid; align-content: center; gap: 12px; min-height: 245px; }
+    .context-old-zone { padding: 28px 18px 18px; border: 1px solid rgba(162,184,207,.24); border-radius: 18px 0 0 18px; background: rgba(37,49,70,.72); }
+    .context-current-window { padding: 28px 22px 18px; border: 3px solid #64d5dc; border-radius: 20px; color: #122b49; background: linear-gradient(145deg, rgba(231,253,255,.96), rgba(198,239,246,.94)); box-shadow: 0 0 0 5px rgba(94,211,219,.1), 0 0 30px rgba(78,206,215,.18), inset 0 1px 0 #fff; }
+    .context-zone-label { position: absolute; top: 8px; left: 12px; border-radius: 999px; padding: 5px 9px; font-size: .7rem; font-weight: 950; letter-spacing: .05em; text-transform: uppercase; }
+    .context-old-zone .context-zone-label { color: #dce7f1; background: rgba(255,255,255,.1); }
+    .context-current-window .context-zone-label { color: #0b4a56; background: #b9f0f3; }
+    .context-sentence { position: relative; border-radius: 14px; padding: 13px 14px; }
+    .context-sentence small { display: block; margin-bottom: 5px; font-size: .7rem; font-weight: 950; text-transform: uppercase; letter-spacing: .05em; }
+    .context-sentence p { font-weight: 900; line-height: 1.42; }
+    .context-old-zone .context-sentence { color: #d8e2ec; border: 1px dashed rgba(194,209,224,.32); background: rgba(9,18,33,.28); }
+    .context-old-zone .context-sentence p { color: #d8e2ec; }
+    .context-current-window .context-sentence { color: #142b48; border: 1px solid rgba(38,119,137,.22); background: rgba(255,255,255,.68); }
+    .context-current-window .context-sentence p { color: #142b48; }
+    .context-sentence.linked { outline: 3px solid #8b6be9; outline-offset: 3px; }
+    .context-sentence.pulse { animation: contextPulse .5s ease; }
+    .context-boundary { position: relative; display: grid; place-items: center; }
+    .context-boundary::before { content: ""; position: absolute; inset: 0 25px; width: 4px; border-radius: 999px; background: linear-gradient(#f0bd55, #67d7dc); box-shadow: 0 0 18px rgba(103,215,220,.34); }
+    .context-boundary span { position: relative; z-index: 1; transform: rotate(-90deg); white-space: nowrap; border-radius: 999px; padding: 5px 9px; color: #3c2b08; background: #f5c862; font-size: .68rem; font-weight: 950; text-transform: uppercase; }
+    .context-incoming { justify-self: end; color: #236777; font-size: .78rem; font-weight: 900; }
+    .context-guide-robot { position: absolute; width: 78px; right: -10px; bottom: -20px; filter: drop-shadow(0 12px 18px rgba(0,0,0,.28)); }
+    .context-clue-chips { width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 11px; }
+    .context-clue-chip { min-height: 58px; display: grid; grid-template-columns: 28px auto; gap: 9px; align-items: center; border: 1px solid rgba(188,207,232,.42); border-bottom: 5px solid rgba(92,112,148,.7); border-radius: 16px; padding: 11px 16px; color: #172c4a; background: linear-gradient(180deg, #f9fbff, #dae8f4); box-shadow: 0 10px 20px rgba(0,0,0,.2); }
+    .context-clue-chip:hover { transform: translateY(-2px); border-color: #b9a7ff; }
+    .context-clue-chip.selected { border-color: #aa91f0; border-bottom-color: #694db9; background: #eee8ff; }
+    .context-clue-chip:focus-visible { outline: 3px solid #ffe56a; outline-offset: 3px; }
+    .context-task-hint { color: #d9e7ef !important; font-size: .85rem !important; }
+    .context-robot-feedback { width: min(650px, 100%); display: grid; grid-template-columns: 62px minmax(0,1fr); gap: 12px; align-items: center; border: 1px solid rgba(244,194,91,.58); border-radius: 17px; padding: 10px 14px; color: #332708; background: #fff2c9; }
+    .context-robot-feedback img { width: 58px; }
+    .context-robot-feedback p { color: #4b390d; text-align: left; }
+    .context-reading-stage.shifted .newly-outside { animation: contextFadeLeft .7s ease both; }
+    .context-reading-stage.shifted .incoming { animation: contextSlideIn .7s ease both; }
+    .context-takeaway { width: min(830px,100%); display: grid; gap: 6px; border: 1px solid rgba(100,214,179,.62); border-radius: 18px; padding: 14px 17px; color: #123b31; background: #dcf8ec; text-align: center; }
+    .context-takeaway p { color: #28594c; }
+    .context-collect { color: #10372a; border-color: #75ddb0; background: linear-gradient(135deg, #a9ffd0, #65dfa0); box-shadow: 0 8px 0 #258458, 0 15px 30px rgba(59,220,133,.2); }
+
+    @keyframes contextPulse { 50% { transform: translateY(-2px); box-shadow: 0 0 0 5px rgba(139,107,233,.15); } }
+    @keyframes contextFadeLeft { from { opacity: 1; transform: translateX(20px); } to { opacity: .72; transform: translateX(-4px); } }
+    @keyframes contextSlideIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+
+    @media (max-width: 760px) {
+      .numbers-lookup-chain { grid-template-columns: 1fr; }
+      .numbers-chain-arrow { transform: rotate(90deg); }
+      .numbers-drawers { grid-template-columns: 1fr; }
+      .numbers-concept-options { grid-template-columns: 1fr; }
+      .numbers-drawer { min-height: 76px; }
+      .numbers-scene-card { padding: 54px 17px 22px; }
+      .numbers-path-robot { width: 50px; right: -52px; }
+      .numbers-reveal-layout, .numbers-short-choices { grid-template-columns: 1fr; }
+      .numbers-drawers-scene .numbers-drawer { min-height: 112px; }
+      .numbers-tiny-accuracy { border-radius: 12px; }
+      .context-scene-card { padding: 54px 16px 22px; }
+      .context-reading-stage { grid-template-columns: 1fr; gap: 14px; padding: 28px 12px 16px; }
+      .context-old-zone, .context-current-window { min-height: auto; border-radius: 17px; }
+      .context-boundary { min-height: 42px; }
+      .context-boundary::before { inset: 19px 8%; width: auto; height: 4px; }
+      .context-boundary span { transform: none; }
+      .context-guide-robot { width: 58px; right: -2px; bottom: -14px; }
+      .context-clue-chips { display: grid; grid-template-columns: 1fr; }
+      .context-clue-chip { width: 100%; }
     }
 
     .meter {
@@ -1211,7 +1646,7 @@
     .context-story .inside { border:3px solid var(--room); border-radius:18px; padding:15px 18px; background:rgba(232,252,249,.86); box-shadow:0 8px 0 rgba(39,145,150,.2); }
     .context-story small { display:block; margin-bottom:7px; font-weight:950; text-transform:uppercase; letter-spacing:.05em; }
     .training-demo { grid-template-columns:1fr auto 1fr auto 1fr; }
-    @media (max-width:760px) { .journey-strip,.training-demo { grid-template-columns:1fr; }.journey-strip>span,.training-demo>span { transform:rotate(90deg); text-align:center; } }
+    @media (max-width:760px) { .journey-strip,.training-demo,.token-split-options,.token-success-chain { grid-template-columns:1fr; }.journey-strip>span,.training-demo>span { transform:rotate(90deg); text-align:center; }.token-success-chain i { transform:rotate(90deg); }.token-comparison { grid-template-columns:1fr; }.token-comparison > b { text-align:center; } }
 
     @keyframes float { 50% { transform: translateY(-8px); } }
     @keyframes crystalRise {
@@ -1276,13 +1711,48 @@
     if (window.parent !== window) document.body.classList.add("embedded");
     const targetOrigin = window.location.origin;
     const rooms = [
-      { id: "token", number: 1, title: "Token Workshop", power: "Tokens", crystal: "token", colour: "#9b6cff", aim: "Rebuild a sentence from the text pieces a model can process." },
+      { id: "token", number: 1, title: "Token Workshop", power: "Tokens", crystal: "token", colour: "#9b6cff", aim: "Choose the real tokenizer split for one highlighted word." },
       { id: "numbers", number: 2, title: "Number Lookup", power: "Numbers", crystal: "numbers", colour: "#3a8bff", aim: "Follow a token ID to one learned row of numbers." },
       { id: "context", number: 3, title: "Context Window", power: "Context", crystal: "context", colour: "#38c4c9", aim: "See which earlier tokens are available right now." },
       { id: "connections", number: 4, title: "Connection Lab", power: "Connections", crystal: "connections", colour: "#ff9d3d", aim: "Find the visible tokens that provide the most helpful clues." },
       { id: "prediction", number: 5, title: "Next-Token Machine", power: "Prediction", crystal: "prediction", colour: "#ff5f9e", aim: "Choose one possible next token, add it, and predict again." },
       { id: "training", number: 6, title: "Training Workshop", power: "Training", crystal: "training", colour: "#46b86f", aim: "Follow prediction, answer, adjustment and repetition during training." }
     ];
+    const tokenRoomTeachingData = Object.freeze({
+      checkpoint: "Qwen/Qwen2.5-0.5B-Instruct",
+      revision: "7ae557604adf67be50417f59c2c2f167def9a775",
+      example: Object.freeze({
+        text: "unbelievable!",
+        ids: Object.freeze([359, 31798, 23760, 0]),
+        pieces: Object.freeze(["un", "belie", "vable", "!"])
+      }),
+      challenge: Object.freeze({
+        sentence: "The robot found an unhelpful clue.",
+        targetWord: "unhelpful",
+        targetIds: Object.freeze([650, 8653, 1262]),
+        targetRawPieces: Object.freeze(["Ġun", "help", "ful"]),
+        targetPieces: Object.freeze(["un", "help", "ful"]),
+        correctOptionId: "qwen",
+        options: Object.freeze([
+          Object.freeze({ id: "whole", pieces: Object.freeze(["unhelpful"]) }),
+          Object.freeze({ id: "human", pieces: Object.freeze(["un", "helpful"]) }),
+          Object.freeze({ id: "qwen", pieces: Object.freeze(["un", "help", "ful"]) })
+        ])
+      })
+    });
+    const numbersRoomTeachingData = Object.freeze({
+      token: "robot",
+      tokenId: 305,
+      drawers: Object.freeze([128, 305, 742]),
+      illustrativeRow: Object.freeze(["0.42", "-0.18", "0.73", "0.11", "…"]),
+      correctConceptId: "lookup-label",
+      concepts: Object.freeze([
+        Object.freeze({ id: "meaning", label: "It stores the meaning of robot." }),
+        Object.freeze({ id: "lookup-label", label: "It is a lookup label that points to one learned number row." }),
+        Object.freeze({ id: "probability", label: "It is the probability that robot appears." })
+      ]),
+      accuracyNote: "Simplified teaching row — real models use much larger learned representations."
+    });
     const finalModelPieces = [
       { id: "tokens", label: "Text becomes tokens" },
       { id: "numbers", label: "Tokens point to numbers" },
@@ -1425,15 +1895,33 @@
       if (id === "token") return {
         inspected: false,
         tokenised: false,
-        sentence: "Robots learn surprisingly fast.",
-        answer: ["Robots", "learn", "surprisingly", "fast", "."],
-        placed: [],
-        tray: ["surprisingly", "Robots", ".", "learn", "answers", "fast"],
-        selected: null,
+        selectedOption: "",
+        submitted: false,
+        attempts: 0,
+        showHint: false,
+        feedbackKind: "",
         feedback: ""
       };
-      if (id === "numbers") return { step: 0, feedback: "" };
-      if (id === "context") return { choice: "", feedback: "" };
+      if (id === "numbers") return {
+        selectedDrawer: "",
+        drawerOpened: false,
+        showConcept: false,
+        selectedConcept: "",
+        conceptPassed: false,
+        drawerAttempts: 0,
+        conceptAttempts: 0,
+        feedbackKind: "",
+        feedback: ""
+      };
+      if (id === "context") return {
+        scene: 1,
+        choice: "",
+        solved: false,
+        shifted: false,
+        attempts: 0,
+        feedbackKind: "",
+        feedback: ""
+      };
       if (id === "connections") return { selected: [], feedback: "" };
       if (id === "prediction") return { round: 0, choice: "", generated: [], feedback: "" };
       if (id === "training") return { step: 0, feedback: "" };
@@ -1520,7 +2008,7 @@
     function renderRoom(room, replay = false, completedView = false) {
       const data = state.roomData;
       roomScreen.innerHTML = `
-        <section class="room ${room.id === "token" ? "room-bg-token" : ""}" style="--room:${room.colour}; --tilt:0deg">
+        <section class="room ${room.id === "token" ? "room-bg-token" : room.id === "numbers" ? "room-bg-numbers" : room.id === "context" ? "room-bg-context" : ""}" style="--room:${room.colour}; --tilt:0deg">
           <div class="room-inner">
             <header class="room-head">
               <div class="room-objective">
@@ -1542,16 +2030,36 @@
       const crystalName = `${room.power} Crystal`;
       const crystalSrc = crystalAsset(room);
       const completionNote = room.id === "token"
-        ? "Remember: this is only one possible tokenisation. Different LLMs may split the same sentence differently. The key idea is that tokens are not always whole words."
+        ? "A Token can be a whole word, part of a word, punctuation, or another text piece. The exact split depends on the tokenizer."
+        : room.id === "numbers"
+          ? "The token ID is a lookup label. It points to a learned number row that the model can use in later calculations."
+        : room.id === "context"
+          ? "The model can use only the Tokens currently inside its Context Window. As new text arrives, older Tokens can move outside it."
         : next
           ? `Door opened. Room ${next.number} is ready.`
           : "All rooms cleared. The final exit is ready.";
+      const tokenMechanism = room.id === "token" ? `<p class="token-lock-accepts">The lock accepts the text as Token pieces.</p><div class="token-success-chain" aria-label="Text passes through the tokenizer and becomes Token pieces">
+        <span><small>Text</small><b>${tokenRoomTeachingData.challenge.targetWord}</b></span>
+        <i aria-hidden="true">↓</i>
+        <span><small>Tokenizer</small><b>Qwen2.5</b></span>
+        <i aria-hidden="true">↓</i>
+        <span class="token-success-pieces"><small>Token pieces</small><b>${tokenRoomTeachingData.challenge.targetPieces.map((piece) => `[${piece}]`).join(" ")}</b></span>
+      </div>` : "";
+      const numbersMechanism = room.id === "numbers" ? `<div class="token-success-chain" aria-label="Token robot uses ID 305 to find a learned number row">
+        <span><small>Token</small><b>${numbersRoomTeachingData.token}</b></span>
+        <i aria-hidden="true">→</i>
+        <span><small>Lookup label</small><b>${numbersRoomTeachingData.tokenId}</b></span>
+        <i aria-hidden="true">→</i>
+        <span><small>Learned number row</small><b>[${numbersRoomTeachingData.illustrativeRow.join(", ")}]</b></span>
+      </div><p class="numbers-accuracy-note">${numbersRoomTeachingData.accuracyNote}</p>` : "";
       return `<section class="completion">
         <div class="crystal-stage" aria-hidden="true">
           <img class="completion-crystal" src="${crystalSrc}" alt="">
         </div>
         <span class="clue">${crystalName} collected</span>
         <h2>${room.power} restored</h2>
+        ${tokenMechanism}
+        ${numbersMechanism}
         <p>${completionNote}</p>
         <div>
           <button type="button" class="secondary" data-action="map">Room Map</button>
@@ -1592,6 +2100,26 @@
       }).join("")}</div>`;
     }
 
+    function numbersIcon(name) {
+      const paths = {
+        lock: '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+        brain: '<path d="M9.5 4.5A3 3 0 0 0 6.5 7v.7A3.5 3.5 0 0 0 5 14.3V16a4 4 0 0 0 4 4h1V5.5a1 1 0 0 0-.5-1Z"/><path d="M14.5 4.5a3 3 0 0 1 3 2.5v.7a3.5 3.5 0 0 1 1.5 6.6V16a4 4 0 0 1-4 4h-1V5.5a1 1 0 0 1 .5-1Z"/>',
+        search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+        dice: '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 8h.01M16 8h.01M8 16h.01M16 16h.01M12 12h.01"/>'
+      };
+      return `<svg class="numbers-lucide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]}</svg>`;
+    }
+
+    function contextIcon(name) {
+      const paths = {
+        umbrella: '<path d="M22 12a10.06 10.06 0 0 0-20 0Z"/><path d="M12 12v8a2 2 0 0 0 4 0"/><path d="M12 2v1"/>',
+        cloud: '<path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9Z"/>',
+        eye: '<path d="M2.06 12.35a1 1 0 0 1 0-.7C3.73 7.6 7.6 5 12 5c4.4 0 8.27 2.6 9.94 6.65a1 1 0 0 1 0 .7C20.27 16.4 16.4 19 12 19c-4.4 0-8.27-2.6-9.94-6.65Z"/><circle cx="12" cy="12" r="3"/>',
+        arrow: '<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>'
+      };
+      return `<svg class="context-lucide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]}</svg>`;
+    }
+
     function guide(text, extra = "") {
       return `<aside class="guide-panel">
         <img src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot">
@@ -1603,84 +2131,190 @@
 
     function tokenPuzzle(data) {
       const step = !data.inspected ? 0 : !data.tokenised ? 1 : 2;
-      const exampleTokens = ["un", "believ", "able", "!"];
+      const example = tokenRoomTeachingData.example;
+      const challenge = tokenRoomTeachingData.challenge;
+      const selectedOption = challenge.options.find((option) => option.id === data.selectedOption);
+      const comparison = data.submitted && selectedOption ? `<div class="token-comparison" aria-live="polite">
+        <div><small>Your idea</small><div>${selectedOption.pieces.map((piece) => `<span>${piece}</span>`).join("")}</div></div>
+        <b aria-hidden="true">vs</b>
+        <div><small>Tokenizer split</small><div>${challenge.targetPieces.map((piece) => `<span>${piece}</span>`).join("")}</div><em>The first Token includes the space before the word.</em></div>
+      </div>` : "";
       return `<div class="room-body">
         <section class="puzzle-board">
-          ${stepStrip(["Inspect door", "Run tokeniser", "Fill lock"], step)}
-          <span class="clue">Learning simulation</span>
+          ${stepStrip(["Inspect door", "See verified split", "Choose the matching split"], step)}
+          <span class="clue">Verified Qwen2.5 tokenizer</span>
           <div class="door-zone">
             <strong>The lock receives text as token pieces, not one whole block.</strong>
-            <p>Sentence: <b>${data.sentence}</b></p>
             ${!data.inspected ? `<button type="button" class="gold" data-action="inspect">Inspect door</button>` : !data.tokenised ? `<button type="button" data-action="tokenise">Activate tokeniser</button>` : `
               <div class="tokeniser-device">
                 <img src="/assets/img/final-challenge/room1/tokeniser-machine.png" alt="">
                 <div>
-                  <strong>Example (simplified)</strong>
-                  <p>One possible tokenisation of <b>unbelievable!</b> is:</p>
-                  <div class="output-tokens">${exampleTokens.map((t) => `<span class="token example-token">${t}</span>`).join("")}</div>
-                  <p>Different AI models may split text differently.</p>
+                  <strong>Verified example</strong>
+                  <p>Here is how the tokenizer used in AI Explorer splits <b>${example.text}</b></p>
+                  <div class="output-tokens">${example.pieces.map((piece) => `<span class="token example-token">${piece}</span>`).join("")}</div>
+                  <p>Different tokenizers may split the same text differently.</p>
                 </div>
               </div>
-              <p><b>Your lock sentence:</b> ${data.sentence}</p>
-              <p>Drag pieces into the lock slots, or click a piece and then a slot. One piece does not belong.</p>
-              <div class="slot-row">${data.answer.map((_, index) => `<button type="button" class="slot ${data.placed[index] ? "filled" : ""}" data-slot="${index}" draggable="${data.placed[index] ? "true" : "false"}" aria-label="${data.placed[index] ? `Move ${data.placed[index]} from lock slot ${index + 1}` : `Lock slot ${index + 1}`}">${data.placed[index] || ""}</button>`).join("")}</div>
-              <div class="output-tokens">${data.tray.map((token, index) => {
-                const used = data.placed.includes(token);
-                return `<button type="button" class="token ${data.selected === index ? "selected" : ""} ${used ? "used" : ""}" data-token="${index}" draggable="${used ? "false" : "true"}" aria-label="${used ? `${token} already placed` : `Drag token ${token}`}">${token}</button>`;
-              }).join("")}</div>
-              <button type="button" data-action="check">Activate lock</button>
-              <button type="button" class="secondary" data-action="reset-room">Reset room</button>
+              <div class="token-split-challenge">
+                <span class="token-question-badge">Lock question</span>
+                <h2>Which split matches the tokenizer used in AI Explorer?</h2>
+                <p class="token-target-sentence">The robot found an <mark>${challenge.targetWord}</mark> clue.</p>
+                <p>Choose one Token split. You do not need to reorder the sentence.</p>
+                <div class="token-split-options" role="group" aria-label="Choose the tokenizer split for ${challenge.targetWord}">${challenge.options.map((option, index) => `<button type="button" class="token-split-option ${data.selectedOption === option.id ? "selected" : ""}" data-token-option="${option.id}" aria-pressed="${data.selectedOption === option.id}"><small>Option ${String.fromCharCode(65 + index)}</small><span>${option.pieces.map((piece) => `<b>${piece}</b>`).join("")}</span></button>`).join("")}</div>
+                ${comparison}
+                ${data.showHint ? `<p class="token-hint" role="status">Hint: this tokenizer makes three pieces. The first piece also carries the space before the word.</p>` : ""}
+                <div class="token-room-actions"><button type="button" data-action="check" ${data.selectedOption ? "" : "disabled"}>Activate lock</button><button type="button" class="secondary" data-action="token-hint">${data.showHint ? "Hide hint" : "Show hint"}</button><button type="button" class="secondary" data-action="reset-room">Reset room</button></div>
+              </div>
             `}
           </div>
-          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "A token can be a whole word, part of a word, or punctuation."}</div>
+          <div class="feedback ${data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : ""}" role="status" aria-live="polite">${data.feedback || "A Token can be a whole word, part of a word, punctuation, or another text piece."}</div>
         </section>
-        ${guide(step === 0 ? "Start by checking the door." : step === 1 ? "Run the machine to see a simple example." : "Drag a token piece into each slot from left to right. You can also click a piece, then click a slot.")}
+        ${guide(step === 0 ? "Start by checking the door." : step === 1 ? "Run the machine to see a verified tokenizer example." : "Compare the three splits, choose one, then activate the lock. The exact boundaries come from this tokenizer.")}
       </div>`;
     }
 
     function numbersPuzzle(data) {
-      const step = data.step || 0;
-      return `<div class="room-body">
-        <section class="puzzle-board">
-          ${stepStrip(["Choose token", "Read its ID", "Open number row", "Explain it"], Math.min(step, 3))}
-          <span class="clue">Teaching lookup</span>
-          <h2>How does a text piece become something the model can calculate with?</h2>
-          <p>Follow one token through a lookup. Each click reveals the next link.</p>
-          <div class="journey-strip">
-            <button type="button" class="${step >= 1 ? "selected" : ""}" data-action="numbers-step" ${step === 0 ? "" : "disabled"}><small>Token</small><strong>robot</strong></button>
-            <span>→</span>
-            <button type="button" class="${step >= 2 ? "selected" : ""}" data-action="numbers-step" ${step === 1 ? "" : "disabled"}><small>Token ID</small><strong>${step >= 1 ? "305" : "?"}</strong></button>
-            <span>→</span>
-            <button type="button" class="${step >= 3 ? "selected" : ""}" data-action="numbers-step" ${step === 2 ? "" : "disabled"}><small>Learned row</small><strong>${step >= 2 ? "[ 0.18, −0.42, 0.73, … ]" : "[ ?, ?, ?, … ]"}</strong></button>
+      const teaching = numbersRoomTeachingData;
+      const scene = !data.drawerOpened ? 1 : !data.showConcept ? 2 : 3;
+      const feedbackClass = data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : "";
+      const sceneDots = `<div class="numbers-scene-progress" aria-label="Scene ${scene} of 3"><b>${scene} / 3</b><span class="active"></span><span class="${scene >= 2 ? "active" : ""}"></span><span class="${scene >= 3 ? "active" : ""}"></span></div>`;
+      const lookupPath = `<div class="numbers-simple-path" aria-label="Token robot has ID 305">
+        <div class="numbers-object token-object"><small>Token</small><strong>${teaching.token}</strong></div>
+        <span aria-hidden="true">↓</span>
+        <div class="numbers-id-with-guide"><div class="numbers-object id-object"><small>Lookup ID</small><strong>${teaching.tokenId}</strong></div><img class="numbers-path-robot" src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot holding the lookup ID"></div>
+      </div>`;
+
+      if (scene === 1) {
+        return `<div class="numbers-scene-wrap">
+          <section class="numbers-scene-card numbers-find-scene">
+            ${sceneDots}
+            <span class="clue">From the Token Workshop</span>
+            <h2>Where does <q>${teaching.token}</q> go?</h2>
+            <p>The tokenizer made the Token <b>${teaching.token}</b>. Now follow its ID.</p>
+            ${lookupPath}
+            <h3>Find drawer ${teaching.tokenId}.</h3>
+            <div class="numbers-drawers numbers-drawers-scene" role="group" aria-label="Choose drawer 305">
+              ${teaching.drawers.map((drawer) => {
+                const isWrong = String(drawer) === String(data.selectedDrawer) && drawer !== teaching.tokenId;
+                return `<button type="button" class="numbers-drawer ${isWrong ? "wrong" : ""}" data-number-drawer="${drawer}" aria-pressed="${String(drawer) === String(data.selectedDrawer)}">${numbersIcon("lock")}<small>Drawer</small><strong>${drawer}</strong><span>${isWrong ? "Try another number" : "Open"}</span></button>`;
+              }).join("")}
+            </div>
+            ${data.feedbackKind === "bad" ? `<div class="numbers-robot-nudge" role="status" aria-live="polite"><img src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot"><p>Look at the number on the ID card. Find the drawer with the same number.</p></div>` : ""}
+          </section>
+        </div>`;
+      }
+
+      if (scene === 2) {
+        return `<div class="numbers-scene-wrap">
+          <section class="numbers-scene-card numbers-reveal-scene">
+            ${sceneDots}
+            <span class="clue">Drawer matched</span>
+            <h2>Drawer ${teaching.tokenId} opens</h2>
+            <div class="numbers-reveal-layout">
+              <div class="numbers-complete-path" aria-label="Token robot uses ID 305 to find a learned number row">
+                ${lookupPath}
+                <span class="numbers-down-arrow" aria-hidden="true">↓</span>
+                <div class="numbers-open-drawer">
+                  <div><small>Drawer</small><strong>${teaching.tokenId}</strong></div>
+                  <div class="numbers-values" aria-label="Illustrative learned number row">${teaching.illustrativeRow.map((value) => `<b>${value}</b>`).join("")}</div>
+                </div>
+              </div>
+              <aside class="numbers-robot-bubble">
+                <img src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot">
+                <p><b>305 did not create these numbers.</b><br>It only told the model where to find them.</p>
+              </aside>
+            </div>
+            <p class="numbers-row-use">The model uses this learned number row in later calculations.</p>
+            <p class="numbers-tiny-accuracy">Simplified teaching row — real models use much larger learned representations.</p>
+            <button type="button" class="numbers-continue" data-action="continue-number-lookup">Continue</button>
+          </section>
+        </div>`;
+      }
+
+      return `<div class="numbers-scene-wrap">
+        <section class="numbers-scene-card numbers-check-scene">
+          ${sceneDots}
+          <span class="clue">Final lock</span>
+          <h2>What did ID ${teaching.tokenId} actually do?</h2>
+          <div class="numbers-short-choices" role="radiogroup" aria-label="Choose what token ID 305 does">
+            ${teaching.concepts.map((concept) => {
+              const icon = concept.id === "meaning" ? "brain" : concept.id === "lookup-label" ? "search" : "dice";
+              const shortLabel = concept.id === "meaning" ? "Stores the meaning" : concept.id === "lookup-label" ? "Finds the number row" : "Shows probability";
+              const selected = data.selectedConcept === concept.id;
+              return `<button type="button" role="radio" aria-checked="${selected}" class="numbers-short-choice ${selected ? "selected" : ""} ${data.conceptPassed && concept.id === teaching.correctConceptId ? "correct" : ""}" data-number-concept="${concept.id}">${numbersIcon(icon)}<strong>${shortLabel}</strong></button>`;
+            }).join("")}
           </div>
-          <div class="feedback ${step >= 3 ? "good" : ""}">${step === 0 ? "Start with the token. Its ID is only a label." : step === 1 ? "305 labels this token. It is not a score or meaning." : step === 2 ? "The ID points to one learned row of numbers. Open it." : "The model calculates with number patterns instead of reading the written word like a person."}</div>
-          <p class="simulation-note"><b>Teaching example:</b> these short values are illustrative. A real model uses a much larger learned row from its model weights.</p>
-          <button type="button" data-action="check" ${step >= 3 ? "" : "disabled"}>Collect the Numbers Crystal</button>
+          <div class="numbers-final-feedback ${feedbackClass}" role="status" aria-live="polite">${data.feedback || "Choose the job performed by the ID."}</div>
+          ${data.conceptPassed ? `<div class="numbers-crystal-ready"><strong>Numbers Crystal ready</strong><p>Exactly — an ID is a lookup label.</p><button type="button" class="numbers-collect" data-action="check">Collect the Numbers Crystal</button></div>` : ""}
         </section>
-        ${guide(step < 3 ? "Follow the arrows one step at a time: token, label, then learned number row." : "The ID finds the row. The row gives the model numbers it can work with.")}
       </div>`;
     }
 
     function contextWindowPuzzle(data) {
       const options = [
-        ["umbrella", "umbrella at home"],
-        ["clouds", "dark clouds"],
-        ["outside", "looked outside"]
+        ["umbrella", "umbrella", "umbrella at home"],
+        ["clouds", "cloud", "dark clouds"],
+        ["outside", "eye", "looked outside"]
       ];
-      return `<div class="room-body">
-        <section class="puzzle-board">
-          ${stepStrip(["Read growing text", "Find the boundary", "Choose missing clue"], data.choice ? 2 : 1)}
-          <span class="clue">Current reading window</span>
-          <h2>Which earlier clue has moved outside the model's current view?</h2>
-          <div class="context-story">
-            <p class="outside"><small>Outside the window</small>Mia left her <b>umbrella</b> at home.</p>
-            <div class="inside"><small>Inside the window</small><p>Dark clouds covered the sky.</p><p>She looked outside and ...</p></div>
-          </div>
-          <div class="choice-grid">${options.map(([id, text]) => `<button type="button" class="${data.choice === id ? "selected" : ""}" data-choice="${id}">${text}</button>`).join("")}</div>
-          <button type="button" data-action="check">Check the context window</button>
-          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "The context window is the group of earlier tokens available for the current step."}</div>
+      const scene = data.scene || 1;
+      const sceneDots = `<div class="context-scene-progress" aria-label="Scene ${scene} of 3"><b>${scene} / 3</b><span class="active"></span><span class="${scene >= 2 ? "active" : ""}"></span><span class="${scene >= 3 ? "active" : ""}"></span></div>`;
+      const windowVisual = `<div class="context-reading-stage ${data.shifted ? "shifted" : ""}" aria-label="Older text is outside the current Context Window while newer text remains inside">
+        <div class="context-track" aria-hidden="true"><span></span>${contextIcon("arrow")}</div>
+        <section class="context-old-zone" aria-label="Outside the Context Window">
+          <span class="context-zone-label">Outside window</span>
+          <article class="context-sentence old-sentence ${data.choice === "umbrella" ? "linked" : ""}"><small>Older text</small><p>Mia left her <b>umbrella</b> at home.</p></article>
+          ${data.shifted ? `<article class="context-sentence newly-outside"><small>Moved outside</small><p>Dark clouds covered the sky.</p></article>` : ""}
         </section>
-        ${guide("Look for the faded line outside the outlined reading window.")}
+        <div class="context-boundary"><span>Window edge</span></div>
+        <section class="context-current-window" aria-label="Current Context Window">
+          <span class="context-zone-label">Current Context Window</span>
+          ${!data.shifted ? `<article class="context-sentence ${data.choice === "clouds" ? "linked pulse" : ""}"><p>Dark clouds covered the sky.</p></article>` : ""}
+          <article class="context-sentence ${data.choice === "outside" ? "linked pulse" : ""}"><p>She looked outside and ...</p></article>
+          ${data.shifted ? `<article class="context-sentence incoming"><small>New text</small><p>hurried toward the bus stop.</p></article>` : `<span class="context-incoming">New text arrives here →</span>`}
+        </section>
+        <img class="context-guide-robot" src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot beside the Context Window edge">
+      </div>`;
+
+      if (scene === 1) {
+        return `<div class="context-scene-wrap">
+          <section class="context-scene-card">
+            ${sceneDots}
+            <span class="clue">Moving reading window</span>
+            <h2>What can the model see right now?</h2>
+            <p>The model can use only the Tokens inside the bright frame.</p>
+            ${windowVisual}
+            <button type="button" data-action="start-context">Find the clue that moved out</button>
+          </section>
+        </div>`;
+      }
+
+      if (scene === 2) {
+        return `<div class="context-scene-wrap">
+          <section class="context-scene-card">
+            ${sceneDots}
+            <span class="clue">Trace the window</span>
+            <h2>Which clue can the model no longer use?</h2>
+            ${windowVisual}
+            <div class="context-clue-chips" role="radiogroup" aria-label="Choose the clue outside the current Context Window">
+              ${options.map(([id, icon, text]) => `<button type="button" role="radio" aria-checked="${data.choice === id}" class="context-clue-chip ${data.choice === id ? "selected" : ""}" data-context-clue="${id}">${contextIcon(icon)}<strong>${text}</strong></button>`).join("")}
+            </div>
+            ${data.feedbackKind === "bad" ? `<aside class="context-robot-feedback" role="status" aria-live="polite"><img src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot"><p>${data.feedback}</p></aside>` : `<p class="context-task-hint">Choose one clue and watch where it connects.</p>`}
+          </section>
+        </div>`;
+      }
+
+      return `<div class="context-scene-wrap">
+        <section class="context-scene-card context-shift-scene">
+          ${sceneDots}
+          <span class="clue">Window shifted</span>
+          <h2>New text moves the window forward</h2>
+          ${windowVisual}
+          <div class="context-takeaway" role="status" aria-live="polite">
+            <strong>The umbrella clue is outside the current Context Window.</strong>
+            <p>The model cannot use it right now. As new text arrives, older Tokens can move outside the window.</p>
+          </div>
+          <button type="button" class="context-collect" data-action="check">Collect the Context Crystal</button>
+        </section>
       </div>`;
     }
 
@@ -1938,7 +2572,8 @@
 
       if (room.id === "token") bindTokenRoom(room);
       if (room.id === "numbers") bindNumbersRoom(room);
-      if (room.id === "context" || room.id === "prediction") bindChoiceRoom(room, "choice");
+      if (room.id === "context") bindContextRoom(room);
+      if (room.id === "prediction") bindChoiceRoom(room, "choice");
       if (room.id === "connections") bindChipRoom(room);
       if (room.id === "training") bindTrainingRoom(room);
       roomScreen.querySelector("[data-action='check']")?.addEventListener("click", () => checkRoom(room));
@@ -1948,100 +2583,28 @@
       const data = state.roomData;
       roomScreen.querySelector("[data-action='inspect']")?.addEventListener("click", () => {
         data.inspected = true;
-        data.feedback = "Good. Convert the sentence into token pieces before sending it to the lock.";
+        data.feedbackKind = "good";
+        data.feedback = "Good. The tokenizer must split text into Token pieces before the lock can use it.";
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "door-inspected" });
       });
       roomScreen.querySelector("[data-action='tokenise']")?.addEventListener("click", () => {
         data.tokenised = true;
-        data.feedback = "Good. That was only one possible split. Now solve the lock sentence.";
+        data.feedbackKind = "good";
+        data.feedback = "This verified example came from the Qwen2.5 tokenizer. Now transfer the idea to a different word.";
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "tokeniser-activated" });
       });
-      const placeTokenInSlot = (tokenIndex, slotIndex, sourceSlot = null) => {
-        const token = sourceSlot === null ? data.tray[tokenIndex] : data.placed[sourceSlot];
-        if (!token) return;
-        if (sourceSlot !== null) {
-          if (sourceSlot === slotIndex) return;
-          const displaced = data.placed[slotIndex] || "";
-          data.placed[slotIndex] = token;
-          data.placed[sourceSlot] = displaced;
-        } else {
-          const existingIndex = data.placed.indexOf(token);
-          if (existingIndex !== -1) data.placed[existingIndex] = "";
-          data.placed[slotIndex] = token;
-        }
-        data.selected = null;
-        data.feedback = "Piece placed. Fill the slots from left to right, then activate the lock.";
-        renderRoom(room);
-      };
-      roomScreen.querySelectorAll("[data-token]").forEach((button) => button.addEventListener("click", () => {
-        const index = Number(button.dataset.token);
-        if (data.placed.includes(data.tray[index])) return;
-        data.selected = data.selected === index ? null : index;
+      roomScreen.querySelectorAll("[data-token-option]").forEach((button) => button.addEventListener("click", () => {
+        data.selectedOption = button.dataset.tokenOption;
+        data.submitted = false;
+        data.feedbackKind = "";
+        data.feedback = "Selection ready. Activate the lock to compare it with the tokenizer.";
         renderRoom(room);
       }));
-      roomScreen.querySelectorAll("[data-token]").forEach((button) => {
-        button.addEventListener("dragstart", (event) => {
-          const index = Number(button.dataset.token);
-          if (data.placed.includes(data.tray[index])) {
-            event.preventDefault();
-            return;
-          }
-          button.classList.add("dragging");
-          event.dataTransfer.effectAllowed = "move";
-          event.dataTransfer.setData("application/x-ai-token-piece", JSON.stringify({ tokenIndex: index, sourceSlot: null }));
-          event.dataTransfer.setData("text/plain", String(index));
-        });
-        button.addEventListener("dragend", () => button.classList.remove("dragging"));
-      });
-      roomScreen.querySelectorAll("[data-slot]").forEach((button) => {
-        button.addEventListener("click", () => {
-        const slot = Number(button.dataset.slot);
-        if (data.selected === null) {
-          if (data.placed[slot]) data.placed[slot] = "";
-        } else {
-          placeTokenInSlot(data.selected, slot);
-          return;
-        }
+      roomScreen.querySelector("[data-action='token-hint']")?.addEventListener("click", () => {
+        data.showHint = !data.showHint;
         renderRoom(room);
-        });
-        button.addEventListener("dragstart", (event) => {
-          const slot = Number(button.dataset.slot);
-          if (!data.placed[slot]) {
-            event.preventDefault();
-            return;
-          }
-          button.classList.add("dragging");
-          event.dataTransfer.effectAllowed = "move";
-          event.dataTransfer.setData("application/x-ai-token-piece", JSON.stringify({ tokenIndex: null, sourceSlot: slot }));
-          event.dataTransfer.setData("text/plain", `slot:${slot}`);
-        });
-        button.addEventListener("dragend", () => button.classList.remove("dragging"));
-        button.addEventListener("dragover", (event) => {
-          event.preventDefault();
-          event.dataTransfer.dropEffect = "move";
-          button.classList.add("drag-over");
-        });
-        button.addEventListener("dragleave", () => button.classList.remove("drag-over"));
-        button.addEventListener("drop", (event) => {
-          event.preventDefault();
-          button.classList.remove("drag-over");
-          const slot = Number(button.dataset.slot);
-          let payload = {};
-          try {
-            payload = JSON.parse(event.dataTransfer.getData("application/x-ai-token-piece") || "{}");
-          } catch (error) {
-            payload = {};
-          }
-          if (payload.sourceSlot !== null && payload.sourceSlot !== undefined) {
-            placeTokenInSlot(null, slot, Number(payload.sourceSlot));
-            return;
-          }
-          const raw = event.dataTransfer.getData("text/plain");
-          const tokenIndex = Number(raw);
-          if (Number.isInteger(tokenIndex)) placeTokenInSlot(tokenIndex, slot);
-        });
       });
     }
 
@@ -2062,10 +2625,79 @@
     }
 
     function bindNumbersRoom(room) {
-      roomScreen.querySelector("[data-action='numbers-step']")?.addEventListener("click", () => {
-        state.roomData.step = Math.min(3, (state.roomData.step || 0) + 1);
+      const data = state.roomData;
+      roomScreen.querySelectorAll("[data-number-drawer]").forEach((button) => button.addEventListener("click", () => {
+        const drawer = Number(button.dataset.numberDrawer);
+        data.selectedDrawer = String(drawer);
+        data.drawerAttempts += 1;
+        if (drawer === numbersRoomTeachingData.tokenId) {
+          data.drawerOpened = true;
+          data.showConcept = false;
+          data.feedbackKind = "good";
+          data.feedback = `Correct. ID ${numbersRoomTeachingData.tokenId} points to drawer ${numbersRoomTeachingData.tokenId}, where one learned number row is stored.`;
+          send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "number-row-opened", tokenId: numbersRoomTeachingData.tokenId });
+        } else {
+          data.drawerOpened = false;
+          data.feedbackKind = "bad";
+          data.feedback = `Drawer ${drawer} does not match ID ${numbersRoomTeachingData.tokenId}. The ID is a lookup label, so choose the drawer with the same number.`;
+        }
         renderRoom(room);
+        queueMicrotask(() => roomScreen.querySelector(data.drawerOpened ? "[data-action='continue-number-lookup']" : `[data-number-drawer='${drawer}']`)?.focus());
+      }));
+      roomScreen.querySelector("[data-action='continue-number-lookup']")?.addEventListener("click", () => {
+        data.showConcept = true;
+        data.feedbackKind = "";
+        data.feedback = "";
+        renderRoom(room);
+        queueMicrotask(() => roomScreen.querySelector("[data-number-concept]")?.focus());
       });
+      roomScreen.querySelectorAll("[data-number-concept]").forEach((button) => button.addEventListener("click", () => {
+        data.selectedConcept = button.dataset.numberConcept;
+        if (data.selectedConcept === numbersRoomTeachingData.correctConceptId) {
+          data.conceptPassed = true;
+          data.feedbackKind = "good";
+          data.feedback = "Exactly — an ID is a lookup label.";
+          send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "id-concept-understood" });
+        } else {
+          data.conceptPassed = false;
+          data.conceptAttempts += 1;
+          data.feedbackKind = "bad";
+          data.feedback = data.selectedConcept === "meaning"
+            ? "305 does not store the meaning. Look for the job it performed when the drawer opened."
+            : "305 is not a probability. Think about how it helped the model find the drawer.";
+        }
+        renderRoom(room);
+        queueMicrotask(() => roomScreen.querySelector(data.conceptPassed ? "[data-action='check']" : `[data-number-concept='${data.selectedConcept}']`)?.focus());
+      }));
+    }
+
+    function bindContextRoom(room) {
+      const data = state.roomData;
+      roomScreen.querySelector("[data-action='start-context']")?.addEventListener("click", () => {
+        data.scene = 2;
+        data.feedbackKind = "";
+        data.feedback = "";
+        renderRoom(room);
+        queueMicrotask(() => roomScreen.querySelector("[data-context-clue]")?.focus());
+      });
+      roomScreen.querySelectorAll("[data-context-clue]").forEach((button) => button.addEventListener("click", () => {
+        data.choice = button.dataset.contextClue;
+        data.attempts += 1;
+        if (data.choice === "umbrella") {
+          data.solved = true;
+          data.shifted = true;
+          data.scene = 3;
+          data.feedbackKind = "good";
+          data.feedback = "This clue is outside the current Context Window. The model cannot use it right now.";
+          send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "context-window-shifted" });
+        } else {
+          data.solved = false;
+          data.feedbackKind = "bad";
+          data.feedback = "This clue is still inside the highlighted window. Look for the sentence that has faded to the left of the frame.";
+        }
+        renderRoom(room);
+        queueMicrotask(() => roomScreen.querySelector(data.solved ? "[data-action='check']" : `[data-context-clue='${data.choice}']`)?.focus());
+      }));
     }
 
     function bindTrainingRoom(room) {
@@ -2093,18 +2725,27 @@
     function checkRoom(room) {
       const data = state.roomData;
       if (room.id === "token") {
-        const correct = data.answer || [];
-        if (data.placed.filter(Boolean).length < correct.length) data.feedback = `Some slots are empty. Fill all ${correct.length} slots.`;
-        else if (data.placed.join("|") !== correct.join("|")) data.feedback = "Not yet. Check the order and remember that one tray piece is a distractor.";
-        else return roomComplete(room);
+        if (!data.selectedOption) {
+          data.feedbackKind = "bad";
+          data.feedback = "Choose one Token split before activating the lock.";
+        } else if (data.selectedOption === tokenRoomTeachingData.challenge.correctOptionId) {
+          return roomComplete(room);
+        } else {
+          data.submitted = true;
+          data.attempts += 1;
+          data.feedbackKind = "bad";
+          data.feedback = "Not quite. Token boundaries do not always match whole-word or human word-part boundaries. Compare the two rows, then try again.";
+        }
       }
       if (room.id === "numbers") {
-        if (data.step >= 3) return roomComplete(room);
-        data.feedback = "Follow the token to its ID, then open the learned number row.";
+        if (data.drawerOpened && data.conceptPassed) return roomComplete(room);
+        data.feedbackKind = "bad";
+        data.feedback = "Open the matching drawer and explain what the token ID does before collecting the crystal.";
       }
       if (room.id === "context") {
-        if (data.choice === "umbrella") return roomComplete(room);
-        data.feedback = "Look at the faded line outside the current window.";
+        if (data.solved && data.shifted) return roomComplete(room);
+        data.feedbackKind = "bad";
+        data.feedback = "Find the clue outside the current Context Window before collecting the crystal.";
       }
       if (room.id === "connections") {
         const selected = new Set(data.selected);

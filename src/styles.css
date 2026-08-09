@@ -2794,6 +2794,122 @@ button:not(.icon-button):not(.avatar-button) {
   font: inherit;
 }
 
+/* Final Challenge entry is advisory, never a curriculum lock. */
+.final-advisory-backdrop {
+  position: fixed;
+  z-index: 5000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(25, 27, 53, .48);
+  backdrop-filter: blur(5px);
+}
+
+.final-advisory-dialog {
+  width: min(680px, 100%);
+  border: 1px solid rgba(203, 197, 245, .95);
+  border-radius: 26px;
+  padding: 28px;
+  color: #172038;
+  background:
+    radial-gradient(circle at 94% 4%, rgba(116, 99, 236, .12), transparent 31%),
+    linear-gradient(145deg, rgba(255, 255, 255, .99), rgba(247, 249, 255, .98));
+  box-shadow: 0 30px 80px rgba(28, 31, 72, .28);
+}
+
+.final-advisory-dialog > header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.final-advisory-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 1px solid #d8d1ff;
+  border-bottom: 5px solid #8e7ae5;
+  border-radius: 18px;
+  color: #604ce0;
+  background: #f0edff;
+}
+
+.final-advisory-icon svg { width: 28px; height: 28px; stroke-width: 1.8; }
+.final-advisory-dialog header small { color: #6552d8; font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.final-advisory-dialog h2 { margin: 2px 0 0; font-size: clamp(1.45rem, 3vw, 2rem); line-height: 1.1; }
+.final-advisory-dialog > p { margin: 18px 0; color: #526078; font-size: .94rem; line-height: 1.6; }
+
+.final-advisory-options { display: grid; gap: 10px; }
+.final-advisory-choice {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 74px;
+  border: 1px solid #dfe3ed;
+  border-radius: 16px;
+  padding: 12px 15px;
+  color: #27314a;
+  background: rgba(255, 255, 255, .88);
+  text-align: left;
+  transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease;
+}
+
+.final-advisory-choice > span:first-child {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: #5d4bd2;
+  background: #efecff;
+}
+
+.final-advisory-choice > span:first-child svg { width: 20px; height: 20px; stroke-width: 1.8; }
+.final-advisory-choice > span:nth-child(2) { display: grid; gap: 2px; }
+.final-advisory-choice strong { font-size: .9rem; }
+.final-advisory-choice small { color: #6d778b; font-size: .74rem; }
+.final-advisory-choice > svg { width: 18px; color: #7666d8; }
+.final-advisory-choice.primary-choice { border-color: #c9c0f5; background: #f7f5ff; }
+.final-advisory-choice:hover,
+.final-advisory-choice:focus-visible { border-color: #8f7be8; box-shadow: 0 10px 24px rgba(78, 65, 164, .12); transform: translateY(-1px); }
+.final-advisory-choice:focus-visible,
+.final-advisory-review:focus-visible { outline: 3px solid rgba(96, 76, 224, .24); outline-offset: 3px; }
+
+.final-advisory-review {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 4px;
+  border: 1px solid #d8dce6;
+  border-radius: 13px;
+  padding: 9px 15px;
+  color: #4f5870;
+  background: #fff;
+  font-weight: 800;
+}
+
+.final-advisory-review svg { width: 18px; height: 18px; stroke-width: 1.8; }
+.final-advisory-dialog .final-advisory-note { margin: 14px 0 0; color: #7a8293; font-size: .72rem; text-align: center; }
+
+@media (max-width: 600px) {
+  .final-advisory-backdrop { place-items: end center; padding: 12px; }
+  .final-advisory-dialog { border-radius: 24px 24px 18px 18px; padding: 22px 16px calc(18px + env(safe-area-inset-bottom)); }
+  .final-advisory-icon { width: 50px; height: 50px; border-radius: 15px; }
+  .final-advisory-dialog > p { margin: 14px 0; font-size: .86rem; }
+  .final-advisory-choice { grid-template-columns: 38px minmax(0, 1fr) 16px; min-height: 68px; gap: 10px; padding: 10px 12px; }
+  .final-advisory-choice > span:first-child { width: 36px; height: 36px; }
+  .final-advisory-choice strong { font-size: .82rem; }
+  .final-advisory-choice small { font-size: .69rem; }
+  .final-advisory-review { width: 100%; }
+}
+
 .learn-journey-hero,
 .learn-lessons,
 .learn-final-challenge {

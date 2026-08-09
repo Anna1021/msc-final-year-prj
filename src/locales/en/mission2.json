@@ -6,6 +6,7 @@
     "pageCount": "Page {{current}} of {{total}}",
     "back": "Back",
     "next": "Next",
+    "nextLesson": "Next: Lesson 3",
     "endAction": "Lesson activities incomplete",
     "robotAlt": "AI Explorer robot reading"
   },
@@ -46,6 +47,7 @@
     "intro": "The text is already split into tokens. A boundary around some of those tokens shows the model's current reading space.",
     "inside": "The model can use these tokens now",
     "outside": "These tokens are outside this view",
+    "technicalWord": "Technical word",
     "term": "Context window",
     "definition": "The group of tokens available to the model while it works on the next part of the text.",
     "takeaway": "Context means the text available to the model right now.",
@@ -101,7 +103,7 @@
   },
   "page6": {
     "title": "Your context discovery",
-    "subtitle": "Connect the idea before moving to helpful clues.",
+    "subtitle": "Connect the idea before the Transformer combines information.",
     "eyebrow": "Put it together",
     "question": "What did the model have available?",
     "intro": "Follow the reading journey from a long story to the tokens available right now.",
@@ -116,7 +118,7 @@
     "point2": "Its context window contains the tokens available right now.",
     "point3": "When text grows, older tokens can move outside that window.",
     "nextLabel": "Next lesson",
-    "nextTitle": "Finding Helpful Clues",
-    "next": "Inside the window, some tokens are more helpful than others. Next, we will shine a spotlight on those clues."
+    "nextTitle": "Connecting the Tokens",
+    "next": "Next, see how a Transformer combines information between the Tokens inside this window."
   }
 }

@@ -12,11 +12,11 @@ const course = await readFile(new URL("../src/data/courseData.js", import.meta.u
 const fallbacks = await readFile(new URL("./create-spa-route-fallbacks.mjs", import.meta.url), "utf8");
 
 assert.equal(PAGED_MISSIONS[3].pages.length, 6, "Lesson 3 metadata has six focused pages");
-assert.equal(PAGED_MISSIONS[5].pages.length, 6, "Lesson 4 metadata has six focused pages");
-assert.equal(PAGED_MISSIONS[6].pages.length, 6, "Lesson 5 has six focused pages");
-assert.deepEqual(PAGED_MISSIONS[3].pages.map((page) => page[0]), ["equal","task","combine","order","practice","summary"]);
-assert.deepEqual(PAGED_MISSIONS[5].pages.map((page) => page[0]), ["candidates","scores","choose","add","repeat","summary"]);
-assert.deepEqual(PAGED_MISSIONS[6].pages.map((page) => page[0]), ["practice","compare","adjust","repeat","generalise","summary"]);
+assert.equal(PAGED_MISSIONS[5].pages.length, 4, "Lesson 4 metadata has four focused pages");
+assert.equal(PAGED_MISSIONS[6].pages.length, 4, "Lesson 5 has four focused pages");
+assert.deepEqual(PAGED_MISSIONS[3].pages.map((page) => page[0]), ["transformer","attention","representation","position","process","summary"]);
+assert.deepEqual(PAGED_MISSIONS[5].pages.map((page) => page[0]), ["predict","choose","live","check"]);
+assert.deepEqual(PAGED_MISSIONS[6].pages.map((page) => page[0]), ["origin","adjust","repeat","connect"]);
 for (const [id, route] of Object.entries(PAGED_MISSION_ROUTES)) {
   assert.match(app, new RegExp(route.replaceAll("/", "\\/")), `paged Mission storage ID ${id} route is registered`);
   assert.match(fallbacks, new RegExp(route.slice(1).replaceAll("/", "\\/")), `${route} has an SPA fallback`);
