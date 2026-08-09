@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { ArrowRight, Info, RefreshCcw, ShieldCheck } from "lucide-react";
+import { ArrowDown, ArrowRight, Blocks, Info, RefreshCcw, ShieldCheck } from "lucide-react";
 import MissionLessonShell, { parseLessonPage } from "./MissionLessonShell.jsx";
 import TokenPieces from "./TokenPieces.jsx";
 import { getMission1IntroFixture } from "./mission1Challenges.js";
-import PlayfulSceneBanner from "../playfulLearning/PlayfulSceneBanner.jsx";
 import RobotGuideBubble from "../playfulLearning/RobotGuideBubble.jsx";
 import MiniSceneIllustration from "../playfulLearning/MiniSceneIllustration.jsx";
 import TokenBuildingBlock from "../playfulLearning/TokenBuildingBlock.jsx";
@@ -14,6 +13,49 @@ import { completeMission1Progress } from "./mission1Progress.js";
 import { writeProgress } from "../state/progress.js";
 import { useI18n } from "../i18n/index.jsx";
 import "./mission1Paged.css";
+
+function PlayfulSceneBannerIntro({ t }) {
+  const exampleBlocks = ["The", "uncharacteristically", "quiet", "reader", "smiled", "."];
+  return <div className="playful-scene-banner mission-1-paged__intro-scene" data-tour-id="m1-intro-sentence">
+    <div className="playful-scene-copy">
+      <span className="playful-scene-badge"><Blocks size={17} strokeWidth={1.9} />{t("mission1.intro.buildingLabel")}</span>
+      <div className="mission-1-paged__intro-grid">
+        <section className="mission-1-paged__why-tokens" aria-labelledby="m1-why-tokens-title">
+          <h3 id="m1-why-tokens-title">{t("mission1.intro.whyTitle")}</h3>
+          <p>{t("mission1.intro.whyText")}</p>
+          <p>{t("mission1.intro.whyBreaks")}</p>
+          <p>{t("mission1.intro.whyNumbers")}</p>
+          <div className="mission-1-paged__token-flow" aria-label={t("mission1.intro.flowLabel")}>
+            <div><small>{t("mission1.intro.flowText")}</small><span>reading books</span></div>
+            <ArrowDown aria-hidden="true" size={17} />
+            <div><small>{t("mission1.intro.flowTokens")}</small><span className="mission-1-paged__mini-blocks"><b>reading</b><b>books</b></span></div>
+            <ArrowDown aria-hidden="true" size={17} />
+            <div><small>{t("mission1.intro.flowIds")}</small><span className="mission-1-paged__id-blocks"><b>4821</b><b>9137</b></span></div>
+          </div>
+          <small className="mission-1-paged__example-note">{t("mission1.intro.exampleIds")}</small>
+        </section>
+        <section className="mission-1-paged__example-tokens" aria-labelledby="m1-example-sentence">
+          <small>{t("mission1.intro.sentenceLabel")}</small>
+          <strong id="m1-example-sentence">{t("mission1.intro.exampleSentence")}</strong>
+          <div className="playful-block-row" aria-label={t("mission1.intro.metaphorLabel")}>{exampleBlocks.map((block, index) => <TokenBuildingBlock index={index} punctuation={block === "."} key={`${block}-${index}`}>{block}</TokenBuildingBlock>)}</div>
+          <div className="mission-1-paged__tokenizer-compare">
+            <div><span>{t("mission1.intro.compareText")}</span><strong>unbelievable</strong></div>
+            <div><span>{t("mission1.intro.tokenizerA")}</span><span className="mission-1-paged__compare-pieces"><b>unbelievable</b></span></div>
+            <div><span>{t("mission1.intro.tokenizerB")}</span><span className="mission-1-paged__compare-pieces"><b>un</b><b>belie</b><b>vable</b></span></div>
+            <small>{t("mission1.intro.compareNote")}</small>
+            <strong>{t("mission1.intro.differentNotWrong")}</strong>
+          </div>
+        </section>
+      </div>
+      <p className="playful-boundary-note"><span aria-hidden="true">i</span>{t("mission1.intro.metaphorNote")}</p>
+    </div>
+    <div className="playful-scene-art" aria-hidden="true">
+      <span className="playful-art-orbit orbit-one" /><span className="playful-art-orbit orbit-two" />
+      <img src="/assets/img/mission-robot-reading.png" alt="" />
+      <span className="playful-floating-block block-one" /><span className="playful-floating-block block-two" />
+    </div>
+  </div>;
+}
 
 export const MISSION_1_PAGED_PAGES = Object.freeze([
   { id: "intro", sectionNumber: 1, titleKey: "mission1.sections.intro" },
@@ -144,7 +186,7 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
     {currentPage === 1 ? <section id="m1-intro" className="course-section mission-1-paged__lesson" data-lesson-page="1">
       <div className="course-section-head"><h2><span>1</span>{t("mission1.sections.intro")}</h2></div>
       <p>{t("mission1.intro.body")}</p>
-      <PlayfulSceneBanner badge={t("mission1.intro.buildingLabel")} sentenceLabel={t("mission1.intro.sentenceLabel")} sentence={introFixture.text} blocks={["The", "uncharacteristically", "quiet", "robot", "smiled", "."]} metaphorLabel={t("mission1.intro.metaphorLabel")} note={t("mission1.intro.metaphorNote")} imageSrc="/assets/img/mission-robot-reading.png" />
+      <PlayfulSceneBannerIntro t={t} />
     </section> : currentPage === 2 ? <section id="m1-demo" className="course-section mission-1-paged__lesson" data-lesson-page="2">
       <div className="course-section-head"><h2><span>2</span>{t("mission1.sections.demo")}</h2><button type="button" className="outline tiny-top" aria-live="polite" onClick={replayExample}><RefreshCcw className={replaying ? "m1-spinner" : ""} size={16} strokeWidth={1.8} />{replaying || replayNotice ? t("mission1.demo.replaying") : t("mission1.demo.replay")}</button></div>
       <p>{t("mission1.demo.body")}</p>
