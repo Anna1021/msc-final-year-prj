@@ -1,0 +1,14 @@
+{
+  "missionLabel": "Leçon {{id}}", "missionOf": "Leçon {{mission}} sur 5", "learningPath": "Parcours", "allTitle": "Toutes les leçons",
+  "allIntro": "Suis cinq leçons pour voir comment les modèles de langage traitent le texte, relient les informations, prédisent et apprennent.\nL’ordre conseillé forme un parcours clair, mais toutes les leçons sont disponibles.",
+  "yourProgress": "Votre progrès", "missionsCompleted": "Leçons terminées", "whatLearn": "Ce que vous apprendrez", "lessonSummary": "Résumé de la leçon", "restartLesson": "Recommencer la leçon", "returnToLessons": "Retour aux leçons", "nextLesson2": "Suivant : leçon 2", "lesson1Complete": "Leçon 1 terminée. La leçon 2 est disponible.", "lesson1Incomplete": "Termine les expériences avant de finir la leçon 1.",
+  "completePrevious": "La leçon {{mission}} est conseillée d’abord.", "completeAllFirst": "Toutes les leçons sont conseillées avant le défi.", "completeAllToUnlock": "Le défi final est disponible maintenant et fonctionne mieux après les cinq leçons.",
+  "finalChallenge": "Défi final", "finalTitle": "Défi final : Escape Room du modèle de langage", "finalShort": "Escape Room du modèle de langage", "finalDesc": "Réunis tokens, nombres, contexte, connexions, prédiction et entraînement. Conseillé après les cinq leçons.",
+  "items": {
+    "1": { "title": "Comment un modèle de langage traite-t-il le texte ?", "short": "Traitement du texte", "desc": "Explore les tokens et les représentations numériques.", "skill": "Tokens et représentations numériques" },
+    "2": { "title": "Quels mots un modèle de langage peut-il voir ?", "short": "Lire le contexte", "desc": "Explore la fenêtre de contexte et le texte disponible pour le modèle.", "skill": "Lire le contexte" },
+    "3": { "title": "Comment un modèle de langage relie-t-il les mots ?", "short": "Relier les jetons", "desc": "Observe comment les jetons de la fenêtre de contexte combinent leurs informations avant la prédiction.", "skill": "Relier les jetons" },
+    "4": { "title": "Comment un modèle choisit-il la suite ?", "short": "Prédiction du prochain jeton", "desc": "Compare les jetons possibles, leurs chances et la génération jeton par jeton.", "skill": "Prédire le prochain jeton" },
+    "5": { "title": "Comment un modèle apprend-il avec des exemples ?", "short": "Entraînement", "desc": "Suis la prédiction, la correction et la répétition pour voir comment des schémas sont appris.", "skill": "Apprendre avec des exemples" }
+  }
+}

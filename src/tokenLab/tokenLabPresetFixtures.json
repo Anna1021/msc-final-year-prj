@@ -1,0 +1,282 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-01",
+  "checkpoint": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "presets": [
+    {
+      "id": "everyday",
+      "category": "everyday",
+      "language": "en",
+      "text": "Robots learn quickly!",
+      "count": 5,
+      "visualGroupCount": 5,
+      "ids": [
+        14465,
+        2412,
+        3960,
+        6157,
+        0
+      ],
+      "rawPieces": [
+        "Rob",
+        "ots",
+        "Ġlearn",
+        "Ġquickly",
+        "!"
+      ],
+      "decoded": "Robots learn quickly!"
+    },
+    {
+      "id": "long-word",
+      "category": "longWords",
+      "language": "en",
+      "text": "The uncharacteristically quiet robot smiled.",
+      "count": 8,
+      "visualGroupCount": 8,
+      "ids": [
+        785,
+        650,
+        19190,
+        37110,
+        11340,
+        12305,
+        30545,
+        13
+      ],
+      "rawPieces": [
+        "The",
+        "Ġun",
+        "character",
+        "istically",
+        "Ġquiet",
+        "Ġrobot",
+        "Ġsmiled",
+        "."
+      ],
+      "decoded": "The uncharacteristically quiet robot smiled."
+    },
+    {
+      "id": "contraction",
+      "category": "contractions",
+      "language": "en",
+      "text": "I can't believe it's tokenised!",
+      "count": 9,
+      "visualGroupCount": 9,
+      "ids": [
+        40,
+        646,
+        944,
+        4411,
+        432,
+        594,
+        3950,
+        4056,
+        0
+      ],
+      "rawPieces": [
+        "I",
+        "Ġcan",
+        "'t",
+        "Ġbelieve",
+        "Ġit",
+        "'s",
+        "Ġtoken",
+        "ised",
+        "!"
+      ],
+      "decoded": "I can't believe it's tokenised!"
+    },
+    {
+      "id": "hyphen",
+      "category": "hyphens",
+      "language": "en",
+      "text": "A well-trained robot re-checks text.",
+      "count": 9,
+      "visualGroupCount": 9,
+      "ids": [
+        32,
+        1632,
+        68924,
+        12305,
+        312,
+        15934,
+        82,
+        1467,
+        13
+      ],
+      "rawPieces": [
+        "A",
+        "Ġwell",
+        "-trained",
+        "Ġrobot",
+        "Ġre",
+        "-check",
+        "s",
+        "Ġtext",
+        "."
+      ],
+      "decoded": "A well-trained robot re-checks text."
+    },
+    {
+      "id": "punctuation",
+      "category": "punctuation",
+      "language": "en",
+      "text": "Wait... really?!",
+      "count": 4,
+      "visualGroupCount": 4,
+      "ids": [
+        14190,
+        1112,
+        2167,
+        25984
+      ],
+      "rawPieces": [
+        "Wait",
+        "...",
+        "Ġreally",
+        "?!"
+      ],
+      "decoded": "Wait... really?!"
+    },
+    {
+      "id": "emoji",
+      "category": "emoji",
+      "language": "en",
+      "text": "Spaces, emojis 🤖, and punctuation!",
+      "count": 10,
+      "visualGroupCount": 8,
+      "ids": [
+        71324,
+        11,
+        99066,
+        11162,
+        97,
+        244,
+        11,
+        323,
+        61503,
+        0
+      ],
+      "rawPieces": [
+        "Spaces",
+        ",",
+        "Ġemojis",
+        "ĠðŁ",
+        "¤",
+        "ĸ",
+        ",",
+        "Ġand",
+        "Ġpunctuation",
+        "!"
+      ],
+      "decoded": "Spaces, emojis 🤖, and punctuation!"
+    },
+    {
+      "id": "chinese",
+      "category": "chinese",
+      "language": "zh",
+      "text": "你好，AI Explorer！",
+      "count": 5,
+      "visualGroupCount": 5,
+      "ids": [
+        108386,
+        3837,
+        15469,
+        29152,
+        6313
+      ],
+      "rawPieces": [
+        "ä½łå¥½",
+        "ï¼Į",
+        "AI",
+        "ĠExplorer",
+        "ï¼ģ"
+      ],
+      "decoded": "你好，AI Explorer！"
+    },
+    {
+      "id": "french",
+      "category": "french",
+      "language": "fr",
+      "text": "L’IA découpe le texte.",
+      "count": 8,
+      "visualGroupCount": 8,
+      "ids": [
+        43,
+        527,
+        5863,
+        58048,
+        375,
+        512,
+        67967,
+        13
+      ],
+      "rawPieces": [
+        "L",
+        "âĢĻ",
+        "IA",
+        "ĠdÃ©cou",
+        "pe",
+        "Ġle",
+        "Ġtexte",
+        "."
+      ],
+      "decoded": "L’IA découpe le texte."
+    },
+    {
+      "id": "german",
+      "category": "german",
+      "language": "de",
+      "text": "Der Roboter lernt schnell.",
+      "count": 7,
+      "visualGroupCount": 7,
+      "ids": [
+        22171,
+        4892,
+        25392,
+        75020,
+        406,
+        58052,
+        13
+      ],
+      "rawPieces": [
+        "Der",
+        "ĠRob",
+        "oter",
+        "Ġler",
+        "nt",
+        "Ġschnell",
+        "."
+      ],
+      "decoded": "Der Roboter lernt schnell."
+    },
+    {
+      "id": "spacing",
+      "category": "spacing",
+      "language": "en",
+      "text": "Tokens  can change with spacing.",
+      "count": 7,
+      "visualGroupCount": 7,
+      "ids": [
+        29300,
+        220,
+        646,
+        2297,
+        448,
+        25943,
+        13
+      ],
+      "rawPieces": [
+        "Tokens",
+        "Ġ",
+        "Ġcan",
+        "Ġchange",
+        "Ġwith",
+        "Ġspacing",
+        "."
+      ],
+      "decoded": "Tokens  can change with spacing."
+    }
+  ]
+}

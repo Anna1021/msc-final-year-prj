@@ -1,0 +1,13 @@
+{
+  "terms": {
+    "token": "Token",
+    "tokenisation": "Tokenisation",
+    "nextToken": "Next-token prediction",
+    "trainingData": "Training data",
+    "hallucination": "Hallucination",
+    "context": "Context",
+    "bias": "Bias",
+    "fairness": "Fairness",
+    "generatedOutput": "Generated output"
+  }
+}

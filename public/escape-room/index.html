@@ -1,0 +1,3431 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Language Models Work — Escape Room</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #fff8ff;
+      --muted: #d8d0f4;
+      --panel: rgba(14, 10, 32, .78);
+      --line: rgba(228, 214, 255, .2);
+      --purple: #9b6cff;
+      --gold: #ffd15a;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      color: var(--ink);
+      background: #070917;
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      color: #fff;
+      background: linear-gradient(135deg, #775cff, #5037ed);
+      box-shadow: 0 12px 24px rgba(38, 20, 120, .22);
+      font-weight: 950;
+      cursor: pointer;
+    }
+
+    button:hover { filter: brightness(1.08); }
+    button:disabled {
+      opacity: .62;
+      cursor: not-allowed;
+      filter: grayscale(.35);
+      box-shadow: none;
+      color: #b9c2d8;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(230,220,255,.15);
+    }
+    button.secondary { background: rgba(255,255,255,.08); border: 1px solid var(--line); box-shadow: none; }
+    button.gold { color: #281c05; background: linear-gradient(135deg, #ffe08a, #ffbf34); }
+    button.success { color: #072917; background: linear-gradient(135deg, #7cf4b2, #25b866); }
+    button.success:disabled { color: #9ca7bf; background: rgba(255,255,255,.08); }
+    button.danger { background: linear-gradient(135deg, #ff7587, #e64058); }
+
+    .app {
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      background:
+        radial-gradient(circle at 20% 8%, rgba(155,108,255,.28), transparent 24%),
+        radial-gradient(circle at 82% 78%, rgba(255,193,63,.2), transparent 24%),
+        linear-gradient(135deg, #0a0d20, #17102d 48%, #07101f);
+    }
+
+    .topbar {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 18px;
+      border-bottom: 1px solid rgba(230,220,255,.14);
+      background: rgba(7, 9, 23, .72);
+      backdrop-filter: blur(14px);
+    }
+
+    body.embedded .topbar { display: none; }
+    body.embedded .screen {
+      min-height: calc(100vh - 16px);
+      max-width: min(2100px, calc(100vw - 12px));
+    }
+    body.embedded .room,
+    body.embedded .room-inner,
+    body.embedded .exit { min-height: calc(100vh - 16px); }
+    body.embedded .stage { padding: 8px; }
+    body.embedded .hero {
+      min-height: 270px;
+      padding: 28px 36px;
+      grid-template-columns: minmax(0, 1fr) 230px;
+    }
+    body.embedded .hero h1 { font-size: clamp(2rem, 4vw, 3.5rem); }
+    body.embedded .hero p { max-width: 640px; }
+    body.embedded .hero .robot { width: 210px; }
+    body.embedded .map-grid { margin-top: 12px; }
+    body.embedded .room-card { min-height: 156px; padding: 17px; }
+
+    .brand span {
+      display: block;
+      color: #b7a6ff;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 950;
+    }
+
+    .brand strong { font-size: 1.1rem; }
+    .top-actions { display: flex; align-items: center; justify-content: flex-end; gap: 9px; flex-wrap: wrap; }
+    .pill { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; padding: 9px 12px; color: #f5f0ff; background: rgba(255,255,255,.1); border: 1px solid rgba(230,220,255,.18); font-weight: 950; }
+
+    .stage {
+      min-height: 0;
+      position: relative;
+      overflow: auto;
+      padding: 18px;
+    }
+
+    .screen {
+      min-height: calc(100vh - 104px);
+      display: none;
+      max-width: min(1500px, calc(100vw - 36px));
+      margin: 0 auto;
+    }
+
+    .screen.active { display: block; }
+
+    .hero {
+      min-height: 360px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+      gap: 24px;
+      align-items: center;
+      padding: clamp(24px, 4vw, 52px);
+      border: 1px solid rgba(224,212,255,.18);
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 80% 24%, rgba(155,108,255,.4), transparent 26%),
+        linear-gradient(135deg, rgba(21, 14, 48, .9), rgba(10, 11, 30, .92)),
+        url('/assets/img/final-challenge/room1/room-bg.png') center / cover;
+      box-shadow: inset 0 0 120px rgba(0,0,0,.28), 0 24px 70px rgba(0,0,0,.22);
+    }
+
+    .hero h1, .room h1, .exit h1 { margin: 8px 0 12px; font-size: clamp(2.3rem, 5vw, 5rem); line-height: .95; }
+    .hero p, .room p, .exit p { color: var(--muted); font-weight: 780; line-height: 1.5; font-size: 1rem; }
+    .robot { width: min(280px, 100%); filter: drop-shadow(0 24px 40px rgba(0,0,0,.35)); animation: float 3.4s ease-in-out infinite; justify-self: center; }
+
+    .map-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .room-card {
+      min-height: 186px;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      align-content: space-between;
+      gap: 12px;
+      padding: 20px;
+      border: 1px solid color-mix(in srgb, var(--room) 42%, rgba(255,255,255,.2));
+      border-radius: 22px;
+      text-align: left;
+      color: #fff;
+      background:
+        radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--room) 36%, transparent), transparent 26%),
+        linear-gradient(135deg, rgba(13, 12, 33, .94), rgba(8, 11, 26, .92));
+      box-shadow: inset 0 0 80px rgba(0,0,0,.25), 0 18px 38px rgba(0,0,0,.16);
+    }
+
+    .room-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .16;
+      background:
+        linear-gradient(transparent 0 38px, rgba(255,255,255,.12) 39px 41px, transparent 42px),
+        linear-gradient(90deg, transparent 0 78px, rgba(255,255,255,.1) 79px 81px, transparent 82px);
+      pointer-events: none;
+    }
+
+    .room-card > * { position: relative; z-index: 1; }
+    .room-card small { color: color-mix(in srgb, var(--room) 44%, #fff); font-weight: 950; letter-spacing: .08em; text-transform: uppercase; }
+    .room-card strong { font-size: 1.5rem; text-transform: uppercase; }
+    .room-card p { margin: 0; color: #e9e3ff; font-weight: 760; }
+    .room-card footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .crystal { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 15px; color: var(--room); background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); filter: drop-shadow(0 0 16px color-mix(in srgb, var(--room) 64%, transparent)); font-size: 1.7rem; }
+    .room-card.locked { opacity: .58; }
+    .room-card.locked button { background: rgba(255,255,255,.08); color: #d8d0f4; }
+    .room-card.completed::after {
+      content: "Crystal collected";
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      z-index: 2;
+      padding: 6px 9px;
+      border-radius: 999px;
+      color: #0b2418;
+      background: #9ff3c4;
+      font-size: .72rem;
+      font-weight: 950;
+    }
+
+    .map-footer {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      padding: 15px 18px;
+      border: 1px solid rgba(226,214,255,.18);
+      border-radius: 20px;
+      background: rgba(10, 10, 28, .66);
+    }
+
+    .inventory {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-weight: 950;
+    }
+
+    .inventory span {
+      display: inline-grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      color: rgba(255,255,255,.35);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+    }
+
+    .inventory span.collected { color: var(--room); box-shadow: 0 0 18px color-mix(in srgb, var(--room) 56%, transparent); }
+
+    .room {
+      min-height: calc(100vh - 104px);
+      border: 1px solid rgba(224,212,255,.18);
+      border-radius: 28px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 78% 24%, color-mix(in srgb, var(--room) 32%, transparent), transparent 25%),
+        linear-gradient(135deg, #101328, #090b1b);
+      box-shadow: inset 0 0 120px rgba(0,0,0,.28), 0 24px 70px rgba(0,0,0,.22);
+    }
+
+    .room-bg-token {
+      background:
+        linear-gradient(90deg, rgba(4,5,15,.18), rgba(4,5,15,.06) 50%, rgba(4,5,15,.34)),
+        url('/assets/img/final-challenge/room1/room-bg.png') center / cover;
+    }
+
+    .room-bg-numbers {
+      background:
+        linear-gradient(105deg, rgba(6, 10, 30, .9), rgba(18, 25, 67, .72) 54%, rgba(9, 9, 29, .9)),
+        radial-gradient(circle at 72% 18%, rgba(91, 158, 255, .34), transparent 28%),
+        url('/assets/img/final-challenge/room1/room-bg.png') center / cover;
+    }
+
+    .room-bg-context {
+      background:
+        linear-gradient(105deg, rgba(5, 12, 29, .92), rgba(11, 38, 58, .74) 58%, rgba(8, 12, 34, .9)),
+        radial-gradient(circle at 76% 20%, rgba(56, 196, 201, .3), transparent 28%),
+        url('/assets/img/final-challenge/room1/room-bg.png') center / cover;
+    }
+
+    .room-inner {
+      min-height: calc(100vh - 104px);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 16px;
+      padding: clamp(18px, 3vw, 34px);
+      background: linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.2));
+    }
+
+    .room-head { display: flex; justify-content: space-between; gap: 16px; align-items: start; }
+    .room-head span { color: color-mix(in srgb, var(--room) 48%, #fff); font-weight: 950; text-transform: uppercase; letter-spacing: .08em; }
+    .room-head h1 { font-size: clamp(2rem, 4vw, 4.2rem); }
+    .room-objective { max-width: 620px; }
+
+    .room-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 370px);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .puzzle-board, .guide-panel {
+      border: 1px solid rgba(232,222,255,.18);
+      border-radius: 22px;
+      padding: 18px;
+      background: rgba(8, 9, 25, .68);
+      box-shadow: inset 0 0 50px rgba(0,0,0,.18);
+    }
+
+    .puzzle-board { display: grid; align-content: start; gap: 14px; }
+    .guide-panel { display: grid; align-content: start; gap: 12px; }
+    .guide-panel img { width: 104px; justify-self: center; filter: drop-shadow(0 18px 24px rgba(0,0,0,.3)); animation: float 3.4s ease-in-out infinite; }
+    .guide-panel h2 { margin: 0; }
+    .guide-panel p { margin: 0; }
+
+    .step-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .step-pill {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+      min-height: 48px;
+      padding: 8px 10px;
+      border-radius: 14px;
+      color: rgba(255,255,255,.66);
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(230,220,255,.13);
+      font-weight: 900;
+    }
+
+    .step-pill span:first-child {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      color: #fff;
+      background: rgba(255,255,255,.12);
+      font-size: .82rem;
+    }
+
+    .step-pill.current {
+      color: #fff;
+      border-color: color-mix(in srgb, var(--room) 58%, rgba(255,255,255,.2));
+      background: color-mix(in srgb, var(--room) 22%, rgba(255,255,255,.08));
+    }
+
+    .step-pill.done {
+      color: #d9ffe9;
+      border-color: rgba(124,244,178,.3);
+      background: rgba(32,155,93,.16);
+    }
+
+    .step-pill.done span:first-child {
+      color: #072917;
+      background: #7cf4b2;
+    }
+
+    .clue {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border-radius: 999px;
+      color: #fff;
+      background: color-mix(in srgb, var(--room) 28%, rgba(255,255,255,.08));
+      border: 1px solid color-mix(in srgb, var(--room) 40%, rgba(255,255,255,.18));
+      font-weight: 950;
+    }
+
+    .door-zone {
+      min-height: 230px;
+      display: grid;
+      place-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+
+    .tokeniser-device {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr);
+      gap: 16px;
+      align-items: center;
+      margin: 14px 0;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(0,0,0,.3);
+      border: 1px solid rgba(180,210,255,.22);
+    }
+
+    .tokeniser-device img { width: 110px; }
+    .output-tokens, .slot-row, .choice-grid, .chip-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .token {
+      min-width: 72px;
+      min-height: 46px;
+      display: grid;
+      place-items: center;
+      padding: 8px 12px;
+      border-radius: 15px;
+      color: #32200e;
+      background: #dec68e;
+      border: 2px solid rgba(95,59,24,.22);
+      font-weight: 950;
+      font-size: 1.12rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,.18);
+    }
+
+    .token.selected { outline: 4px solid #ffe56a; transform: translateY(-4px); }
+    .token.example-token { min-width: 62px; background: #eadcff; color: #241747; }
+    .token.used { opacity: .45; }
+    .token[draggable="true"] { cursor: grab; }
+    .token[draggable="true"]:active { cursor: grabbing; }
+    .slot[draggable="true"] { cursor: grab; }
+    .slot[draggable="true"]:active { cursor: grabbing; }
+    .token.dragging {
+      opacity: .72;
+      transform: translateY(-6px) scale(1.03);
+      outline: 4px solid rgba(255,229,106,.75);
+    }
+    .slot.dragging {
+      opacity: .72;
+      transform: translateY(-5px) scale(1.03);
+      border-color: #ffe56a;
+      box-shadow: 0 0 0 5px rgba(255,229,106,.12), 0 0 24px rgba(255,229,106,.22);
+    }
+    .slot {
+      width: 76px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      color: #fff;
+      background: rgba(0,0,0,.24);
+      border: 2px dashed rgba(230,220,255,.32);
+      font-weight: 950;
+    }
+    .slot.filled { border-style: solid; border-color: color-mix(in srgb, var(--room) 55%, #fff); background: rgba(255,255,255,.14); }
+    .slot.drag-over {
+      border-style: solid;
+      border-color: #ffe56a;
+      background: rgba(255,229,106,.16);
+      box-shadow: 0 0 0 5px rgba(255,229,106,.12), 0 0 24px rgba(255,229,106,.22);
+    }
+    .slot.error { border-color: #ff7083; animation: shake .25s ease; }
+
+    .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .choice-grid button, .chip-grid button {
+      min-height: 54px;
+      color: #f8f4ff;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(230,220,255,.18);
+      box-shadow: none;
+      text-align: left;
+    }
+    .choice-grid button.selected, .chip-grid button.selected {
+      border-color: color-mix(in srgb, var(--room) 62%, #fff);
+      background: color-mix(in srgb, var(--room) 24%, rgba(255,255,255,.1));
+    }
+
+    .room-bg-token .door-zone { align-content: start; }
+    .token-split-challenge {
+      width: min(820px, 100%);
+      display: grid;
+      gap: 13px;
+      margin-top: 6px;
+      border: 1px solid rgba(215, 201, 255, .25);
+      border-radius: 20px;
+      padding: 18px;
+      color: #f8f6ff;
+      background: rgba(11, 10, 34, .48);
+      box-shadow: inset 0 0 28px rgba(155, 108, 255, .1);
+      text-align: left;
+    }
+    .token-question-badge {
+      width: fit-content;
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: #241747;
+      background: #eadcff;
+      font-size: .78rem;
+      font-weight: 950;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .token-split-challenge h2, .token-split-challenge p { margin: 0; }
+    .token-target-sentence {
+      border-radius: 14px;
+      padding: 13px 15px;
+      color: #282044;
+      background: rgba(255,255,255,.94);
+      font-size: 1.2rem;
+      font-weight: 850;
+    }
+    .token-target-sentence mark {
+      border-radius: 7px;
+      padding: 2px 5px;
+      color: #3e2386;
+      background: #e9dcff;
+      box-shadow: 0 3px 0 #aa86ef;
+    }
+    .token-split-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .token-split-option {
+      min-height: 90px;
+      display: grid;
+      align-content: center;
+      gap: 9px;
+      border: 1px solid rgba(225, 215, 255, .28);
+      border-bottom: 5px solid rgba(157, 126, 225, .48);
+      border-radius: 16px;
+      padding: 12px;
+      color: #f9f7ff;
+      background: rgba(255,255,255,.08);
+      text-align: left;
+    }
+    .token-split-option small { color: #cdc3e9; font-weight: 900; }
+    .token-split-option > span { display: flex; flex-wrap: wrap; gap: 5px; }
+    .token-split-option b, .token-comparison span {
+      border-radius: 9px;
+      padding: 6px 8px;
+      color: #2a1b50;
+      background: #eee4ff;
+      box-shadow: 0 3px 0 #a986e8;
+    }
+    .token-split-option:hover { border-color: #cbb6ff; background: rgba(155,108,255,.17); }
+    .token-split-option.selected {
+      border-color: #ffe56a;
+      border-bottom-color: #cda72d;
+      background: rgba(255,229,106,.13);
+      box-shadow: 0 0 0 3px rgba(255,229,106,.12);
+    }
+    .token-split-option:focus-visible { outline: 3px solid #ffe76d; outline-offset: 3px; }
+    .token-comparison {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      border-radius: 16px;
+      padding: 13px;
+      color: #2a2442;
+      background: rgba(255,255,255,.94);
+    }
+    .token-comparison > div { display: grid; gap: 7px; }
+    .token-comparison small { color: #635879; font-weight: 950; text-transform: uppercase; letter-spacing: .04em; }
+    .token-comparison div > div { display: flex; flex-wrap: wrap; gap: 5px; }
+    .token-comparison em { color: #665d78; font-size: .78rem; font-style: normal; font-weight: 800; }
+    .token-comparison > b { color: #6f55cb; }
+    .token-hint { border-left: 4px solid #ffe56a; border-radius: 10px; padding: 9px 11px; background: rgba(255,229,106,.1); }
+    .token-room-actions { display: flex; flex-wrap: wrap; gap: 9px; }
+    .token-lock-accepts { margin: 0; color: #d7ffe8; font-weight: 950; }
+    .token-success-chain {
+      display: grid;
+      grid-template-columns: minmax(110px,1fr) auto minmax(110px,1fr) auto minmax(190px,1.4fr);
+      align-items: center;
+      gap: 10px;
+      width: min(760px, 100%);
+    }
+    .token-success-chain > span { display: grid; gap: 5px; border-radius: 14px; padding: 11px; background: rgba(255,255,255,.1); }
+    .token-success-chain small { color: #d5cced; font-weight: 900; text-transform: uppercase; }
+    .token-success-chain i { color: #c3adff; font-size: 1.3rem; font-style: normal; font-weight: 950; }
+
+    .numbers-room-body {
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+      align-items: start;
+    }
+    .room-bg-numbers .numbers-puzzle-intro {
+      border-color: rgba(184, 167, 255, .32);
+      background: linear-gradient(145deg, rgba(12, 15, 43, .9), rgba(16, 28, 65, .78));
+      box-shadow: inset 0 0 56px rgba(105, 87, 230, .11), 0 18px 44px rgba(0, 0, 0, .24);
+    }
+    .room-bg-numbers .guide-panel {
+      min-height: 0;
+      grid-template-columns: 76px minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      column-gap: 14px;
+      row-gap: 6px;
+      align-items: center;
+      align-self: start;
+      border-color: rgba(194, 179, 255, .3);
+      padding: 16px;
+      background: linear-gradient(145deg, rgba(18, 15, 50, .94), rgba(11, 18, 43, .9));
+      box-shadow: inset 0 0 30px rgba(138, 106, 255, .09), 0 14px 34px rgba(0,0,0,.22);
+    }
+    .room-bg-numbers .guide-panel img {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      width: 72px;
+    }
+    .room-bg-numbers .guide-panel h2,
+    .room-bg-numbers .guide-panel p { grid-column: 2; }
+    .room-bg-numbers .guide-panel h2 { font-size: 1.15rem; }
+    .room-bg-numbers .guide-panel p { color: #ded8f5; font-size: .9rem; line-height: 1.42; }
+    .numbers-workspace {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 15px;
+      border: 1px solid rgba(184, 167, 255, .25);
+      border-radius: 22px;
+      padding: 18px;
+      background: linear-gradient(155deg, rgba(8, 12, 35, .9), rgba(13, 23, 56, .82));
+      box-shadow: inset 0 0 54px rgba(77, 118, 224, .08), 0 18px 44px rgba(0,0,0,.2);
+    }
+    .numbers-intro { margin: 0; max-width: 820px; color: #d9e7ff; }
+    .numbers-lookup-chain {
+      display: grid;
+      grid-template-columns: minmax(130px, .75fr) auto minmax(160px, .9fr) auto minmax(210px, 1.3fr);
+      gap: 11px;
+      align-items: center;
+      border: 1px solid rgba(181, 166, 255, .36);
+      border-radius: 20px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(98, 77, 220, .22), rgba(67, 151, 236, .18));
+      box-shadow: inset 0 0 30px rgba(142, 118, 255, .08);
+    }
+    .numbers-lookup-node {
+      min-height: 92px;
+      display: grid;
+      align-content: center;
+      gap: 7px;
+      border: 1px solid rgba(221, 234, 255, .3);
+      border-bottom: 5px solid rgba(86, 151, 231, .62);
+      border-radius: 17px;
+      padding: 13px 15px;
+      color: #162342;
+      background: #f7faff;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, .2);
+    }
+    .numbers-lookup-node small { color: #52678c; font-weight: 950; text-transform: uppercase; letter-spacing: .05em; }
+    .numbers-lookup-node strong { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+    .numbers-lookup-node.id { color: #fff; border-color: rgba(213, 201, 255, .58); border-bottom-color: #5338bd; background: linear-gradient(145deg, #8068f2, #4f73dc); }
+    .numbers-lookup-node.id small { color: #eaf4ff; }
+    .numbers-lookup-node.destination { color: #dbe9ff; border-style: dashed; border-bottom-width: 1px; background: rgba(255,255,255,.08); box-shadow: none; }
+    .numbers-chain-arrow { color: #c2afff; font-size: 1.5rem; font-weight: 950; text-align: center; }
+    .numbers-drawer-lab {
+      display: grid;
+      gap: 13px;
+      border: 1px solid rgba(204, 192, 255, .26);
+      border-radius: 20px;
+      padding: 17px;
+      background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(114,91,203,.07));
+    }
+    .numbers-drawer-lab h3, .numbers-concept-check h3 { margin: 0; }
+    .numbers-drawers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .numbers-drawer {
+      min-height: 100px;
+      display: grid;
+      place-items: center;
+      gap: 7px;
+      border: 1px solid rgba(211, 228, 255, .3);
+      border-bottom: 6px solid rgba(92, 94, 185, .76);
+      border-radius: 17px;
+      padding: 13px;
+      color: #172546;
+      background: linear-gradient(180deg, #fbfaff, #e5e3ff);
+      box-shadow: 0 11px 22px rgba(0,0,0,.24), inset 0 1px 0 #fff;
+      text-align: center;
+    }
+    .numbers-drawer small { color: #5c6f92; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; }
+    .numbers-drawer strong { font-size: 1.55rem; }
+    .numbers-drawer:hover { transform: translateY(-2px); border-color: #bcaaff; box-shadow: 0 14px 28px rgba(0,0,0,.28), 0 0 0 3px rgba(163,135,255,.1); }
+    .numbers-drawer:focus-visible, .numbers-concept-option:focus-visible, .numbers-short-choice:focus-visible { outline: 3px solid #ffe56a; outline-offset: 3px; }
+    .numbers-drawer.wrong { color: #5b1725; border-color: #ff879a; border-bottom-color: #b93651; background: #ffe8ed; animation: shake .25s ease; }
+    .numbers-drawer.correct { color: #123a28; border-color: #7cf4b2; border-bottom-color: #289365; background: linear-gradient(180deg, #effff6, #d7fbe7); }
+    .numbers-row-reveal {
+      display: grid;
+      gap: 12px;
+      border: 1px solid rgba(124,244,178,.34);
+      border-radius: 20px;
+      padding: 17px;
+      color: #eafff2;
+      background: linear-gradient(135deg, rgba(31, 123, 93, .2), rgba(51, 98, 151, .14));
+      box-shadow: inset 0 0 30px rgba(124,244,178,.06);
+      animation: softReveal .28s ease both;
+    }
+    .numbers-row-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 9px; align-items: center; }
+    .numbers-row-header span { border-radius: 999px; padding: 6px 10px; color: #123622; background: #9ff7c5; font-weight: 950; }
+    .numbers-values { display: flex; flex-wrap: wrap; gap: 9px; }
+    .numbers-values b { min-width: 66px; border-radius: 13px; padding: 11px; color: #18233e; background: #f8fbff; box-shadow: 0 5px 0 rgba(82, 126, 193, .55); text-align: center; }
+    .numbers-row-explanation { margin: 0; color: #e2ecff; font-weight: 850; }
+    .numbers-accuracy-note { margin: 0; border-left: 4px solid #ffe56a; border-radius: 9px; padding: 9px 11px; color: #fff5bf; background: rgba(255,229,106,.09); font-size: .88rem; font-weight: 850; }
+    .numbers-concept-check { display: grid; gap: 12px; border: 1px solid rgba(194, 179, 255, .28); border-radius: 20px; padding: 17px; background: linear-gradient(145deg, rgba(31, 27, 76, .72), rgba(16, 29, 65, .82)); }
+    .numbers-concept-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .numbers-concept-option { display: grid; grid-template-columns: 34px minmax(0,1fr); gap: 10px; align-items: center; min-height: 82px; border: 1px solid rgba(215,205,255,.3); border-bottom: 4px solid rgba(108,92,180,.52); border-radius: 15px; padding: 12px 13px; color: #f8f6ff; background: rgba(255,255,255,.09); text-align: left; box-shadow: 0 8px 18px rgba(0,0,0,.16); }
+    .numbers-concept-option span { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 10px; color: #16305d; background: #cfe5ff; font-weight: 950; }
+    .numbers-concept-option.selected { border-color: #ffe56a; background: rgba(255,229,106,.12); box-shadow: 0 0 0 3px rgba(255,229,106,.08); }
+    .numbers-concept-option.correct { border-color: #7cf4b2; background: rgba(32,155,93,.18); }
+    .numbers-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .numbers-status-panel { border: 1px solid rgba(151,190,244,.25); border-radius: 16px; padding: 12px 14px; color: #cbdcf6; background: rgba(255,255,255,.06); font-weight: 900; }
+    .numbers-collect { color: #132518; border-color: rgba(124,244,178,.7); background: linear-gradient(135deg, #a9ffd0, #65dfa0); box-shadow: 0 8px 0 #258458, 0 15px 30px rgba(59,220,133,.2); }
+
+    .room-bg-numbers .room-head h1 { font-size: clamp(2.15rem, 4vw, 3.7rem); }
+    .numbers-scene-wrap { display: grid; place-items: start center; }
+    .numbers-scene-card {
+      width: min(1080px, 100%);
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(208, 198, 255, .68);
+      border-radius: 26px;
+      padding: clamp(22px, 3vw, 38px);
+      color: #171b3c;
+      background:
+        radial-gradient(circle at 92% 8%, rgba(112, 91, 230, .17), transparent 27%),
+        linear-gradient(145deg, rgba(245,243,255,.93), rgba(229,239,255,.9));
+      box-shadow: 0 0 38px rgba(111, 91, 230, .14), 0 24px 58px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.72);
+      backdrop-filter: blur(14px);
+    }
+    .numbers-scene-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: linear-gradient(#886cf2, #4d9ff1, #42c7b1);
+    }
+    .numbers-scene-card h2, .numbers-scene-card h3, .numbers-scene-card p { margin: 0; }
+    .numbers-scene-card h2 { color: #171b3c; font-size: clamp(1.9rem, 3vw, 2.65rem); text-align: center; }
+    .numbers-scene-card > p { max-width: 720px; color: #53617f; text-align: center; }
+    .numbers-scene-card .clue { color: #fff; background: linear-gradient(135deg, #7657dd, #4a8de0); }
+    .numbers-scene-progress { position: absolute; top: 18px; right: 20px; display: flex; align-items: center; gap: 7px; color: #63708e; font-size: .8rem; }
+    .numbers-scene-progress b { margin-right: 3px; }
+    .numbers-scene-progress span { width: 9px; height: 9px; border-radius: 999px; background: #d9deeb; }
+    .numbers-scene-progress span.active { background: #735be0; box-shadow: 0 0 0 3px rgba(115,91,224,.12); }
+    .numbers-simple-path { display: grid; justify-items: center; gap: 9px; min-width: min(360px, 100%); }
+    .numbers-simple-path > span, .numbers-down-arrow { color: #6679b5; font-size: 1.45rem; font-weight: 950; }
+    .numbers-object { min-width: 210px; display: grid; justify-items: center; gap: 5px; border-radius: 18px; padding: 14px 22px; box-shadow: 0 8px 0 rgba(59,49,139,.25), 0 15px 28px rgba(56,53,116,.16); }
+    .numbers-object small { font-weight: 950; letter-spacing: .06em; text-transform: uppercase; }
+    .numbers-object strong { font-size: 1.65rem; }
+    .token-object { color: #382570; border: 1px solid #cbbcff; background: #eee9ff; }
+    .id-object { color: #12376c; border: 1px solid #9bc9ff; background: #ddecff; box-shadow: 0 8px 0 #5d98d7, 0 15px 28px rgba(51,119,191,.18); }
+    .numbers-id-with-guide { position: relative; }
+    .numbers-path-robot { position: absolute; width: 66px; right: -82px; bottom: -4px; filter: drop-shadow(0 10px 14px rgba(48,42,98,.2)); }
+    .numbers-find-scene > h3 { color: #5c3cae; font-size: 1.08rem; text-transform: uppercase; letter-spacing: .06em; }
+    .numbers-drawers-scene { width: 100%; }
+    .numbers-drawers-scene .numbers-drawer {
+      min-height: 124px;
+      color: #5e4317;
+      border: 1px solid #eacb84;
+      border-bottom: 7px solid #bd8428;
+      background: linear-gradient(180deg, #fffaf0, #ffe8b4);
+      box-shadow: 0 13px 26px rgba(96,61,18,.18), inset 0 1px 0 #fff;
+    }
+    .numbers-drawers-scene .numbers-drawer:hover { border-color: #d7a744; box-shadow: 0 16px 30px rgba(96,61,18,.22), 0 0 0 4px rgba(235,180,64,.12); }
+    .numbers-drawers-scene .numbers-drawer.wrong { color: #722234; border-color: #f08ca0; border-bottom-color: #bd4059; background: #ffe7ec; }
+    .numbers-lucide { width: 28px; height: 28px; }
+    .numbers-robot-nudge { width: min(620px, 100%); display: grid; grid-template-columns: 62px minmax(0,1fr); gap: 12px; align-items: center; border: 1px solid #edc36b; border-radius: 18px; padding: 11px 15px; color: #61470e; background: #fff6d9; }
+    .numbers-robot-nudge img { width: 58px; }
+    .numbers-robot-nudge p { color: #61470e; text-align: left; }
+    .numbers-reveal-layout { width: 100%; display: grid; grid-template-columns: minmax(0,1.25fr) minmax(250px,.75fr); gap: 24px; align-items: center; }
+    .numbers-complete-path { display: grid; justify-items: center; gap: 8px; }
+    .numbers-open-drawer { width: min(620px, 100%); display: grid; gap: 14px; border: 1px solid #73d5c4; border-bottom: 7px solid #249a87; border-radius: 20px; padding: 18px; color: #123f3a; background: linear-gradient(145deg, #e8fff9, #c9f5eb); box-shadow: 0 15px 30px rgba(32,139,120,.18); }
+    .numbers-reveal-scene .numbers-open-drawer { animation: drawerOpen .34s ease both; }
+    .numbers-open-drawer > div:first-child { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .numbers-open-drawer small { font-weight: 950; text-transform: uppercase; letter-spacing: .06em; }
+    .numbers-open-drawer strong { font-size: 1.55rem; }
+    .numbers-open-drawer .numbers-values b { color: #17433c; background: #fff; box-shadow: 0 5px 0 #5ebaaa; }
+    .numbers-robot-bubble { position: relative; display: grid; justify-items: center; gap: 9px; }
+    .numbers-robot-bubble img { width: 110px; filter: drop-shadow(0 14px 20px rgba(46,38,96,.24)); }
+    .numbers-robot-bubble p { position: relative; border: 1px solid #d9cef9; border-radius: 18px; padding: 14px 16px; color: #43346e; background: #f5f0ff; text-align: left; box-shadow: 0 10px 22px rgba(68,51,127,.12); }
+    .numbers-row-use { color: #234e4b !important; font-weight: 900; }
+    .numbers-tiny-accuracy { border-radius: 999px; padding: 7px 12px; color: #6b7185 !important; background: #edf0f6; font-size: .78rem !important; font-weight: 800; }
+    .numbers-continue { min-width: 170px; }
+    .numbers-check-scene { min-height: 470px; align-content: center; }
+    .numbers-short-choices { width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 13px; }
+    .numbers-short-choice { min-height: 116px; display: grid; justify-items: center; align-content: center; gap: 11px; border: 1px solid #d9d9ed; border-bottom: 6px solid #aaa9cf; border-radius: 18px; color: #2a3051; background: #fff; box-shadow: 0 12px 24px rgba(45,48,91,.12); text-align: center; }
+    .numbers-short-choice:hover { transform: translateY(-2px); border-color: #aa98ef; box-shadow: 0 16px 28px rgba(60,47,117,.16); }
+    .numbers-short-choice.selected { color: #45298a; border-color: #9075ed; border-bottom-color: #5d42bf; background: #f1edff; }
+    .numbers-short-choice.correct { color: #154a35; border-color: #63d49b; border-bottom-color: #289365; background: #e5faef; }
+    .numbers-final-feedback { min-height: 44px; display: grid; place-items: center; border-radius: 14px; padding: 10px 14px; color: #64708a; background: #edf1f8; font-weight: 850; text-align: center; }
+    .numbers-final-feedback.bad { color: #8b2d3d; background: #ffe8ed; }
+    .numbers-final-feedback.good { color: #15583b; background: #e4faee; }
+    .numbers-crystal-ready { display: grid; justify-items: center; gap: 8px; border: 1px solid #91e8b7; border-radius: 20px; padding: 15px 22px; color: #17452f; background: #eafff2; box-shadow: 0 12px 26px rgba(47,160,98,.14); }
+    .numbers-crystal-ready strong { font-size: 1.2rem; }
+    .numbers-crystal-ready p { color: #35624e; }
+
+    @keyframes drawerOpen {
+      from { opacity: .4; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(8px); }
+    }
+
+    .room-bg-context .room-head h1 { font-size: clamp(2.15rem, 4vw, 3.7rem); }
+    .context-scene-wrap { display: grid; place-items: start center; }
+    .context-scene-card {
+      width: min(1180px, 100%);
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: 18px;
+      border: 1px solid rgba(133, 226, 232, .34);
+      border-radius: 26px;
+      padding: clamp(22px, 3vw, 36px);
+      background: linear-gradient(145deg, rgba(10, 23, 48, .78), rgba(13, 31, 55, .68));
+      box-shadow: 0 0 42px rgba(56,196,201,.1), 0 24px 58px rgba(0,0,0,.28), inset 0 1px 0 rgba(220,252,255,.12);
+      backdrop-filter: blur(14px);
+    }
+    .context-scene-card h2, .context-scene-card p { margin: 0; }
+    .context-scene-card h2 { color: #f7fbff; font-size: clamp(1.85rem, 3vw, 2.65rem); text-align: center; }
+    .context-scene-card > p { max-width: 760px; color: #e2edf6; text-align: center; }
+    .context-scene-card .clue { color: #082c36; border-color: rgba(190,252,255,.65); background: linear-gradient(135deg, #8ee8ec, #68cfd9); }
+    .context-scene-progress { position: absolute; top: 18px; right: 20px; display: flex; align-items: center; gap: 7px; color: #d2e4ed; font-size: .8rem; }
+    .context-scene-progress b { margin-right: 3px; }
+    .context-scene-progress span { width: 9px; height: 9px; border-radius: 999px; background: rgba(216,239,244,.24); }
+    .context-scene-progress span.active { background: #72dbe0; box-shadow: 0 0 0 3px rgba(114,219,224,.13); }
+    .context-reading-stage {
+      width: 100%;
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(230px, .72fr) 58px minmax(410px, 1.28fr);
+      gap: 0;
+      align-items: stretch;
+      border: 1px solid rgba(139, 220, 229, .25);
+      border-radius: 23px;
+      padding: 27px 22px 22px;
+      background: linear-gradient(135deg, rgba(5,13,32,.66), rgba(23,62,79,.42));
+      box-shadow: inset 0 0 38px rgba(45,170,178,.07);
+    }
+    .context-track { position: absolute; left: 7%; right: 7%; top: 12px; display: grid; grid-template-columns: 1fr auto; align-items: center; color: #d9a843; }
+    .context-track span { height: 3px; border-radius: 999px; background: linear-gradient(90deg, rgba(218,173,73,.25), #e3b44f 58%, #62d4dc); }
+    .context-lucide { width: 24px; height: 24px; }
+    .context-old-zone, .context-current-window { position: relative; display: grid; align-content: center; gap: 12px; min-height: 245px; }
+    .context-old-zone { padding: 28px 18px 18px; border: 1px solid rgba(162,184,207,.24); border-radius: 18px 0 0 18px; background: rgba(37,49,70,.72); }
+    .context-current-window { padding: 28px 22px 18px; border: 3px solid #64d5dc; border-radius: 20px; color: #122b49; background: linear-gradient(145deg, rgba(231,253,255,.96), rgba(198,239,246,.94)); box-shadow: 0 0 0 5px rgba(94,211,219,.1), 0 0 30px rgba(78,206,215,.18), inset 0 1px 0 #fff; }
+    .context-zone-label { position: absolute; top: 8px; left: 12px; border-radius: 999px; padding: 5px 9px; font-size: .7rem; font-weight: 950; letter-spacing: .05em; text-transform: uppercase; }
+    .context-old-zone .context-zone-label { color: #dce7f1; background: rgba(255,255,255,.1); }
+    .context-current-window .context-zone-label { color: #0b4a56; background: #b9f0f3; }
+    .context-sentence { position: relative; border-radius: 14px; padding: 13px 14px; }
+    .context-sentence small { display: block; margin-bottom: 5px; font-size: .7rem; font-weight: 950; text-transform: uppercase; letter-spacing: .05em; }
+    .context-sentence p { font-weight: 900; line-height: 1.42; }
+    .context-old-zone .context-sentence { color: #d8e2ec; border: 1px dashed rgba(194,209,224,.32); background: rgba(9,18,33,.28); }
+    .context-old-zone .context-sentence p { color: #d8e2ec; }
+    .context-current-window .context-sentence { color: #142b48; border: 1px solid rgba(38,119,137,.22); background: rgba(255,255,255,.68); }
+    .context-current-window .context-sentence p { color: #142b48; }
+    .context-sentence.linked { outline: 3px solid #8b6be9; outline-offset: 3px; }
+    .context-sentence.pulse { animation: contextPulse .5s ease; }
+    .context-boundary { position: relative; display: grid; place-items: center; }
+    .context-boundary::before { content: ""; position: absolute; inset: 0 25px; width: 4px; border-radius: 999px; background: linear-gradient(#f0bd55, #67d7dc); box-shadow: 0 0 18px rgba(103,215,220,.34); }
+    .context-boundary span { position: relative; z-index: 1; transform: rotate(-90deg); white-space: nowrap; border-radius: 999px; padding: 5px 9px; color: #3c2b08; background: #f5c862; font-size: .68rem; font-weight: 950; text-transform: uppercase; }
+    .context-incoming { justify-self: end; color: #236777; font-size: .78rem; font-weight: 900; }
+    .context-guide-robot { position: absolute; width: 78px; right: -10px; bottom: -20px; filter: drop-shadow(0 12px 18px rgba(0,0,0,.28)); }
+    .context-clue-chips { width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 11px; }
+    .context-clue-chip { min-height: 58px; display: grid; grid-template-columns: 28px auto; gap: 9px; align-items: center; border: 1px solid rgba(188,207,232,.42); border-bottom: 5px solid rgba(92,112,148,.7); border-radius: 16px; padding: 11px 16px; color: #172c4a; background: linear-gradient(180deg, #f9fbff, #dae8f4); box-shadow: 0 10px 20px rgba(0,0,0,.2); }
+    .context-clue-chip:hover { transform: translateY(-2px); border-color: #b9a7ff; }
+    .context-clue-chip.selected { border-color: #aa91f0; border-bottom-color: #694db9; background: #eee8ff; }
+    .context-clue-chip:focus-visible { outline: 3px solid #ffe56a; outline-offset: 3px; }
+    .context-task-hint { color: #d9e7ef !important; font-size: .85rem !important; }
+    .context-robot-feedback { width: min(650px, 100%); display: grid; grid-template-columns: 62px minmax(0,1fr); gap: 12px; align-items: center; border: 1px solid rgba(244,194,91,.58); border-radius: 17px; padding: 10px 14px; color: #332708; background: #fff2c9; }
+    .context-robot-feedback img { width: 58px; }
+    .context-robot-feedback p { color: #4b390d; text-align: left; }
+    .context-reading-stage.shifted .newly-outside { animation: contextFadeLeft .7s ease both; }
+    .context-reading-stage.shifted .incoming { animation: contextSlideIn .7s ease both; }
+    .context-takeaway { width: min(830px,100%); display: grid; gap: 6px; border: 1px solid rgba(100,214,179,.62); border-radius: 18px; padding: 14px 17px; color: #123b31; background: #dcf8ec; text-align: center; }
+    .context-takeaway p { color: #28594c; }
+    .context-collect { color: #10372a; border-color: #75ddb0; background: linear-gradient(135deg, #a9ffd0, #65dfa0); box-shadow: 0 8px 0 #258458, 0 15px 30px rgba(59,220,133,.2); }
+
+    @keyframes contextPulse { 50% { transform: translateY(-2px); box-shadow: 0 0 0 5px rgba(139,107,233,.15); } }
+    @keyframes contextFadeLeft { from { opacity: 1; transform: translateX(20px); } to { opacity: .72; transform: translateX(-4px); } }
+    @keyframes contextSlideIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+
+    @media (max-width: 760px) {
+      .numbers-lookup-chain { grid-template-columns: 1fr; }
+      .numbers-chain-arrow { transform: rotate(90deg); }
+      .numbers-drawers { grid-template-columns: 1fr; }
+      .numbers-concept-options { grid-template-columns: 1fr; }
+      .numbers-drawer { min-height: 76px; }
+      .numbers-scene-card { padding: 54px 17px 22px; }
+      .numbers-path-robot { width: 50px; right: -52px; }
+      .numbers-reveal-layout, .numbers-short-choices { grid-template-columns: 1fr; }
+      .numbers-drawers-scene .numbers-drawer { min-height: 112px; }
+      .numbers-tiny-accuracy { border-radius: 12px; }
+      .context-scene-card { padding: 54px 16px 22px; }
+      .context-reading-stage { grid-template-columns: 1fr; gap: 14px; padding: 28px 12px 16px; }
+      .context-old-zone, .context-current-window { min-height: auto; border-radius: 17px; }
+      .context-boundary { min-height: 42px; }
+      .context-boundary::before { inset: 19px 8%; width: auto; height: 4px; }
+      .context-boundary span { transform: none; }
+      .context-guide-robot { width: 58px; right: -2px; bottom: -14px; }
+      .context-clue-chips { display: grid; grid-template-columns: 1fr; }
+      .context-clue-chip { width: 100%; }
+    }
+
+    .meter {
+      height: 18px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.15);
+    }
+    .meter span { display: block; height: 100%; width: var(--value); background: linear-gradient(90deg, var(--room), #7cf4b2); }
+
+    .scale {
+      min-height: 180px;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+    }
+    .beam {
+      width: min(520px, 90%);
+      height: 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #70a9ff, #ffa726);
+      transform: rotate(var(--tilt));
+      transition: transform .25s ease;
+      box-shadow: 0 0 22px color-mix(in srgb, var(--room) 48%, transparent);
+    }
+    input[type="range"] { width: 100%; accent-color: var(--room); }
+
+    .fairness-lab {
+      display: grid;
+      gap: 14px;
+    }
+
+    .fairness-data-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(250px, .9fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .data-window, .prediction-window, .data-cleaner {
+      border: 1px solid rgba(230,220,255,.16);
+      border-radius: 18px;
+      padding: 14px;
+      background: rgba(255,255,255,.07);
+    }
+
+    .data-window h3, .prediction-window h3, .data-cleaner h3 {
+      margin: 0 0 9px;
+      font-size: 1rem;
+    }
+
+    .people-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 8px 0 12px;
+    }
+
+    .person-dot {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #07101f;
+      font-size: 1.05rem;
+      font-weight: 950;
+      box-shadow: 0 6px 14px rgba(0,0,0,.18);
+    }
+
+    .person-dot.male { background: linear-gradient(135deg, #8fc5ff, #2f83ff); }
+    .person-dot.female { background: linear-gradient(135deg, #ffd68a, #ff9f2f); }
+
+    .bias-sample {
+      display: grid;
+      gap: 5px;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      color: #ffe2e7;
+      background: rgba(170,37,58,.22);
+      border: 1px solid rgba(255,112,131,.35);
+      font-weight: 850;
+    }
+
+    .bias-sample.removed {
+      color: #d7ffe8;
+      background: rgba(32,155,93,.18);
+      border-color: rgba(124,244,178,.34);
+      text-decoration: none;
+    }
+
+    .fairness-checklist {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .fairness-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      color: #efe9ff;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(230,220,255,.16);
+      font-weight: 900;
+    }
+
+    .fairness-check.done {
+      color: #d7ffe8;
+      border-color: rgba(124,244,178,.38);
+      background: rgba(32,155,93,.18);
+    }
+
+    .data-examples {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .data-example {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 9px;
+      align-items: center;
+      padding: 9px 10px;
+      border-radius: 13px;
+      color: #f9f5ff;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(230,220,255,.15);
+      font-weight: 850;
+    }
+
+    .data-example.warning {
+      color: #ffe2e7;
+      background: rgba(170,37,58,.2);
+      border-color: rgba(255,112,131,.34);
+    }
+
+    .data-example.cleaned {
+      color: #d7ffe8;
+      background: rgba(32,155,93,.18);
+      border-color: rgba(124,244,178,.34);
+      text-decoration: line-through;
+      opacity: .84;
+    }
+
+    .fairness-cause {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .fairness-cause span {
+      display: grid;
+      gap: 4px;
+      align-content: start;
+      min-height: 78px;
+      padding: 10px;
+      border-radius: 14px;
+      color: #f9f5ff;
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.13);
+      font-weight: 850;
+    }
+
+    .fairness-cause b { color: #fff; }
+
+    .prediction-big {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .prediction-big strong {
+      font-size: clamp(1.6rem, 4vw, 3rem);
+      color: #fff;
+      line-height: 1;
+    }
+
+    .prediction-bars {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .prediction-bar {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr) 48px;
+      gap: 8px;
+      align-items: center;
+      color: #f9f5ff;
+      font-weight: 900;
+    }
+
+    .prediction-bar span:nth-child(2) {
+      height: 14px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,.13);
+    }
+
+    .prediction-bar i {
+      display: block;
+      height: 100%;
+      width: var(--value);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--bar), #fff2b0);
+      transition: width .24s ease;
+    }
+
+    .fix-controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .remove-card {
+      width: 100%;
+      display: grid;
+      gap: 4px;
+      min-height: 72px;
+      text-align: left;
+      color: #fff;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(230,220,255,.18);
+      box-shadow: none;
+    }
+
+    .remove-card.selected {
+      color: #d7ffe8;
+      border-color: rgba(124,244,178,.45);
+      background: rgba(32,155,93,.2);
+    }
+
+    .remove-card:not(.selected)::before,
+    .remove-card.selected::before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff5770, #ffbd3d);
+      opacity: .85;
+    }
+
+    .remove-card.selected::before {
+      background: linear-gradient(90deg, #38c985, #7cf4b2);
+    }
+
+    .test-output {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border-radius: 16px;
+      color: #f8f4ff;
+      background: rgba(155,108,255,.12);
+      border: 1px solid rgba(155,108,255,.28);
+      font-weight: 850;
+    }
+
+    .test-output b { color: #fff; }
+
+    .test-output.good {
+      color: #d7ffe8;
+      background: rgba(32,155,93,.18);
+      border-color: rgba(124,244,178,.36);
+    }
+
+    .test-output.bad {
+      color: #ffd5db;
+      background: rgba(170,37,58,.22);
+      border-color: rgba(255,112,131,.36);
+    }
+
+    .room-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-top: 8px;
+      border-top: 1px solid rgba(230,220,255,.14);
+    }
+
+    .feedback {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 14px;
+      padding: 10px 12px;
+      color: #f8f4ff;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      font-weight: 850;
+    }
+    .feedback.good { color: #d7ffe8; border-color: rgba(124,244,178,.38); background: rgba(32,155,93,.22); }
+    .feedback.bad { color: #ffd5db; border-color: rgba(255,112,131,.4); background: rgba(170,37,58,.24); }
+
+    .completion {
+      display: grid;
+      place-items: center;
+      gap: 14px;
+      text-align: center;
+      padding: 26px;
+    }
+    .crystal-stage {
+      position: relative;
+      width: clamp(132px, 16vw, 190px);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+    }
+    .crystal-stage::before {
+      content: "";
+      position: absolute;
+      inset: 8%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.78), color-mix(in srgb, var(--room) 46%, transparent) 32%, transparent 70%);
+      filter: blur(5px);
+      opacity: .9;
+      animation: crystalBurst .8s ease-out both, crystalAura 2.2s ease-in-out .8s infinite;
+      z-index: -2;
+    }
+    .crystal-stage::after {
+      content: "";
+      position: absolute;
+      inset: -8%;
+      background:
+        radial-gradient(circle at 18% 28%, #fff 0 2px, transparent 3px),
+        radial-gradient(circle at 78% 20%, #fff 0 2px, transparent 3px),
+        radial-gradient(circle at 86% 68%, color-mix(in srgb, var(--room) 72%, #fff) 0 3px, transparent 4px),
+        radial-gradient(circle at 28% 78%, color-mix(in srgb, var(--room) 76%, #fff) 0 2px, transparent 3px);
+      opacity: .86;
+      animation: crystalSparkle 2.4s ease-in-out infinite;
+      z-index: -1;
+    }
+    .completion-crystal {
+      width: clamp(94px, 10vw, 136px);
+      filter:
+        brightness(1.08)
+        saturate(1.08)
+        drop-shadow(0 0 16px #fff)
+        drop-shadow(0 0 30px var(--room));
+      animation: crystalRise .78s cubic-bezier(.17,.84,.44,1) both, float 2.2s ease-in-out .8s infinite;
+    }
+    .completion .clue { animation: collectedPop .42s ease .16s both; }
+    .completion h2,
+    .completion p,
+    .completion div { animation: softReveal .46s ease .34s both; }
+
+    .exit {
+      min-height: calc(100vh - 104px);
+      display: grid;
+      gap: 18px;
+      border: 1px solid rgba(224,212,255,.18);
+      border-radius: 28px;
+      padding: clamp(20px, 3vw, 38px);
+      background:
+        radial-gradient(circle at 50% 36%, rgba(155,108,255,.34), transparent 28%),
+        radial-gradient(circle at 84% 16%, rgba(255,209,90,.22), transparent 24%),
+        linear-gradient(135deg, #14112a, #080a19);
+    }
+    body.embedded .exit {
+      min-height: calc(100vh - 16px);
+    }
+    .exit.review-mode {
+      background:
+        radial-gradient(circle at 50% 36%, rgba(124,244,178,.18), transparent 30%),
+        radial-gradient(circle at 84% 16%, rgba(255,209,90,.18), transparent 24%),
+        linear-gradient(135deg, #111927, #080a19);
+    }
+    .brain-door {
+      display: grid;
+      grid-template-columns: minmax(360px, .9fr) minmax(460px, 1.1fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+    .brain-chamber, .review-console {
+      border: 1px solid rgba(230,220,255,.18);
+      border-radius: 24px;
+      background: rgba(255,255,255,.07);
+      padding: 18px;
+      min-height: 430px;
+      min-width: 0;
+    }
+    .brain-chamber {
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .brain-core {
+      width: clamp(280px, 22vw, 410px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: clamp(3.4rem, 8vw, 6rem);
+      font-weight: 950;
+      background:
+        radial-gradient(circle, rgba(255,255,255,.22), transparent 32%),
+        radial-gradient(circle at 52% 46%, rgba(155,108,255,.62), rgba(20,14,48,.88) 62%);
+      border: 2px solid rgba(210,190,255,.35);
+      box-shadow: 0 0 55px rgba(155,108,255,.34), inset 0 0 45px rgba(255,255,255,.08);
+      transition: filter .28s ease, transform .28s ease;
+    }
+    .brain-core.ready {
+      filter: brightness(1.18) saturate(1.22);
+      transform: scale(1.02);
+      box-shadow: 0 0 80px rgba(155,108,255,.52), inset 0 0 55px rgba(255,255,255,.16);
+    }
+    .brain-core.charged {
+      box-shadow: 0 0 54px rgba(155,108,255,.42), inset 0 0 42px rgba(255,255,255,.12);
+    }
+    .brain-slot {
+      position: absolute;
+      width: 74px;
+      height: 74px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      border: 1px dashed rgba(232,223,255,.42);
+      background: rgba(8,8,24,.46);
+      box-shadow: inset 0 0 22px rgba(0,0,0,.28);
+    }
+    .brain-slot.filled {
+      border-style: solid;
+      border-color: color-mix(in srgb, var(--room) 78%, white);
+      background:
+        radial-gradient(circle, color-mix(in srgb, var(--room) 30%, transparent), transparent 68%),
+        rgba(18,14,42,.76);
+      box-shadow:
+        0 0 22px color-mix(in srgb, var(--room) 36%, transparent),
+        inset 0 0 22px rgba(255,255,255,.08);
+    }
+    .brain-slot span {
+      color: rgba(232,223,255,.72);
+      font-weight: 950;
+    }
+    .brain-slot img { width: 58px; height: 58px; object-fit: contain; animation: float 2.4s ease-in-out infinite; }
+    .brain-slot:nth-child(2) { top: 22px; left: 50%; transform: translateX(-50%); }
+    .brain-slot:nth-child(3) { top: 120px; right: 34px; }
+    .brain-slot:nth-child(4) { bottom: 72px; right: 72px; }
+    .brain-slot:nth-child(5) { bottom: 72px; left: 72px; }
+    .brain-slot:nth-child(6) { top: 120px; left: 34px; }
+    .brain-slot:nth-child(7) { bottom: 22px; left: 50%; transform: translateX(-50%); }
+    .crystal-tray {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .crystal-token {
+      min-width: 118px;
+      min-height: 74px;
+      padding: 8px 10px;
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 8px;
+      align-items: center;
+      text-align: left;
+      color: #fff;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(230,220,255,.2);
+      box-shadow: none;
+    }
+    .crystal-token img { width: 38px; height: 38px; object-fit: contain; }
+    .crystal-token.placed {
+      border-color: var(--room);
+      background: color-mix(in srgb, var(--room) 24%, rgba(255,255,255,.08));
+      transform: translateY(-2px);
+    }
+    .brain-chain {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .brain-chain div {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid rgba(230,220,255,.16);
+      border-radius: 16px;
+      padding: 10px 12px;
+      color: #f5f0ff;
+      background: rgba(255,255,255,.07);
+      font-weight: 880;
+    }
+    .brain-chain span {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #160f2f;
+      background: #7cf4b2;
+      font-weight: 950;
+    }
+    .exit-steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .exit-steps span {
+      border: 1px solid rgba(230,220,255,.2);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: rgba(245,240,255,.78);
+      background: rgba(255,255,255,.07);
+      font-weight: 900;
+      font-size: .9rem;
+    }
+    .exit-steps span.done {
+      color: #15331f;
+      border-color: rgba(124,244,178,.6);
+      background: #7cf4b2;
+    }
+    .exit-steps span.active {
+      color: #fff;
+      border-color: rgba(155,108,255,.8);
+      background: rgba(155,108,255,.28);
+      box-shadow: 0 0 24px rgba(155,108,255,.18);
+    }
+    .brain-status {
+      position: absolute;
+      inset: auto 20px 26px;
+      text-align: center;
+      color: rgba(245,240,255,.86);
+      font-weight: 950;
+    }
+    .brain-puzzle {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(260px, .92fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .sequence-board {
+      border: 1px solid rgba(230,220,255,.18);
+      border-radius: 20px;
+      padding: 14px;
+      background: rgba(255,255,255,.06);
+    }
+    .sequence-board.drop-ready {
+      border-color: rgba(255,229,106,.68);
+      background: rgba(255,229,106,.08);
+      box-shadow: 0 0 0 4px rgba(255,229,106,.08);
+    }
+    .sequence-board h3 { margin-bottom: 4px; }
+    .sequence-board p {
+      color: rgba(232,223,255,.76);
+      font-weight: 780;
+      margin-bottom: 10px;
+    }
+    .sequence-slots, .sequence-tray {
+      display: grid;
+      gap: 8px;
+    }
+    .sequence-slots {
+      padding: 8px;
+      border-radius: 16px;
+      background: rgba(7,6,22,.18);
+    }
+    .sequence-slot, .sequence-piece {
+      width: 100%;
+      min-height: 46px;
+      border-radius: 14px;
+      padding: 8px 10px;
+      border: 1px dashed rgba(230,220,255,.28);
+      background: rgba(12,10,32,.54);
+      color: rgba(245,240,255,.82);
+      font-weight: 900;
+      box-shadow: none;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      align-items: center;
+      gap: 8px;
+    }
+    .sequence-slot.filled {
+      border-style: solid;
+      border-color: rgba(124,244,178,.6);
+      background: rgba(124,244,178,.12);
+      color: #fff;
+    }
+    .sequence-slot small, .sequence-piece small {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(155,108,255,.24);
+      color: #fff;
+      font-weight: 950;
+    }
+    .sequence-piece {
+      border-style: solid;
+      border-color: rgba(155,108,255,.42);
+      background: rgba(155,108,255,.18);
+      cursor: pointer;
+    }
+    .sequence-piece:hover, .sequence-slot.filled:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.54);
+    }
+    .sequence-piece:not(:disabled),
+    .sequence-slot.filled:not(:disabled) {
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-user-drag: element;
+    }
+    .sequence-piece:not(:disabled):active,
+    .sequence-slot.filled:not(:disabled):active {
+      cursor: grabbing;
+    }
+    .sequence-piece.dragging, .sequence-slot.dragging {
+      opacity: .74;
+      transform: translateY(-4px) scale(1.02);
+      border-color: rgba(255,229,106,.82);
+      box-shadow: 0 0 0 4px rgba(255,229,106,.12);
+    }
+    .sequence-drag-ghost {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 9999;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      min-width: 160px;
+      max-width: 280px;
+      padding: 12px 16px;
+      border: 2px solid rgba(255,229,106,.88);
+      border-radius: 16px;
+      background: rgba(37,28,75,.96);
+      color: #fff;
+      font-weight: 950;
+      text-align: center;
+      box-shadow: 0 16px 38px rgba(0,0,0,.38), 0 0 28px rgba(255,229,106,.18);
+    }
+    .sequence-slot.drop-ready {
+      border-style: solid;
+      border-color: #ffe56a;
+      background: rgba(255,229,106,.13);
+      box-shadow: 0 0 0 4px rgba(255,229,106,.09), 0 0 22px rgba(255,229,106,.16);
+    }
+    .sequence-slot.drop-error {
+      border-style: solid;
+      border-color: rgba(255,90,118,.8);
+      background: rgba(255,90,118,.16);
+    }
+    .sequence-piece:disabled {
+      opacity: .42;
+      cursor: default;
+    }
+    .exit-guide {
+      margin: 14px 0 0;
+      padding: 12px 14px;
+      border: 1px solid rgba(124,244,178,.28);
+      border-radius: 16px;
+      color: #eafff2;
+      background: rgba(124,244,178,.12);
+      font-weight: 900;
+      line-height: 1.35;
+    }
+    .exit-guide.complete {
+      color: #15331f;
+      background: #7cf4b2;
+      border-color: rgba(124,244,178,.7);
+    }
+    .exit-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 14px;
+    }
+    .exit-actions .gold {
+      color: #271a02;
+      background: linear-gradient(135deg, #ffe07a, #ffbd38);
+      border-color: rgba(255,224,122,.7);
+    }
+    .exit-actions .ghost-reset {
+      color: #fff;
+      border-color: rgba(255,255,255,.28);
+      background: rgba(255,255,255,.08);
+    }
+    @media (max-width: 900px) {
+      .brain-puzzle { grid-template-columns: 1fr; }
+    }
+    @media (min-width: 1500px) {
+      .screen {
+        max-width: min(1880px, calc(100vw - 44px));
+      }
+      body.embedded .stage {
+        padding: 10px;
+      }
+      body.embedded .screen {
+        max-width: min(2140px, calc(100vw - 16px));
+      }
+      .exit {
+        padding: clamp(24px, 2vw, 46px);
+        gap: 22px;
+      }
+      .brain-door {
+        grid-template-columns: minmax(620px, 1fr) minmax(740px, 1.15fr);
+        gap: 26px;
+      }
+      .brain-chamber,
+      .review-console {
+        min-height: 560px;
+        padding: 24px;
+      }
+      .crystal-token {
+        min-width: 146px;
+      }
+    }
+    @media (min-width: 1800px) {
+      .brain-door {
+        grid-template-columns: minmax(740px, 1.05fr) minmax(880px, 1.2fr);
+      }
+      .brain-core {
+        width: clamp(380px, 24vw, 520px);
+      }
+      .brain-slot {
+        width: 86px;
+        height: 86px;
+      }
+      .brain-slot img {
+        width: 68px;
+        height: 68px;
+      }
+    }
+
+    .debug-banner { position: fixed; left: 16px; top: 16px; z-index: 30; padding: 8px 12px; border-radius: 999px; color: #241747; background: #ffe58f; font-weight: 950; box-shadow: 0 10px 24px rgba(0,0,0,.25); }
+    .debug-toggle { position: fixed; right: 16px; bottom: 16px; z-index: 40; }
+    .debug-console { position: fixed; right: 16px; bottom: 66px; z-index: 39; width: min(360px, calc(100vw - 32px)); max-height: 220px; overflow-y: auto; border: 1px solid rgba(220,206,255,.25); border-radius: 16px; padding: 12px; background: rgba(10, 8, 28, .9); box-shadow: 0 18px 45px rgba(0,0,0,.3); display: none; }
+    .debug-console.open { display: block; }
+    .debug-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .debug-controls button { padding: 9px 10px; font-size: .78rem; }
+    .log { white-space: pre-wrap; color: #dcd4ff; font-weight: 700; font-size: .78rem; line-height: 1.4; text-align: left; }
+
+    .journey-strip, .training-demo { display:grid; grid-template-columns:minmax(140px,1fr) auto minmax(140px,1fr) auto minmax(210px,1.35fr); gap:12px; align-items:center; margin:18px 0; }
+    .journey-strip button, .training-demo>div { display:grid; gap:7px; min-height:108px; align-content:center; border:1px solid rgba(114,91,203,.3); border-bottom:5px solid rgba(78,61,156,.55); border-radius:18px; padding:16px; color:#201846; background:rgba(255,255,255,.9); text-align:center; }
+    .journey-strip button.selected { color:#fff; background:linear-gradient(135deg,#7256d8,#458ed9); }
+    .journey-strip small, .training-demo small { font-weight:900; text-transform:uppercase; letter-spacing:.05em; opacity:.72; }
+    .journey-strip strong, .training-demo strong { font-size:clamp(1rem,2vw,1.35rem); }
+    .journey-strip>span, .training-demo>span { color:var(--room); font-size:1.7rem; font-weight:950; }
+    .simulation-note { border-radius:14px; padding:12px 14px; color:#45516d; background:rgba(255,255,255,.72); }
+    .context-story { display:grid; gap:10px; margin:18px 0; }
+    .context-story p { margin:0; }
+    .context-story .outside { border:2px dashed #aeb7c8; border-radius:16px; padding:14px 18px; color:#78849b; background:rgba(238,241,247,.74); opacity:.67; }
+    .context-story .inside { border:3px solid var(--room); border-radius:18px; padding:15px 18px; background:rgba(232,252,249,.86); box-shadow:0 8px 0 rgba(39,145,150,.2); }
+    .context-story small { display:block; margin-bottom:7px; font-weight:950; text-transform:uppercase; letter-spacing:.05em; }
+    .training-demo { grid-template-columns:1fr auto 1fr auto 1fr; }
+    @media (max-width:760px) { .journey-strip,.training-demo,.token-split-options,.token-success-chain { grid-template-columns:1fr; }.journey-strip>span,.training-demo>span { transform:rotate(90deg); text-align:center; }.token-success-chain i { transform:rotate(90deg); }.token-comparison { grid-template-columns:1fr; }.token-comparison > b { text-align:center; } }
+
+    @keyframes float { 50% { transform: translateY(-8px); } }
+    @keyframes crystalRise {
+      from { opacity: 0; transform: translateY(18px) scale(.72); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes crystalBurst {
+      from { opacity: 0; transform: scale(.38); }
+      to { opacity: .9; transform: scale(1); }
+    }
+    @keyframes crystalAura { 50% { opacity: .58; transform: scale(1.08); } }
+    @keyframes crystalSparkle { 50% { opacity: .42; transform: rotate(6deg) scale(1.04); } }
+    @keyframes collectedPop {
+      from { opacity: 0; transform: translateY(6px) scale(.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes softReveal {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes shake { 25% { transform: translateX(-4px); } 50% { transform: translateX(4px); } 75% { transform: translateX(-2px); } }
+    @media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+    @media (max-width: 980px) {
+      body { overflow: auto; }
+      .app { min-height: 100vh; height: auto; }
+      .stage { overflow: visible; }
+      .hero, .room-body, .brain-door { grid-template-columns: 1fr; }
+      .fairness-data-row, .fix-controls { grid-template-columns: 1fr; }
+      .map-grid { grid-template-columns: 1fr; }
+      .screen, .room, .room-inner, .exit { min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><span>Final learning challenge</span><strong>Language Model Escape Room</strong></div>
+      <div class="top-actions">
+        <button class="secondary" type="button" id="topMap">Room Map</button>
+        <button type="button" id="topContinue">Continue</button>
+        <span class="pill" id="topProgress">0 / 6 crystals</span>
+      </div>
+    </header>
+
+    <main class="stage">
+      <section class="screen active" id="mapScreen"></section>
+      <section class="screen" id="roomScreen"></section>
+      <section class="screen" id="exitScreen"></section>
+    </main>
+  </div>
+
+  <div class="debug-banner" id="debugBanner" hidden>HTML5 prototype runtime — replace with Construct export later.</div>
+  <button class="debug-toggle secondary" type="button" id="debugToggle" hidden>Developer log</button>
+  <aside class="debug-console" id="debugConsole" aria-label="Developer bridge console" hidden>
+    <div class="debug-controls" id="debugControls"></div>
+    <div class="log" id="log">Debug console ready.</div>
+  </aside>
+
+  <script>
+    const searchParams = new URLSearchParams(window.location.search);
+    const debug = searchParams.get("debug") === "1";
+    if (window.parent !== window) document.body.classList.add("embedded");
+    const targetOrigin = window.location.origin;
+    const rooms = [
+      { id: "token", number: 1, title: "Token Workshop", power: "Tokens", crystal: "token", colour: "#9b6cff", aim: "Choose the real tokenizer split for one highlighted word." },
+      { id: "numbers", number: 2, title: "Number Lookup", power: "Numbers", crystal: "numbers", colour: "#3a8bff", aim: "Follow a token ID to one learned row of numbers." },
+      { id: "context", number: 3, title: "Context Window", power: "Context", crystal: "context", colour: "#38c4c9", aim: "See which earlier tokens are available right now." },
+      { id: "connections", number: 4, title: "Connection Lab", power: "Connections", crystal: "connections", colour: "#ff9d3d", aim: "Find the visible tokens that provide the most helpful clues." },
+      { id: "prediction", number: 5, title: "Next-Token Machine", power: "Prediction", crystal: "prediction", colour: "#ff5f9e", aim: "Choose one possible next token, add it, and predict again." },
+      { id: "training", number: 6, title: "Training Workshop", power: "Training", crystal: "training", colour: "#46b86f", aim: "Follow prediction, answer, adjustment and repetition during training." }
+    ];
+    const tokenRoomTeachingData = Object.freeze({
+      checkpoint: "Qwen/Qwen2.5-0.5B-Instruct",
+      revision: "7ae557604adf67be50417f59c2c2f167def9a775",
+      example: Object.freeze({
+        text: "unbelievable!",
+        ids: Object.freeze([359, 31798, 23760, 0]),
+        pieces: Object.freeze(["un", "belie", "vable", "!"])
+      }),
+      challenge: Object.freeze({
+        sentence: "The robot found an unhelpful clue.",
+        targetWord: "unhelpful",
+        targetIds: Object.freeze([650, 8653, 1262]),
+        targetRawPieces: Object.freeze(["Ġun", "help", "ful"]),
+        targetPieces: Object.freeze(["un", "help", "ful"]),
+        correctOptionId: "qwen",
+        options: Object.freeze([
+          Object.freeze({ id: "whole", pieces: Object.freeze(["unhelpful"]) }),
+          Object.freeze({ id: "human", pieces: Object.freeze(["un", "helpful"]) }),
+          Object.freeze({ id: "qwen", pieces: Object.freeze(["un", "help", "ful"]) })
+        ])
+      })
+    });
+    const numbersRoomTeachingData = Object.freeze({
+      token: "robot",
+      tokenId: 305,
+      drawers: Object.freeze([128, 305, 742]),
+      illustrativeRow: Object.freeze(["0.42", "-0.18", "0.73", "0.11", "…"]),
+      correctConceptId: "lookup-label",
+      concepts: Object.freeze([
+        Object.freeze({ id: "meaning", label: "It stores the meaning of robot." }),
+        Object.freeze({ id: "lookup-label", label: "It is a lookup label that points to one learned number row." }),
+        Object.freeze({ id: "probability", label: "It is the probability that robot appears." })
+      ]),
+      accuracyNote: "Simplified teaching row — real models use much larger learned representations."
+    });
+    const finalModelPieces = [
+      { id: "tokens", label: "Text becomes tokens" },
+      { id: "numbers", label: "Tokens point to numbers" },
+      { id: "context", label: "Context keeps earlier tokens available" },
+      { id: "connections", label: "Helpful tokens shape the current representation" },
+      { id: "prediction", label: "Predict one next token" },
+      { id: "repeat", label: "Add it to the text and repeat" }
+    ];
+    const finalReviewPieces = [
+      { id: "examples", label: "Read a training example" },
+      { id: "train-predict", label: "Predict its next token" },
+      { id: "actual", label: "Reveal the actual token" },
+      { id: "adjust", label: "Adjust internal parameters" },
+      { id: "train-repeat", label: "Repeat across many examples" }
+    ];
+    const finalModelOrder = finalModelPieces.map((piece) => piece.id);
+    const finalReviewOrder = finalReviewPieces.map((piece) => piece.id);
+
+    const state = {
+      completed: new Set(),
+      crystals: new Set(),
+      exitPlaced: new Set(),
+      exitModel: [],
+      exitReview: [],
+      exitFeedback: "",
+      finalComplete: false,
+      currentScreen: "room-select",
+      currentRoom: null,
+      currentStep: "hub",
+      selected: null,
+      roomData: {},
+      latestInit: null
+    };
+    let activeExitDrag = null;
+    let lastExitPointerTarget = null;
+    let suppressExitClick = false;
+
+    const $ = (id) => document.getElementById(id);
+    const mapScreen = $("mapScreen");
+    const roomScreen = $("roomScreen");
+    const exitScreen = $("exitScreen");
+    const log = $("log");
+
+    function write(message) {
+      if (!debug) return;
+      log.textContent = `${new Date().toLocaleTimeString()}  ${message}\n` + log.textContent;
+    }
+
+    function send(type, payload = {}) {
+      window.parent.postMessage({ type, payload }, targetOrigin);
+      write(`sent ${type}`);
+    }
+
+    function applyInit(payload = {}) {
+      state.latestInit = payload;
+      state.completed = new Set(payload.completedRooms || []);
+      state.crystals = new Set(payload.crystals || []);
+      state.finalComplete = Boolean(payload.finalExitCompleted);
+      state.exitPlaced = state.finalComplete ? new Set(rooms.map((room) => room.crystal)) : new Set();
+      state.exitModel = state.finalComplete ? [...finalModelOrder] : [];
+      state.exitReview = state.finalComplete ? [...finalReviewOrder] : [];
+      state.exitFeedback = "";
+      const requestedScreen = ["room-select", "room", "final-exit"].includes(payload.currentScreen) ? payload.currentScreen : "room-select";
+      const requestedRoom = roomById(payload.currentRoom)?.id || null;
+      state.currentScreen = requestedScreen === "room" && requestedRoom ? "room" : requestedScreen === "final-exit" ? "final-exit" : "room-select";
+      state.currentRoom = state.currentScreen === "room" ? requestedRoom : null;
+      state.currentStep = typeof payload.currentStep === "string" ? payload.currentStep : state.currentScreen === "room-select" ? "hub" : "playing";
+      state.roomData = state.currentRoom ? defaultRoomData(state.currentRoom) : state.roomData;
+      render();
+    }
+
+    function roomById(id) {
+      return rooms.find((room) => room.id === id || room.crystal === id);
+    }
+
+    function firstIncomplete() {
+      return rooms.find((room) => !state.completed.has(room.id));
+    }
+
+    function isUnlocked(room) {
+      if (room.number === 1) return true;
+      const previous = rooms[room.number - 2];
+      return state.completed.has(previous.id) || state.completed.has(room.id);
+    }
+
+    function updateTop() {
+      $("topProgress").textContent = `${state.crystals.size} / ${rooms.length} crystals`;
+    }
+
+    function showScreen(name) {
+      state.currentScreen = name;
+      mapScreen.classList.toggle("active", name === "room-select");
+      roomScreen.classList.toggle("active", name === "room");
+      exitScreen.classList.toggle("active", name === "final-exit");
+      if (name === "room-select") send("ESCAPE_ROOM_RETURNED_TO_HUB");
+      else send("ESCAPE_ROOM_SCREEN_CHANGED", { currentScreen: name, roomId: state.currentRoom, step: "playing" });
+    }
+
+    function openMap() {
+      state.currentRoom = null;
+      renderMap();
+      showScreen("room-select");
+    }
+
+    function continueAdventure() {
+      const next = firstIncomplete();
+      if (next) return openRoom(next.id, false);
+      return openExit();
+    }
+
+    function nextRoomAfter(room) {
+      const next = rooms[room.number];
+      if (next) return openRoom(next.id, false);
+      return openExit();
+    }
+
+    function openRoom(id, replay = false) {
+      const room = roomById(id);
+      if (!room) return;
+      if (!isUnlocked(room) && !replay) {
+        flashMapMessage(`Room ${room.number} is locked. Finish the previous room first.`);
+        return;
+      }
+      state.currentRoom = room.id;
+      state.currentStep = "playing";
+      state.selected = null;
+      state.roomData = defaultRoomData(room.id);
+      renderRoom(room, replay);
+      showScreen("room");
+      send("ESCAPE_ROOM_ROOM_STARTED", { roomId: room.id, replay: replay || state.completed.has(room.id) });
+    }
+
+    function openExit() {
+      state.currentRoom = null;
+      renderExit();
+      showScreen("final-exit");
+    }
+
+    function defaultRoomData(id) {
+      if (id === "token") return {
+        inspected: false,
+        tokenised: false,
+        selectedOption: "",
+        submitted: false,
+        attempts: 0,
+        showHint: false,
+        feedbackKind: "",
+        feedback: ""
+      };
+      if (id === "numbers") return {
+        selectedDrawer: "",
+        drawerOpened: false,
+        showConcept: false,
+        selectedConcept: "",
+        conceptPassed: false,
+        drawerAttempts: 0,
+        conceptAttempts: 0,
+        feedbackKind: "",
+        feedback: ""
+      };
+      if (id === "context") return {
+        scene: 1,
+        choice: "",
+        solved: false,
+        shifted: false,
+        attempts: 0,
+        feedbackKind: "",
+        feedback: ""
+      };
+      if (id === "connections") return { selected: [], feedback: "" };
+      if (id === "prediction") return { round: 0, choice: "", generated: [], feedback: "" };
+      if (id === "training") return { step: 0, feedback: "" };
+      return {};
+    }
+
+    function roomComplete(room) {
+      const already = state.completed.has(room.id) && state.crystals.has(room.crystal);
+      state.completed.add(room.id);
+      state.crystals.add(room.crystal);
+      state.currentScreen = "room";
+      state.currentRoom = room.id;
+      state.currentStep = "completion";
+      renderRoom(room, false, true);
+      updateTop();
+      send("ESCAPE_ROOM_SCREEN_CHANGED", { currentScreen: "completion", roomId: room.id, step: "completion" });
+      if (!already) {
+        send("ESCAPE_ROOM_ROOM_COMPLETE", { roomId: room.id, crystal: room.crystal });
+      }
+    }
+
+    function flashMapMessage(text) {
+      const box = document.querySelector(".map-feedback");
+      if (!box) return;
+      box.textContent = text;
+      box.className = "feedback bad map-feedback";
+      setTimeout(() => {
+        box.textContent = "Choose an unlocked room. Completed rooms can be replayed.";
+        box.className = "feedback map-feedback";
+      }, 2600);
+    }
+
+    function render() {
+      updateTop();
+      renderMap();
+      if (state.currentScreen === "room" && state.currentRoom) renderRoom(roomById(state.currentRoom), false, state.currentStep === "complete" || state.currentStep === "completion");
+      if (state.currentScreen === "final-exit") renderExit();
+      mapScreen.classList.toggle("active", state.currentScreen === "room-select");
+      roomScreen.classList.toggle("active", state.currentScreen === "room");
+      exitScreen.classList.toggle("active", state.currentScreen === "final-exit");
+    }
+
+    function renderMap() {
+      const completedCount = rooms.filter((room) => state.completed.has(room.id)).length;
+      mapScreen.innerHTML = `
+        <section class="hero">
+          <div>
+            <span class="clue">Final Challenge</span>
+            <h1>Language Model Escape Room</h1>
+            <p>Help the robot restore six crystals. Each room follows one step in how a language model processes text, predicts, and learns.</p>
+            <button type="button" class="gold" data-action="continue">${completedCount ? "Continue adventure" : "Start Room 1"}</button>
+          </div>
+          <img class="robot" src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot">
+        </section>
+        <section class="map-grid">
+          ${rooms.map((room) => {
+            const done = state.completed.has(room.id);
+            const unlocked = isUnlocked(room);
+            return `<article class="room-card ${unlocked ? "" : "locked"} ${done ? "completed" : ""}" style="--room:${room.colour}">
+              <small>Room ${room.number}</small>
+              <strong>${room.title}</strong>
+              <p>${room.aim}</p>
+              <footer>
+                <span class="crystal">${done ? "◆" : unlocked ? "◇" : "🔒"}</span>
+                <button type="button" data-room="${room.id}" ${unlocked ? "" : "disabled"}>${done ? "Replay puzzle" : unlocked ? "Enter room" : "Locked"}</button>
+              </footer>
+            </article>`;
+          }).join("")}
+        </section>
+        <section class="map-footer">
+          <div class="inventory">
+            <strong>Inventory</strong>
+            ${rooms.map((room) => `<span class="${state.crystals.has(room.crystal) ? "collected" : ""}" style="--room:${room.colour}" title="${room.power}">${state.crystals.has(room.crystal) ? "◆" : room.number}</span>`).join("")}
+          </div>
+          <button type="button" class="success" data-action="exit" ${completedCount === rooms.length ? "" : "disabled"}>${state.finalComplete ? "Review Final Exit" : "Open Final Exit"}</button>
+        </section>
+        <div class="feedback map-feedback">Choose an unlocked room. Completed rooms can be replayed.</div>
+      `;
+      mapScreen.querySelectorAll("[data-room]").forEach((button) => button.addEventListener("click", () => openRoom(button.dataset.room, state.completed.has(button.dataset.room))));
+      mapScreen.querySelector("[data-action='continue']").addEventListener("click", continueAdventure);
+      mapScreen.querySelector("[data-action='exit']").addEventListener("click", openExit);
+    }
+
+    function renderRoom(room, replay = false, completedView = false) {
+      const data = state.roomData;
+      roomScreen.innerHTML = `
+        <section class="room ${room.id === "token" ? "room-bg-token" : room.id === "numbers" ? "room-bg-numbers" : room.id === "context" ? "room-bg-context" : ""}" style="--room:${room.colour}; --tilt:0deg">
+          <div class="room-inner">
+            <header class="room-head">
+              <div class="room-objective">
+                <span>Room ${room.number} · ${replay ? "Replay mode" : "Crystal hunt"}</span>
+                <h1>${room.title}</h1>
+                <p>${room.aim}</p>
+              </div>
+              <button type="button" class="secondary" data-action="map">Room Map</button>
+            </header>
+      ${completedView ? completionMarkup(room) : puzzleMarkup(room, data)}
+          </div>
+        </section>
+      `;
+      bindRoomEvents(room);
+    }
+
+    function completionMarkup(room) {
+      const next = rooms[room.number];
+      const crystalName = `${room.power} Crystal`;
+      const crystalSrc = crystalAsset(room);
+      const completionNote = room.id === "token"
+        ? "A Token can be a whole word, part of a word, punctuation, or another text piece. The exact split depends on the tokenizer."
+        : room.id === "numbers"
+          ? "The token ID is a lookup label. It points to a learned number row that the model can use in later calculations."
+        : room.id === "context"
+          ? "The model can use only the Tokens currently inside its Context Window. As new text arrives, older Tokens can move outside it."
+        : next
+          ? `Door opened. Room ${next.number} is ready.`
+          : "All rooms cleared. The final exit is ready.";
+      const tokenMechanism = room.id === "token" ? `<p class="token-lock-accepts">The lock accepts the text as Token pieces.</p><div class="token-success-chain" aria-label="Text passes through the tokenizer and becomes Token pieces">
+        <span><small>Text</small><b>${tokenRoomTeachingData.challenge.targetWord}</b></span>
+        <i aria-hidden="true">↓</i>
+        <span><small>Tokenizer</small><b>Qwen2.5</b></span>
+        <i aria-hidden="true">↓</i>
+        <span class="token-success-pieces"><small>Token pieces</small><b>${tokenRoomTeachingData.challenge.targetPieces.map((piece) => `[${piece}]`).join(" ")}</b></span>
+      </div>` : "";
+      const numbersMechanism = room.id === "numbers" ? `<div class="token-success-chain" aria-label="Token robot uses ID 305 to find a learned number row">
+        <span><small>Token</small><b>${numbersRoomTeachingData.token}</b></span>
+        <i aria-hidden="true">→</i>
+        <span><small>Lookup label</small><b>${numbersRoomTeachingData.tokenId}</b></span>
+        <i aria-hidden="true">→</i>
+        <span><small>Learned number row</small><b>[${numbersRoomTeachingData.illustrativeRow.join(", ")}]</b></span>
+      </div><p class="numbers-accuracy-note">${numbersRoomTeachingData.accuracyNote}</p>` : "";
+      return `<section class="completion">
+        <div class="crystal-stage" aria-hidden="true">
+          <img class="completion-crystal" src="${crystalSrc}" alt="">
+        </div>
+        <span class="clue">${crystalName} collected</span>
+        <h2>${room.power} restored</h2>
+        ${tokenMechanism}
+        ${numbersMechanism}
+        <p>${completionNote}</p>
+        <div>
+          <button type="button" class="secondary" data-action="map">Room Map</button>
+          <button type="button" data-action="replay">Replay</button>
+          <button type="button" class="gold" data-action="next-room">${next ? `Enter Room ${next.number}` : "Open Final Exit"}</button>
+        </div>
+      </section>`;
+    }
+
+    function crystalAsset(room) {
+      if (room.crystal === "token") {
+        return "/assets/img/final-challenge/room1/token-crystal-clean.png";
+      }
+      const reusedArtwork = {
+        numbers: "prediction",
+        context: "context",
+        connections: "verification",
+        prediction: "patterns",
+        training: "fairness"
+      };
+      return `/assets/img/final-challenge/crystals/crystal-${reusedArtwork[room.crystal] || room.crystal}.png`;
+    }
+
+    function puzzleMarkup(room, data) {
+      if (room.id === "token") return tokenPuzzle(data);
+      if (room.id === "numbers") return numbersPuzzle(data);
+      if (room.id === "context") return contextWindowPuzzle(data);
+      if (room.id === "connections") return connectionsPuzzle(data);
+      if (room.id === "prediction") return nextTokenPuzzle(data);
+      if (room.id === "training") return trainingLoopPuzzle(data);
+      return "";
+    }
+
+    function stepStrip(steps, currentIndex) {
+      return `<div class="step-strip" aria-label="Room steps">${steps.map((step, index) => {
+        const stateClass = index < currentIndex ? "done" : index === currentIndex ? "current" : "";
+        return `<div class="step-pill ${stateClass}"><span>${index < currentIndex ? "✓" : index + 1}</span><span>${step}</span></div>`;
+      }).join("")}</div>`;
+    }
+
+    function numbersIcon(name) {
+      const paths = {
+        lock: '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+        brain: '<path d="M9.5 4.5A3 3 0 0 0 6.5 7v.7A3.5 3.5 0 0 0 5 14.3V16a4 4 0 0 0 4 4h1V5.5a1 1 0 0 0-.5-1Z"/><path d="M14.5 4.5a3 3 0 0 1 3 2.5v.7a3.5 3.5 0 0 1 1.5 6.6V16a4 4 0 0 1-4 4h-1V5.5a1 1 0 0 1 .5-1Z"/>',
+        search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+        dice: '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 8h.01M16 8h.01M8 16h.01M16 16h.01M12 12h.01"/>'
+      };
+      return `<svg class="numbers-lucide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]}</svg>`;
+    }
+
+    function contextIcon(name) {
+      const paths = {
+        umbrella: '<path d="M22 12a10.06 10.06 0 0 0-20 0Z"/><path d="M12 12v8a2 2 0 0 0 4 0"/><path d="M12 2v1"/>',
+        cloud: '<path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9Z"/>',
+        eye: '<path d="M2.06 12.35a1 1 0 0 1 0-.7C3.73 7.6 7.6 5 12 5c4.4 0 8.27 2.6 9.94 6.65a1 1 0 0 1 0 .7C20.27 16.4 16.4 19 12 19c-4.4 0-8.27-2.6-9.94-6.65Z"/><circle cx="12" cy="12" r="3"/>',
+        arrow: '<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>'
+      };
+      return `<svg class="context-lucide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]}</svg>`;
+    }
+
+    function guide(text, extra = "") {
+      return `<aside class="guide-panel">
+        <img src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot">
+        <h2>Next clue</h2>
+        <p>${text}</p>
+        ${extra}
+      </aside>`;
+    }
+
+    function tokenPuzzle(data) {
+      const step = !data.inspected ? 0 : !data.tokenised ? 1 : 2;
+      const example = tokenRoomTeachingData.example;
+      const challenge = tokenRoomTeachingData.challenge;
+      const selectedOption = challenge.options.find((option) => option.id === data.selectedOption);
+      const comparison = data.submitted && selectedOption ? `<div class="token-comparison" aria-live="polite">
+        <div><small>Your idea</small><div>${selectedOption.pieces.map((piece) => `<span>${piece}</span>`).join("")}</div></div>
+        <b aria-hidden="true">vs</b>
+        <div><small>Tokenizer split</small><div>${challenge.targetPieces.map((piece) => `<span>${piece}</span>`).join("")}</div><em>The first Token includes the space before the word.</em></div>
+      </div>` : "";
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(["Inspect door", "See verified split", "Choose the matching split"], step)}
+          <span class="clue">Verified Qwen2.5 tokenizer</span>
+          <div class="door-zone">
+            <strong>The lock receives text as token pieces, not one whole block.</strong>
+            ${!data.inspected ? `<button type="button" class="gold" data-action="inspect">Inspect door</button>` : !data.tokenised ? `<button type="button" data-action="tokenise">Activate tokeniser</button>` : `
+              <div class="tokeniser-device">
+                <img src="/assets/img/final-challenge/room1/tokeniser-machine.png" alt="">
+                <div>
+                  <strong>Verified example</strong>
+                  <p>Here is how the tokenizer used in AI Explorer splits <b>${example.text}</b></p>
+                  <div class="output-tokens">${example.pieces.map((piece) => `<span class="token example-token">${piece}</span>`).join("")}</div>
+                  <p>Different tokenizers may split the same text differently.</p>
+                </div>
+              </div>
+              <div class="token-split-challenge">
+                <span class="token-question-badge">Lock question</span>
+                <h2>Which split matches the tokenizer used in AI Explorer?</h2>
+                <p class="token-target-sentence">The robot found an <mark>${challenge.targetWord}</mark> clue.</p>
+                <p>Choose one Token split. You do not need to reorder the sentence.</p>
+                <div class="token-split-options" role="group" aria-label="Choose the tokenizer split for ${challenge.targetWord}">${challenge.options.map((option, index) => `<button type="button" class="token-split-option ${data.selectedOption === option.id ? "selected" : ""}" data-token-option="${option.id}" aria-pressed="${data.selectedOption === option.id}"><small>Option ${String.fromCharCode(65 + index)}</small><span>${option.pieces.map((piece) => `<b>${piece}</b>`).join("")}</span></button>`).join("")}</div>
+                ${comparison}
+                ${data.showHint ? `<p class="token-hint" role="status">Hint: this tokenizer makes three pieces. The first piece also carries the space before the word.</p>` : ""}
+                <div class="token-room-actions"><button type="button" data-action="check" ${data.selectedOption ? "" : "disabled"}>Activate lock</button><button type="button" class="secondary" data-action="token-hint">${data.showHint ? "Hide hint" : "Show hint"}</button><button type="button" class="secondary" data-action="reset-room">Reset room</button></div>
+              </div>
+            `}
+          </div>
+          <div class="feedback ${data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : ""}" role="status" aria-live="polite">${data.feedback || "A Token can be a whole word, part of a word, punctuation, or another text piece."}</div>
+        </section>
+        ${guide(step === 0 ? "Start by checking the door." : step === 1 ? "Run the machine to see a verified tokenizer example." : "Compare the three splits, choose one, then activate the lock. The exact boundaries come from this tokenizer.")}
+      </div>`;
+    }
+
+    function numbersPuzzle(data) {
+      const teaching = numbersRoomTeachingData;
+      const scene = !data.drawerOpened ? 1 : !data.showConcept ? 2 : 3;
+      const feedbackClass = data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : "";
+      const sceneDots = `<div class="numbers-scene-progress" aria-label="Scene ${scene} of 3"><b>${scene} / 3</b><span class="active"></span><span class="${scene >= 2 ? "active" : ""}"></span><span class="${scene >= 3 ? "active" : ""}"></span></div>`;
+      const lookupPath = `<div class="numbers-simple-path" aria-label="Token robot has ID 305">
+        <div class="numbers-object token-object"><small>Token</small><strong>${teaching.token}</strong></div>
+        <span aria-hidden="true">↓</span>
+        <div class="numbers-id-with-guide"><div class="numbers-object id-object"><small>Lookup ID</small><strong>${teaching.tokenId}</strong></div><img class="numbers-path-robot" src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot holding the lookup ID"></div>
+      </div>`;
+
+      if (scene === 1) {
+        return `<div class="numbers-scene-wrap">
+          <section class="numbers-scene-card numbers-find-scene">
+            ${sceneDots}
+            <span class="clue">From the Token Workshop</span>
+            <h2>Where does <q>${teaching.token}</q> go?</h2>
+            <p>The tokenizer made the Token <b>${teaching.token}</b>. Now follow its ID.</p>
+            ${lookupPath}
+            <h3>Find drawer ${teaching.tokenId}.</h3>
+            <div class="numbers-drawers numbers-drawers-scene" role="group" aria-label="Choose drawer 305">
+              ${teaching.drawers.map((drawer) => {
+                const isWrong = String(drawer) === String(data.selectedDrawer) && drawer !== teaching.tokenId;
+                return `<button type="button" class="numbers-drawer ${isWrong ? "wrong" : ""}" data-number-drawer="${drawer}" aria-pressed="${String(drawer) === String(data.selectedDrawer)}">${numbersIcon("lock")}<small>Drawer</small><strong>${drawer}</strong><span>${isWrong ? "Try another number" : "Open"}</span></button>`;
+              }).join("")}
+            </div>
+            ${data.feedbackKind === "bad" ? `<div class="numbers-robot-nudge" role="status" aria-live="polite"><img src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot"><p>Look at the number on the ID card. Find the drawer with the same number.</p></div>` : ""}
+          </section>
+        </div>`;
+      }
+
+      if (scene === 2) {
+        return `<div class="numbers-scene-wrap">
+          <section class="numbers-scene-card numbers-reveal-scene">
+            ${sceneDots}
+            <span class="clue">Drawer matched</span>
+            <h2>Drawer ${teaching.tokenId} opens</h2>
+            <div class="numbers-reveal-layout">
+              <div class="numbers-complete-path" aria-label="Token robot uses ID 305 to find a learned number row">
+                ${lookupPath}
+                <span class="numbers-down-arrow" aria-hidden="true">↓</span>
+                <div class="numbers-open-drawer">
+                  <div><small>Drawer</small><strong>${teaching.tokenId}</strong></div>
+                  <div class="numbers-values" aria-label="Illustrative learned number row">${teaching.illustrativeRow.map((value) => `<b>${value}</b>`).join("")}</div>
+                </div>
+              </div>
+              <aside class="numbers-robot-bubble">
+                <img src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot">
+                <p><b>305 did not create these numbers.</b><br>It only told the model where to find them.</p>
+              </aside>
+            </div>
+            <p class="numbers-row-use">The model uses this learned number row in later calculations.</p>
+            <p class="numbers-tiny-accuracy">Simplified teaching row — real models use much larger learned representations.</p>
+            <button type="button" class="numbers-continue" data-action="continue-number-lookup">Continue</button>
+          </section>
+        </div>`;
+      }
+
+      return `<div class="numbers-scene-wrap">
+        <section class="numbers-scene-card numbers-check-scene">
+          ${sceneDots}
+          <span class="clue">Final lock</span>
+          <h2>What did ID ${teaching.tokenId} actually do?</h2>
+          <div class="numbers-short-choices" role="radiogroup" aria-label="Choose what token ID 305 does">
+            ${teaching.concepts.map((concept) => {
+              const icon = concept.id === "meaning" ? "brain" : concept.id === "lookup-label" ? "search" : "dice";
+              const shortLabel = concept.id === "meaning" ? "Stores the meaning" : concept.id === "lookup-label" ? "Finds the number row" : "Shows probability";
+              const selected = data.selectedConcept === concept.id;
+              return `<button type="button" role="radio" aria-checked="${selected}" class="numbers-short-choice ${selected ? "selected" : ""} ${data.conceptPassed && concept.id === teaching.correctConceptId ? "correct" : ""}" data-number-concept="${concept.id}">${numbersIcon(icon)}<strong>${shortLabel}</strong></button>`;
+            }).join("")}
+          </div>
+          <div class="numbers-final-feedback ${feedbackClass}" role="status" aria-live="polite">${data.feedback || "Choose the job performed by the ID."}</div>
+          ${data.conceptPassed ? `<div class="numbers-crystal-ready"><strong>Numbers Crystal ready</strong><p>Exactly — an ID is a lookup label.</p><button type="button" class="numbers-collect" data-action="check">Collect the Numbers Crystal</button></div>` : ""}
+        </section>
+      </div>`;
+    }
+
+    function contextWindowPuzzle(data) {
+      const options = [
+        ["umbrella", "umbrella", "umbrella at home"],
+        ["clouds", "cloud", "dark clouds"],
+        ["outside", "eye", "looked outside"]
+      ];
+      const scene = data.scene || 1;
+      const sceneDots = `<div class="context-scene-progress" aria-label="Scene ${scene} of 3"><b>${scene} / 3</b><span class="active"></span><span class="${scene >= 2 ? "active" : ""}"></span><span class="${scene >= 3 ? "active" : ""}"></span></div>`;
+      const windowVisual = `<div class="context-reading-stage ${data.shifted ? "shifted" : ""}" aria-label="Older text is outside the current Context Window while newer text remains inside">
+        <div class="context-track" aria-hidden="true"><span></span>${contextIcon("arrow")}</div>
+        <section class="context-old-zone" aria-label="Outside the Context Window">
+          <span class="context-zone-label">Outside window</span>
+          <article class="context-sentence old-sentence ${data.choice === "umbrella" ? "linked" : ""}"><small>Older text</small><p>Mia left her <b>umbrella</b> at home.</p></article>
+          ${data.shifted ? `<article class="context-sentence newly-outside"><small>Moved outside</small><p>Dark clouds covered the sky.</p></article>` : ""}
+        </section>
+        <div class="context-boundary"><span>Window edge</span></div>
+        <section class="context-current-window" aria-label="Current Context Window">
+          <span class="context-zone-label">Current Context Window</span>
+          ${!data.shifted ? `<article class="context-sentence ${data.choice === "clouds" ? "linked pulse" : ""}"><p>Dark clouds covered the sky.</p></article>` : ""}
+          <article class="context-sentence ${data.choice === "outside" ? "linked pulse" : ""}"><p>She looked outside and ...</p></article>
+          ${data.shifted ? `<article class="context-sentence incoming"><small>New text</small><p>hurried toward the bus stop.</p></article>` : `<span class="context-incoming">New text arrives here →</span>`}
+        </section>
+        <img class="context-guide-robot" src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot beside the Context Window edge">
+      </div>`;
+
+      if (scene === 1) {
+        return `<div class="context-scene-wrap">
+          <section class="context-scene-card">
+            ${sceneDots}
+            <span class="clue">Moving reading window</span>
+            <h2>What can the model see right now?</h2>
+            <p>The model can use only the Tokens inside the bright frame.</p>
+            ${windowVisual}
+            <button type="button" data-action="start-context">Find the clue that moved out</button>
+          </section>
+        </div>`;
+      }
+
+      if (scene === 2) {
+        return `<div class="context-scene-wrap">
+          <section class="context-scene-card">
+            ${sceneDots}
+            <span class="clue">Trace the window</span>
+            <h2>Which clue can the model no longer use?</h2>
+            ${windowVisual}
+            <div class="context-clue-chips" role="radiogroup" aria-label="Choose the clue outside the current Context Window">
+              ${options.map(([id, icon, text]) => `<button type="button" role="radio" aria-checked="${data.choice === id}" class="context-clue-chip ${data.choice === id ? "selected" : ""}" data-context-clue="${id}">${contextIcon(icon)}<strong>${text}</strong></button>`).join("")}
+            </div>
+            ${data.feedbackKind === "bad" ? `<aside class="context-robot-feedback" role="status" aria-live="polite"><img src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot"><p>${data.feedback}</p></aside>` : `<p class="context-task-hint">Choose one clue and watch where it connects.</p>`}
+          </section>
+        </div>`;
+      }
+
+      return `<div class="context-scene-wrap">
+        <section class="context-scene-card context-shift-scene">
+          ${sceneDots}
+          <span class="clue">Window shifted</span>
+          <h2>New text moves the window forward</h2>
+          ${windowVisual}
+          <div class="context-takeaway" role="status" aria-live="polite">
+            <strong>The umbrella clue is outside the current Context Window.</strong>
+            <p>The model cannot use it right now. As new text arrives, older Tokens can move outside the window.</p>
+          </div>
+          <button type="button" class="context-collect" data-action="check">Collect the Context Crystal</button>
+        </section>
+      </div>`;
+    }
+
+    function connectionsPuzzle(data) {
+      const tokens = ["The", "tired", "dog", "slept", "beside", "the", "warm", "fire", "."];
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(["Read the task", "Connect two clues", "Explain the answer"], data.selected.length >= 2 ? 2 : 1)}
+          <span class="clue">All tokens are visible</span>
+          <h2>What is likely to be sleeping?</h2>
+          <p>Choose the two tokens that connect most directly to this question.</p>
+          <div class="chip-grid">${tokens.map((token, index) => `<button type="button" class="${data.selected.includes(token) ? "selected" : ""}" data-chip="${token}">${token}</button>`).join("")}</div>
+          <button type="button" data-action="check">Test the connections</button>
+          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "Visible tokens do not all help equally. The current task changes which connections matter most."}</div>
+        </section>
+        ${guide("Choose the thing that can sleep and the action that tells you it slept.")}
+      </div>`;
+    }
+
+    function nextTokenPuzzle(data) {
+      const firstRound = data.round === 0;
+      const options = firstRound
+        ? [["door",45],["box",30],["book",18],["banana",7]]
+        : [["inside",50],["away",25],["slowly",18],["banana",7]];
+      const sentence = firstRound ? "The robot opened the ___" : `The robot opened the ${data.generated[0] || "door"} and stepped ___`;
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(["Compare candidates", "Add one token", "Predict again"], firstRound ? (data.choice ? 1 : 0) : 2)}
+          <span class="clue">Reviewed classroom probabilities</span>
+          <h2>${sentence}</h2>
+          <p>Several tokens are possible. Pick the strongest classroom candidate, then add it to the text.</p>
+          <div class="choice-grid">${options.map(([token, chance]) => `<button type="button" class="${data.choice === token ? "selected" : ""}" data-choice="${token}"><strong>${token}</strong><small>${chance}%</small></button>`).join("")}</div>
+          <button type="button" data-action="check">${firstRound ? "Add selected token" : "Add token and finish"}</button>
+          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "These values are reviewed teaching data, not live Qwen output. A higher chance is not a guarantee."}</div>
+        </section>
+        ${guide(firstRound ? "Choose the highest reviewed chance. After it joins the sentence, the model predicts again." : "The new token changes the text available for the next prediction.")}
+      </div>`;
+    }
+
+    function trainingLoopPuzzle(data) {
+      const step = data.step || 0;
+      const labels = ["Predict next token", "Reveal actual token", "Compare", "Adjust parameters", "Repeat example"];
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(labels, step)}
+          <span class="clue">Teaching training loop</span>
+          <h2>The puppy chased the ___</h2>
+          <div class="training-demo">
+            <div><small>Model prediction</small><strong>${step >= 1 ? "cat" : "?"}</strong></div>
+            <span>→</span>
+            <div><small>Actual token</small><strong>${step >= 2 ? "ball" : "?"}</strong></div>
+            <span>→</span>
+            <div><small>Internal parameters</small><strong>${step >= 4 ? "adjusted" : "waiting"}</strong></div>
+          </div>
+          <button type="button" data-action="training-step" ${step >= 5 ? "disabled" : ""}>${labels[Math.min(step, 4)]}</button>
+          <button type="button" data-action="check" ${step >= 5 ? "" : "disabled"}>Collect the Training Crystal</button>
+          <div class="feedback ${step >= 5 ? "good" : ""}">${step === 0 ? "First the model makes a prediction from a training example." : step === 1 ? "Now reveal the actual next token supplied by the training text." : step === 2 ? "The prediction and actual token are compared." : step === 3 ? "The difference guides a tiny adjustment to many internal parameters." : step === 4 ? "Training repeats across many examples." : "Training happens before normal text generation. This browser is demonstrating the loop, not training Qwen."}</div>
+          <p class="simulation-note"><b>Important:</b> this is a simplified visual demonstration. No model weights are trained in your browser.</p>
+        </section>
+        ${guide("Observe one step, click, then see what changed. Training repeats this cycle across many examples.")}
+      </div>`;
+    }
+
+    function predictionPuzzle(data) {
+      const options = ["umbrella", "shoes", "lunch", "dog"];
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(["Read clue", "Pick token", "Start machine"], data.choice ? 2 : 1)}
+          <span class="clue">Machine clue</span>
+          <h2>It was raining, so I took my ____.</h2>
+          <p>Which word fits best?</p>
+          <div class="choice-grid">${options.map((option) => `<button type="button" class="${data.choice === option ? "selected" : ""}" data-choice="${option}">${option}</button>`).join("")}</div>
+          <button type="button" data-action="check">Start prediction machine</button>
+          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "The sentence gives a clue. Some words fit better."}</div>
+        </section>
+        ${guide("Use the clue before the blank. Rain makes one answer much more likely.")}
+      </div>`;
+    }
+
+    function verificationPuzzle(data) {
+      const options = [
+        ["trust", "Trust it because it sounds confident."],
+        ["verify", "Check whether the source or fact exists."],
+        ["ignore", "Ignore every answer with numbers."],
+        ["repeat", "Ask the AI to repeat the same claim."]
+      ];
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(["Read claim", "Choose action", "File evidence"], data.selected ? 2 : 1)}
+          <span class="clue">Archive note</span>
+          <h2>"A 2024 study proved purple notebooks improve memory by 37%."</h2>
+          <p>It sounds official, but there is no source. What should you do?</p>
+          <div class="choice-grid">${options.map(([id, text]) => `<button type="button" class="${data.selected === id ? "selected" : ""}" data-choice="${id}">${text}</button>`).join("")}</div>
+          <button type="button" data-action="check">File the evidence</button>
+          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "A made-up answer can sound very real."}</div>
+        </section>
+        ${guide("Precise numbers and university names can still be fake. Check the source.")}
+      </div>`;
+    }
+
+    function contextPuzzle(data) {
+      const chips = [
+        ["weather", "Weather: rainy and 18°C", true],
+        ["location", "Location: Edinburgh", true],
+        ["event", "Event: outdoor school trip", true],
+        ["colour", "Favourite colour: purple", false],
+        ["pet", "My cat is called Milo", false]
+      ];
+      const useful = data.selected.filter((id) => chips.find((chip) => chip[0] === id)?.[2]).length;
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(["Read question", "Pick useful clues", "Focus lens"], data.selected.length ? 2 : 1)}
+          <span class="clue">Blurry question</span>
+          <h2>What should I wear tomorrow?</h2>
+          <p>Pick clues that help answer the question.</p>
+          <div class="chip-grid">${chips.map(([id, text]) => `<button type="button" class="${data.selected.includes(id) ? "selected" : ""}" data-chip="${id}">${text}</button>`).join("")}</div>
+          <p>Useful clue score</p><div class="meter" style="--value:${Math.min(100, 22 + useful * 24)}%"><span></span></div>
+          <button type="button" data-action="check">Focus context lens</button>
+          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "Useful context is related to the question."}</div>
+        </section>
+        ${guide("Weather, place, and event help. Random facts do not.")}
+      </div>`;
+    }
+
+    function trainingPuzzle(data) {
+      const examples = [
+        ["many", "Many correct examples about planets and orbits", true],
+        ["one", "Only one lonely example", false],
+        ["wrong", "Several wrong examples mixed in", false],
+        ["varied", "Different but related examples showing the same pattern", true]
+      ];
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(["Read goal", "Pick examples", "Run lab"], data.selected.length ? 2 : 1)}
+          <span class="clue">Training device</span>
+          <h2>Feed the model examples that help it learn a pattern.</h2>
+          <p>This is a simplified training simulation.</p>
+          <div class="choice-grid">${examples.map(([id, text]) => `<button type="button" class="${data.selected.includes(id) ? "selected" : ""}" data-chip="${id}">${text}</button>`).join("")}</div>
+          <button type="button" data-action="check">Run training lab</button>
+          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "Good examples help the model find patterns."}</div>
+        </section>
+        ${guide("Choose enough examples, and make sure they are correct.")}
+      </div>`;
+    }
+
+    function fairnessPuzzle(data) {
+      const female = 10 - data.ratio;
+      const balancedEnough = data.ratio === 5;
+      const malePrediction = data.ratio * 10;
+      const femalePrediction = 100 - malePrediction;
+      const predictedLabel = malePrediction === femalePrediction ? "Both equally" : malePrediction > femalePrediction ? "Male" : "Female";
+      const dataMixText = balancedEnough
+        ? "The people examples are balanced."
+        : data.ratio > 5
+          ? "The examples mostly show men."
+          : "The examples mostly show women.";
+      const shortcutText = data.removed
+        ? "The unfair sentence has been removed."
+        : "The unfair sentence is still teaching a bad shortcut.";
+      const simulatedOutput = balancedEnough && data.removed
+        ? "Fairer test output: the model gives both groups a fair chance in this small simulation."
+        : balancedEnough
+          ? "Numbers are balanced, but the unfair sentence can still push the output in a bad direction."
+          : data.removed
+            ? `The unfair sentence is gone, but the data still leans ${predictedLabel.toLowerCase()}.`
+            : `The output may lean ${predictedLabel.toLowerCase()} and repeat the unfair shortcut.`;
+      const testClass = data.tested ? (balancedEnough && data.removed ? "good" : "bad") : "";
+      const defaultFeedback = balancedEnough && data.removed
+        ? "Ready to test. The examples are balanced and the unfair sentence is gone."
+        : balancedEnough
+          ? "The examples are balanced. Now remove the unfair sentence."
+          : data.removed
+            ? "The unfair sentence is gone. Now balance the examples to 5 and 5."
+            : "First, balance the examples and remove the unfair sentence.";
+      const people = [
+        ...Array.from({ length: data.ratio }, () => "male"),
+        ...Array.from({ length: female }, () => "female")
+      ];
+      return `<div class="room-body">
+        <section class="puzzle-board">
+          ${stepStrip(["Look at data", "Fix data", "Test prediction"], balancedEnough && data.removed ? 2 : balancedEnough || data.removed ? 1 : 0)}
+          <span class="clue">Learning simulation</span>
+          <h2>Make the training data fairer.</h2>
+          <p>The model is not checking what is fair. It follows patterns from the examples it was given.</p>
+          <div class="fairness-checklist">
+            <span class="fairness-check ${balancedEnough ? "done" : ""}">1. Balance people</span>
+            <span class="fairness-check ${data.removed ? "done" : ""}">2. Remove bad shortcut</span>
+            <span class="fairness-check ${data.tested && balancedEnough && data.removed ? "done" : ""}">3. Test output</span>
+          </div>
+          <div class="fairness-lab">
+            <div class="fairness-data-row">
+              <div class="data-window">
+                <h3>Training data shown to the model</h3>
+                <div class="people-row">${people.map((kind) => `<span class="person-dot ${kind}" title="${kind}">${kind === "male" ? "M" : "F"}</span>`).join("")}</div>
+                <p><b>Male examples:</b> ${data.ratio} · <b>Female examples:</b> ${female}</p>
+                <div class="data-examples" aria-label="training examples">
+                  <div class="data-example"><span>✓</span><span>Doctor example with a man.</span></div>
+                  <div class="data-example"><span>✓</span><span>Doctor example with a woman.</span></div>
+                  <div class="data-example ${data.removed ? "cleaned" : "warning"}"><span>${data.removed ? "✓" : "⚠"}</span><span>"Men are usually better leaders."</span></div>
+                </div>
+                <div class="bias-sample ${data.removed ? "removed" : ""}">
+                  <span>${data.removed ? "✓ Removed unfair sentence" : "⚠ Unfair sentence still in data"}</span>
+                  <small>${data.removed ? "The data is cleaner now." : "\"Men are usually better leaders.\" This is not a fair example."}</small>
+                </div>
+              </div>
+              <div class="prediction-window">
+                <h3>Simulated prediction</h3>
+                <div class="prediction-big">
+                  <span>The model is more likely to answer:</span>
+                  <strong>${predictedLabel}</strong>
+                  <div class="prediction-bars">
+                    <div class="prediction-bar" style="--bar:#4a91ff; --value:${malePrediction}%"><span>Male</span><span><i></i></span><span>${malePrediction}%</span></div>
+                    <div class="prediction-bar" style="--bar:#ffb340; --value:${femalePrediction}%"><span>Female</span><span><i></i></span><span>${femalePrediction}%</span></div>
+                  </div>
+                </div>
+                <div class="fairness-cause">
+                  <span><b>Data mix</b>${dataMixText}</span>
+                  <span><b>Bad shortcut</b>${shortcutText}</span>
+                  <span><b>Test result</b>${simulatedOutput}</span>
+                </div>
+              </div>
+            </div>
+            <div class="data-cleaner">
+              <h3>Fix the data</h3>
+              <div class="fix-controls">
+                <label>
+                  <b>Change the mix of examples</b>
+                  <input type="range" min="0" max="10" step="1" value="${data.ratio}" data-slider="ratio" aria-label="Male examples out of 10">
+                </label>
+                <span class="pill">M ${data.ratio} / F ${female}</span>
+              </div>
+              <button type="button" class="remove-card ${data.removed ? "selected" : ""}" data-action="remove-stereotype">
+                <strong>${data.removed ? "Bad shortcut removed" : "Remove the bad shortcut"}</strong>
+                <span>${data.removed ? "The unfair sentence is crossed out in the training data." : "Take out the sentence that teaches an unfair idea."}</span>
+              </button>
+            </div>
+            <div class="test-output ${testClass}">
+              <span>⚖</span>
+              <span>${data.tested ? (balancedEnough && data.removed ? "<b>Test passed:</b> the output is fairer because the data is balanced and the bad shortcut is gone." : `<b>Test failed:</b> ${simulatedOutput}`) : "The test chamber checks two things: balanced examples and no unfair shortcut."}</span>
+            </div>
+          </div>
+          <button type="button" data-action="check">Test new prediction</button>
+          <div class="feedback ${data.feedback?.startsWith("Good") || data.feedback?.startsWith("Ready") || data.feedback?.startsWith("You removed") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || defaultFeedback}</div>
+        </section>
+        ${guide("Do both fixes: balance the examples, then remove the bad shortcut. Real AI fairness also needs more testing.")}
+      </div>`;
+    }
+
+    function bindRoomEvents(room) {
+      roomScreen.querySelector("[data-action='map']")?.addEventListener("click", openMap);
+      roomScreen.querySelector("[data-action='next']")?.addEventListener("click", continueAdventure);
+      roomScreen.querySelector("[data-action='next-room']")?.addEventListener("click", () => nextRoomAfter(room));
+      roomScreen.querySelector("[data-action='replay']")?.addEventListener("click", () => openRoom(room.id, true));
+      roomScreen.querySelector("[data-action='reset-room']")?.addEventListener("click", () => openRoom(room.id, false));
+
+      if (room.id === "token") bindTokenRoom(room);
+      if (room.id === "numbers") bindNumbersRoom(room);
+      if (room.id === "context") bindContextRoom(room);
+      if (room.id === "prediction") bindChoiceRoom(room, "choice");
+      if (room.id === "connections") bindChipRoom(room);
+      if (room.id === "training") bindTrainingRoom(room);
+      roomScreen.querySelector("[data-action='check']")?.addEventListener("click", () => checkRoom(room));
+    }
+
+    function bindTokenRoom(room) {
+      const data = state.roomData;
+      roomScreen.querySelector("[data-action='inspect']")?.addEventListener("click", () => {
+        data.inspected = true;
+        data.feedbackKind = "good";
+        data.feedback = "Good. The tokenizer must split text into Token pieces before the lock can use it.";
+        renderRoom(room);
+        send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "door-inspected" });
+      });
+      roomScreen.querySelector("[data-action='tokenise']")?.addEventListener("click", () => {
+        data.tokenised = true;
+        data.feedbackKind = "good";
+        data.feedback = "This verified example came from the Qwen2.5 tokenizer. Now transfer the idea to a different word.";
+        renderRoom(room);
+        send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "tokeniser-activated" });
+      });
+      roomScreen.querySelectorAll("[data-token-option]").forEach((button) => button.addEventListener("click", () => {
+        data.selectedOption = button.dataset.tokenOption;
+        data.submitted = false;
+        data.feedbackKind = "";
+        data.feedback = "Selection ready. Activate the lock to compare it with the tokenizer.";
+        renderRoom(room);
+      }));
+      roomScreen.querySelector("[data-action='token-hint']")?.addEventListener("click", () => {
+        data.showHint = !data.showHint;
+        renderRoom(room);
+      });
+    }
+
+    function bindChoiceRoom(room, key) {
+      roomScreen.querySelectorAll("[data-choice]").forEach((button) => button.addEventListener("click", () => {
+        state.roomData[key] = button.dataset.choice;
+        renderRoom(room);
+      }));
+    }
+
+    function bindChipRoom(room) {
+      roomScreen.querySelectorAll("[data-chip]").forEach((button) => button.addEventListener("click", () => {
+        const id = button.dataset.chip;
+        const selected = state.roomData.selected;
+        state.roomData.selected = selected.includes(id) ? selected.filter((item) => item !== id) : [...selected, id];
+        renderRoom(room);
+      }));
+    }
+
+    function bindNumbersRoom(room) {
+      const data = state.roomData;
+      roomScreen.querySelectorAll("[data-number-drawer]").forEach((button) => button.addEventListener("click", () => {
+        const drawer = Number(button.dataset.numberDrawer);
+        data.selectedDrawer = String(drawer);
+        data.drawerAttempts += 1;
+        if (drawer === numbersRoomTeachingData.tokenId) {
+          data.drawerOpened = true;
+          data.showConcept = false;
+          data.feedbackKind = "good";
+          data.feedback = `Correct. ID ${numbersRoomTeachingData.tokenId} points to drawer ${numbersRoomTeachingData.tokenId}, where one learned number row is stored.`;
+          send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "number-row-opened", tokenId: numbersRoomTeachingData.tokenId });
+        } else {
+          data.drawerOpened = false;
+          data.feedbackKind = "bad";
+          data.feedback = `Drawer ${drawer} does not match ID ${numbersRoomTeachingData.tokenId}. The ID is a lookup label, so choose the drawer with the same number.`;
+        }
+        renderRoom(room);
+        queueMicrotask(() => roomScreen.querySelector(data.drawerOpened ? "[data-action='continue-number-lookup']" : `[data-number-drawer='${drawer}']`)?.focus());
+      }));
+      roomScreen.querySelector("[data-action='continue-number-lookup']")?.addEventListener("click", () => {
+        data.showConcept = true;
+        data.feedbackKind = "";
+        data.feedback = "";
+        renderRoom(room);
+        queueMicrotask(() => roomScreen.querySelector("[data-number-concept]")?.focus());
+      });
+      roomScreen.querySelectorAll("[data-number-concept]").forEach((button) => button.addEventListener("click", () => {
+        data.selectedConcept = button.dataset.numberConcept;
+        if (data.selectedConcept === numbersRoomTeachingData.correctConceptId) {
+          data.conceptPassed = true;
+          data.feedbackKind = "good";
+          data.feedback = "Exactly — an ID is a lookup label.";
+          send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "id-concept-understood" });
+        } else {
+          data.conceptPassed = false;
+          data.conceptAttempts += 1;
+          data.feedbackKind = "bad";
+          data.feedback = data.selectedConcept === "meaning"
+            ? "305 does not store the meaning. Look for the job it performed when the drawer opened."
+            : "305 is not a probability. Think about how it helped the model find the drawer.";
+        }
+        renderRoom(room);
+        queueMicrotask(() => roomScreen.querySelector(data.conceptPassed ? "[data-action='check']" : `[data-number-concept='${data.selectedConcept}']`)?.focus());
+      }));
+    }
+
+    function bindContextRoom(room) {
+      const data = state.roomData;
+      roomScreen.querySelector("[data-action='start-context']")?.addEventListener("click", () => {
+        data.scene = 2;
+        data.feedbackKind = "";
+        data.feedback = "";
+        renderRoom(room);
+        queueMicrotask(() => roomScreen.querySelector("[data-context-clue]")?.focus());
+      });
+      roomScreen.querySelectorAll("[data-context-clue]").forEach((button) => button.addEventListener("click", () => {
+        data.choice = button.dataset.contextClue;
+        data.attempts += 1;
+        if (data.choice === "umbrella") {
+          data.solved = true;
+          data.shifted = true;
+          data.scene = 3;
+          data.feedbackKind = "good";
+          data.feedback = "This clue is outside the current Context Window. The model cannot use it right now.";
+          send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "context-window-shifted" });
+        } else {
+          data.solved = false;
+          data.feedbackKind = "bad";
+          data.feedback = "This clue is still inside the highlighted window. Look for the sentence that has faded to the left of the frame.";
+        }
+        renderRoom(room);
+        queueMicrotask(() => roomScreen.querySelector(data.solved ? "[data-action='check']" : `[data-context-clue='${data.choice}']`)?.focus());
+      }));
+    }
+
+    function bindTrainingRoom(room) {
+      roomScreen.querySelector("[data-action='training-step']")?.addEventListener("click", () => {
+        state.roomData.step = Math.min(5, (state.roomData.step || 0) + 1);
+        renderRoom(room);
+      });
+    }
+
+    function bindFairnessRoom(room) {
+      roomScreen.querySelector("[data-slider='ratio']")?.addEventListener("input", (event) => {
+        state.roomData.ratio = Number(event.target.value);
+        state.roomData.tested = false;
+        state.roomData.feedback = "";
+        renderRoom(room);
+      });
+      roomScreen.querySelector("[data-action='remove-stereotype']")?.addEventListener("click", () => {
+        state.roomData.removed = !state.roomData.removed;
+        state.roomData.tested = false;
+        state.roomData.feedback = state.roomData.removed ? "You removed the unfair sentence. Now test the prediction." : "The unfair sentence is back in the data.";
+        renderRoom(room);
+      });
+    }
+
+    function checkRoom(room) {
+      const data = state.roomData;
+      if (room.id === "token") {
+        if (!data.selectedOption) {
+          data.feedbackKind = "bad";
+          data.feedback = "Choose one Token split before activating the lock.";
+        } else if (data.selectedOption === tokenRoomTeachingData.challenge.correctOptionId) {
+          return roomComplete(room);
+        } else {
+          data.submitted = true;
+          data.attempts += 1;
+          data.feedbackKind = "bad";
+          data.feedback = "Not quite. Token boundaries do not always match whole-word or human word-part boundaries. Compare the two rows, then try again.";
+        }
+      }
+      if (room.id === "numbers") {
+        if (data.drawerOpened && data.conceptPassed) return roomComplete(room);
+        data.feedbackKind = "bad";
+        data.feedback = "Open the matching drawer and explain what the token ID does before collecting the crystal.";
+      }
+      if (room.id === "context") {
+        if (data.solved && data.shifted) return roomComplete(room);
+        data.feedbackKind = "bad";
+        data.feedback = "Find the clue outside the current Context Window before collecting the crystal.";
+      }
+      if (room.id === "connections") {
+        const selected = new Set(data.selected);
+        if (selected.size === 2 && selected.has("dog") && selected.has("slept")) return roomComplete(room);
+        data.feedback = "Choose exactly two clues: who can sleep, and which action confirms it?";
+      }
+      if (room.id === "prediction") {
+        const expected = data.round === 0 ? "door" : "inside";
+        if (data.choice === expected && data.round === 0) {
+          data.generated = [data.choice];
+          data.round = 1;
+          data.choice = "";
+          data.feedback = "Good. The selected token joins the text, so the model predicts again.";
+          renderRoom(room);
+          return;
+        }
+        if (data.choice === expected && data.round === 1) return roomComplete(room);
+        data.feedback = "Compare the reviewed chances and choose the strongest candidate.";
+      }
+      if (room.id === "training") {
+        if (data.step >= 5) return roomComplete(room);
+        data.feedback = "Complete each part of the training loop before collecting the crystal.";
+      }
+      renderRoom(room);
+    }
+
+    function renderExit() {
+      const allDone = rooms.every((room) => state.completed.has(room.id) && state.crystals.has(room.crystal));
+      const placedCrystals = state.finalComplete ? new Set(rooms.map((room) => room.crystal)) : state.exitPlaced;
+      const allPlaced = allDone && rooms.every((room) => placedCrystals.has(room.crystal));
+      const modelPlaced = state.finalComplete ? finalModelOrder : state.exitModel;
+      const reviewPlaced = state.finalComplete ? finalReviewOrder : state.exitReview;
+      const modelCorrect = finalModelOrder.every((id, index) => modelPlaced[index] === id);
+      const reviewCorrect = finalReviewOrder.every((id, index) => reviewPlaced[index] === id);
+      const modelReady = finalModelOrder.every((_, index) => Boolean(modelPlaced[index]));
+      const reviewReady = finalReviewOrder.every((_, index) => Boolean(reviewPlaced[index]));
+      const canTryFinal = allPlaced && modelReady && reviewReady;
+      const finalReady = allPlaced && modelCorrect && reviewCorrect;
+      const exitComplete = state.finalComplete;
+      const hasPlacedCards = state.exitModel.length > 0 || state.exitReview.length > 0;
+      const titleText = exitComplete ? "Language Model Door opened" : allDone ? "Power the Language Model Door" : "Final room not ready";
+      const leadText = exitComplete
+        ? "Review mode: the exit is already open. Replay the final lock if you want to solve it again."
+        : allDone
+          ? "Use the six crystals to rebuild the generation path and the separate training loop."
+          : "Collect all six room crystals before opening the final exit.";
+      const consoleTitle = exitComplete ? "Final model complete" : allPlaced ? "Build the final model" : "Place the crystals";
+      const consoleInstruction = exitComplete
+        ? "The puzzle is complete. Click Replay final puzzle to unlock the controls again."
+        : allPlaced
+          ? canTryFinal
+            ? "Both paths are full. Click Activate Language Model. If the order feels wrong, use Reset cards."
+            : "Drag each card into an empty slot. You can also click a card to fill the next empty slot. Click a filled slot to remove it."
+          : allDone
+            ? "Click each crystal chip. It will move into a slot around the language model."
+            : "The brain door needs every room crystal.";
+      const pieceLabel = (collection, id) => collection.find((piece) => piece.id === id)?.label || "";
+      const renderSequence = (kind, pieces, order, placed, title, hint) => `
+        <section class="sequence-board">
+          <h3>${title}</h3>
+          <p>${hint}</p>
+          <div class="sequence-slots">
+            ${order.map((_, index) => {
+              const id = placed[index];
+              return `<button type="button" class="sequence-slot ${id ? "filled" : ""}" data-exit-slot="${kind}" data-index="${index}" data-piece="${id || ""}" draggable="${id && !state.finalComplete ? "true" : "false"}" ${state.finalComplete ? "disabled" : ""}>
+                <small>${index + 1}</small>
+                <span>${id ? pieceLabel(pieces, id) : "Empty slot"}</span>
+              </button>`;
+            }).join("")}
+          </div>
+          <div class="sequence-tray" aria-label="${title} cards">
+            ${pieces.map((piece) => {
+              const used = placed.includes(piece.id);
+              return `<button type="button" class="sequence-piece" data-exit-piece="${kind}" data-piece="${piece.id}" draggable="${used || state.finalComplete ? "false" : "true"}" ${used || state.finalComplete ? "disabled" : ""}>
+                <small>+</small>
+                <span>${piece.label}</span>
+              </button>`;
+            }).join("")}
+          </div>
+        </section>`;
+      exitScreen.innerHTML = `<section class="exit ${exitComplete ? "review-mode" : ""}">
+        <div>
+          <span class="clue">Final Exit</span>
+          <h1>${titleText}</h1>
+          <p>${leadText}</p>
+          <div class="exit-steps" aria-label="Final exit steps">
+            <span class="${allPlaced ? "done" : "active"}">1. Place crystals</span>
+            <span class="${modelCorrect ? "done" : allPlaced ? "active" : ""}">2. Build the generation path</span>
+            <span class="${reviewCorrect ? "done" : modelReady ? "active" : ""}">3. Build the training loop</span>
+          </div>
+        </div>
+        <div class="brain-door">
+          <section class="brain-chamber" aria-label="Language Model Door">
+            <div class="brain-core ${allPlaced ? "charged" : ""} ${finalReady ? "ready" : ""}">
+              <span>AI</span>
+            </div>
+            ${rooms.map((room) => {
+              const placed = placedCrystals.has(room.crystal);
+              return `<div class="brain-slot ${placed ? "filled" : ""}" style="--room:${room.colour}" aria-label="${room.power} slot">
+                ${placed ? `<img src="${crystalAsset(room)}" alt="${room.power} crystal">` : `<span>${room.number}</span>`}
+              </div>`;
+            }).join("")}
+            <div class="brain-status">${state.finalComplete ? "Door open" : finalReady ? "Ready to open" : allPlaced ? "Brain charged" : "Waiting for crystals"}</div>
+          </section>
+          <section class="review-console">
+            <h2>${consoleTitle}</h2>
+            <p>${consoleInstruction}</p>
+            <div class="exit-guide ${exitComplete ? "complete" : ""}">
+              ${exitComplete
+                ? "Complete. Review both paths here, or replay the final puzzle to practise again."
+                : allPlaced
+                  ? "Step 2: build how a model generates text. Step 3: build the earlier training loop. Training does not happen during each reply."
+                  : "Step 1: click the crystal chips below to power the Language Model Door."}
+            </div>
+            <div class="crystal-tray" aria-label="Collected crystals">
+              ${rooms.map((room) => {
+                const collected = state.crystals.has(room.crystal);
+                const placed = placedCrystals.has(room.crystal);
+                return `<button type="button" class="crystal-token ${placed ? "placed" : ""}" style="--room:${room.colour}" data-exit-crystal="${room.crystal}" ${collected && !state.finalComplete ? "" : "disabled"}>
+                  ${collected ? `<img src="${crystalAsset(room)}" alt="">` : `<span>${room.number}</span>`}
+                  <span>${room.power}</span>
+                </button>`;
+              }).join("")}
+            </div>
+            <div class="brain-puzzle" ${allPlaced ? "" : "hidden"}>
+              ${renderSequence("model", finalModelPieces, finalModelOrder, modelPlaced, "Generation path", "What happens while the model makes a reply?")}
+              ${renderSequence("review", finalReviewPieces, finalReviewOrder, reviewPlaced, "Training loop", "What happened earlier while the model learned from examples?")}
+            </div>
+            <div class="exit-actions">
+              <button type="button" class="secondary" data-action="map">Room Map</button>
+              ${!exitComplete && allPlaced ? `<button type="button" class="ghost-reset" data-action="clear-final" ${hasPlacedCards ? "" : "disabled"}>Reset cards</button>` : ""}
+              ${exitComplete ? `<button type="button" class="gold" data-action="replay-final">Replay final puzzle</button>` : ""}
+              <button type="button" class="success" data-action="complete" ${canTryFinal && !exitComplete ? "" : "disabled"}>${exitComplete ? "Exit is open" : "Activate Language Model"}</button>
+            </div>
+          </section>
+        </div>
+        <div class="feedback ${finalReady || state.finalComplete ? "good" : "bad"}">${state.finalComplete ? "You followed the full path: text becomes tokens and numbers; context and helpful connections shape one next-token prediction; the chosen token is added and the process repeats. Training is a separate earlier loop that adjusts the model across many examples." : state.exitFeedback || (finalReady ? "Both paths are correct. Activate the Language Model Door." : allPlaced ? "Build the generation path and the separate training loop." : allDone ? "Place all six crystals around the model door." : "The final room needs every room crystal.")}</div>
+      </section>`;
+      exitScreen.querySelector("[data-action='map']").addEventListener("click", openMap);
+      const replayButton = exitScreen.querySelector("[data-action='replay-final']");
+      if (replayButton) replayButton.addEventListener("click", () => {
+        state.finalComplete = false;
+        state.exitPlaced = new Set();
+        state.exitModel = [];
+        state.exitReview = [];
+        state.exitFeedback = "Final lock reset. Place the six crystals, then rebuild the model.";
+        renderExit();
+      });
+      const clearButton = exitScreen.querySelector("[data-action='clear-final']");
+      if (clearButton) clearButton.addEventListener("click", () => {
+        state.exitModel = [];
+        state.exitReview = [];
+        state.exitFeedback = "Cards cleared. Build the generation path, then the separate training loop.";
+        renderExit();
+      });
+      exitScreen.querySelectorAll("[data-exit-crystal]").forEach((button) => button.addEventListener("click", () => {
+        if (!allDone || state.finalComplete) return;
+        const crystal = button.dataset.exitCrystal;
+        if (state.exitPlaced.has(crystal)) state.exitPlaced.delete(crystal);
+        else state.exitPlaced.add(crystal);
+        state.exitFeedback = state.exitPlaced.size === rooms.length
+          ? "All crystals are placed. Now build the generation path and the training loop."
+          : `${state.exitPlaced.size} / ${rooms.length} crystals placed. Keep powering the Language Model Door.`;
+        if (!state.exitPlaced.size) {
+          state.exitModel = [];
+          state.exitReview = [];
+        }
+        renderExit();
+      }));
+
+      const exitTarget = (kind) => kind === "review" ? state.exitReview : state.exitModel;
+      const exitLimit = (kind) => kind === "review" ? finalReviewOrder.length : finalModelOrder.length;
+      const placeExitPiece = (kind, piece, requestedIndex = null, fromIndex = null) => {
+        if (!allPlaced || state.finalComplete) return;
+        const target = exitTarget(kind);
+        const limit = exitLimit(kind);
+        const safeIndex = (value) => {
+          if (value === null || value === undefined || value === "") return null;
+          const index = Number(value);
+          return Number.isInteger(index) && index >= 0 && index < limit ? index : null;
+        };
+        const destination = safeIndex(requestedIndex);
+        const source = safeIndex(fromIndex);
+
+        if (source === null && target.includes(piece)) return;
+        if (source !== null && target[source] !== piece) return;
+
+        if (destination !== null) {
+          if (source === destination) return;
+          if (source === null && target[destination]) {
+            state.exitFeedback = "That slot already has a card. Drag the card to swap, or choose an empty slot.";
+            renderExit();
+            return;
+          }
+          const displaced = target[destination];
+          target[destination] = piece;
+          if (source !== null) target[source] = displaced;
+        } else {
+          const emptyIndex = Array.from({ length: limit }, (_, index) => index).find((index) => !target[index]);
+          if (emptyIndex === undefined) return;
+          if (source !== null) target[source] = undefined;
+          target[emptyIndex] = piece;
+        }
+
+        state.exitFeedback = Array.from({ length: limit }, (_, index) => target[index]).filter(Boolean).length === limit
+          ? "This console is filled. Drag cards to change the order, or fill the other console."
+          : "Card added to a slot. Keep filling the empty slots.";
+        renderExit();
+      };
+
+      const readExitDragPayload = (event) => {
+        const transfer = event.dataTransfer;
+        const json = transfer?.getData("application/x-ai-exit-piece");
+        if (json) {
+          try {
+            const payload = JSON.parse(json);
+            if (payload.kind && payload.piece) {
+              return {
+                kind: payload.kind,
+                piece: payload.piece,
+                fromIndex: payload.fromIndex === null || payload.fromIndex === undefined ? null : Number(payload.fromIndex)
+              };
+            }
+          } catch (error) {
+            // Fall back to text/plain below.
+          }
+        }
+        const raw = transfer?.getData("text/plain") || "";
+        const [kind, piece, fromIndex] = raw.split(":");
+        if (!kind || !piece) {
+          return activeExitDrag?.kind && activeExitDrag?.piece
+            ? {
+                kind: activeExitDrag.kind,
+                piece: activeExitDrag.piece,
+                fromIndex: activeExitDrag.fromIndex === null || activeExitDrag.fromIndex === undefined
+                  ? null
+                  : Number(activeExitDrag.fromIndex)
+              }
+            : null;
+        }
+        return { kind, piece, fromIndex: fromIndex === "" || fromIndex === undefined ? null : Number(fromIndex) };
+      };
+
+      const handleExitDrop = (event, boardKind, requestedIndex = null, visualTarget = null) => {
+        if (state.finalComplete) return;
+        event.preventDefault();
+        event.stopPropagation();
+        exitScreen.querySelectorAll(".drop-ready, .drop-error").forEach((node) => node.classList.remove("drop-ready", "drop-error"));
+        const payload = readExitDragPayload(event);
+        activeExitDrag = null;
+        if (!payload) {
+          state.exitFeedback = "I could not read that card. Try dragging it again, or click it instead.";
+          renderExit();
+          return;
+        }
+        if (payload.kind !== boardKind) {
+          if (visualTarget) visualTarget.classList.add("drop-error");
+          state.exitFeedback = "That card belongs in the other console. Match the card to its console title.";
+          renderExit();
+          return;
+        }
+        placeExitPiece(boardKind, payload.piece, requestedIndex, payload.fromIndex);
+      };
+
+      const writeExitDragPayload = (event, payload, label) => {
+        if (!event.dataTransfer) return;
+        activeExitDrag = payload;
+        event.dataTransfer.effectAllowed = "move";
+        const serialised = JSON.stringify(payload);
+        event.dataTransfer.setData("application/x-ai-exit-piece", serialised);
+        event.dataTransfer.setData("text/plain", `${payload.kind}:${payload.piece}:${payload.fromIndex ?? ""}`);
+
+        const dragImage = document.createElement("div");
+        dragImage.className = "sequence-drag-ghost";
+        dragImage.textContent = label;
+        dragImage.style.left = "-1000px";
+        dragImage.style.top = "-1000px";
+        document.body.appendChild(dragImage);
+        event.dataTransfer.setDragImage(dragImage, 30, 24);
+        window.setTimeout(() => dragImage.remove(), 0);
+      };
+
+      const showNativeDropTarget = (event, boardKind, visualTarget) => {
+        if (state.finalComplete) return;
+        const payload = activeExitDrag || readExitDragPayload(event);
+        if (!payload) return;
+        event.preventDefault();
+        event.stopPropagation();
+        if (event.dataTransfer) event.dataTransfer.dropEffect = payload.kind === boardKind ? "move" : "none";
+        clearExitDropHighlights();
+        visualTarget.classList.add(payload.kind === boardKind ? "drop-ready" : "drop-error");
+      };
+
+      const clearExitDropHighlights = () => {
+        exitScreen.querySelectorAll(".drop-ready, .drop-error").forEach((node) => node.classList.remove("drop-ready", "drop-error"));
+      };
+
+      const pointInside = (rect, clientX, clientY) => (
+        clientX >= rect.left &&
+        clientX <= rect.right &&
+        clientY >= rect.top &&
+        clientY <= rect.bottom
+      );
+
+      const findExitDropTarget = (clientX, clientY, preferredKind = null) => {
+        const allSlots = Array.from(exitScreen.querySelectorAll("[data-exit-slot]"));
+        const slots = preferredKind
+          ? allSlots.filter((slot) => slot.dataset.exitSlot === preferredKind)
+          : allSlots;
+        const allBoards = Array.from(exitScreen.querySelectorAll(".sequence-board"));
+        const boards = preferredKind
+          ? allBoards.filter((board) => board.querySelector(`[data-exit-slot="${preferredKind}"]`))
+          : allBoards;
+
+        const targetForSlot = (slot) => ({
+          kind: slot.dataset.exitSlot,
+          index: Number(slot.dataset.index),
+          element: slot
+        });
+
+        const targetForBoard = (board) => {
+          const selector = preferredKind ? `[data-exit-slot="${preferredKind}"]` : "[data-exit-slot]";
+          const firstSlot = board.querySelector(selector);
+          return firstSlot ? {
+            kind: firstSlot.dataset.exitSlot,
+            index: null,
+            element: board
+          } : null;
+        };
+
+        const distanceToRect = (rect) => {
+          const x = Math.max(rect.left, Math.min(clientX, rect.right));
+          const y = Math.max(rect.top, Math.min(clientY, rect.bottom));
+          return Math.hypot(clientX - x, clientY - y);
+        };
+
+        const directSlot = slots.find((slot) => pointInside(slot.getBoundingClientRect(), clientX, clientY));
+        if (directSlot) return targetForSlot(directSlot);
+
+        const directBoard = boards.find((board) => pointInside(board.getBoundingClientRect(), clientX, clientY));
+        if (directBoard) return targetForBoard(directBoard);
+
+        const elements = typeof document.elementsFromPoint === "function"
+          ? document.elementsFromPoint(clientX, clientY)
+          : [document.elementFromPoint(clientX, clientY)];
+        for (const element of elements) {
+          if (!element || element.classList?.contains("sequence-drag-ghost")) continue;
+          const slot = element.closest?.("[data-exit-slot]");
+          if (slot && exitScreen.contains(slot) && (!preferredKind || slot.dataset.exitSlot === preferredKind)) {
+            return targetForSlot(slot);
+          }
+          const board = element.closest?.(".sequence-board");
+          if (board && exitScreen.contains(board)) {
+            const boardTarget = targetForBoard(board);
+            if (boardTarget) return boardTarget;
+          }
+        }
+
+        let nearestSlot = null;
+        slots.forEach((slot) => {
+          const distance = distanceToRect(slot.getBoundingClientRect());
+          if (distance <= 140 && (!nearestSlot || distance < nearestSlot.distance)) {
+            nearestSlot = { slot, distance };
+          }
+        });
+        if (nearestSlot) return targetForSlot(nearestSlot.slot);
+
+        let nearestBoard = null;
+        boards.forEach((board) => {
+          const distance = distanceToRect(board.getBoundingClientRect());
+          if (distance <= 180 && (!nearestBoard || distance < nearestBoard.distance)) {
+            nearestBoard = { board, distance };
+          }
+        });
+        if (nearestBoard) return targetForBoard(nearestBoard.board);
+
+        return null;
+      };
+
+      const highlightExitPointerTarget = (clientX, clientY, payload) => {
+        clearExitDropHighlights();
+        const target = findExitDropTarget(clientX, clientY, payload?.kind || null);
+        lastExitPointerTarget = target;
+        if (!target || !payload) return null;
+        target.element.classList.add(target.kind === payload.kind ? "drop-ready" : "drop-error");
+        return target;
+      };
+
+      const startExitPointerDrag = (event, payload, label, sourceElement) => {
+        if (!allPlaced || state.finalComplete || sourceElement.disabled) return;
+        if (event.button !== undefined && event.button !== 0) return;
+
+        event.preventDefault();
+        sourceElement.classList.add("dragging");
+        activeExitDrag = payload;
+        lastExitPointerTarget = null;
+
+	      const startX = event.clientX;
+	      const startY = event.clientY;
+	      let moved = false;
+	      let finished = false;
+	      let lastPoint = { clientX: startX, clientY: startY };
+	      try {
+	        sourceElement.setPointerCapture?.(event.pointerId);
+	      } catch (error) {
+	        // Pointer capture is a reliability helper. Dragging still works without it.
+	      }
+	      const ghost = document.createElement("div");
+        ghost.className = "sequence-drag-ghost";
+        ghost.textContent = label;
+        document.body.appendChild(ghost);
+
+        const moveGhost = (clientX, clientY) => {
+          ghost.style.left = `${clientX}px`;
+          ghost.style.top = `${clientY}px`;
+        };
+
+        const finish = (dropEvent, cancelled = false) => {
+          if (finished) return;
+          finished = true;
+          dropEvent.preventDefault?.();
+          dropEvent.stopPropagation?.();
+          window.removeEventListener("pointermove", onMove);
+          window.removeEventListener("pointerup", onUp, true);
+          window.removeEventListener("pointercancel", onCancel, true);
+          document.removeEventListener("pointerup", onUp, true);
+          document.removeEventListener("pointercancel", onCancel, true);
+	          try {
+	            sourceElement.releasePointerCapture?.(dropEvent.pointerId);
+	          } catch (error) {
+	            // The pointer may already be released by the browser.
+	          }
+	          sourceElement.classList.remove("dragging");
+          const rememberedTarget = lastExitPointerTarget;
+          ghost.remove();
+          clearExitDropHighlights();
+
+          if (cancelled) {
+            activeExitDrag = null;
+            lastExitPointerTarget = null;
+            return;
+          }
+
+          const finalX = Number.isFinite(dropEvent.clientX) ? dropEvent.clientX : lastPoint.clientX;
+          const finalY = Number.isFinite(dropEvent.clientY) ? dropEvent.clientY : lastPoint.clientY;
+          const distance = Math.hypot(finalX - startX, finalY - startY);
+          if (!moved || distance < 8) {
+            suppressExitClick = true;
+            window.setTimeout(() => { suppressExitClick = false; }, 0);
+            if (payload.fromIndex === null || payload.fromIndex === undefined) {
+              placeExitPiece(payload.kind, payload.piece);
+            } else {
+              const target = exitTarget(payload.kind);
+              if (target[payload.fromIndex] === payload.piece) {
+                target[payload.fromIndex] = undefined;
+                state.exitFeedback = "Card removed. Try the order again.";
+                renderExit();
+              }
+            }
+            activeExitDrag = null;
+            lastExitPointerTarget = null;
+            return;
+          }
+
+          suppressExitClick = true;
+          window.setTimeout(() => { suppressExitClick = false; }, 0);
+          const target = rememberedTarget || findExitDropTarget(finalX, finalY, payload.kind);
+          activeExitDrag = null;
+          lastExitPointerTarget = null;
+          if (!target) {
+            state.exitFeedback = "Drop the card onto a slot or inside the matching console.";
+            renderExit();
+            return;
+          }
+          if (target.kind !== payload.kind) {
+            state.exitFeedback = "That card belongs in the other console. Match the card to its console title.";
+            renderExit();
+            return;
+          }
+          placeExitPiece(target.kind, payload.piece, target.index, payload.fromIndex);
+        };
+
+        const onMove = (moveEvent) => {
+          moveEvent.preventDefault();
+          moved = true;
+          lastPoint = { clientX: moveEvent.clientX, clientY: moveEvent.clientY };
+          moveGhost(moveEvent.clientX, moveEvent.clientY);
+          highlightExitPointerTarget(moveEvent.clientX, moveEvent.clientY, payload);
+        };
+        const onUp = (upEvent) => finish(upEvent);
+        const onCancel = (cancelEvent) => finish(cancelEvent, true);
+
+        moveGhost(startX, startY);
+        window.addEventListener("pointermove", onMove, { passive: false });
+        window.addEventListener("pointerup", onUp, { capture: true });
+        window.addEventListener("pointercancel", onCancel, { capture: true });
+        document.addEventListener("pointerup", onUp, { capture: true });
+        document.addEventListener("pointercancel", onCancel, { capture: true });
+      };
+
+      exitScreen.querySelectorAll("[data-exit-piece]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          if (suppressExitClick) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+          }
+          placeExitPiece(button.dataset.exitPiece, button.dataset.piece);
+        });
+        button.addEventListener("pointerdown", (event) => {
+          startExitPointerDrag(
+            event,
+            { kind: button.dataset.exitPiece, piece: button.dataset.piece, fromIndex: null },
+            button.textContent.trim(),
+            button
+          );
+        });
+        button.addEventListener("dragstart", (event) => {
+          if (!allPlaced || state.finalComplete || button.disabled) {
+            event.preventDefault();
+            return;
+          }
+          writeExitDragPayload(
+            event,
+            { kind: button.dataset.exitPiece, piece: button.dataset.piece, fromIndex: null },
+            button.textContent.trim()
+          );
+          button.classList.add("dragging");
+        });
+        button.addEventListener("dragend", () => {
+          button.classList.remove("dragging");
+          activeExitDrag = null;
+          clearExitDropHighlights();
+        });
+      });
+
+      exitScreen.querySelectorAll("[data-exit-slot]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          if (suppressExitClick) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+          }
+          if (state.finalComplete) return;
+          const target = exitTarget(button.dataset.exitSlot);
+          const index = Number(button.dataset.index);
+          if (!target[index]) return;
+          target[index] = undefined;
+          state.exitFeedback = "Card removed. Try the order again.";
+          renderExit();
+        });
+        button.addEventListener("pointerdown", (event) => {
+          if (state.finalComplete) return;
+          const target = exitTarget(button.dataset.exitSlot);
+          const index = Number(button.dataset.index);
+          const piece = target[index];
+          if (!piece) return;
+          startExitPointerDrag(
+            event,
+            { kind: button.dataset.exitSlot, piece, fromIndex: index },
+            button.textContent.trim().replace(/^\d+\s*/, ""),
+            button
+          );
+        });
+        button.addEventListener("dragstart", (event) => {
+          if (state.finalComplete || button.disabled) {
+            event.preventDefault();
+            return;
+          }
+          const target = exitTarget(button.dataset.exitSlot);
+          const index = Number(button.dataset.index);
+          const piece = target[index];
+          if (!piece) {
+            event.preventDefault();
+            return;
+          }
+          writeExitDragPayload(
+            event,
+            { kind: button.dataset.exitSlot, piece, fromIndex: index },
+            button.textContent.trim().replace(/^\d+\s*/, "")
+          );
+          button.classList.add("dragging");
+        });
+        button.addEventListener("dragend", () => {
+          button.classList.remove("dragging");
+          activeExitDrag = null;
+          clearExitDropHighlights();
+        });
+        button.addEventListener("dragenter", (event) => showNativeDropTarget(event, button.dataset.exitSlot, button));
+        button.addEventListener("dragover", (event) => showNativeDropTarget(event, button.dataset.exitSlot, button));
+        button.addEventListener("dragleave", () => button.classList.remove("drop-ready", "drop-error"));
+        button.addEventListener("drop", (event) => handleExitDrop(event, button.dataset.exitSlot, Number(button.dataset.index), button));
+      });
+
+      exitScreen.querySelectorAll(".sequence-board").forEach((board) => {
+        const firstSlot = board.querySelector("[data-exit-slot]");
+        const kind = firstSlot?.dataset.exitSlot;
+        if (!kind) return;
+        board.addEventListener("dragenter", (event) => showNativeDropTarget(event, kind, board));
+        board.addEventListener("dragover", (event) => showNativeDropTarget(event, kind, board));
+        board.addEventListener("dragleave", (event) => {
+          if (!board.contains(event.relatedTarget)) board.classList.remove("drop-ready", "drop-error");
+        });
+        board.addEventListener("drop", (event) => handleExitDrop(event, kind, null, board));
+      });
+
+      exitScreen.querySelector("[data-action='complete']").addEventListener("click", () => {
+        if (state.finalComplete) return;
+        if (!allPlaced) {
+          state.exitFeedback = "Place every crystal around the Language Model Door first.";
+          renderExit();
+          return;
+        }
+        if (!modelReady || !reviewReady) {
+          state.exitFeedback = "Fill every empty slot before activating the brain.";
+          renderExit();
+          return;
+        }
+        if (!modelCorrect) {
+          state.exitFeedback = "The generation order is not right yet. Start with tokens and numbers, then use context and connections before predicting and repeating.";
+          renderExit();
+          return;
+        }
+        if (!reviewCorrect) {
+          state.exitFeedback = "The training order is not right yet. Start with an example, predict, reveal the actual token, adjust, then repeat.";
+          renderExit();
+          return;
+        }
+        state.finalComplete = true;
+        state.exitPlaced = new Set(rooms.map((room) => room.crystal));
+        state.exitModel = [...finalModelOrder];
+        state.exitReview = [...finalReviewOrder];
+        state.exitFeedback = "";
+        send("ESCAPE_ROOM_COMPLETE", {});
+        renderExit();
+      });
+    }
+
+    window.addEventListener("message", (event) => {
+      if (event.origin !== targetOrigin) return;
+      const data = event.data || {};
+      if (data.payload?.progress) applyInit(data.payload.progress);
+      if (data.type === "ESCAPE_ROOM_INIT") applyInit(data.payload || {});
+      if (data.type === "ESCAPE_ROOM_REQUEST_STATE") {
+        if (data.payload?.progress) applyInit(data.payload.progress);
+        send("ESCAPE_ROOM_READY");
+      }
+      if (data.type === "ESCAPE_ROOM_OPEN_HUB" || data.type === "ESCAPE_ROOM_RETURN_TO_HUB") openMap();
+      if (data.type === "ESCAPE_ROOM_CONTINUE") continueAdventure();
+      if (data.type === "ESCAPE_ROOM_OPEN_FINAL_EXIT") openExit();
+      if (data.type === "ESCAPE_ROOM_OPEN_ROOM" || data.type === "ESCAPE_ROOM_REPLAY_ROOM") openRoom(data.payload?.roomId || "token", Boolean(data.payload?.replay));
+      if (data.type === "ESCAPE_ROOM_RESET") {
+        state.completed.clear();
+        state.crystals.clear();
+        state.exitPlaced.clear();
+        state.exitModel = [];
+        state.exitReview = [];
+        state.exitFeedback = "";
+        state.finalComplete = false;
+        openMap();
+      }
+    });
+
+    $("topMap").addEventListener("click", openMap);
+    $("topContinue").addEventListener("click", continueAdventure);
+
+    if (debug) {
+      $("debugBanner").hidden = false;
+      $("debugToggle").hidden = false;
+      $("debugConsole").hidden = false;
+      $("debugToggle").addEventListener("click", () => $("debugConsole").classList.toggle("open"));
+      $("debugControls").innerHTML = rooms.map((room) => `<button type="button" data-debug-room="${room.id}">Complete R${room.number}</button>`).join("") + `<button type="button" data-debug-final>Final</button>`;
+      $("debugControls").querySelectorAll("[data-debug-room]").forEach((button) => button.addEventListener("click", () => roomComplete(roomById(button.dataset.debugRoom))));
+      $("debugControls").querySelector("[data-debug-final]").addEventListener("click", () => send("ESCAPE_ROOM_COMPLETE", {}));
+    }
+
+    const startRoom = searchParams.get("room");
+    render();
+    if (startRoom && roomById(startRoom)) openRoom(startRoom, true);
+    send("ESCAPE_ROOM_READY");
+  </script>
+</body>
+</html>

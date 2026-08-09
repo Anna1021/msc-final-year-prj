@@ -1,0 +1,14 @@
+{
+  "missionLabel": "Lesson {{id}}", "missionOf": "Lesson {{mission}} of 5", "learningPath": "Learning Path", "allTitle": "All Lessons",
+  "allIntro": "Follow five lessons to see how language models process text, connect information, predict and learn.\nThe suggested order builds one clear journey, but every lesson is available.",
+  "yourProgress": "Your Progress", "missionsCompleted": "Lessons Completed", "whatLearn": "What You’ll Learn", "lessonSummary": "Lesson summary", "restartLesson": "Restart Lesson", "returnToLessons": "Return to Lessons", "nextLesson2": "Next: Lesson 2", "lesson1Complete": "Lesson 1 complete. Lesson 2 is ready.", "lesson1Incomplete": "Complete the experiments before finishing Lesson 1.",
+  "completePrevious": "Lesson {{mission}} is recommended first.", "completeAllFirst": "All lessons are recommended before the challenge.", "completeAllToUnlock": "The Final Challenge is available now and works best after all five lessons.",
+  "finalChallenge": "Final Challenge", "finalTitle": "Final Challenge: Language Model Escape Room", "finalShort": "Language Model Escape Room", "finalDesc": "Bring together tokens, numbers, context, connections, prediction and training. Recommended after all five lessons.",
+  "items": {
+    "1": { "title": "How does a language model process text?", "short": "Text processing", "desc": "Explore tokens and numerical representations.", "skill": "Tokens & Numerical Representations" },
+    "2": { "title": "Which words can a language model see?", "short": "Reading context", "desc": "Explore the context window and the text available to the model.", "skill": "Reading Context" },
+    "3": { "title": "How does a language model connect words together?", "short": "Connecting Tokens", "desc": "See how Tokens inside the Context Window combine information before the model predicts what comes next.", "skill": "Connecting the Tokens" },
+    "4": { "title": "How does a language model choose what comes next?", "short": "Next-token prediction", "desc": "Compare possible next Tokens, their chances and one-Token-at-a-time generation.", "skill": "Predicting the Next Token" },
+    "5": { "title": "How does a language model learn from examples?", "short": "Training", "desc": "Follow prediction, correction and repetition to see how useful patterns are learned.", "skill": "Learning from Training Examples" }
+  }
+}

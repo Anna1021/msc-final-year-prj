@@ -1,0 +1,14 @@
+{
+  "missionLabel": "第 {{id}} 课", "missionOf": "第 {{mission}} 课 / 5", "learningPath": "学习路径", "allTitle": "全部课程",
+  "allIntro": "通过五节课了解语言模型如何处理文字、连接信息、预测并学习。\n推荐顺序会组成一条清晰的学习路径，但所有课程都可以直接进入。",
+  "yourProgress": "你的进度", "missionsCompleted": "已完成课程", "whatLearn": "你会学到什么", "lessonSummary": "课程总结", "restartLesson": "重新开始课程", "returnToLessons": "返回课程列表", "nextLesson2": "下一步：第 2 课", "lesson1Complete": "第 1 课已完成，可以进入第 2 课。", "lesson1Incomplete": "请完成实验后再结束第 1 课。",
+  "completePrevious": "建议先学习第 {{mission}} 课。", "completeAllFirst": "建议完成全部课程后再挑战。", "completeAllToUnlock": "最终挑战现在即可进入，完成五节课后体验更佳。",
+  "finalChallenge": "最终挑战", "finalTitle": "最终挑战：语言模型密室逃脱", "finalShort": "语言模型密室逃脱", "finalDesc": "把 Token、数字、上下文、连接、预测和训练串起来。建议完成五节课后体验。",
+  "items": {
+    "1": { "title": "语言模型如何处理文字？", "short": "文字处理", "desc": "探索 token 和数字表示。", "skill": "Token 与数字表示" },
+    "2": { "title": "语言模型能看到哪些文字？", "short": "阅读上下文", "desc": "探索上下文窗口和模型当前可以使用的文字。", "skill": "阅读上下文" },
+    "3": { "title": "语言模型怎样把词语连接起来？", "short": "连接 Token", "desc": "观察上下文窗口中的 Token 如何在预测下一步前组合信息。", "skill": "连接 Token" },
+    "4": { "title": "语言模型怎样选择接下来的内容？", "short": "下一个 Token 预测", "desc": "比较候选 Token、它们的机会和一次一个 Token 的生成过程。", "skill": "预测下一个 Token" },
+    "5": { "title": "语言模型怎样从示例中学习？", "short": "训练", "desc": "沿着预测、修正和重复的过程，看看模型怎样学到有用模式。", "skill": "从训练示例中学习" }
+  }
+}

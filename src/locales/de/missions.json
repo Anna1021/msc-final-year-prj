@@ -1,0 +1,14 @@
+{
+  "missionLabel": "Lektion {{id}}", "missionOf": "Lektion {{mission}} von 5", "learningPath": "Lernpfad", "allTitle": "Alle Lektionen",
+  "allIntro": "Entdecke in fünf Lektionen, wie Sprachmodelle Text verarbeiten, Informationen verbinden, vorhersagen und lernen.\nDie empfohlene Reihenfolge bildet einen klaren Lernweg, aber jede Lektion ist verfügbar.",
+  "yourProgress": "Dein Fortschritt", "missionsCompleted": "Lektionen abgeschlossen", "whatLearn": "Das lernst du", "lessonSummary": "Lektionsübersicht", "restartLesson": "Lektion neu starten", "returnToLessons": "Zurück zu den Lektionen", "nextLesson2": "Weiter: Lektion 2", "lesson1Complete": "Lektion 1 abgeschlossen. Lektion 2 ist bereit.", "lesson1Incomplete": "Beende die Experimente, bevor du Lektion 1 abschließt.",
+  "completePrevious": "Lektion {{mission}} wird zuerst empfohlen.", "completeAllFirst": "Alle Lektionen werden vor der Challenge empfohlen.", "completeAllToUnlock": "Die finale Challenge ist jetzt verfügbar und funktioniert nach allen fünf Lektionen am besten.",
+  "finalChallenge": "Finale Challenge", "finalTitle": "Finale Challenge: Sprachmodell-Escape-Room", "finalShort": "Sprachmodell-Escape-Room", "finalDesc": "Verbinde Tokens, Zahlen, Kontext, Verbindungen, Vorhersage und Training. Empfohlen nach allen fünf Lektionen.",
+  "items": {
+    "1": { "title": "Wie verarbeitet ein Sprachmodell Text?", "short": "Textverarbeitung", "desc": "Erkunde Tokens und numerische Darstellungen.", "skill": "Tokens und numerische Darstellungen" },
+    "2": { "title": "Welche Wörter kann ein Sprachmodell sehen?", "short": "Kontext lesen", "desc": "Erkunde das Kontextfenster und den Text, der dem Modell zur Verfügung steht.", "skill": "Kontext lesen" },
+    "3": { "title": "Wie verbindet ein Sprachmodell Wörter miteinander?", "short": "Token verbinden", "desc": "Sieh, wie Token im Kontextfenster vor der Vorhersage Informationen kombinieren.", "skill": "Token verbinden" },
+    "4": { "title": "Wie wählt ein Sprachmodell, was als Nächstes kommt?", "short": "Next-Token-Vorhersage", "desc": "Vergleiche mögliche Token, ihre Chancen und die Erzeugung Token für Token.", "skill": "Das nächste Token vorhersagen" },
+    "5": { "title": "Wie lernt ein Sprachmodell aus Beispielen?", "short": "Training", "desc": "Verfolge Vorhersage, Korrektur und Wiederholung und entdecke, wie Muster gelernt werden.", "skill": "Aus Trainingsbeispielen lernen" }
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "language": {
+    "label": "Sprache",
+    "choose": "Sprache wählen"
+  },
+  "app": {
+    "name": "AI Explorer",
+    "tagline": "Wie Sprachmodelle funktionieren"
+  },
+  "topbar": {
+    "backToMissions": "‹ Zurück zu Lektionen",
+    "backToProgress": "‹ Zurück zum Fortschritt",
+    "yourProgress": "Dein Fortschritt",
+    "allActivity": "Alle Aktivitäten",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "resetProgress": "Fortschritt zurücksetzen",
+    "progressReset": "Fortschritt zurückgesetzt.",
+    "settingsHelp": "Einstellungen: Textgröße, Animationsgeschwindigkeit, Ton, Dunkelmodus und Fortschritt zurücksetzen."
+  },
+  "home": {
+    "welcomeTitle": "Willkommen zurück, Explorer! 👋",
+    "welcomeLead": "Bereit, deinen Lernweg über Sprachmodelle fortzusetzen?",
+    "welcomeCopy": "Mach dort weiter, wo du aufgehört hast, oder erkunde etwas Neues.",
+    "continueLearning": "Weiterlernen",
+    "completeStatus": "Du hast alle fünf Lektionen abgeschlossen. Die finale Herausforderung ist bereit.",
+    "nextMission": "Als Nächstes: {{title}}.",
+    "startFinalChallenge": "Finale Herausforderung starten",
+    "continueMission": "Lektion fortsetzen",
+    "learningPath": "Lernweg",
+    "whyTitle": "Warum lernen, wie Sprachmodelle funktionieren?",
+    "finalTitle": "Schließe alle fünf Lektionen ab und verstehe den gesamten Sprachmodell-Lernweg!",
+    "finalCopy": "Schließe die Abschluss-Challenge ab und erhalte dein Zertifikat.",
+    "seeFinalChallenge": "Finale Challenge ansehen",
+    "unlockFinal": "Die finale Challenge ist jetzt verfügbar und wird nach allen fünf Lektionen empfohlen."
+  },
+  "finalAdvisory": {
+    "eyebrow": "Finale Challenge",
+    "title": "Bevor du eintrittst",
+    "copy": "Der Escape Room verbindet die Ideen aus allen fünf Lektionen. Wir empfehlen, sie zuerst anzusehen, aber diese Empfehlung ist keine Sperre.",
+    "reviewed": "Ich habe alle fünf Lektionen angesehen",
+    "reviewedHelp": "Die finale Challenge betreten.",
+    "understand": "Ich habe sie noch nicht beendet, verstehe aber die Ideen",
+    "understandHelp": "Fortfahren, ohne den Lektionsfortschritt zu ändern.",
+    "reviewFirst": "Zuerst die Lektionen ansehen",
+    "noProgressChange": "Diese Auswahl markiert keine Lektion als abgeschlossen."
+  },
+  "why": {
+    "responsibleTitle": "Dem Prozess folgen",
+    "responsibleText": "Sieh, wie Text zu Tokens und numerischen Darstellungen wird.",
+    "criticalTitle": "Kontext verbinden",
+    "criticalText": "Entdecke, wie sichtbare Tokens nützliche Informationen teilen.",
+    "biasTitle": "Das Nächste vorhersagen",
+    "biasText": "Sieh, wie ein Sprachmodell mögliche nächste Tokens vergleicht und auswählt.",
+    "futureTitle": "Lernen verstehen",
+    "futureText": "Verfolge, wie Vorhersage, Korrektur und Wiederholung gelernte Muster formen."
+  },
+  "stats": {
+    "todaysGoal": "Heutiges Ziel",
+    "completeOneStep": "Einen Lektionsschritt abschließen",
+    "stepsCompleted": "{{done}} / 1 Schritt abgeschlossen",
+    "goalDone": "Gut gemacht! Die nächste Lektion ist bereit.",
+    "goalTodo": "Schließe einen Schritt ab, um weiterzulernen.",
+    "yourStats": "Deine Statistik",
+    "missionCompleted": "Lektion abgeschlossen",
+    "viewProgress": "Fortschritt ansehen ›",
+    "missionsLeft": "Lektionen übrig",
+    "savedNotes": "Gespeicherte Notizen",
+    "alreadyProgress": "Du hast schon Fortschritte gemacht.",
+    "startSmallActivity": "Beginne mit einer kleinen Aktivität."
+  },
+  "activity": {
+    "recent": "Letzte Aktivität",
+    "viewAll": "Alle anzeigen",
+    "readyMission": "Bereit für Lektion 1",
+    "completedMission": "Lektion {{id}} abgeschlossen",
+    "startedMission": "Lektion {{id}} gestartet",
+    "today": "Heute",
+    "yesterday": "Gestern",
+    "daysAgo": "Vor {{count}} Tagen"
+  },
+  "help": {
+    "needHelp": "Brauchst du Hilfe?",
+    "copy": "Nutze die Lektionen und die Fortschrittsseite, um den nächsten Schritt zu sehen.",
+    "goToMissions": "Zu den Lektionen",
+    "text": "Nutze die Lektions- und Fortschrittsseiten, um den nächsten Schritt zu sehen."
+  },
+  "profile": {
+    "name": "Explorer",
+    "tipTitle": "Tipp des Tages",
+    "tipCopy": "Ein Sprachmodell erzeugt Text, indem es jeweils ein Token vorhersagt.",
+    "missionsComplete": "{{completed}} / {{total}} Lektionen abgeschlossen"
+  },
+  "status": {
+    "locked": "Gesperrt",
+    "inProgress": "In Arbeit",
+    "completed": "Abgeschlossen",
+    "start": "Start",
+    "continue": "Weiter",
+    "percentComplete": "{{percent}} % fertig",
+    "ready": "Bereit"
+  },
+  "buttons": {
+    "viewAll": "Alle anzeigen",
+    "clearAll": "Leeren",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "reset": "Zurücksetzen",
+    "checkAnswer": "Antwort prüfen"
+  },
+  "activityPage": {
+    "tabs": {
+      "all": "Alle Aktivitäten",
+      "notes": "Meine Notizen"
+    },
+    "filters": {
+      "all": "Alle",
+      "missions": "Missionen",
+      "quizzes": "Quizze",
+      "notes": "Notizen",
+      "system": "System",
+      "others": "Andere"
+    },
+    "dateRange": "12. Mai - 18. Mai 2025",
+    "dateFilterHelp": "Datumsfilter: Heute, diese Woche, dieser Monat oder eigener Zeitraum.",
+    "table": {
+      "activity": "Aktivität",
+      "details": "Details",
+      "time": "Zeit"
+    },
+    "notesTitle": "Meine Notizen",
+    "notesCopy": "Gespeicherte Reflexionen aus den Missionen erscheinen hier.",
+    "noNotesTitle": "Noch keine Notizen",
+    "noNotesCopy": "Speichere in einer Mission eine Reflexion, dann erscheint sie hier.",
+    "summary": "Aktivitätsübersicht",
+    "totalActivities": "Aktivitäten gesamt",
+    "notesSaved": "Notizen gespeichert",
+    "filterActivity": "Aktivitäten filtern",
+    "clearAll": "Alles löschen",
+    "allActivityTypes": "Alle Aktivitätstypen",
+    "allMissions": "Alle Missionen",
+    "allTime": "Gesamter Zeitraum",
+    "typeFilterHelp": "Nutze die Filterchips oben, um den Aktivitätstyp zu ändern.",
+    "timeFilterHelp": "Zeitfilter: Heute, diese Woche, dieser Monat.",
+    "missionOption": "Mission {{id}}"
+  },
+  "notes": {
+    "savedToActivity": "In „Meine Notizen“ unter Aktivität gespeichert.",
+    "savedButton": "In Meine Notizen gespeichert",
+    "saveNote": "Notiz speichern",
+    "saveReflection": "Reflexion speichern",
+    "viewInNotes": "In Meine Notizen ansehen",
+    "notesHeading": "Notizen",
+    "notesPrompt": "Schreibe auf, was du gelernt hast oder behalten möchtest.",
+    "notePlaceholder": "Schreibe deine Notiz hier...",
+    "saveNoteTitle": "Notiz speichern"
+  }
+}

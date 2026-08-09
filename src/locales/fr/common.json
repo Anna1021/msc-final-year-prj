@@ -1,0 +1,158 @@
+{
+  "language": {
+    "label": "Langue",
+    "choose": "Choisir la langue"
+  },
+  "app": {
+    "name": "AI Explorer",
+    "tagline": "Comment fonctionnent les modèles de langage"
+  },
+  "topbar": {
+    "backToMissions": "‹ Retour aux leçons",
+    "backToProgress": "‹ Retour au progrès",
+    "yourProgress": "Votre progrès",
+    "allActivity": "Toute l’activité",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "resetProgress": "Réinitialiser",
+    "progressReset": "Progression réinitialisée.",
+    "settingsHelp": "Paramètres : taille du texte, vitesse des animations, son, mode sombre et réinitialisation."
+  },
+  "home": {
+    "welcomeTitle": "Bon retour, Explorateur ! 👋",
+    "welcomeLead": "Prêt à poursuivre ton parcours sur les modèles de langage ?",
+    "welcomeCopy": "Reprenez où vous vous êtes arrêté ou explorez un nouveau sujet.",
+    "continueLearning": "Continuer",
+    "completeStatus": "Tu as terminé les cinq leçons. Le défi final est prêt.",
+    "nextMission": "Prochaine étape : {{title}}.",
+    "startFinalChallenge": "Commencer le défi final",
+    "continueMission": "Continuer la leçon",
+    "learningPath": "Parcours d’apprentissage",
+    "whyTitle": "Pourquoi apprendre comment fonctionnent les modèles de langage ?",
+    "finalTitle": "Termine les cinq leçons pour comprendre tout le parcours du modèle de langage !",
+    "finalCopy": "Terminez le défi final et gagnez votre certificat.",
+    "seeFinalChallenge": "Voir le défi final",
+    "unlockFinal": "Le défi final est disponible maintenant et conseillé après les cinq leçons."
+  },
+  "finalAdvisory": {
+    "eyebrow": "Défi final",
+    "title": "Avant d’entrer",
+    "copy": "L’Escape Room réunit les idées des cinq leçons. Nous conseillons de les consulter d’abord, mais ce conseil n’est pas un verrou.",
+    "reviewed": "J’ai consulté les cinq leçons",
+    "reviewedHelp": "Entrer dans le défi final.",
+    "understand": "Je ne les ai pas toutes terminées, mais je comprends les idées",
+    "understandHelp": "Continuer sans modifier la progression des leçons.",
+    "reviewFirst": "Revoir les leçons d’abord",
+    "noProgressChange": "Ce choix ne marquera aucune leçon comme terminée."
+  },
+  "why": {
+    "responsibleTitle": "Suivre le processus",
+    "responsibleText": "Observe comment le texte devient des tokens et des représentations numériques.",
+    "criticalTitle": "Relier le contexte",
+    "criticalText": "Découvre comment les tokens visibles partagent des informations utiles.",
+    "biasTitle": "Prédire la suite",
+    "biasText": "Observe comment un modèle de langage compare et choisit les prochains tokens possibles.",
+    "futureTitle": "Comprendre l’apprentissage",
+    "futureText": "Suis la prédiction, la correction et la répétition qui façonnent les motifs appris."
+  },
+  "stats": {
+    "todaysGoal": "Objectif du jour",
+    "completeOneStep": "Terminer une étape de leçon",
+    "stepsCompleted": "{{done}} / 1 étape terminée",
+    "goalDone": "Bravo ! La prochaine leçon est prête.",
+    "goalTodo": "Terminez une étape pour continuer.",
+    "yourStats": "Vos stats",
+    "missionCompleted": "Leçon terminée",
+    "viewProgress": "Voir le progrès ›",
+    "missionsLeft": "Leçons restantes",
+    "savedNotes": "Notes sauvegardées",
+    "alreadyProgress": "Vous avez déjà avancé.",
+    "startSmallActivity": "Commencez par une petite activité."
+  },
+  "activity": {
+    "recent": "Activité récente",
+    "viewAll": "Tout voir",
+    "readyMission": "Prêt à commencer la leçon 1",
+    "completedMission": "Leçon {{id}} terminée",
+    "startedMission": "Leçon {{id}} commencée",
+    "today": "Aujourd’hui",
+    "yesterday": "Hier",
+    "daysAgo": "Il y a {{count}} jours"
+  },
+  "help": {
+    "needHelp": "Besoin d’aide ?",
+    "copy": "Utilise les leçons et la page de progression pour savoir quoi faire ensuite.",
+    "goToMissions": "Aller aux leçons",
+    "text": "Utilise les leçons et la page de progression pour voir la prochaine étape."
+  },
+  "profile": {
+    "name": "Explorateur",
+    "tipTitle": "Astuce du jour",
+    "tipCopy": "Un modèle de langage génère du texte en prédisant un token à la fois.",
+    "missionsComplete": "{{completed}} / {{total}} leçons terminées"
+  },
+  "status": {
+    "locked": "Verrouillé",
+    "inProgress": "En cours",
+    "completed": "Terminé",
+    "start": "Commencer",
+    "continue": "Continuer",
+    "percentComplete": "{{percent}} % terminé",
+    "ready": "Prêt"
+  },
+  "buttons": {
+    "viewAll": "Tout voir",
+    "clearAll": "Effacer",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "reset": "Réinitialiser",
+    "checkAnswer": "Vérifier"
+  },
+  "activityPage": {
+    "tabs": {
+      "all": "Toutes les activités",
+      "notes": "Mes notes"
+    },
+    "filters": {
+      "all": "Tout",
+      "missions": "Missions",
+      "quizzes": "Quiz",
+      "notes": "Notes",
+      "system": "Système",
+      "others": "Autres"
+    },
+    "dateRange": "12 mai - 18 mai 2025",
+    "dateFilterHelp": "Filtre de date : aujourd’hui, cette semaine, ce mois-ci ou plage personnalisée.",
+    "table": {
+      "activity": "Activité",
+      "details": "Détails",
+      "time": "Moment"
+    },
+    "notesTitle": "Mes notes",
+    "notesCopy": "Les réflexions sauvegardées dans les missions apparaissent ici.",
+    "noNotesTitle": "Aucune note pour le moment",
+    "noNotesCopy": "Sauvegarde une réflexion dans une mission pour la retrouver ici.",
+    "summary": "Résumé des activités",
+    "totalActivities": "Activités au total",
+    "notesSaved": "Notes sauvegardées",
+    "filterActivity": "Filtrer les activités",
+    "clearAll": "Tout effacer",
+    "allActivityTypes": "Tous les types d’activité",
+    "allMissions": "Toutes les missions",
+    "allTime": "Toute la période",
+    "typeFilterHelp": "Utilise les filtres ci-dessus pour changer le type d’activité.",
+    "timeFilterHelp": "Filtre de temps : aujourd’hui, cette semaine, ce mois-ci.",
+    "missionOption": "Mission {{id}}"
+  },
+  "notes": {
+    "savedToActivity": "Enregistré dans Mes notes, dans Activité.",
+    "savedButton": "Enregistré dans Mes notes",
+    "saveNote": "Enregistrer la note",
+    "saveReflection": "Enregistrer la réflexion",
+    "viewInNotes": "Voir dans Mes notes",
+    "notesHeading": "Notes",
+    "notesPrompt": "Écris une chose apprise ou à retenir.",
+    "notePlaceholder": "Écris ta note ici...",
+    "saveNoteTitle": "Enregistrer la note"
+  }
+}

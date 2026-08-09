@@ -1,0 +1,13 @@
+{
+  "terms": {
+    "token": "Token",
+    "tokenisation": "Tokenisation（分词）",
+    "nextToken": "下一个 token 预测",
+    "trainingData": "训练数据",
+    "hallucination": "幻觉",
+    "context": "上下文",
+    "bias": "偏见",
+    "fairness": "公平性",
+    "generatedOutput": "生成输出"
+  }
+}

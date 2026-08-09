@@ -1,0 +1,158 @@
+{
+  "language": {
+    "label": "Language",
+    "choose": "Choose language"
+  },
+  "app": {
+    "name": "AI Explorer",
+    "tagline": "How Language Models Work"
+  },
+  "topbar": {
+    "backToMissions": "‹ Back to Lessons",
+    "backToProgress": "‹ Back to Progress",
+    "yourProgress": "Your Progress",
+    "allActivity": "All Activity",
+    "profile": "Profile",
+    "settings": "Settings",
+    "resetProgress": "Reset Progress",
+    "progressReset": "Progress reset.",
+    "settingsHelp": "Settings: text size, animation speed, sound, dark mode, reset progress."
+  },
+  "home": {
+    "welcomeTitle": "Welcome back, Explorer! 👋",
+    "welcomeLead": "Ready to continue your language-model learning journey?",
+    "welcomeCopy": "Pick up where you left off or explore something new.",
+    "continueLearning": "Continue Learning",
+    "completeStatus": "You have completed all five lessons. Your Final Challenge is ready.",
+    "nextMission": "Next: {{title}}.",
+    "startFinalChallenge": "Start Final Challenge",
+    "continueMission": "Continue Lesson",
+    "learningPath": "Learning Journey",
+    "whyTitle": "Why Learn How Language Models Work?",
+    "finalTitle": "Complete all five lessons to understand the full language-model journey!",
+    "finalCopy": "Complete the Final Challenge and earn your certificate.",
+    "seeFinalChallenge": "See Final Challenge",
+    "unlockFinal": "The Final Challenge is available now and is recommended after all five lessons."
+  },
+  "finalAdvisory": {
+    "eyebrow": "Final Challenge",
+    "title": "Before you enter",
+    "copy": "The Escape Room brings together ideas from all five lessons. We recommend reviewing them first, but this is guidance—not a lock.",
+    "reviewed": "I’ve reviewed the five lessons",
+    "reviewedHelp": "Enter the Final Challenge.",
+    "understand": "I haven’t finished them, but I understand the ideas",
+    "understandHelp": "Continue without changing your lesson progress.",
+    "reviewFirst": "Review the lessons first",
+    "noProgressChange": "Your choice here will not mark any lesson as complete."
+  },
+  "why": {
+    "responsibleTitle": "Follow the Process",
+    "responsibleText": "See how text becomes Tokens and numerical representations.",
+    "criticalTitle": "Connect the Context",
+    "criticalText": "Discover how visible Tokens share useful information.",
+    "biasTitle": "Predict What Comes Next",
+    "biasText": "See how a language model compares and selects possible next Tokens.",
+    "futureTitle": "Understand Learning",
+    "futureText": "Follow how prediction, correction and repetition shape learned patterns."
+  },
+  "stats": {
+    "todaysGoal": "Today's Goal",
+    "completeOneStep": "Complete one lesson step",
+    "stepsCompleted": "{{done}} / 1 step completed",
+    "goalDone": "Great job! Your next lesson is ready.",
+    "goalTodo": "Complete one step to keep your learning moving.",
+    "yourStats": "Your Stats",
+    "missionCompleted": "Lesson Completed",
+    "viewProgress": "View Progress ›",
+    "missionsLeft": "Lessons left",
+    "savedNotes": "Saved notes",
+    "alreadyProgress": "You have already made progress.",
+    "startSmallActivity": "Start with one small activity."
+  },
+  "activity": {
+    "recent": "Recent Activity",
+    "viewAll": "View all",
+    "readyMission": "Ready to start Lesson 1",
+    "completedMission": "Lesson {{id}} completed",
+    "startedMission": "Started Lesson {{id}}",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{count}} days ago"
+  },
+  "help": {
+    "needHelp": "Need help?",
+    "copy": "Use the Lessons and Progress pages to see what to do next.",
+    "goToMissions": "Go to Lessons",
+    "text": "Use the Lessons and Progress pages to see what to do next."
+  },
+  "profile": {
+    "name": "Explorer",
+    "tipTitle": "Tip of the day",
+    "tipCopy": "A language model generates text by predicting one Token at a time.",
+    "missionsComplete": "{{completed}} / {{total}} lessons complete"
+  },
+  "status": {
+    "locked": "Locked",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "start": "Start",
+    "continue": "Continue",
+    "percentComplete": "{{percent}}% complete",
+    "ready": "Ready"
+  },
+  "buttons": {
+    "viewAll": "View all",
+    "clearAll": "Clear all",
+    "previous": "Previous",
+    "next": "Next",
+    "reset": "Reset",
+    "checkAnswer": "Check Answer"
+  },
+  "activityPage": {
+    "tabs": {
+      "all": "All Activity",
+      "notes": "My Notes"
+    },
+    "filters": {
+      "all": "All",
+      "missions": "Missions",
+      "quizzes": "Quizzes",
+      "notes": "Notes",
+      "system": "System",
+      "others": "Others"
+    },
+    "dateRange": "May 12 - May 18, 2025",
+    "dateFilterHelp": "Date filter: Today, This Week, This Month, Custom Range.",
+    "table": {
+      "activity": "Activity",
+      "details": "Details",
+      "time": "Time"
+    },
+    "notesTitle": "My Notes",
+    "notesCopy": "Saved reflections from mission activities appear here.",
+    "noNotesTitle": "No notes yet",
+    "noNotesCopy": "Save a reflection inside a mission and it will appear here.",
+    "summary": "Activity Summary",
+    "totalActivities": "Total Activities",
+    "notesSaved": "Notes Saved",
+    "filterActivity": "Filter Activity",
+    "clearAll": "Clear all",
+    "allActivityTypes": "All Activity Types",
+    "allMissions": "All Missions",
+    "allTime": "All Time",
+    "typeFilterHelp": "Use the filter chips above to change activity type.",
+    "timeFilterHelp": "Time filter: Today, This Week, This Month.",
+    "missionOption": "Mission {{id}}"
+  },
+  "notes": {
+    "savedToActivity": "Saved to My Notes in Activity.",
+    "savedButton": "Saved to My Notes",
+    "saveNote": "Save note",
+    "saveReflection": "Save reflection",
+    "viewInNotes": "View in My Notes",
+    "notesHeading": "Notes",
+    "notesPrompt": "Write something you learned or want to remember.",
+    "notePlaceholder": "Type your note here...",
+    "saveNoteTitle": "Save Note"
+  }
+}

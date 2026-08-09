@@ -1,0 +1,415 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-01",
+  "checkpoint": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "tokenizerLibrary": "@huggingface/tokenizers@0.1.3",
+  "addSpecialTokens": false,
+  "fixtures": [
+    {
+      "id": "intro-long-word",
+      "role": "intro",
+      "language": "en",
+      "text": "The uncharacteristically quiet robot smiled.",
+      "count": 8,
+      "ids": [
+        785,
+        650,
+        19190,
+        37110,
+        11340,
+        12305,
+        30545,
+        13
+      ],
+      "rawPieces": [
+        "The",
+        "Ġun",
+        "character",
+        "istically",
+        "Ġquiet",
+        "Ġrobot",
+        "Ġsmiled",
+        "."
+      ],
+      "decodedPieces": [
+        "The",
+        " un",
+        "character",
+        "istically",
+        " quiet",
+        " robot",
+        " smiled",
+        "."
+      ],
+      "decoded": "The uncharacteristically quiet robot smiled."
+    },
+    {
+      "id": "challenge-robots-learn",
+      "role": "part-b",
+      "language": "en",
+      "text": "Robots learn quickly!",
+      "count": 5,
+      "ids": [
+        14465,
+        2412,
+        3960,
+        6157,
+        0
+      ],
+      "rawPieces": [
+        "Rob",
+        "ots",
+        "Ġlearn",
+        "Ġquickly",
+        "!"
+      ],
+      "decodedPieces": [
+        "Rob",
+        "ots",
+        " learn",
+        " quickly",
+        "!"
+      ],
+      "decoded": "Robots learn quickly!"
+    },
+    {
+      "id": "challenge-tokenisation",
+      "role": "part-b",
+      "language": "en",
+      "text": "Tokenisation can be surprising.",
+      "count": 6,
+      "ids": [
+        3323,
+        7923,
+        646,
+        387,
+        14861,
+        13
+      ],
+      "rawPieces": [
+        "Token",
+        "isation",
+        "Ġcan",
+        "Ġbe",
+        "Ġsurprising",
+        "."
+      ],
+      "decodedPieces": [
+        "Token",
+        "isation",
+        " can",
+        " be",
+        " surprising",
+        "."
+      ],
+      "decoded": "Tokenisation can be surprising."
+    },
+    {
+      "id": "challenge-chatbot",
+      "role": "part-b",
+      "language": "en",
+      "text": "A chatbot noticed punctuation!",
+      "count": 6,
+      "ids": [
+        32,
+        6236,
+        6331,
+        13686,
+        61503,
+        0
+      ],
+      "rawPieces": [
+        "A",
+        "Ġchat",
+        "bot",
+        "Ġnoticed",
+        "Ġpunctuation",
+        "!"
+      ],
+      "decodedPieces": [
+        "A",
+        " chat",
+        "bot",
+        " noticed",
+        " punctuation",
+        "!"
+      ],
+      "decoded": "A chatbot noticed punctuation!"
+    },
+    {
+      "id": "challenge-multilingual",
+      "role": "part-b",
+      "language": "en",
+      "text": "Multilingual robots say hello.",
+      "count": 6,
+      "ids": [
+        40404,
+        49823,
+        28707,
+        1977,
+        23811,
+        13
+      ],
+      "rawPieces": [
+        "Mult",
+        "ilingual",
+        "Ġrobots",
+        "Ġsay",
+        "Ġhello",
+        "."
+      ],
+      "decodedPieces": [
+        "Mult",
+        "ilingual",
+        " robots",
+        " say",
+        " hello",
+        "."
+      ],
+      "decoded": "Multilingual robots say hello."
+    },
+    {
+      "id": "challenge-reappeared",
+      "role": "part-b",
+      "language": "en",
+      "text": "The tiny robot reappeared.",
+      "count": 6,
+      "ids": [
+        785,
+        13673,
+        12305,
+        312,
+        98467,
+        13
+      ],
+      "rawPieces": [
+        "The",
+        "Ġtiny",
+        "Ġrobot",
+        "Ġre",
+        "appeared",
+        "."
+      ],
+      "decodedPieces": [
+        "The",
+        " tiny",
+        " robot",
+        " re",
+        "appeared",
+        "."
+      ],
+      "decoded": "The tiny robot reappeared."
+    },
+    {
+      "id": "challenge-french",
+      "role": "part-b",
+      "language": "fr",
+      "text": "Bonjour, petit robot!",
+      "count": 5,
+      "ids": [
+        81581,
+        11,
+        45010,
+        12305,
+        0
+      ],
+      "rawPieces": [
+        "Bonjour",
+        ",",
+        "Ġpetit",
+        "Ġrobot",
+        "!"
+      ],
+      "decodedPieces": [
+        "Bonjour",
+        ",",
+        " petit",
+        " robot",
+        "!"
+      ],
+      "decoded": "Bonjour, petit robot!"
+    },
+    {
+      "id": "challenge-chinese",
+      "role": "part-b",
+      "language": "zh",
+      "text": "你好，AI Explorer！",
+      "count": 5,
+      "ids": [
+        108386,
+        3837,
+        15469,
+        29152,
+        6313
+      ],
+      "rawPieces": [
+        "ä½łå¥½",
+        "ï¼Į",
+        "AI",
+        "ĠExplorer",
+        "ï¼ģ"
+      ],
+      "decodedPieces": [
+        "你好",
+        "，",
+        "AI",
+        " Explorer",
+        "！"
+      ],
+      "decoded": "你好，AI Explorer！"
+    },
+    {
+      "id": "challenge-german",
+      "role": "part-b",
+      "language": "de",
+      "text": "Der Roboter lernt schnell.",
+      "count": 7,
+      "ids": [
+        22171,
+        4892,
+        25392,
+        75020,
+        406,
+        58052,
+        13
+      ],
+      "rawPieces": [
+        "Der",
+        "ĠRob",
+        "oter",
+        "Ġler",
+        "nt",
+        "Ġschnell",
+        "."
+      ],
+      "decodedPieces": [
+        "Der",
+        " Rob",
+        "oter",
+        " ler",
+        "nt",
+        " schnell",
+        "."
+      ],
+      "decoded": "Der Roboter lernt schnell."
+    },
+    {
+      "id": "challenge-french-subword",
+      "role": "part-b",
+      "language": "fr",
+      "text": "L’IA découpe le texte.",
+      "count": 8,
+      "ids": [
+        43,
+        527,
+        5863,
+        58048,
+        375,
+        512,
+        67967,
+        13
+      ],
+      "rawPieces": [
+        "L",
+        "âĢĻ",
+        "IA",
+        "ĠdÃ©cou",
+        "pe",
+        "Ġle",
+        "Ġtexte",
+        "."
+      ],
+      "decodedPieces": [
+        "L",
+        "’",
+        "IA",
+        " décou",
+        "pe",
+        " le",
+        " texte",
+        "."
+      ],
+      "decoded": "L’IA découpe le texte."
+    },
+    {
+      "id": "edge-curly-quotes",
+      "role": "edge-case",
+      "language": "en",
+      "text": "AI reads “hello” differently.",
+      "count": 7,
+      "ids": [
+        15469,
+        15804,
+        1036,
+        14990,
+        854,
+        21303,
+        13
+      ],
+      "rawPieces": [
+        "AI",
+        "Ġreads",
+        "ĠâĢľ",
+        "hello",
+        "âĢĿ",
+        "Ġdifferently",
+        "."
+      ],
+      "decodedPieces": [
+        "AI",
+        " reads",
+        " “",
+        "hello",
+        "”",
+        " differently",
+        "."
+      ],
+      "decoded": "AI reads “hello” differently."
+    },
+    {
+      "id": "edge-emoji-byte-pieces",
+      "role": "edge-case",
+      "language": "en",
+      "text": "Spaces, emojis 🤖, and punctuation!",
+      "count": 10,
+      "ids": [
+        71324,
+        11,
+        99066,
+        11162,
+        97,
+        244,
+        11,
+        323,
+        61503,
+        0
+      ],
+      "rawPieces": [
+        "Spaces",
+        ",",
+        "Ġemojis",
+        "ĠðŁ",
+        "¤",
+        "ĸ",
+        ",",
+        "Ġand",
+        "Ġpunctuation",
+        "!"
+      ],
+      "decodedPieces": [
+        "Spaces",
+        ",",
+        " emojis",
+        " �",
+        "�",
+        "�",
+        ",",
+        " and",
+        " punctuation",
+        "!"
+      ],
+      "decoded": "Spaces, emojis 🤖, and punctuation!"
+    }
+  ]
+}
