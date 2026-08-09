@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { once } from "node:events";
 import { createAppServer } from "../server/index.mjs";
-import { validatePredictionRequest } from "../server/modelService.mjs";
+import { getModelServiceStats, validatePredictionRequest } from "../server/modelService.mjs";
 
 const requests = [];
 const predictor = async (request) => {
@@ -32,6 +32,22 @@ try {
   const health = await fetch(`${base}/api/health`);
   assert.equal(health.status, 200);
   assert.equal((await health.json()).ok, true);
+
+  const tokenized = await fetch(`${base}/api/tokenize`, {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({ text:"Robots can misunderstand tokenisation." })
+  });
+  assert.equal(tokenized.status, 200);
+  const tokenizedBody = await tokenized.json();
+  assert.equal(tokenizedBody.decoded, tokenizedBody.text, "the live tokenizer round-trips the learner text exactly");
+  assert.equal(tokenizedBody.count, tokenizedBody.ids.length);
+  assert.equal(tokenizedBody.checkpoint, "onnx-community/SmolLM2-135M-Instruct-ONNX");
+  assert.deepEqual(tokenizedBody.ids, [20348,1565,416,20820,9624,5014,30]);
+  assert.equal(getModelServiceStats().tokenizerLoaded, true);
+  assert.equal(getModelServiceStats().modelLoaded, false, "Mission 1 loads only the tokenizer, not model weights");
+  assert.equal((await fetch(`${base}/api/tokenize`, { method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({ text:"" }) })).status, 400);
+  assert.equal((await fetch(`${base}/api/tokenize`)).status, 405);
 
   const valid = await fetch(`${base}/api/next-token`, {
     method:"POST",

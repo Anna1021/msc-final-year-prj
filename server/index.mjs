@@ -2,7 +2,7 @@ import { createReadStream, existsSync, statSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, join, normalize, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { getModelServiceStats, predictNextToken } from "./modelService.mjs";
+import { getModelServiceStats, predictNextToken, tokenizeText } from "./modelService.mjs";
 
 const root = resolve(fileURLToPath(new URL("../dist", import.meta.url)));
 const port = Number(process.env.PORT || 8787);
@@ -51,6 +51,14 @@ export function createAppServer({ predictor = predictNextToken } = {}) {
   return createServer(async (request, response) => {
     const url = new URL(request.url || "/", `http://${request.headers.host || "localhost"}`);
     if (request.method === "GET" && url.pathname === "/api/health") return json(response, 200, { ok:true, model:getModelServiceStats() });
+    if (request.method === "POST" && url.pathname === "/api/tokenize") {
+      try {
+        return json(response, 200, await tokenizeText(await readJson(request)));
+      } catch (error) {
+        const status = error.status || (error instanceof TypeError || error instanceof RangeError ? 400 : 500);
+        return json(response, status, { error:error instanceof Error ? error.message : "Tokenization failed." });
+      }
+    }
     if (request.method === "POST" && url.pathname === "/api/next-token") {
       let session;
       let ownsSession = false;
@@ -68,7 +76,7 @@ export function createAppServer({ predictor = predictNextToken } = {}) {
         if (ownsSession) activePredictionSessions.delete(session);
       }
     }
-    if (url.pathname === "/api/next-token") return json(response, 405, { error:"Method not allowed." });
+    if (["/api/next-token","/api/tokenize"].includes(url.pathname)) return json(response, 405, { error:"Method not allowed." });
     if (url.pathname.startsWith("/api/")) return json(response, 404, { error:"API route not found." });
     if (!["GET","HEAD"].includes(request.method || "")) return json(response, 405, { error:"Method not allowed." });
     serveStatic(request, response, url.pathname);

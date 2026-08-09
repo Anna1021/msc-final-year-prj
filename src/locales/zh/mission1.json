@@ -1,5 +1,6 @@
 {
   "title": "语言模型如何处理文字？", "subtitle": "语言模型会先把文字拆成称为 token 的小片段，再用数学方式处理。",
+  "liveTokenizerIntro": "体验实时语言模型所使用的真实 tokenizer。文字只用于本次活动，不会被保存。",
   "sections": { "intro": "什么是 token？", "demo": "查看真实分词", "playground": "试试自己的句子", "quickCheck": "快速检查", "numbers": "Token 变成数字", "summary": "总结" },
   "intro": { "body": "Token 是模型处理的一段文字。它可以是完整单词、单词的一部分、标点或其他文字片段。", "sentenceLabel": "示例句子", "buildingLabel": "积木比喻", "metaphorLabel": "帮助理解的单词积木，不是真实 tokenizer 边界", "metaphorNote": "这些单词积木只是帮助你想象文字片段。下一节中，真实 tokenizer 可能会用不同方式拆分它们。" },
   "demo": { "body": "观察经过验证的 Qwen2.5 tokenizer 如何把句子拆成八个真实 token。", "model": "此示例使用 Qwen2.5 tokenizer。", "different": "不同模型可能会用不同方式拆分同一段文字。", "replay": "重播示例", "replaying": "正在重播……", "realPieces": "真实 Qwen token 片段", "verifiedCount": "8 个已验证 token", "lookCloser": "仔细看看", "whyTitle": "为什么会这样拆分？", "whyVocabulary": "Tokenizer 使用一个固定的文字片段集合。", "whyCommon": "熟悉的片段可能保持完整；较长或不太熟悉的单词可能会被拆成更小的片段。" },

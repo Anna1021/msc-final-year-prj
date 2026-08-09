@@ -8,6 +8,7 @@ const appSource = await readFile(new URL("../src/main.jsx", import.meta.url), "u
 const fallbackSource = await readFile(new URL("./create-spa-route-fallbacks.mjs", import.meta.url), "utf8");
 const playgroundPageSource = await readFile(new URL("../src/mission1/Mission1PagedPlaygroundPage.jsx", import.meta.url), "utf8");
 const playgroundSource = await readFile(new URL("../src/mission1/QwenTokenizerPlayground.jsx", import.meta.url), "utf8");
+const liveTokenizerSource = await readFile(new URL("../src/mission1/liveTokenizerClient.js", import.meta.url), "utf8");
 const quickPagesSource = await readFile(new URL("../src/mission1/Mission1PagedQuickCheckPages.jsx", import.meta.url), "utf8");
 const quickCheckASource = await readFile(new URL("../src/mission1/Mission1QuickCheckA.jsx", import.meta.url), "utf8");
 const quickCheckBSource = await readFile(new URL("../src/mission1/Mission1QuickCheckB.jsx", import.meta.url), "utf8");
@@ -49,7 +50,9 @@ assert.match(prototypeSource, /playful-real-token-lab[\s\S]*TokenPieces/, "appro
 assert.match(prototypeSource, /uncharacteristically[\s\S]*un[\s\S]*character[\s\S]*istically/, "approved verified split remains present");
 assert.match(prototypeSource, /function replayExample\(\)/, "Replay behaviour remains connected");
 assert.match(playgroundPageSource, /QwenTokenizerPlayground/, "Page 3 reuses the existing tokenizer playground");
-assert.match(playgroundSource, /tokenizeWithQwen\(input\)/, "Page 3 follows the real Qwen tokenizer path");
+assert.match(playgroundSource, /tokenizeWithLiveModel\(input\)/, "Page 3 calls the tokenizer used by the live model");
+assert.match(liveTokenizerSource, /endpoint:"\/api\/tokenize"/, "Page 3 uses the same-origin live tokenizer API");
+assert.match(liveTokenizerSource, /body\.decoded !== text/, "Page 3 rejects a tokenizer response that does not round-trip exactly");
 assert.match(playgroundSource, /maxLength=\{200\}/, "the 200-character limit remains");
 assert.match(playgroundSource, /presets\.map/, "existing presets remain available");
 assert.match(playgroundSource, /TokenPieces groups=\{result\.visualGroups\}/, "successful runs render real tokenizer pieces");
@@ -76,7 +79,7 @@ assert.match(quickCheckBSource, /onClick=\{\(\) => reset\(\)\}/, "Page 5 keeps R
 assert.match(quickCheckBSource, /function newChallenge\(\)/, "Page 5 keeps New challenge");
 assert.match(quickCheckBSource, /result !== "idle"[\s\S]*feedback\.\$\{result\}/, "Page 5 keeps correct and incorrect feedback");
 assert.match(quickCheckBSource, /result === "correct"[\s\S]*mission-paged-reconstruction/, "Page 5 visibly reconstructs the original sentence after success");
-const activitySources = playgroundPageSource + playgroundSource + quickPagesSource + quickCheckASource + quickCheckBSource;
+const activitySources = playgroundPageSource + playgroundSource + liveTokenizerSource + quickPagesSource + quickCheckASource + quickCheckBSource;
 assert.doesNotMatch(activitySources, /writeProgress|completeMission1Progress|setProgress|localStorage|sessionStorage/, "Pages 1–6 cannot write Mission completion or storage");
 assert.match(prototypeSource, /currentPage !== 7 \|\| !coreComplete \|\| missionComplete[\s\S]*completeMission1Progress/, "Mission completion is restricted to the final page and completed core activities");
 assert.match(prototypeSource, /playgroundComplete && conceptResult === "correct" && rebuildResult === "correct"/, "direct Page 7 access cannot satisfy the completion gate");
