@@ -1,3 +1,14 @@
+---
+title: AI Explorer
+emoji: 🤖
+colorFrom: indigo
+colorTo: purple
+sdk: docker
+app_port: 7860
+pinned: false
+license: apache-2.0
+---
+
 # AI Explorer
 
 AI Explorer is an interactive React/Vite learning prototype for helping 12--14 year-old students understand core ideas behind Large Language Models. The central learning message is that ChatGPT does not truly "know" answers in the human sense: it processes tokens, uses context, compares probabilities, learns patterns from training data, and can still make confident mistakes.

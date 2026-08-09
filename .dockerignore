@@ -1,0 +1,9 @@
+.git
+.github
+node_modules
+dist
+npm-debug.log*
+.DS_Store
+docs
+report_assets
+construct-export-kit
