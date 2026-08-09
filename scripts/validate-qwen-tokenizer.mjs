@@ -9,21 +9,21 @@ const tokenizer = createQwenTokenizer(tokenizerJson, tokenizerConfig);
 
 const candidates = [
   "Cats find antidisestablishmentarianism surprising!",
-  "Robots can misunderstand tokenisation.",
-  "A supercalifragilisticexpialidocious robot waved!",
-  "The uncharacteristically quiet robot smiled.",
-  "AI reads multilingual text differently!",
-  "Robots learn quickly!",
+  "Long words can split into smaller tokens.",
+  "A supercalifragilisticexpialidocious reader waved!",
+  "The uncharacteristically quiet reader smiled.",
+  "Multilingual text can split differently!",
+  "Readers learn quickly!",
   "Tokenisation can be surprising.",
   "A chatbot noticed punctuation!",
-  "Multilingual robots say hello.",
-  "The tiny robot reappeared.",
-  "AI reads “hello” differently.",
-  "Bonjour, petit robot!",
-  "你好，AI Explorer！",
-  "Der Roboter lernt schnell.",
-  "L’IA découpe le texte.",
-  "Spaces, emojis 🤖, and punctuation!"
+  "Multilingual readers say hello.",
+  "The tiny kitten reappeared.",
+  "A model reads “hello” differently.",
+  "Bonjour, cher lecteur!",
+  "你好，语言模型！",
+  "Der Leser lernt schnell.",
+  "Le modèle découpe le texte.",
+  "Spaces, emojis 🌍, and punctuation!"
 ];
 
 const results = candidates.map((text) => encodeWithTokenizer(tokenizer, text));

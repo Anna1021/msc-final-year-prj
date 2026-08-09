@@ -32,7 +32,7 @@ export default function Mission1QuickCheckA({ t, onComplete, onResultChange, res
     <div className="m1-check-actions"><button type="button" className="primary" disabled={!selected} onClick={check}>{t("mission1.actions.check")}</button><button type="button" className="outline" onClick={() => { setSelected(""); setResult("idle"); }}><RotateCcw size={17} strokeWidth={1.8} />{t("mission1.actions.retry")}</button></div>
     {result !== "idle" && <div className={`m1-inline-message ${result}`} role="status">{result === "correct" ? <CheckCircle2 size={19} strokeWidth={1.8} /> : <XCircle size={19} strokeWidth={1.8} />}{t(`mission1.checkA.feedback.${result}.${selected}`)}</div>}
     {result !== "idle" && visualVariant === "paged" && <div className="mission-paged-token-kinds" aria-label={t("mission1Learning.tokenKindsLabel")}>
-      <span><Puzzle size={20} strokeWidth={1.8} /><b>{t("mission1Learning.tokenKinds.word")}</b><TokenBuildingBlock index={0}>robot</TokenBuildingBlock></span>
+      <span><Puzzle size={20} strokeWidth={1.8} /><b>{t("mission1Learning.tokenKinds.word")}</b><TokenBuildingBlock index={0}>reader</TokenBuildingBlock></span>
       <span><Scissors size={20} strokeWidth={1.8} /><b>{t("mission1Learning.tokenKinds.part")}</b><span className="mission-paged-kind-blocks"><TokenBuildingBlock index={1}>character</TokenBuildingBlock><TokenBuildingBlock index={2}>istically</TokenBuildingBlock></span></span>
       <span><Pilcrow size={20} strokeWidth={1.8} /><b>{t("mission1Learning.tokenKinds.punctuation")}</b><TokenBuildingBlock index={3} punctuation>!</TokenBuildingBlock></span>
     </div>}

@@ -8,18 +8,18 @@ const tokenizerConfig = JSON.parse(await readFile(new URL("tokenizer_config.json
 const tokenizer = createQwenTokenizer(tokenizerJson, tokenizerConfig);
 
 const definitions = [
-  { id: "intro-long-word", role: "intro", language: "en", text: "The uncharacteristically quiet robot smiled." },
-  { id: "challenge-robots-learn", role: "part-b", language: "en", text: "Robots learn quickly!" },
+  { id: "intro-long-word", role: "intro", language: "en", text: "The uncharacteristically quiet reader smiled." },
+  { id: "challenge-robots-learn", role: "part-b", language: "en", text: "Readers learn quickly!" },
   { id: "challenge-tokenisation", role: "part-b", language: "en", text: "Tokenisation can be surprising." },
   { id: "challenge-chatbot", role: "part-b", language: "en", text: "A chatbot noticed punctuation!" },
-  { id: "challenge-multilingual", role: "part-b", language: "en", text: "Multilingual robots say hello." },
-  { id: "challenge-reappeared", role: "part-b", language: "en", text: "The tiny robot reappeared." },
-  { id: "challenge-french", role: "part-b", language: "fr", text: "Bonjour, petit robot!" },
-  { id: "challenge-chinese", role: "part-b", language: "zh", text: "你好，AI Explorer！" },
-  { id: "challenge-german", role: "part-b", language: "de", text: "Der Roboter lernt schnell." },
-  { id: "challenge-french-subword", role: "part-b", language: "fr", text: "L’IA découpe le texte." },
-  { id: "edge-curly-quotes", role: "edge-case", language: "en", text: "AI reads “hello” differently." },
-  { id: "edge-emoji-byte-pieces", role: "edge-case", language: "en", text: "Spaces, emojis 🤖, and punctuation!" }
+  { id: "challenge-multilingual", role: "part-b", language: "en", text: "Multilingual readers say hello." },
+  { id: "challenge-reappeared", role: "part-b", language: "en", text: "The tiny kitten reappeared." },
+  { id: "challenge-french", role: "part-b", language: "fr", text: "Bonjour, cher lecteur!" },
+  { id: "challenge-chinese", role: "part-b", language: "zh", text: "你好，语言模型！" },
+  { id: "challenge-german", role: "part-b", language: "de", text: "Der Leser lernt schnell." },
+  { id: "challenge-french-subword", role: "part-b", language: "fr", text: "Le modèle découpe le texte." },
+  { id: "edge-curly-quotes", role: "edge-case", language: "en", text: "A model reads “hello” differently." },
+  { id: "edge-emoji-byte-pieces", role: "edge-case", language: "en", text: "Spaces, emojis 🌍, and punctuation!" }
 ];
 
 const fixtures = definitions.map((definition) => {

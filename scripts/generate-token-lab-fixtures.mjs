@@ -7,15 +7,15 @@ const tokenizer = createQwenTokenizer(
   JSON.parse(await readFile(new URL("tokenizer_config.json", assets), "utf8"))
 );
 const definitions = [
-  { id: "everyday", category: "everyday", language: "en", text: "Robots learn quickly!" },
-  { id: "long-word", category: "longWords", language: "en", text: "The uncharacteristically quiet robot smiled." },
+  { id: "everyday", category: "everyday", language: "en", text: "Readers learn quickly!" },
+  { id: "long-word", category: "longWords", language: "en", text: "The uncharacteristically quiet reader smiled." },
   { id: "contraction", category: "contractions", language: "en", text: "I can't believe it's tokenised!" },
-  { id: "hyphen", category: "hyphens", language: "en", text: "A well-trained robot re-checks text." },
+  { id: "hyphen", category: "hyphens", language: "en", text: "A well-trained reader re-checks text." },
   { id: "punctuation", category: "punctuation", language: "en", text: "Wait... really?!" },
-  { id: "emoji", category: "emoji", language: "en", text: "Spaces, emojis 🤖, and punctuation!" },
-  { id: "chinese", category: "chinese", language: "zh", text: "你好，AI Explorer！" },
-  { id: "french", category: "french", language: "fr", text: "L’IA découpe le texte." },
-  { id: "german", category: "german", language: "de", text: "Der Roboter lernt schnell." },
+  { id: "emoji", category: "emoji", language: "en", text: "Spaces, emojis 🌍, and punctuation!" },
+  { id: "chinese", category: "chinese", language: "zh", text: "你好，语言模型！" },
+  { id: "french", category: "french", language: "fr", text: "Le modèle découpe le texte." },
+  { id: "german", category: "german", language: "de", text: "Der Leser lernt schnell." },
   { id: "spacing", category: "spacing", language: "en", text: "Tokens  can change with spacing." }
 ];
 

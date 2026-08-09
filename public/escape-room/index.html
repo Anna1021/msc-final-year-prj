@@ -1727,7 +1727,7 @@
         pieces: Object.freeze(["un", "belie", "vable", "!"])
       }),
       challenge: Object.freeze({
-        sentence: "The robot found an unhelpful clue.",
+        sentence: "The reader found an unhelpful clue.",
         targetWord: "unhelpful",
         targetIds: Object.freeze([650, 8653, 1262]),
         targetRawPieces: Object.freeze(["Ġun", "help", "ful"]),
@@ -1741,15 +1741,15 @@
       })
     });
     const numbersRoomTeachingData = Object.freeze({
-      token: "robot",
+      token: "reader",
       tokenId: 305,
       drawers: Object.freeze([128, 305, 742]),
       illustrativeRow: Object.freeze(["0.42", "-0.18", "0.73", "0.11", "…"]),
       correctConceptId: "lookup-label",
       concepts: Object.freeze([
-        Object.freeze({ id: "meaning", label: "It stores the meaning of robot." }),
+        Object.freeze({ id: "meaning", label: "It stores the meaning of reader." }),
         Object.freeze({ id: "lookup-label", label: "It is a lookup label that points to one learned number row." }),
-        Object.freeze({ id: "probability", label: "It is the probability that robot appears." })
+        Object.freeze({ id: "probability", label: "It is the probability that reader appears." })
       ]),
       accuracyNote: "Simplified teaching row — real models use much larger learned representations."
     });
@@ -1971,7 +1971,7 @@
           <div>
             <span class="clue">Final Challenge</span>
             <h1>Language Model Escape Room</h1>
-            <p>Help the robot restore six crystals. Each room follows one step in how a language model processes text, predicts, and learns.</p>
+            <p>Restore six crystals with your guide. Each room follows one step in how a language model processes text, predicts, and learns.</p>
             <button type="button" class="gold" data-action="continue">${completedCount ? "Continue adventure" : "Start Room 1"}</button>
           </div>
           <img class="robot" src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot">
@@ -2045,7 +2045,7 @@
         <i aria-hidden="true">↓</i>
         <span class="token-success-pieces"><small>Token pieces</small><b>${tokenRoomTeachingData.challenge.targetPieces.map((piece) => `[${piece}]`).join(" ")}</b></span>
       </div>` : "";
-      const numbersMechanism = room.id === "numbers" ? `<div class="token-success-chain" aria-label="Token robot uses ID 305 to find a learned number row">
+      const numbersMechanism = room.id === "numbers" ? `<div class="token-success-chain" aria-label="Token reader uses ID 305 to find a learned number row">
         <span><small>Token</small><b>${numbersRoomTeachingData.token}</b></span>
         <i aria-hidden="true">→</i>
         <span><small>Lookup label</small><b>${numbersRoomTeachingData.tokenId}</b></span>
@@ -2158,7 +2158,7 @@
               <div class="token-split-challenge">
                 <span class="token-question-badge">Lock question</span>
                 <h2>Which split matches the tokenizer used in AI Explorer?</h2>
-                <p class="token-target-sentence">The robot found an <mark>${challenge.targetWord}</mark> clue.</p>
+                <p class="token-target-sentence">The reader found an <mark>${challenge.targetWord}</mark> clue.</p>
                 <p>Choose one Token split. You do not need to reorder the sentence.</p>
                 <div class="token-split-options" role="group" aria-label="Choose the tokenizer split for ${challenge.targetWord}">${challenge.options.map((option, index) => `<button type="button" class="token-split-option ${data.selectedOption === option.id ? "selected" : ""}" data-token-option="${option.id}" aria-pressed="${data.selectedOption === option.id}"><small>Option ${String.fromCharCode(65 + index)}</small><span>${option.pieces.map((piece) => `<b>${piece}</b>`).join("")}</span></button>`).join("")}</div>
                 ${comparison}
@@ -2178,7 +2178,7 @@
       const scene = !data.drawerOpened ? 1 : !data.showConcept ? 2 : 3;
       const feedbackClass = data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : "";
       const sceneDots = `<div class="numbers-scene-progress" aria-label="Scene ${scene} of 3"><b>${scene} / 3</b><span class="active"></span><span class="${scene >= 2 ? "active" : ""}"></span><span class="${scene >= 3 ? "active" : ""}"></span></div>`;
-      const lookupPath = `<div class="numbers-simple-path" aria-label="Token robot has ID 305">
+      const lookupPath = `<div class="numbers-simple-path" aria-label="Token reader has ID 305">
         <div class="numbers-object token-object"><small>Token</small><strong>${teaching.token}</strong></div>
         <span aria-hidden="true">↓</span>
         <div class="numbers-id-with-guide"><div class="numbers-object id-object"><small>Lookup ID</small><strong>${teaching.tokenId}</strong></div><img class="numbers-path-robot" src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot holding the lookup ID"></div>
@@ -2211,7 +2211,7 @@
             <span class="clue">Drawer matched</span>
             <h2>Drawer ${teaching.tokenId} opens</h2>
             <div class="numbers-reveal-layout">
-              <div class="numbers-complete-path" aria-label="Token robot uses ID 305 to find a learned number row">
+              <div class="numbers-complete-path" aria-label="Token reader uses ID 305 to find a learned number row">
                 ${lookupPath}
                 <span class="numbers-down-arrow" aria-hidden="true">↓</span>
                 <div class="numbers-open-drawer">
@@ -2339,7 +2339,7 @@
       const options = firstRound
         ? [["door",45],["box",30],["book",18],["banana",7]]
         : [["inside",50],["away",25],["slowly",18],["banana",7]];
-      const sentence = firstRound ? "The robot opened the ___" : `The robot opened the ${data.generated[0] || "door"} and stepped ___`;
+      const sentence = firstRound ? "The visitor opened the ___" : `The visitor opened the ${data.generated[0] || "door"} and stepped ___`;
       return `<div class="room-body">
         <section class="puzzle-board">
           ${stepStrip(["Compare candidates", "Add one token", "Predict again"], firstRound ? (data.choice ? 1 : 0) : 2)}

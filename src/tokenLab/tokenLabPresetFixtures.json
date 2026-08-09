@@ -8,30 +8,30 @@
       "id": "everyday",
       "category": "everyday",
       "language": "en",
-      "text": "Robots learn quickly!",
+      "text": "Readers learn quickly!",
       "count": 5,
       "visualGroupCount": 5,
       "ids": [
-        14465,
-        2412,
+        4418,
+        388,
         3960,
         6157,
         0
       ],
       "rawPieces": [
-        "Rob",
-        "ots",
+        "Read",
+        "ers",
         "Ġlearn",
         "Ġquickly",
         "!"
       ],
-      "decoded": "Robots learn quickly!"
+      "decoded": "Readers learn quickly!"
     },
     {
       "id": "long-word",
       "category": "longWords",
       "language": "en",
-      "text": "The uncharacteristically quiet robot smiled.",
+      "text": "The uncharacteristically quiet reader smiled.",
       "count": 8,
       "visualGroupCount": 8,
       "ids": [
@@ -40,7 +40,7 @@
         19190,
         37110,
         11340,
-        12305,
+        6604,
         30545,
         13
       ],
@@ -50,11 +50,11 @@
         "character",
         "istically",
         "Ġquiet",
-        "Ġrobot",
+        "Ġreader",
         "Ġsmiled",
         "."
       ],
-      "decoded": "The uncharacteristically quiet robot smiled."
+      "decoded": "The uncharacteristically quiet reader smiled."
     },
     {
       "id": "contraction",
@@ -91,14 +91,14 @@
       "id": "hyphen",
       "category": "hyphens",
       "language": "en",
-      "text": "A well-trained robot re-checks text.",
+      "text": "A well-trained reader re-checks text.",
       "count": 9,
       "visualGroupCount": 9,
       "ids": [
         32,
         1632,
         68924,
-        12305,
+        6604,
         312,
         15934,
         82,
@@ -109,14 +109,14 @@
         "A",
         "Ġwell",
         "-trained",
-        "Ġrobot",
+        "Ġreader",
         "Ġre",
         "-check",
         "s",
         "Ġtext",
         "."
       ],
-      "decoded": "A well-trained robot re-checks text."
+      "decoded": "A well-trained reader re-checks text."
     },
     {
       "id": "punctuation",
@@ -143,7 +143,7 @@
       "id": "emoji",
       "category": "emoji",
       "language": "en",
-      "text": "Spaces, emojis 🤖, and punctuation!",
+      "text": "Spaces, emojis 🌍, and punctuation!",
       "count": 10,
       "visualGroupCount": 8,
       "ids": [
@@ -151,8 +151,8 @@
         11,
         99066,
         11162,
-        97,
-        244,
+        234,
+        235,
         11,
         323,
         61503,
@@ -163,49 +163,48 @@
         ",",
         "Ġemojis",
         "ĠðŁ",
-        "¤",
-        "ĸ",
+        "Į",
+        "į",
         ",",
         "Ġand",
         "Ġpunctuation",
         "!"
       ],
-      "decoded": "Spaces, emojis 🤖, and punctuation!"
+      "decoded": "Spaces, emojis 🌍, and punctuation!"
     },
     {
       "id": "chinese",
       "category": "chinese",
       "language": "zh",
-      "text": "你好，AI Explorer！",
+      "text": "你好，语言模型！",
       "count": 5,
       "visualGroupCount": 5,
       "ids": [
         108386,
         3837,
-        15469,
-        29152,
+        102064,
+        104949,
         6313
       ],
       "rawPieces": [
         "ä½łå¥½",
         "ï¼Į",
-        "AI",
-        "ĠExplorer",
+        "è¯Ńè¨Ģ",
+        "æ¨¡åŀĭ",
         "ï¼ģ"
       ],
-      "decoded": "你好，AI Explorer！"
+      "decoded": "你好，语言模型！"
     },
     {
       "id": "french",
       "category": "french",
       "language": "fr",
-      "text": "L’IA découpe le texte.",
-      "count": 8,
-      "visualGroupCount": 8,
+      "text": "Le modèle découpe le texte.",
+      "count": 7,
+      "visualGroupCount": 7,
       "ids": [
-        43,
-        527,
-        5863,
+        2304,
+        82497,
         58048,
         375,
         512,
@@ -213,28 +212,27 @@
         13
       ],
       "rawPieces": [
-        "L",
-        "âĢĻ",
-        "IA",
+        "Le",
+        "ĠmodÃ¨le",
         "ĠdÃ©cou",
         "pe",
         "Ġle",
         "Ġtexte",
         "."
       ],
-      "decoded": "L’IA découpe le texte."
+      "decoded": "Le modèle découpe le texte."
     },
     {
       "id": "german",
       "category": "german",
       "language": "de",
-      "text": "Der Roboter lernt schnell.",
+      "text": "Der Leser lernt schnell.",
       "count": 7,
       "visualGroupCount": 7,
       "ids": [
         22171,
-        4892,
-        25392,
+        11615,
+        261,
         75020,
         406,
         58052,
@@ -242,14 +240,14 @@
       ],
       "rawPieces": [
         "Der",
-        "ĠRob",
-        "oter",
+        "ĠLes",
+        "er",
         "Ġler",
         "nt",
         "Ġschnell",
         "."
       ],
-      "decoded": "Der Roboter lernt schnell."
+      "decoded": "Der Leser lernt schnell."
     },
     {
       "id": "spacing",

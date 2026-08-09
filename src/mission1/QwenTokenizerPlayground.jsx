@@ -4,10 +4,10 @@ import { LIVE_TOKENIZER, tokenizeWithLiveModel, validateLiveTokenizerInput } fro
 import TokenPieces from "./TokenPieces.jsx";
 
 const PRESETS = {
-  en: ["Robots can misunderstand tokenisation.", "AI reads multilingual text differently!", "Spaces, emojis 🤖, and punctuation!"],
-  zh: ["你好，AI Explorer！", "机器人也会把文字拆成 token。", "AI 会怎样读取标点？"],
-  fr: ["Bonjour, petit robot!", "L’IA découpe le texte.", "Les tokens peuvent surprendre !"],
-  de: ["Der Roboter lernt schnell.", "KI zerlegt Text in Tokens.", "Wie liest ein Modell Satzzeichen?"]
+  en: ["Long words can split into smaller tokens.", "Multilingual text can split differently!", "Spaces, emojis 🌍, and punctuation!"],
+  zh: ["长单词可能被拆成多个 Token。", "多语言文字的拆分方式可能不同！", "空格、表情 🌍 和标点也很重要！"],
+  fr: ["Les mots longs peuvent former plusieurs tokens.", "Un texte multilingue peut être découpé différemment !", "Espaces, émojis 🌍 et ponctuation !"],
+  de: ["Lange Wörter können mehrere Tokens bilden.", "Mehrsprachiger Text kann anders zerlegt werden!", "Leerzeichen, Emojis 🌍 und Satzzeichen!"]
 };
 
 export default function QwenTokenizerPlayground({ language, t, onSuccessfulRun, exploreIndex, resetKey, visualVariant = "default", showModelNote = true }) {

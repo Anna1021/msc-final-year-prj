@@ -3,6 +3,7 @@ import {
   ArrowRight,
   BookOpen,
   Check,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   CircleHelp,
@@ -16,7 +17,7 @@ import {
 } from "lucide-react";
 import { didContextWindowShift } from "./contextWindowProgress.js";
 
-const STORY_TOKENS = ["The", "small", "robot", "found", "a", "silver", "key", "under", "the", "bridge", "."];
+const STORY_TOKENS = ["The", "young", "reader", "found", "a", "silver", "key", "under", "the", "bridge", "."];
 const WINDOW_SIZE = 5;
 
 function LessonQuestion({ number, label, children }) {
