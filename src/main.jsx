@@ -5,6 +5,23 @@ import "./styles.css";
 import "./home.css";
 import FinalChallenge from "./finalChallenge/FinalChallenge.jsx";
 import LanguageSelector from "./components/LanguageSelector.jsx";
+import {
+  ContextIllustration,
+  ContextLessonIllustration,
+  LearningLessonIllustration,
+  LlmExplorerLogo,
+  PatternsIllustration,
+  PatternsLessonIllustration,
+  PipelineLoopArrow,
+  PortalIllustration,
+  PredictionIllustration,
+  PredictionLessonIllustration,
+  RepeatIllustration,
+  StepArrow,
+  TextIllustration,
+  TokensIllustration,
+  TokensLessonIllustration
+} from "./components/dashboard/illustrations/HomeIllustrations.jsx";
 import Mission1QuickCheckA from "./mission1/Mission1QuickCheckA.jsx";
 import Mission1QuickCheckB from "./mission1/Mission1QuickCheckB.jsx";
 import QwenTokenizerPlayground from "./mission1/QwenTokenizerPlayground.jsx";
@@ -94,7 +111,7 @@ function RobotLogo() {
 }
 
 function LlmExplorerMark() {
-  return <span className="llm-explorer-mark" aria-hidden="true">{Array.from({ length: 12 }, (_, index) => <i key={index} />)}</span>;
+  return <span className="llm-explorer-mark"><LlmExplorerLogo /></span>;
 }
 
 function Avatar({ small = false }) {
@@ -302,19 +319,19 @@ function TopBar({ route, navigate, resetProgress, qaToolsVisible, qaMode, setQaM
 
 function Dashboard({ progress, navigate, notify, qaMode }) {
   const lessonPresentation = [
-    { key: "tokens", Icon: Braces },
-    { key: "context", Icon: Layers3 },
-    { key: "patterns", Icon: Share2 },
-    { key: "prediction", Icon: TrendingUp },
-    { key: "learning", Icon: Database }
+    { key: "tokens", Illustration: TokensLessonIllustration },
+    { key: "context", Illustration: ContextLessonIllustration },
+    { key: "patterns", Illustration: PatternsLessonIllustration },
+    { key: "prediction", Illustration: PredictionLessonIllustration },
+    { key: "learning", Illustration: LearningLessonIllustration }
   ];
   const flowSteps = [
-    { key: "text", Icon: Type },
-    { key: "tokens", Icon: Braces },
-    { key: "context", Icon: Layers3 },
-    { key: "patterns", Icon: Share2 },
-    { key: "nextToken", Icon: TrendingUp },
-    { key: "repeat", Icon: RefreshCcw }
+    { key: "text", Illustration: TextIllustration },
+    { key: "tokens", Illustration: TokensIllustration },
+    { key: "context", Illustration: ContextIllustration },
+    { key: "patterns", Illustration: PatternsIllustration },
+    { key: "nextToken", Illustration: PredictionIllustration },
+    { key: "repeat", Illustration: RepeatIllustration }
   ];
 
   const { t } = useI18n();
@@ -330,13 +347,14 @@ function Dashboard({ progress, navigate, notify, qaMode }) {
       </div>
 
       <ol className="learn-model-flow" aria-label={t("common.homeExplorer.flowLabel")}>
-        {flowSteps.map(({ key, Icon: FlowIcon }, index) => <React.Fragment key={key}>
+        {flowSteps.map(({ key, Illustration }, index) => <React.Fragment key={key}>
           <li className="learn-flow-step">
-            <span><FlowIcon /></span>
+            <span><Illustration /></span>
             <strong>{t(`common.homeExplorer.flow.${key}`)}</strong>
           </li>
-          {index < flowSteps.length - 1 && <ArrowRight className="learn-flow-arrow" aria-hidden="true" />}
+          {index < flowSteps.length - 1 && <StepArrow />}
         </React.Fragment>)}
+        <PipelineLoopArrow />
       </ol>
     </section>
 
@@ -352,10 +370,10 @@ function Dashboard({ progress, navigate, notify, qaMode }) {
         {missionData.map((mission, index) => {
           const presentation = lessonPresentation[index];
           const state = progress.missions[mission.id] || { progress: 0, completed: false };
-          const ActionIcon = presentation.Icon;
+          const Illustration = presentation.Illustration;
           return <button className={`learn-lesson-card learn-lesson-${index + 1}`} type="button" onClick={() => navigate(mission.route)} key={mission.id}>
             <span className="learn-lesson-number" aria-label={`Lesson ${index + 1}`}>{String(index + 1).padStart(2, "0")}</span>
-            <span className="learn-lesson-symbol" aria-hidden="true"><ActionIcon /></span>
+            <span className="learn-lesson-symbol" aria-hidden="true"><Illustration /></span>
             <div className="learn-lesson-copy">
               <div className="learn-lesson-title-row">
                 <h3>{t(`common.homeExplorer.lessons.${presentation.key}.title`)}</h3>
@@ -371,7 +389,7 @@ function Dashboard({ progress, navigate, notify, qaMode }) {
     </section>
 
     <section className="learn-final-challenge" aria-labelledby="learn-final-title">
-      <span className="learn-final-door" aria-hidden="true"><img src="/assets/img/final-challenge/room1/door-open-light.png" alt="" /></span>
+      <span className="learn-final-door" aria-hidden="true"><PortalIllustration /></span>
       <div className="learn-final-copy">
         <h2 id="learn-final-title">{t("common.homeExplorer.finalChallenge")}</h2>
         <strong>{t("common.homeExplorer.escapeTitle")}</strong>
