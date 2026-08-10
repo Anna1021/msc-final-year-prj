@@ -9,8 +9,8 @@ export const LESSON_3_CONNECTIONS = Object.freeze([
 ]);
 
 export const LESSON_3_POSITION_SENTENCES = Object.freeze({
-  a: ["The", "dog", "chased", "the", "cat"],
-  b: ["The", "cat", "chased", "the", "dog"]
+  a: ["The", "dog", "chased", "the", "ball", "."],
+  b: ["The", "ball", "chased", "the", "dog", "."]
 });
 
 export const LESSON_3_PROCESS_EXAMPLE = Object.freeze({

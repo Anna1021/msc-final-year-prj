@@ -9,7 +9,7 @@ export const PAGED_MISSIONS = Object.freeze({
   3: {
     order: 3, topic: "Connecting the Tokens", robot: "/assets/img/mission3-robot-hallucination.png",
     pages: [
-      ["transformer", "Meet the Transformer", "See how visible Tokens can combine information."],
+      ["connections", "From context to connections", "See how available tokens can combine information."],
       ["attention", "Some connections contribute more", "Observe different simplified connection strengths."],
       ["representation", "Build a context-aware Token", "Update a simplified Token representation."],
       ["position", "Position changes relationships", "See how order changes Token relationships."],

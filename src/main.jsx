@@ -251,7 +251,7 @@ function Sidebar({ route, progress, navigate }) {
 function pagedLessonMeta(route, t) {
   const lessons = {
     "/mission/1-tokenisation-paged": { number: 1, total: 7, topic: t("mission1.paged.tokenisation") },
-    "/mission/2-prediction-paged": { number: 2, total: 6, topic: t("mission2.shell.topic") },
+    "/mission/2-prediction-paged": { number: 2, total: 7, topic: t("mission2.shell.topic") },
     "/mission/3-hallucination-paged": { number: 3, total: 6, topic: t("mission3.shell.topic") },
     "/mission/4-training-data-paged": { number: 4, total: 4, topic: t("mission4.shell.topic") },
     "/mission/5-bias-paged": { number: 5, total: 6, topic: t("mission5.shell.topic") }

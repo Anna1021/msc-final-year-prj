@@ -6,7 +6,7 @@ import { Lesson3Page1, Lesson3Page2, Lesson3Page3, Lesson3Page4, Lesson3Page5, L
 import "./lesson3Paged.css";
 
 export const LESSON_3_PAGES = Object.freeze([
-  ["transformer","mission3.page1.title","mission3.page1.subtitle"],
+  ["connections","mission3.page1.title","mission3.page1.subtitle"],
   ["attention","mission3.page2.title","mission3.page2.subtitle"],
   ["representation","mission3.page3.title","mission3.page3.subtitle"],
   ["position","mission3.page4.title","mission3.page4.subtitle"],
@@ -48,7 +48,8 @@ export default function Lesson3Paged({ setProgress, navigate, notify }) {
   const recommendation={visible:recommended>0&&currentPage>recommended&&!continued.has(currentPage),message:t("learningMode.notice"),goLabel:t("learningMode.goRecommended"),continueLabel:t("learningMode.continueHere"),onGoRecommended:()=>changePage(recommended),onContinue:()=>setContinued((current)=>new Set(current).add(currentPage))};
   const page=LESSON_3_PAGES[currentPage-1];
   const complete=REQUIRED.every((key)=>activities.has(key))&&visited.has(pageCount);
-  const labels={backToMissions:t("mission3.shell.backToLearn"),missionCount:t("mission3.shell.lessonCount"),topicLabel:t("mission3.shell.topic"),pageCount:t("mission3.shell.pageCount",{current:currentPage,total:pageCount}),back:t("mission3.shell.back"),next:t("mission3.shell.next"),prototypeEndAction:t("mission3.shell.incomplete"),prototypeLabel:t("mission3.shell.topic"),robotAlt:t("mission3.shell.robotAlt")};
+  const progressPageCount=7;
+  const labels={backToMissions:t("mission3.shell.backToLearn"),missionCount:t("mission3.shell.lessonCount"),topicLabel:t("mission3.shell.topic"),pageCount:t("mission3.shell.pageCount",{current:currentPage,total:progressPageCount}),back:t("mission3.shell.back"),next:t("mission3.shell.next"),prototypeEndAction:t("mission3.shell.incomplete"),prototypeLabel:t("mission3.shell.topic"),robotAlt:t("mission3.shell.robotAlt")};
 
   function continueToNextLesson() {
     if (complete) {
@@ -58,7 +59,7 @@ export default function Lesson3Paged({ setProgress, navigate, notify }) {
     navigate("/mission/4-training-data-paged");
   }
 
-  return <MissionLessonShell currentPage={currentPage} pageCount={pageCount} onPageChange={changePage} onEnd={continueToNextLesson} onBackToMissions={()=>navigate("/missions")} title={t(page[1])} subtitle={t(page[2])} labels={{...labels, prototypeEndAction:t("mission3.shell.nextLesson")}} recommendation={recommendation} rootClassName={`lesson-3-paged l3-page-${page[0]} paged-mission-playful playful-learning-scope`} robotImage={`/assets/img/${ROBOTS[currentPage-1]}`}>
+  return <MissionLessonShell currentPage={currentPage} pageCount={pageCount} progressPageCount={progressPageCount} onPageChange={changePage} onEnd={continueToNextLesson} onBackToMissions={()=>navigate("/missions")} title={t(page[1])} subtitle={t(page[2])} labels={{...labels, prototypeEndAction:t("mission3.shell.nextLesson")}} recommendation={recommendation} rootClassName={`lesson-3-paged l3-page-${page[0]} paged-mission-playful playful-learning-scope`} robotImage={`/assets/img/${ROBOTS[currentPage-1]}`}>
     <Lesson3Page1 active={currentPage===1} t={t}/>
     <Lesson3Page2 active={currentPage===2} t={t} onComplete={markConnectionStrengths}/>
     <Lesson3Page3 active={currentPage===3} t={t} onComplete={markContextualBuild}/>

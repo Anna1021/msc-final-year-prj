@@ -14,7 +14,7 @@ const fallbacks = await readFile(new URL("./create-spa-route-fallbacks.mjs", imp
 assert.equal(PAGED_MISSIONS[3].pages.length, 6, "Lesson 3 metadata has six focused pages");
 assert.equal(PAGED_MISSIONS[5].pages.length, 4, "Lesson 4 metadata has four focused pages");
 assert.equal(PAGED_MISSIONS[6].pages.length, 4, "Lesson 5 has four focused pages");
-assert.deepEqual(PAGED_MISSIONS[3].pages.map((page) => page[0]), ["transformer","attention","representation","position","process","summary"]);
+assert.deepEqual(PAGED_MISSIONS[3].pages.map((page) => page[0]), ["connections","attention","representation","position","process","summary"]);
 assert.deepEqual(PAGED_MISSIONS[5].pages.map((page) => page[0]), ["predict","choose","live","check"]);
 assert.deepEqual(PAGED_MISSIONS[6].pages.map((page) => page[0]), ["origin","adjust","repeat","connect"]);
 for (const [id, route] of Object.entries(PAGED_MISSION_ROUTES)) {

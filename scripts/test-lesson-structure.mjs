@@ -35,7 +35,7 @@ const counts={
   4:registryCount(lesson4,"LESSON_4_PAGES",/\["(?:predict|choose|live|check)"/g),
   5:registryCount(lesson5,"LESSON_5_PAGES",/^\s*\["/gm)
 };
-assert.deepEqual(counts,{1:7,2:6,3:6,4:4,5:4});
+assert.deepEqual(counts,{1:6,2:7,3:6,4:4,5:4});
 assert.equal(PAGED_MISSIONS[3].pages.length,counts[3]);
 assert.equal(PAGED_MISSIONS[5].pages.length,counts[4]);
 assert.equal(PAGED_MISSIONS[6].pages.length,counts[5]);
@@ -46,7 +46,7 @@ for(const [number,source] of [[1,lesson1],[2,lesson2]]){
 for(const [number,source] of [[3,lesson3],[4,lesson4],[5,lesson5]]){
   assert.match(source,new RegExp(`const pageCount\\s*=\\s*${number===3?"LESSON_3_PAGES":number===4?"LESSON_4_PAGES":"LESSON_5_PAGES"}\\.length`));
   assert.match(source,/pageCount=\{pageCount\}/);
-  assert.match(source,/total:pageCount/);
+  assert.match(source,number===3?/total:progressPageCount/:/total:pageCount/);
   assert.match(source,/visited\.has\(pageCount\)/);
 }
 assert.doesNotMatch(lesson3,/pageCount=\{6\}|total:6|visited\.has\(6\)/);
@@ -58,10 +58,9 @@ for(const [number,source] of [[3,pages3],[4,pages4],[5,pages5]]){
 }
 assert.match(playground,/technicalOpen, setTechnicalOpen\] = useState\(true\)/,"Lesson 1 technical details start expanded");
 assert.match(playground,/aria-controls="mission1-tokenizer-technical-details"/);
-assert.match(numbers,/technicalOpen, setTechnicalOpen\] = useState\(true\)/,"Lesson 1 technical definition starts expanded");
-assert.match(numbers,/<details open=\{technicalOpen\}/,"Lesson 1 technical definition remains collapsible");
+assert.doesNotMatch(numbers,/embeddingSecondary|technicalOpen/,"Lesson 1 keeps technical embedding terminology out of the core journey");
 assert.match(pages2,/technicalOpen, setTechnicalOpen\] = useState\(true\)/,"Lesson 2 Technical Word starts expanded");
-assert.match(pages2,/<details className="m2-simple-definition" open=\{technicalOpen\}/);
+assert.match(pages2,/<details className="m2-context-keyword-card" open=\{technicalOpen\}/);
 assert.match(pages2,/aria-expanded=\{technicalOpen\} aria-controls="mission2-context-window-definition"/);
 assert.match(css1,/\.mission-lesson-paged\.mission-1-paged \.mission-lesson-paged__title\{display:none\}/);
 assert.match(css2,/\.mission-lesson-paged\.mission-2-paged\.mission-2-reading-context \.mission-lesson-paged__title\{display:none\}/);
