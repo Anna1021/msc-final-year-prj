@@ -1,9 +1,8 @@
 import { TOKEN_ROOM_CHALLENGE, TOKEN_ROOM_EXAMPLE, TOKEN_ROOM_TOKENIZER } from "./tokenRoomTeachingData.js";
-import { NUMBERS_ROOM_TEACHING_DATA } from "./numbersRoomTeachingData.js";
 
 export const ESCAPE_STORAGE_KEY = "aiExplorerEscapeRoomProgress";
-// Version 2 replaces the legacy AI-literacy room ids with the LLM process path.
-export const ESCAPE_PROGRESS_VERSION = 2;
+// Version 3 moves the Final Challenge to the five-Lesson/five-crystal path.
+export const ESCAPE_PROGRESS_VERSION = 3;
 
 export const tokenRoom = {
   id: "token",
@@ -11,7 +10,7 @@ export const tokenRoom = {
   label: "Room 1",
   crystalName: "Token Crystal",
   crystalId: "token",
-  accent: "#9b6cff",
+  accent: "#46b86f",
   aim: "Choose the real tokenizer split for one highlighted word.",
   tokenizer: TOKEN_ROOM_TOKENIZER,
   teachingExample: TOKEN_ROOM_EXAMPLE,
@@ -21,32 +20,20 @@ export const tokenRoom = {
 
 export const rooms = [
   tokenRoom,
-  { id: "numbers", label: "Room 2", title: "Number Lookup", crystalId: "numbers", crystalName: "Numbers Crystal", accent: "#3a8bff", aim: "Follow a token ID to one learned row of numbers.", teachingData: NUMBERS_ROOM_TEACHING_DATA },
-  { id: "context", label: "Room 3", title: "Context Window", crystalId: "context", crystalName: "Context Crystal", accent: "#38c4c9", aim: "See which earlier tokens are available right now." },
-  { id: "connections", label: "Room 4", title: "Connection Lab", crystalId: "connections", crystalName: "Connections Crystal", accent: "#ff9d3d", aim: "Find which visible tokens provide the most helpful clues." },
-  { id: "prediction", label: "Room 5", title: "Next-Token Machine", crystalId: "prediction", crystalName: "Prediction Crystal", accent: "#ff5f9e", aim: "Compare possible next tokens, choose one, then repeat." },
-  { id: "training", label: "Room 6", title: "Training Workshop", crystalId: "training", crystalName: "Training Crystal", accent: "#46b86f", aim: "Follow prediction, answer, adjustment and repetition during training." }
+  { id: "numbers", label: "Room 2", title: "Context Chamber", crystalId: "numbers", crystalName: "Context Crystal", accent: "#46d49b", aim: "Find which tokens are available to the model right now." },
+  { id: "context", label: "Room 3", title: "Connection Lab", crystalId: "connection-lab", crystalName: "Connections Crystal", accent: "#ff7655", aim: "Decode the connection pattern to unlock the chamber." },
+  { id: "connections", label: "Room 4", title: "Prediction Machine", crystalId: "prediction-machine", crystalName: "Prediction Crystal", accent: "#6da9ff", aim: "Power the prediction console and decode the next-token signal." },
+  { id: "prediction", label: "Room 5", title: "Pattern Workshop", crystalId: "prediction", crystalName: "Pattern Crystal", accent: "#ff5f9e", aim: "Restore the model's training pattern to unlock the final crystal." }
 ];
 
 export const finalExitPuzzle = {
   title: "Power the Language Model Door",
-  steps: ["Place crystals", "Build the generation path", "Build the training loop"],
-  modelSequence: [
-    "Text becomes tokens",
-    "Tokens point to numbers",
-    "Context and connections shape the current representation",
-    "The model predicts one next token",
-    "The token is added and the process repeats"
-  ],
-  trainingLoop: [
-    "Read a training example",
-    "Predict the next token",
-    "Reveal the actual token",
-    "Adjust internal parameters",
-    "Repeat across many examples"
-  ],
+  steps: ["Place crystals", "Form final crystal", "Solve final lock"],
+  concepts: ["Training", "Tokens", "Context", "Connections", "Prediction"],
+  correctOrder: ["Training", "Tokens", "Context", "Connections", "Prediction"],
+  trainingNote: "Training happened earlier, when the model learned patterns from many examples.",
   completionMessage:
-    "You followed the path inside a language model: text becomes tokens and numbers, context connects useful clues, and one next token is predicted at a time. Training is a separate earlier process that adjusts the model across many examples."
+    "Training happened earlier. When the model is used, text becomes tokens, available context is processed, information is connected, and one next-token prediction is made."
 };
 
 export const tokenHintLevels = [

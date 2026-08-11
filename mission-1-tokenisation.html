@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mission 1 - How does ChatGPT read?</title>
+  <link rel="stylesheet" href="assets/css/mission.css" />
+</head>
+<body>
+  <div class="mission-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="logo" href="index.html" aria-label="AI Explorer dashboard">
+        <span class="robot-logo" aria-hidden="true">
+          <span class="antenna"></span>
+          <span class="robot-face"><span></span></span>
+        </span>
+        <span>
+          <strong>AI Explorer</strong>
+          <small>How ChatGPT Thinks</small>
+        </span>
+      </a>
+
+      <nav class="side-nav">
+        <a href="index.html"><span class="nav-icon icon-home"></span>Home</a>
+        <a class="active" href="missions.html"><span class="nav-icon icon-home"></span>Missions</a>
+        <a href="/progress" data-route="/progress"><span class="nav-icon icon-chart"></span>Progress</a>
+        <a href="/badges" data-route="/badges"><span class="nav-icon icon-badge"></span>Badges</a>
+        <a href="/glossary" data-route="/glossary"><span class="nav-icon icon-book"></span>Glossary</a>
+        <a href="/about" data-route="/about"><span class="nav-icon icon-info"></span>About</a>
+      </nav>
+
+      <a class="profile-card" href="/profile" data-route="/profile">
+        <span class="avatar" aria-hidden="true"><span class="avatar-hair"></span><span class="avatar-face"></span></span>
+        <span class="profile-copy"><strong>Explorer</strong><em>Level 3</em></span>
+        <span class="xp-track"><span style="width: 60%"></span></span>
+        <small>1200 / 2000 XP</small>
+      </a>
+    </aside>
+
+    <main class="mission-page">
+      <header class="mission-topbar">
+        <a class="back-button" href="missions.html"><span>‹</span>Back to Missions</a>
+        <div class="mission-progress">
+          <strong>Mission 1 of 6</strong>
+          <span class="progress-dots" aria-label="1 of 6 missions">
+            <span class="filled"></span><span></span><span></span><span></span><span></span><span></span>
+          </span>
+        </div>
+        <div class="status-actions">
+          <button class="status-pill" type="button" data-popover="You earn XP by completing missions and challenges."><span class="star-icon"></span>1200 XP</button>
+          <button class="status-pill" type="button" data-popover="You have learned for 7 days in a row."><span class="flame-icon"></span>7 day streak</button>
+          <button class="icon-button settings-trigger icon-settings" type="button" aria-label="Open settings"></button>
+        </div>
+      </header>
+
+      <section class="mission-content">
+        <div class="main-column">
+          <section class="title-section">
+            <div>
+              <h1>1. How does ChatGPT read?</h1>
+              <p>ChatGPT doesn’t read sentences like we do.<br />It breaks text into small pieces called <strong>tokens</strong>.</p>
+            </div>
+            <img class="reading-robot" src="assets/img/mission-robot-reading.png" alt="Friendly robot reading a book" />
+          </section>
+
+          <section class="step-card step-one" id="stepInput">
+            <div class="step-heading"><span>1</span><strong>Type a sentence below.</strong></div>
+            <div class="input-row">
+              <input id="sentenceInput" type="text" value="I love chocolate ice cream" />
+              <button id="breakBtn" class="primary-button" type="button"><span>✦</span>Break into tokens</button>
+            </div>
+            <p class="hint-line"><span>💡</span>Try a sentence, then see how it is tokenized!</p>
+          </section>
+
+          <section class="step-card" id="stepTokens">
+            <div class="step-heading"><span>2</span><strong>These are the tokens.</strong></div>
+            <div id="tokenCards" class="token-cards" aria-live="polite"></div>
+            <div class="info-box">
+              <span class="info-dot">i</span>
+              <div>
+                <p>Sometimes a word can be split into more than one token.</p>
+                <div class="split-example">
+                  <strong>unbelievable</strong><span>→</span><span>un</span><span>believ</span><span>able</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="step-card learn-card">
+            <div class="learn-copy">
+              <div class="step-heading"><span>3</span><strong>Learn more</strong></div>
+              <p>Tokens can be words, parts of words, or even punctuation.</p>
+              <p>The model works with tokens, not whole words.</p>
+            </div>
+            <div class="examples">
+              <small>Example:</small>
+              <p><span>playing</span><b>→</b><span>play</span><span>ing</span></p>
+              <p><span>cats</span><b>→</b><span>cat</span><span>s</span></p>
+            </div>
+          </section>
+
+          <footer class="bottom-nav">
+            <button class="secondary-button" type="button" disabled>‹ Previous</button>
+            <button id="nextBtn" class="primary-button" type="button">Next ›</button>
+          </footer>
+        </div>
+
+        <aside class="right-column">
+          <section class="side-panel how-panel">
+            <h2>How it works</h2>
+            <p>See how your sentence is processed.</p>
+            <button class="flow-card" type="button" data-focus="#stepInput">
+              <span class="flow-icon blue">●</span>
+              <span><strong>Your Sentence</strong><small id="flowSentence">I love chocolate ice cream</small></span>
+            </button>
+            <span class="arrow">↓</span>
+            <button class="flow-card" type="button" data-focus="#stepTokens">
+              <span class="flow-icon green">▦</span>
+              <span><strong>Tokenisation</strong><small id="flowTokens"></small><em>The sentence is split into tokens.</em></span>
+            </button>
+            <span class="arrow">↓</span>
+            <button class="flow-card" type="button" data-explain="The model receives tokens one by one and uses them to predict what comes next.">
+              <span class="flow-icon orange">✣</span>
+              <span><strong>Model Input</strong><small id="flowDots" class="model-dots"></small><em>These tokens are fed into the model one by one.</em></span>
+            </button>
+          </section>
+
+          <section class="side-panel challenge-panel">
+            <h2><span>🏆</span>Mini Challenge</h2>
+            <p>Drag the tokens into the correct order.</p>
+            <div id="scrambledTokens" class="scrambled-tokens"></div>
+            <div id="dropZone" class="drop-zone">Drop here</div>
+            <p id="challengeFeedback" class="challenge-feedback"></p>
+            <div class="challenge-actions">
+              <button id="checkBtn" class="check-button" type="button" disabled>Check Answer</button>
+              <button id="hintBtn" class="hint-button" type="button">💡 Hint</button>
+            </div>
+          </section>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="modal" id="settingsModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-settings></div>
+    <section class="settings-dialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="modal-header">
+        <h2 id="settingsTitle">Settings</h2>
+        <button class="icon-button close-button" type="button" data-close-settings aria-label="Close settings">×</button>
+      </div>
+      <label><span>Text size</span><input type="range" min="1" max="3" value="2" /></label>
+      <label><span>Animation</span><input type="checkbox" checked /></label>
+      <label><span>Sound</span><input type="checkbox" checked /></label>
+      <label><span>Dark mode</span><input type="checkbox" /></label>
+      <button class="reset-button" type="button">Reset mission progress</button>
+    </section>
+  </div>
+
+  <script src="assets/js/shared-ui.js"></script>
+  <script src="assets/js/mission1.js"></script>
+</body>
+</html>

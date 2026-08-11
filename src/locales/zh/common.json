@@ -3,6 +3,10 @@
     "label": "语言",
     "choose": "选择语言"
   },
+  "lesson": {
+    "progress": "第 {{current}} 课 / 共 {{total}} 课",
+    "navigationLabel": "课程页面"
+  },
   "app": {
     "name": "LLM Explorer",
     "tagline": "了解语言模型如何工作"

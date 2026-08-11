@@ -108,7 +108,7 @@ function ProgressPanel({ progress, debug, status, onReset, onReload }) {
     </section>
     <section>
       <h3>Final Exit</h3>
-      <p>The final door brings together the language-model journey. Learners place six crystals, build the generation path, then build the separate training loop.</p>
+      <p>The final door brings together the language-model journey. Learners place five crystals, build the generation path, then build the separate training loop.</p>
       <div className="construct-room-list compact">
         <span><b>1</b><em>Place crystals around the language model</em></span>
         <span><b>2</b><em>Build the generation chain</em></span>
@@ -195,7 +195,7 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
     const current = readEscapeProgress();
     const allRoomsDone = rooms.every((room) => current.completedRooms[room.id] && current.crystalCollected[room.id] && current.inventory.includes(room.crystalId));
     if (!allRoomsDone) {
-      notify?.("The final exit still needs all six crystals.");
+      notify?.("The final exit still needs all five crystals.");
       sendInitToGame(iframeRef.current, current, mainProgress, language);
       return;
     }
@@ -304,6 +304,22 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
     setFrameKey((key) => key + 1);
   }
 
+  function handleGameLoad() {
+    // The game sends READY itself, but a very fast READY can arrive before the
+    // parent has attached its listener. A successfully loaded same-origin game
+    // is therefore also a safe handshake point: initialise it immediately and
+    // do not leave a playable room behind the timeout overlay.
+    window.clearTimeout(readyTimerRef.current);
+    setRuntimeStatus("ready");
+    window.setTimeout(() => {
+      const progress = readEscapeProgress();
+      sendInitToGame(iframeRef.current, progress, mainProgress, language);
+      sendGameCommand(iframeRef.current, "ESCAPE_ROOM_REQUEST_STATE", {
+        progress: buildInitPayload(progress, mainProgress, document.documentElement.lang || "en")
+      });
+    }, 0);
+  }
+
   return <div className={`final-challenge-page construct-wrapper-page ${isExpanded ? "is-expanded" : ""}`}>
     <main className="construct-shell">
       <section className="construct-game-frame">
@@ -336,7 +352,7 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
             src={gameSrc}
             title={`${t("escapeRoom.runtimeTitle")} game`}
             allowFullScreen
-            onLoad={() => setRuntimeStatus((status) => status === "ready" ? "ready" : "loading")}
+            onLoad={handleGameLoad}
           />
           <RuntimeOverlay status={runtimeStatus} onRetry={retryRuntime} onBack={() => navigate("/missions")} t={t} />
         </div>

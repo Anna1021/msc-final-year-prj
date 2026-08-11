@@ -7,8 +7,11 @@ import RobotGuideBubble from "../playfulLearning/RobotGuideBubble.jsx";
 import MiniSceneIllustration from "../playfulLearning/MiniSceneIllustration.jsx";
 import TokenBuildingBlock from "../playfulLearning/TokenBuildingBlock.jsx";
 import Mission1PagedPlaygroundPage from "./Mission1PagedPlaygroundPage.jsx";
-import { Mission1PagedConceptCheckPage, Mission1PagedRebuildPage } from "./Mission1PagedQuickCheckPages.jsx";
-import { Mission1PagedNumbersPage, Mission1PagedSummaryPage } from "./Mission1PagedFinalPages.jsx";
+import { Mission1PagedSummaryPage } from "./Mission1PagedFinalPages.jsx";
+import { Mission1PagedIdJourneyPage } from "./Mission1PagedIdJourneyPages.jsx";
+import Mission1PagedKnowledgeQuiz from "./Mission1PagedKnowledgeQuiz.jsx";
+import LessonPageHero from "../pagedMissions/LessonPageHero.jsx";
+import { getLesson1JourneyCopy } from "./lesson1JourneyCopy.js";
 import { completeMission1Progress } from "./mission1Progress.js";
 import { writeProgress } from "../state/progress.js";
 import { useI18n } from "../i18n/index.jsx";
@@ -24,15 +27,11 @@ function PlayfulSceneBannerIntro({ t }) {
           <h3 id="m1-why-tokens-title">{t("mission1.intro.whyTitle")}</h3>
           <p>{t("mission1.intro.whyText")}</p>
           <p>{t("mission1.intro.whyBreaks")}</p>
-          <p>{t("mission1.intro.whyNumbers")}</p>
           <div className="mission-1-paged__token-flow" aria-label={t("mission1.intro.flowLabel")}>
             <div><small>{t("mission1.intro.flowText")}</small><span>reading books</span></div>
             <ArrowDown aria-hidden="true" size={17} />
             <div><small>{t("mission1.intro.flowTokens")}</small><span className="mission-1-paged__mini-blocks"><b>reading</b><b>books</b></span></div>
-            <ArrowDown aria-hidden="true" size={17} />
-            <div><small>{t("mission1.intro.flowIds")}</small><span className="mission-1-paged__id-blocks"><b>4821</b><b>9137</b></span></div>
           </div>
-          <small className="mission-1-paged__example-note">{t("mission1.intro.exampleIds")}</small>
         </section>
         <section className="mission-1-paged__example-tokens" aria-labelledby="m1-example-sentence">
           <small>{t("mission1.intro.sentenceLabel")}</small>
@@ -60,11 +59,10 @@ function PlayfulSceneBannerIntro({ t }) {
 export const MISSION_1_PAGED_PAGES = Object.freeze([
   { id: "intro", sectionNumber: 1, titleKey: "mission1.sections.intro" },
   { id: "demo", sectionNumber: 2, titleKey: "mission1.sections.demo" },
-  { id: "playground", sectionNumber: 3, titleKey: "mission1.sections.playground" },
-  { id: "concept-check", sectionNumber: 4, titleKey: "mission1.paged.checkIdea" },
-  { id: "rebuild", sectionNumber: 5, titleKey: "mission1.paged.rebuildTokens" },
-  { id: "numbers", sectionNumber: 6, titleKey: "mission1.paged.numbersTitle" },
-  { id: "summary", sectionNumber: 7, titleKey: "mission1.paged.summaryTitle" }
+  { id: "id-journey", sectionNumber: 3, titleKey: "mission1.sections.numbers" },
+  { id: "playground", sectionNumber: 4, titleKey: "mission1.sections.playground" },
+  { id: "knowledge-check", sectionNumber: 5, titleKey: "mission1.sections.quickCheck" },
+  { id: "summary", sectionNumber: 6, titleKey: "mission1.paged.summaryTitle" }
 ]);
 
 export default function Mission1PagedPrototype({ progress, setProgress, navigate, notify }) {
@@ -77,14 +75,15 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
   const [revealCount, setRevealCount] = useState(0);
   const [animationKey, setAnimationKey] = useState(0);
   const [replayNotice, setReplayNotice] = useState(false);
-  const [conceptResult, setConceptResult] = useState("idle");
-  const [rebuildResult, setRebuildResult] = useState("idle");
+  const [quizResult, setQuizResult] = useState("idle");
   const [playgroundComplete, setPlaygroundComplete] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const [exploreIndex, setExploreIndex] = useState(0);
   const replaying = revealCount < introGroups.length;
   const page = MISSION_1_PAGED_PAGES[currentPage - 1];
-  const coreComplete = playgroundComplete && conceptResult === "correct" && rebuildResult === "correct";
+  const journeyCopy = useMemo(() => getLesson1JourneyCopy(language), [language]);
+  const pageQuizCopy = { ...journeyCopy, quizTitle: journeyCopy.conceptCheckpoint };
+  const coreComplete = playgroundComplete && quizResult === "correct";
   const missionComplete = progress.missions[1]?.completed === true;
   const shellLabels = {
     backToMissions: t("mission2.shell.backToMissions"),
@@ -95,6 +94,7 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
     next: t("mission1.paged.next"),
     prototypeEndAction: t("missions.lessonSummary"),
     prototypeLabel: t("missions.missionLabel", { id: 1 }),
+    navigationLabel: t("common.lesson.navigationLabel"),
     robotAlt: t("mission1.paged.robotAlt")
   };
 
@@ -126,7 +126,7 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
   }, [animationKey]);
 
   useEffect(() => {
-    if (currentPage !== 7 || !coreComplete || missionComplete) return;
+    if (currentPage !== 6 || !coreComplete || missionComplete) return;
     setProgress((previous) => {
       const next = completeMission1Progress(previous);
       writeProgress(next);
@@ -151,8 +151,7 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
 
   function restartMission() {
     setPlaygroundComplete(false);
-    setConceptResult("idle");
-    setRebuildResult("idle");
+    setQuizResult("idle");
     setResetKey((value) => value + 1);
     changePage(1);
   }
@@ -161,14 +160,9 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
     ? t("mission1.intro.body")
     : currentPage === 2
       ? t("mission1.demo.body")
-      : currentPage === 3
-        ? t("mission1.liveTokenizerIntro")
-        : currentPage === 4
-          ? t("mission1.paged.conceptInstruction")
-          : currentPage === 5
-            ? t("mission1.checkB.instructions")
-            : currentPage === 6
-              ? t("mission1.paged.numbersIntro")
+      : currentPage === 3 ? journeyCopy.numbersIntro
+        : currentPage === 4 ? t("mission1.liveTokenizerIntro")
+          : currentPage === 5 ? journeyCopy.quizIntro
               : t("mission1.paged.summaryDiscovery");
 
   const recommendedPage = MISSION_1_PAGED_PAGES.findIndex((_, index) => !visitedPages.has(index + 1)) + 1;
@@ -182,13 +176,13 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
     onContinue: () => setContinuedPages((current) => new Set(current).add(currentPage))
   };
 
-  return <MissionLessonShell currentPage={currentPage} pageCount={MISSION_1_PAGED_PAGES.length} onPageChange={changePage} onEnd={() => navigate("/mission/2-prediction-paged")} onBackToMissions={() => navigate("/missions")} title={t(page.titleKey)} subtitle={pageSubtitle} labels={{...shellLabels, prototypeEndAction: t("missions.nextLesson2")}} recommendation={recommendation}>
+  return <MissionLessonShell currentPage={currentPage} pageCount={MISSION_1_PAGED_PAGES.length} onPageChange={changePage} onEnd={() => navigate("/mission/2-prediction-paged")} onBackToMissions={() => navigate("/missions")} title={t(page.titleKey)} subtitle={pageSubtitle} labels={{...shellLabels, prototypeEndAction: t("missions.nextLesson2")}} recommendation={recommendation} hideNext={currentPage === 5} skipAction={currentPage===5?{label:t("mission1.skipQuiz"),onClick:()=>changePage(6)}:null} rootClassName={`mission-1-paged mission-1 playful-learning-scope ${currentPage===5?"mission-2-paged mission-2-reading-context m2-reading-page-6 lesson-quiz-layout":""}`} pageHero={<LessonPageHero lessonIndex={1} lessonCount={5} lessonProgressLabel={t("common.lesson.progress",{current:1,total:5})} lessonName={t("mission1.paged.tokenisation")} title={t(page.titleKey)} subtitle={pageSubtitle} illustration="/assets/img/mission-robot-reading.png" illustrationAlt={t("mission1.paged.robotAlt")} headingId={`lesson-1-page-${currentPage}-title`}/> }>
     {currentPage === 1 ? <section id="m1-intro" className="course-section mission-1-paged__lesson" data-lesson-page="1">
-      <div className="course-section-head"><h2><span>1</span>{t("mission1.sections.intro")}</h2></div>
+      <div className="course-section-head"><h2><span>1</span>{t("mission1.intro.buildingLabel")}</h2></div>
       <p>{t("mission1.intro.body")}</p>
       <PlayfulSceneBannerIntro t={t} />
     </section> : currentPage === 2 ? <section id="m1-demo" className="course-section mission-1-paged__lesson" data-lesson-page="2">
-      <div className="course-section-head"><h2><span>2</span>{t("mission1.sections.demo")}</h2><button type="button" className="outline tiny-top" aria-live="polite" onClick={replayExample}><RefreshCcw className={replaying ? "m1-spinner" : ""} size={16} strokeWidth={1.8} />{replaying || replayNotice ? t("mission1.demo.replaying") : t("mission1.demo.replay")}</button></div>
+      <div className="course-section-head"><h2><span>2</span>{t("mission1.demo.realPieces")}</h2><button type="button" className="outline tiny-top" aria-live="polite" onClick={replayExample}><RefreshCcw className={replaying ? "m1-spinner" : ""} size={16} strokeWidth={1.8} />{replaying || replayNotice ? t("mission1.demo.replaying") : t("mission1.demo.replay")}</button></div>
       <p>{t("mission1.demo.body")}</p>
       <div className="playful-real-token-lab" data-tour-id="m1-demo-result"><div className="playful-real-token-head"><span><ShieldCheck size={16} strokeWidth={2} />{t("mission1.demo.realPieces")}</span><small>{t("mission1.demo.verifiedCount")}</small></div><TokenPieces groups={introGroups.slice(0, revealCount)} visualVariant="verified" t={t} /><p className="m1-space-legend"><span>␠</span>{t("mission1.tokens.spaceLegend")}</p></div>
       <RobotGuideBubble label={t("mission1.demo.lookCloser")} title={t("mission1.demo.whyTitle")} illustration={<MiniSceneIllustration imageSrc="/assets/img/mission-robot-pointing.png" />}>
@@ -197,10 +191,9 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
       </RobotGuideBubble>
       <div className="playful-model-note"><span><Info size={17} strokeWidth={1.8} /></span><div><strong>{t("mission1.demo.model")}</strong><small>{t("mission1.demo.different")}</small></div></div>
     </section> : null}
-    <Mission1PagedPlaygroundPage active={currentPage === 3} language={language} t={t} exploreIndex={exploreIndex} resetKey={resetKey} onSuccessfulRun={() => setPlaygroundComplete(true)} />
-    <Mission1PagedConceptCheckPage active={currentPage === 4} t={t} resetKey={resetKey} onResultChange={setConceptResult} />
-    <Mission1PagedRebuildPage active={currentPage === 5} language={language} t={t} resetKey={resetKey} result={rebuildResult} onResultChange={setRebuildResult} />
-    <Mission1PagedNumbersPage active={currentPage === 6} t={t} />
-    <Mission1PagedSummaryPage active={currentPage === 7} complete={missionComplete || (currentPage === 7 && coreComplete)} t={t} onTryAnother={() => { setExploreIndex((value) => value + 1); changePage(3); }} onRestart={restartMission} onMissions={() => navigate("/missions")} onNextMission={() => navigate("/mission/2-prediction-paged")} />
+    <Mission1PagedIdJourneyPage active={currentPage === 3} copy={journeyCopy} />
+    <Mission1PagedPlaygroundPage active={currentPage === 4} language={language} t={t} exploreIndex={exploreIndex} resetKey={resetKey} onSuccessfulRun={() => setPlaygroundComplete(true)} />
+    <Mission1PagedKnowledgeQuiz active={currentPage === 5} copy={pageQuizCopy} resetKey={resetKey} onResultChange={setQuizResult} onContinue={() => changePage(6)} />
+    <Mission1PagedSummaryPage active={currentPage === 6} complete={missionComplete || (currentPage === 6 && coreComplete)} t={t} onTryAnother={() => { setExploreIndex((value) => value + 1); changePage(4); }} onRestart={restartMission} onMissions={() => navigate("/missions")} onNextMission={() => navigate("/mission/2-prediction-paged")} />
   </MissionLessonShell>;
 }

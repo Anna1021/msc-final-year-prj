@@ -494,7 +494,7 @@
       background: #e9dcff;
       box-shadow: 0 3px 0 #aa86ef;
     }
-    .token-split-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .token-split-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .token-split-option {
       min-height: 90px;
       display: grid;
@@ -553,6 +553,210 @@
     .token-success-chain > span { display: grid; gap: 5px; border-radius: 14px; padding: 11px; background: rgba(255,255,255,.1); }
     .token-success-chain small { color: #d5cced; font-weight: 900; text-transform: uppercase; }
     .token-success-chain i { color: #c3adff; font-size: 1.3rem; font-style: normal; font-weight: 950; }
+
+    .room-bg-numbers {
+      background:
+        linear-gradient(105deg, rgba(5, 20, 30, .9), rgba(13, 52, 57, .7) 54%, rgba(8, 20, 31, .9)),
+        radial-gradient(circle at 72% 18%, rgba(70, 212, 155, .32), transparent 28%),
+        url('/assets/img/final-challenge/room1/room-bg.png') center / cover;
+    }
+    .context-chamber-body { grid-template-columns: minmax(0, 1fr) minmax(290px, 360px); }
+    .context-chamber-board { gap: 16px; }
+    .context-chamber-console, .context-chamber-scanner, .context-lock-question {
+      border: 1px solid rgba(177, 255, 220, .22);
+      border-radius: 20px;
+      padding: 18px;
+      background: linear-gradient(140deg, rgba(3, 16, 28, .62), rgba(22, 72, 70, .32));
+      box-shadow: inset 0 0 34px rgba(70, 212, 155, .08);
+    }
+    .context-chamber-console { display: grid; gap: 14px; min-height: 202px; }
+    .context-console-state { display: grid; justify-items: center; gap: 8px; text-align: center; color: #e8fffa; }
+    .context-console-state p { max-width: 500px; margin: 0; color: #c7e5dc; }
+    .context-console-orb { width: 54px; height: 54px; border: 3px solid #75f0bb; border-radius: 50%; background: radial-gradient(circle at 35% 28%, #e8fff6 0 7%, #4ad59b 8% 26%, #123e43 28%); box-shadow: 0 0 0 7px rgba(117,240,187,.09), 0 0 34px rgba(117,240,187,.3); }
+    .context-console-state.inspected .context-console-orb { border-color: #85d4ff; background: radial-gradient(circle at 35% 28%, #eaf8ff 0 7%, #57bdf1 8% 26%, #183c57 28%); box-shadow: 0 0 0 7px rgba(133,212,255,.1), 0 0 34px rgba(133,212,255,.28); }
+    .context-console-state.scanned .context-console-orb { animation: contextScan 1.8s ease-in-out infinite; }
+    .context-chamber-scanner { display: grid; gap: 15px; }
+    .context-chamber-sequence { display: flex; flex-wrap: wrap; justify-content: center; align-items: end; gap: 10px; padding-top: 25px; }
+    .context-chamber-outside, .context-chamber-window, .context-chamber-window > div { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+    .context-chamber-window { position: relative; border: 2px solid #70efbc; border-radius: 16px; padding: 16px 10px 10px; background: rgba(74,213,155,.12); box-shadow: 0 0 0 5px rgba(74,213,155,.07), 0 0 28px rgba(74,213,155,.23); }
+    .context-chamber-window-label { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); white-space: nowrap; border: 1px solid rgba(117,240,187,.6); border-radius: 999px; padding: 5px 10px; color: #d8fff0; background: #123f42; font-size: .76rem; font-weight: 950; letter-spacing: .06em; text-transform: uppercase; }
+    .context-chamber-token { display: inline-grid; min-height: 38px; place-items: center; border: 1px solid rgba(224,217,255,.28); border-bottom: 4px solid rgba(151,126,224,.55); border-radius: 11px; padding: 6px 10px; color: #f9f7ff; background: rgba(255,255,255,.09); font-size: .9rem; font-weight: 900; }
+    .context-chamber-token.inside { border-color: rgba(117,240,187,.72); border-bottom-color: #3fad7e; background: linear-gradient(145deg, rgba(128,255,207,.24), rgba(98,177,248,.2)); box-shadow: 0 6px 14px rgba(38,183,129,.14); }
+    .context-chamber-token.outside { opacity: .47; filter: saturate(.55); }
+    .context-chamber-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px; }
+    .context-chamber-legend span { border-radius: 999px; padding: 7px 10px; color: #d8fff0; background: rgba(74,213,155,.16); font-size: .8rem; font-weight: 850; }
+    .context-chamber-legend span + span { color: #e0d7f3; background: rgba(196,168,235,.12); }
+    .context-lock-question { display: grid; gap: 12px; }
+    .context-lock-question h2, .context-lock-question p { margin: 0; }
+    .context-lock-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .context-lock-option { display: grid; align-content: start; gap: 9px; min-height: 100px; border: 1px solid rgba(225,215,255,.28); border-bottom: 5px solid rgba(157,126,225,.48); border-radius: 16px; padding: 12px; color: #f9f7ff; background: rgba(255,255,255,.08); text-align: left; }
+    .context-lock-option small { color: #cdc3e9; font-weight: 900; }
+    .context-lock-option-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+    .context-lock-option-chips b { border-radius: 8px; padding: 5px 7px; color: #2a1b50; background: #eee4ff; box-shadow: 0 2px 0 #a986e8; font-size: .82rem; }
+    .context-lock-option:hover { border-color: #aef7d1; background: rgba(70,212,155,.14); }
+    .context-lock-option.selected { border-color: #ffe56a; border-bottom-color: #cda72d; background: rgba(255,229,106,.13); box-shadow: 0 0 0 3px rgba(255,229,106,.1); }
+    .context-lock-option.wrong { border-color: #ff8499; border-bottom-color: #b64862; background: rgba(255,100,124,.13); }
+    .context-lock-option.correct { border-color: #75f0bb; border-bottom-color: #329e70; background: rgba(75,214,157,.15); }
+    .context-lock-option:focus-visible { outline: 3px solid #aef7d1; outline-offset: 3px; }
+    .context-lock-hint { border-left: 4px solid #ffe56a; border-radius: 10px; padding: 9px 11px; background: rgba(255,229,106,.1); }
+    .context-success-chain { grid-template-columns: minmax(300px, 1fr); }
+    @keyframes contextScan { 50% { transform: scale(1.08); box-shadow: 0 0 0 11px rgba(117,240,187,.06), 0 0 42px rgba(117,240,187,.4); } }
+
+    .room-bg-context {
+      background:
+        linear-gradient(105deg, rgba(28, 8, 19, .9), rgba(63, 24, 32, .68) 54%, rgba(12, 13, 32, .9)),
+        radial-gradient(circle at 72% 18%, rgba(255, 118, 70, .28), transparent 27%),
+        url('/assets/img/final-challenge/room1/room-bg.png') center / cover;
+    }
+    .connection-lab-body { grid-template-columns: minmax(0, 1fr) minmax(290px, 360px); }
+    .connection-lab-board { gap: 16px; }
+    .connection-console, .connection-scanner, .connection-lock-question {
+      border: 1px solid rgba(255, 189, 166, .25);
+      border-radius: 20px;
+      padding: 18px;
+      background: linear-gradient(140deg, rgba(31, 10, 27, .62), rgba(81, 30, 37, .3));
+      box-shadow: inset 0 0 34px rgba(255, 105, 78, .08);
+    }
+    .connection-console { display: grid; gap: 14px; min-height: 202px; }
+    .connection-console-state { display: grid; justify-items: center; gap: 8px; text-align: center; color: #fff2ec; }
+    .connection-console-state p { max-width: 500px; margin: 0; color: #e9c8c2; }
+    .connection-console-orb { width: 54px; height: 54px; border: 3px solid #ff9a72; border-radius: 50%; background: radial-gradient(circle at 35% 28%, #fff4e9 0 7%, #ff7a61 8% 26%, #54223d 28%); box-shadow: 0 0 0 7px rgba(255,154,114,.09), 0 0 34px rgba(255,118,91,.3); }
+    .connection-console-state.inspected .connection-console-orb { border-color: #ffc269; background: radial-gradient(circle at 35% 28%, #fff6df 0 7%, #ffb457 8% 26%, #5c2633 28%); }
+    .connection-console-state.scanned .connection-console-orb { animation: connectionScan 1.8s ease-in-out infinite; }
+    .connection-scanner { display: grid; gap: 14px; }
+    .connection-sentence { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+    .connection-token, .connection-source, .connection-focus { display: inline-grid; place-items: center; border: 1px solid rgba(232,220,255,.28); border-radius: 10px; padding: 6px 10px; color: #faf7ff; background: rgba(255,255,255,.09); font-size: .88rem; font-weight: 900; }
+    .connection-focus { border-color: rgba(117,240,187,.78); color: #dfffee; background: rgba(65,184,143,.22); box-shadow: 0 0 18px rgba(82,224,172,.2); }
+    .connection-focus-label { justify-self: center; border-radius: 999px; padding: 5px 10px; color: #dbffef; background: rgba(57,167,130,.22); font-size: .74rem; font-weight: 950; letter-spacing: .06em; text-transform: uppercase; }
+    .connection-pattern { display: grid; gap: 8px; max-width: 620px; margin: 0 auto; }
+    .connection-row { display: grid; grid-template-columns: minmax(70px, 1fr) minmax(96px, 1.25fr) minmax(70px, 1fr); align-items: center; gap: 9px; }
+    .connection-row .connection-source { justify-self: end; }
+    .connection-row .connection-focus { justify-self: start; }
+    .connection-arrow { position: relative; display: block; height: var(--strength); border-radius: 999px; background: linear-gradient(90deg, rgba(255,196,122,.48), #ff8769); box-shadow: 0 0 10px rgba(255,118,91,.2); }
+    .connection-arrow::after { content: ""; position: absolute; top: 50%; right: -1px; width: 11px; height: 11px; border-top: 3px solid #ff9a78; border-right: 3px solid #ff9a78; transform: translateY(-50%) rotate(45deg); }
+    .connection-teaching-note { margin: 0; color: #ffd9cc; text-align: center; }
+    .connection-teaching-note small { color: #f2c7bf; }
+    .connection-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .connection-legend span { display: inline-flex; align-items: center; gap: 7px; border-radius: 999px; padding: 6px 9px; color: #ffe7de; background: rgba(255,255,255,.08); font-size: .77rem; font-weight: 850; }
+    .connection-legend i { display: inline-block; width: 25px; height: var(--legend-strength); border-radius: 999px; background: #ff9879; }
+    .connection-lock-question { display: grid; gap: 12px; }
+    .connection-lock-question h2, .connection-lock-question p { margin: 0; }
+    .connection-lock-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .connection-lock-option { display: grid; align-content: start; gap: 9px; min-height: 88px; border: 1px solid rgba(225, 215, 255, .28); border-bottom: 5px solid rgba(206, 105, 90, .52); border-radius: 16px; padding: 12px; color: #f9f7ff; background: rgba(255,255,255,.08); text-align: left; }
+    .connection-lock-option small { color: #f0c8c3; font-weight: 900; }
+    .connection-lock-option b { width: fit-content; border-radius: 9px; padding: 6px 8px; color: #3c1830; background: #ffe1d5; box-shadow: 0 3px 0 #d78377; }
+    .connection-lock-option:hover { border-color: #ffb18c; background: rgba(255,119,86,.15); }
+    .connection-lock-option.selected { border-color: #ffe56a; border-bottom-color: #cda72d; background: rgba(255,229,106,.13); box-shadow: 0 0 0 3px rgba(255,229,106,.1); }
+    .connection-lock-option.wrong { border-color: #ff8499; border-bottom-color: #b64862; background: rgba(255,100,124,.13); }
+    .connection-lock-option.correct { border-color: #75f0bb; border-bottom-color: #329e70; background: rgba(75,214,157,.15); }
+    .connection-lock-option:focus-visible { outline: 3px solid #ffb18c; outline-offset: 3px; }
+    .connection-lock-hint { border-left: 4px solid #ffe56a; border-radius: 10px; padding: 9px 11px; background: rgba(255,229,106,.1); }
+    @keyframes connectionScan { 50% { transform: scale(1.08); box-shadow: 0 0 0 11px rgba(255,154,114,.06), 0 0 42px rgba(255,118,91,.42); } }
+
+    .room-bg-connections {
+      background:
+        linear-gradient(105deg, rgba(8, 14, 42, .91), rgba(21, 39, 89, .66) 54%, rgba(8, 12, 35, .91)),
+        radial-gradient(circle at 72% 18%, rgba(75, 160, 255, .31), transparent 28%),
+        url('/assets/img/final-challenge/room1/room-bg.png') center / cover;
+    }
+    .prediction-machine-body { grid-template-columns: minmax(0, 1fr) minmax(290px, 360px); }
+    .prediction-machine-board { gap: 16px; }
+    .prediction-console, .prediction-signal, .prediction-lock-question {
+      border: 1px solid rgba(170, 198, 255, .27);
+      border-radius: 20px;
+      padding: 18px;
+      background: linear-gradient(140deg, rgba(8, 18, 54, .63), rgba(31, 53, 108, .31));
+      box-shadow: inset 0 0 34px rgba(76, 143, 255, .1);
+    }
+    .prediction-console { display: grid; gap: 14px; min-height: 202px; }
+    .prediction-console-state { display: grid; justify-items: center; gap: 8px; text-align: center; color: #edf5ff; }
+    .prediction-console-state p { max-width: 500px; margin: 0; color: #c9d8f6; }
+    .prediction-console-orb { width: 54px; height: 54px; border: 3px solid #7db4ff; border-radius: 50%; background: radial-gradient(circle at 35% 28%, #eef7ff 0 7%, #569aff 8% 26%, #182f70 28%); box-shadow: 0 0 0 7px rgba(125,180,255,.09), 0 0 34px rgba(86,154,255,.32); }
+    .prediction-console-state.inspected .prediction-console-orb { border-color: #a993ff; background: radial-gradient(circle at 35% 28%, #f4efff 0 7%, #987fff 8% 26%, #2d216d 28%); }
+    .prediction-console-state.running .prediction-console-orb { animation: predictionScan 1.8s ease-in-out infinite; }
+    .prediction-signal { display: grid; gap: 13px; }
+    .prediction-prompt { border-radius: 14px; padding: 13px 15px; color: #ecf4ff; background: rgba(255,255,255,.1); font-size: 1.12rem; font-weight: 850; text-align: center; }
+    .prediction-prompt b { color: #b8d4ff; }
+    .prediction-signal-label { width: fit-content; justify-self: center; border-radius: 999px; padding: 5px 10px; color: #172b62; background: #bdd5ff; font-size: .74rem; font-weight: 950; letter-spacing: .06em; text-transform: uppercase; }
+    .prediction-signal small { color: #c8d8fa; text-align: center; }
+    .prediction-bars { display: grid; gap: 9px; }
+    .prediction-signal-row { display: grid; grid-template-columns: 70px minmax(90px, 1fr) 43px; align-items: center; gap: 9px; color: #eff6ff; font-weight: 900; }
+    .prediction-signal-row b { border-radius: 8px; padding: 5px 7px; color: #14234f; background: var(--chip); text-align: center; }
+    .prediction-signal-track { height: 13px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.1); }
+    .prediction-signal-track i { display: block; width: var(--value); height: 100%; border-radius: inherit; background: var(--chip); box-shadow: 0 0 16px color-mix(in srgb, var(--chip) 68%, transparent); animation: predictionBar .55s ease both; transform-origin: left; }
+    .prediction-signal-row em { color: #d8e5ff; font-style: normal; text-align: right; }
+    .prediction-not-guaranteed { border-left: 4px solid #b4c9ff; border-radius: 10px; padding: 10px 12px; color: #dce9ff; background: rgba(116,151,255,.11); }
+    .prediction-lock-question { display: grid; gap: 12px; }
+    .prediction-lock-question h2, .prediction-lock-question p { margin: 0; }
+    .prediction-lock-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .prediction-lock-option { display: grid; align-content: start; gap: 8px; min-height: 100px; border: 1px solid rgba(205, 216, 255, .28); border-bottom: 5px solid rgba(112, 132, 219, .52); border-radius: 16px; padding: 12px; color: #f7f9ff; background: rgba(255,255,255,.08); text-align: left; line-height: 1.35; }
+    .prediction-lock-option small { color: #c9d2f2; font-weight: 900; }
+    .prediction-lock-option:hover { border-color: #b6caff; background: rgba(92,137,255,.15); }
+    .prediction-lock-option.selected { border-color: #ffe56a; border-bottom-color: #cda72d; background: rgba(255,229,106,.13); box-shadow: 0 0 0 3px rgba(255,229,106,.1); }
+    .prediction-lock-option.wrong { border-color: #ff8499; border-bottom-color: #b64862; background: rgba(255,100,124,.13); }
+    .prediction-lock-option.correct { border-color: #75f0bb; border-bottom-color: #329e70; background: rgba(75,214,157,.15); }
+    .prediction-lock-option:focus-visible { outline: 3px solid #b6caff; outline-offset: 3px; }
+    .prediction-lock-hint, .prediction-context-payoff { border-left: 4px solid #ffe56a; border-radius: 10px; padding: 9px 11px; background: rgba(255,229,106,.1); }
+    .prediction-context-payoff { border-left-color: #76b7ff; color: #dceaff; background: rgba(82,145,255,.12); }
+    @keyframes predictionScan { 50% { transform: scale(1.08); box-shadow: 0 0 0 11px rgba(125,180,255,.06), 0 0 42px rgba(86,154,255,.42); } }
+    @keyframes predictionBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    .completion .prediction-context-payoff { animation: predictionContextAdded .55s ease both; }
+    @keyframes predictionContextAdded { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .room-bg-prediction {
+      background:
+        linear-gradient(105deg, rgba(31, 8, 30, .91), rgba(68, 23, 63, .67) 54%, rgba(13, 10, 31, .91)),
+        radial-gradient(circle at 72% 18%, rgba(255, 95, 158, .3), transparent 28%),
+        url('/assets/img/final-challenge/room1/room-bg.png') center / cover;
+    }
+    .pattern-workshop-body { grid-template-columns: minmax(0, 1fr) minmax(290px, 360px); }
+    .pattern-workshop-board { gap: 16px; }
+    .pattern-console, .pattern-records, .pattern-lock-question {
+      border: 1px solid rgba(255, 176, 218, .25);
+      border-radius: 20px;
+      padding: 18px;
+      background: linear-gradient(140deg, rgba(31, 10, 38, .64), rgba(89, 30, 73, .31));
+      box-shadow: inset 0 0 34px rgba(255, 95, 158, .08);
+    }
+    .pattern-console { display: grid; gap: 14px; min-height: 202px; }
+    .pattern-console-state { display: grid; justify-items: center; gap: 8px; color: #fff0f7; text-align: center; }
+    .pattern-console-state p { max-width: 520px; margin: 0; color: #ecc8dc; }
+    .pattern-console-orb { width: 54px; height: 54px; border: 3px solid #ff8dc2; border-radius: 15px; background: radial-gradient(circle at 35% 28%, #fff1f8 0 7%, #ff63a4 8% 26%, #592044 28%); box-shadow: 0 0 0 7px rgba(255,141,194,.09), 0 0 34px rgba(255,95,158,.3); transform:rotate(45deg); }
+    .pattern-console-state.inspected .pattern-console-orb { border-color: #ffcf79; background: radial-gradient(circle at 35% 28%, #fff7dd 0 7%, #ffbb55 8% 26%, #57223f 28%); }
+    .pattern-console-state.online .pattern-console-orb { animation: patternConsoleGlow 1.8s ease-in-out infinite; }
+    .pattern-records { display: grid; gap: 14px; }
+    .pattern-records h2, .pattern-records p, .pattern-lock-question h2, .pattern-lock-question p { margin: 0; }
+    .pattern-records > p { color: #e5cbd9; }
+    .pattern-example-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .pattern-example { min-height: 68px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.15); border-bottom: 4px solid rgba(255,95,158,.42); border-radius: 14px; padding: 10px; color: #faf5ff; background: rgba(255,255,255,.08); text-align: center; font-weight: 850; }
+    .pattern-example mark { border-radius: 7px; padding: 2px 5px; color: #32142c; background: #ff9dca; }
+    .pattern-example:nth-child(4) mark { color: #39260d; background: #ffd16e; }
+    .pattern-prediction { display: grid; gap: 11px; border: 1px solid rgba(255,209,123,.25); border-radius: 16px; padding: 14px; background: rgba(255,194,90,.08); }
+    .pattern-prediction header { display: flex; justify-content: space-between; gap: 10px; color: #ffe9bd; }
+    .pattern-prediction header small { color: #f0cfe0; font-weight: 900; text-transform: uppercase; }
+    .pattern-test-prompt { border-radius: 12px; padding: 11px 13px; color: #fff7fb; background: rgba(255,255,255,.08); text-align: center; font-weight: 900; }
+    .pattern-bars { display: grid; gap: 9px; }
+    .pattern-bar { display: grid; grid-template-columns: 68px minmax(100px, 1fr) 44px; align-items: center; gap: 9px; color: #fff5fa; font-weight: 900; }
+    .pattern-bar > span { height: 12px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.1); }
+    .pattern-bar i { display: block; width: var(--value); height: 100%; border-radius: inherit; background: var(--bar); box-shadow: 0 0 14px color-mix(in srgb, var(--bar) 65%, transparent); animation: predictionBar .55s ease both; }
+    .pattern-bar em { color: #efd7e4; font-style: normal; text-align: right; }
+    .pattern-accuracy-note { border-left: 4px solid #ffd16e; border-radius: 9px; padding: 8px 10px; color: #f2dce7; background: rgba(255,209,110,.08); font-size: .82rem; }
+    .pattern-lock-question { display: grid; gap: 12px; }
+    .pattern-lock-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .pattern-lock-option { min-height: 112px; display: grid; align-content: start; gap: 8px; border: 1px solid rgba(236,215,255,.27); border-bottom: 5px solid rgba(205,100,160,.5); border-radius: 16px; padding: 12px; color: #faf7ff; background: rgba(255,255,255,.08); text-align: left; line-height: 1.38; }
+    .pattern-lock-option small { color: #edc9dc; font-weight: 900; }
+    .pattern-lock-option:hover { border-color: #ffacd3; background: rgba(255,95,158,.14); }
+    .pattern-lock-option.selected { border-color: #ffe56a; border-bottom-color: #cda72d; background: rgba(255,229,106,.13); box-shadow: 0 0 0 3px rgba(255,229,106,.1); }
+    .pattern-lock-option.wrong { border-color: #ff8499; border-bottom-color: #b64862; background: rgba(255,100,124,.13); }
+    .pattern-lock-option.correct { border-color: #75f0bb; border-bottom-color: #329e70; background: rgba(75,214,157,.15); }
+    .pattern-lock-option:focus-visible { outline: 3px solid #ffacd3; outline-offset: 3px; }
+    .pattern-lock-hint { border-left: 4px solid #ffe56a; border-radius: 10px; padding: 9px 11px; background: rgba(255,229,106,.1); }
+    .pattern-success-nodes { width: min(860px,100%); display: grid; grid-template-columns: repeat(7,max-content); justify-content:center; align-items:center; gap:9px; border:1px solid rgba(255,172,211,.24); border-radius:16px; padding:14px; background:rgba(255,95,158,.09); }
+    .pattern-success-nodes span { border-radius:10px; padding:8px 10px; color:#fff2f8; background:rgba(255,255,255,.1); font-weight:900; }
+    .pattern-success-nodes i { color:#ff9dcc; font-size:1.2rem; font-style:normal; animation:patternNodeConnect .5s ease both; }
+    @keyframes patternConsoleGlow { 50% { transform: rotate(45deg) scale(1.08); box-shadow: 0 0 0 11px rgba(255,141,194,.06), 0 0 42px rgba(255,95,158,.43); } }
+    @keyframes patternNodeConnect { from { opacity:0; transform:scaleX(.2); } to { opacity:1; transform:scaleX(1); } }
+    @media(max-width:760px){.pattern-example-grid,.pattern-lock-options{grid-template-columns:1fr}.pattern-success-nodes{display:flex;flex-wrap:wrap}.pattern-workshop-body{grid-template-columns:1fr}}
 
     .numbers-room-body {
       grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
@@ -1302,6 +1506,90 @@
     .brain-core.charged {
       box-shadow: 0 0 54px rgba(155,108,255,.42), inset 0 0 42px rgba(255,255,255,.12);
     }
+    .final-crystal {
+      width: min(72%, 270px);
+      max-height: 82%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 18px rgba(255,255,255,.64)) drop-shadow(0 0 36px rgba(155,108,255,.62));
+      animation: finalCrystalForm .7s cubic-bezier(.2,.82,.28,1.16) both, finalCrystalFloat 3.2s ease-in-out .72s infinite;
+    }
+    .brain-core { position: relative; z-index: 2; }
+    .brain-slot { z-index: 3; }
+    .brain-chamber.is-fused .brain-slot { opacity: 0; pointer-events: none; }
+    .brain-chamber.is-fused .brain-core {
+      filter: brightness(1.12) saturate(1.08);
+      box-shadow: 0 0 88px rgba(155,108,255,.52), inset 0 0 62px rgba(255,255,255,.14);
+    }
+    .fusion-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .fusion-trails { width: 100%; height: 100%; overflow: visible; }
+    .fusion-trail-glow, .fusion-trail-core {
+      fill: none;
+      stroke: var(--trail);
+      stroke-linecap: round;
+      stroke-dasharray: 18 18;
+      stroke-dashoffset: 180;
+      animation: fusionEnergy 1.18s ease-in var(--trail-delay) both;
+    }
+    .fusion-trail-glow { stroke-width: 12; opacity: .2; filter: blur(6px); }
+    .fusion-trail-core { stroke-width: 3; opacity: .94; filter: drop-shadow(0 0 5px var(--trail)); }
+    .fusion-particles { position: absolute; inset: 0; }
+    .fusion-particles i {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--particle);
+      box-shadow: 0 0 8px var(--particle), 0 0 14px rgba(255,255,255,.52);
+      transform: rotate(var(--angle)) translateX(var(--radius));
+      animation: fusionParticle 1.18s ease-in calc(.28s + var(--particle-delay)) both;
+    }
+    .fusion-particles i:nth-child(4n) {
+      border-radius: 1px;
+      transform: rotate(var(--angle)) translateX(var(--radius)) rotate(45deg);
+    }
+    .fusion-flash {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 170px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff 0 8%, rgba(232,220,255,.9) 18%, rgba(155,108,255,.28) 46%, transparent 72%);
+      transform: translate(-50%, -50%) scale(.12);
+      opacity: 0;
+      animation: fusionFlash .42s ease-out 1.32s both;
+    }
+    .brain-chamber.is-fusing .brain-core { animation: fusionCore 1.9s ease-in-out both; }
+    .brain-chamber.is-fusing .brain-slot { animation-duration: 1.9s; animation-timing-function: cubic-bezier(.4,0,.2,1); animation-fill-mode: both; }
+    .brain-chamber.is-fusing .brain-slot:nth-child(3) { animation-name: fuseRightTop; }
+    .brain-chamber.is-fusing .brain-slot:nth-child(4) { animation-name: fuseRightBottom; }
+    .brain-chamber.is-fusing .brain-slot:nth-child(5) { animation-name: fuseLeftBottom; }
+    .brain-chamber.is-fusing .brain-slot:nth-child(6) { animation-name: fuseLeftTop; }
+    .brain-chamber.is-fusing .brain-slot:nth-child(2) { animation-name: fuseTop; }
+    .final-lock-locked {
+      min-height: 260px;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 12px;
+      margin-top: 16px;
+      border: 1px solid rgba(220,209,255,.16);
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+      color: rgba(239,232,255,.6);
+      background: rgba(5,6,18,.32);
+      box-shadow: inset 0 0 44px rgba(0,0,0,.24);
+    }
+    .final-lock-locked strong { color: rgba(224,211,255,.72); letter-spacing: .12em; }
+    .final-lock-locked.forming { color: #f2ebff; border-color: rgba(155,108,255,.42); }
     .brain-slot {
       position: absolute;
       width: 74px;
@@ -1328,12 +1616,17 @@
       font-weight: 950;
     }
     .brain-slot img { width: 58px; height: 58px; object-fit: contain; animation: float 2.4s ease-in-out infinite; }
+    .brain-slot.drop-ready {
+      border-style: solid;
+      border-color: #fff;
+      background: rgba(155,108,255,.24);
+      box-shadow: 0 0 0 4px rgba(155,108,255,.1), 0 0 28px rgba(155,108,255,.42);
+    }
     .brain-slot:nth-child(2) { top: 22px; left: 50%; transform: translateX(-50%); }
     .brain-slot:nth-child(3) { top: 120px; right: 34px; }
     .brain-slot:nth-child(4) { bottom: 72px; right: 72px; }
     .brain-slot:nth-child(5) { bottom: 72px; left: 72px; }
     .brain-slot:nth-child(6) { top: 120px; left: 34px; }
-    .brain-slot:nth-child(7) { bottom: 22px; left: 50%; transform: translateX(-50%); }
     .crystal-tray {
       display: flex;
       flex-wrap: wrap;
@@ -1387,6 +1680,15 @@
       background: #7cf4b2;
       font-weight: 950;
     }
+    .exit-hint {
+      margin: 12px 0;
+      border: 1px solid rgba(201,182,255,.28);
+      border-radius: 14px;
+      padding: 11px 13px;
+      color: rgba(245,240,255,.88);
+      background: rgba(155,108,255,.1);
+      line-height: 1.5;
+    }
     .exit-steps {
       display: flex;
       flex-wrap: wrap;
@@ -1415,6 +1717,7 @@
     }
     .brain-status {
       position: absolute;
+      z-index: 4;
       inset: auto 20px 26px;
       text-align: center;
       color: rgba(245,240,255,.86);
@@ -1422,11 +1725,14 @@
     }
     .brain-puzzle {
       display: grid;
-      grid-template-columns: minmax(0, 1.08fr) minmax(260px, .92fr);
+      grid-template-columns: minmax(0, 1fr);
       gap: 12px;
+      width: 100%;
       margin-top: 14px;
     }
     .sequence-board {
+      width: 100%;
+      min-width: 0;
       border: 1px solid rgba(230,220,255,.18);
       border-radius: 20px;
       padding: 14px;
@@ -1445,6 +1751,7 @@
     }
     .sequence-slots, .sequence-tray {
       display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 8px;
     }
     .sequence-slots {
@@ -1452,6 +1759,7 @@
       border-radius: 16px;
       background: rgba(7,6,22,.18);
     }
+    .sequence-tray { margin-top: 8px; }
     .sequence-slot, .sequence-piece {
       width: 100%;
       min-height: 46px;
@@ -1581,6 +1889,9 @@
     @media (max-width: 900px) {
       .brain-puzzle { grid-template-columns: 1fr; }
     }
+    @media (max-width: 700px) {
+      .sequence-slots, .sequence-tray { grid-template-columns: 1fr; }
+    }
     @media (min-width: 1500px) {
       .screen {
         max-width: min(1880px, calc(100vw - 44px));
@@ -1659,6 +1970,59 @@
     }
     @keyframes crystalAura { 50% { opacity: .58; transform: scale(1.08); } }
     @keyframes crystalSparkle { 50% { opacity: .42; transform: rotate(6deg) scale(1.04); } }
+    @keyframes fusionEnergy {
+      0% { stroke-dashoffset: 180; opacity: 0; }
+      18% { opacity: .42; }
+      72% { opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: .18; }
+    }
+    @keyframes fusionParticle {
+      0% { opacity: 0; transform: rotate(var(--angle)) translateX(var(--radius)) scale(.4); }
+      20% { opacity: 1; }
+      78% { opacity: .92; }
+      100% { opacity: 0; transform: rotate(var(--angle)) translateX(8px) scale(1.6); }
+    }
+    @keyframes fusionCore {
+      0%, 25% { filter: brightness(1); }
+      74% { filter: brightness(1.7) saturate(1.4); transform: scale(1.06); }
+      100% { filter: brightness(1.14); transform: scale(1.02); }
+    }
+    @keyframes fusionFlash {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.12); }
+      42% { opacity: .96; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.55); }
+    }
+    @keyframes fuseTop {
+      0%, 22% { transform: translateX(-50%) scale(1); }
+      76% { transform: translate(-50%, 180px) scale(.58); opacity: 1; }
+      100% { transform: translate(-50%, 180px) scale(.22); opacity: 0; }
+    }
+    @keyframes fuseRightTop {
+      0%, 22% { transform: translate(0, 0) scale(1); }
+      76% { transform: translate(-170px, 100px) scale(.58); opacity: 1; }
+      100% { transform: translate(-170px, 100px) scale(.22); opacity: 0; }
+    }
+    @keyframes fuseRightBottom {
+      0%, 22% { transform: translate(0, 0) scale(1); }
+      76% { transform: translate(-140px, -94px) scale(.58); opacity: 1; }
+      100% { transform: translate(-140px, -94px) scale(.22); opacity: 0; }
+    }
+    @keyframes fuseLeftBottom {
+      0%, 22% { transform: translate(0, 0) scale(1); }
+      76% { transform: translate(140px, -94px) scale(.58); opacity: 1; }
+      100% { transform: translate(140px, -94px) scale(.22); opacity: 0; }
+    }
+    @keyframes fuseLeftTop {
+      0%, 22% { transform: translate(0, 0) scale(1); }
+      76% { transform: translate(170px, 100px) scale(.58); opacity: 1; }
+      100% { transform: translate(170px, 100px) scale(.22); opacity: 0; }
+    }
+    @keyframes finalCrystalForm {
+      0% { opacity: 0; transform: scale(.6); }
+      72% { opacity: 1; transform: scale(1.08); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes finalCrystalFloat { 50% { transform: translateY(-7px); } }
     @keyframes collectedPop {
       from { opacity: 0; transform: translateY(6px) scale(.96); }
       to { opacity: 1; transform: translateY(0) scale(1); }
@@ -1668,7 +2032,11 @@
       to { opacity: 1; transform: translateY(0); }
     }
     @keyframes shake { 25% { transform: translateX(-4px); } 50% { transform: translateX(4px); } 75% { transform: translateX(-2px); } }
-    @media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .fusion-trails, .fusion-particles, .fusion-flash { display: none !important; }
+      .brain-chamber.is-fusing .brain-slot { opacity: .72; transform: none !important; }
+    }
     @media (max-width: 980px) {
       body { overflow: auto; }
       .app { min-height: 100vh; height: auto; }
@@ -1687,7 +2055,7 @@
       <div class="top-actions">
         <button class="secondary" type="button" id="topMap">Room Map</button>
         <button type="button" id="topContinue">Continue</button>
-        <span class="pill" id="topProgress">0 / 6 crystals</span>
+        <span class="pill" id="topProgress">0 / 5 crystals</span>
       </div>
     </header>
 
@@ -1711,12 +2079,11 @@
     if (window.parent !== window) document.body.classList.add("embedded");
     const targetOrigin = window.location.origin;
     const rooms = [
-      { id: "token", number: 1, title: "Token Workshop", power: "Tokens", crystal: "token", colour: "#9b6cff", aim: "Choose the real tokenizer split for one highlighted word." },
-      { id: "numbers", number: 2, title: "Number Lookup", power: "Numbers", crystal: "numbers", colour: "#3a8bff", aim: "Follow a token ID to one learned row of numbers." },
-      { id: "context", number: 3, title: "Context Window", power: "Context", crystal: "context", colour: "#38c4c9", aim: "See which earlier tokens are available right now." },
-      { id: "connections", number: 4, title: "Connection Lab", power: "Connections", crystal: "connections", colour: "#ff9d3d", aim: "Find the visible tokens that provide the most helpful clues." },
-      { id: "prediction", number: 5, title: "Next-Token Machine", power: "Prediction", crystal: "prediction", colour: "#ff5f9e", aim: "Choose one possible next token, add it, and predict again." },
-      { id: "training", number: 6, title: "Training Workshop", power: "Training", crystal: "training", colour: "#46b86f", aim: "Follow prediction, answer, adjustment and repetition during training." }
+      { id: "token", number: 1, title: "Token Workshop", power: "Tokens", crystal: "token", colour: "#46b86f", aim: "Choose the real tokenizer split for one highlighted word." },
+      { id: "numbers", number: 2, title: "Context Chamber", power: "Context", crystal: "numbers", colour: "#46d49b", aim: "Find which tokens are available to the model right now." },
+      { id: "context", number: 3, title: "Connection Lab", power: "Connections", crystal: "connection-lab", colour: "#ff7655", aim: "Decode the connection pattern to unlock the chamber." },
+      { id: "connections", number: 4, title: "Prediction Machine", power: "Prediction", crystal: "prediction-machine", colour: "#6da9ff", aim: "Power the prediction console and decode the next-token signal." },
+      { id: "prediction", number: 5, title: "Pattern Workshop", power: "Patterns", crystal: "prediction", colour: "#ff5f9e", aim: "Restore the model's training pattern to unlock the final crystal." }
     ];
     const tokenRoomTeachingData = Object.freeze({
       checkpoint: "Qwen/Qwen2.5-0.5B-Instruct",
@@ -1732,11 +2099,12 @@
         targetIds: Object.freeze([650, 8653, 1262]),
         targetRawPieces: Object.freeze(["Ġun", "help", "ful"]),
         targetPieces: Object.freeze(["un", "help", "ful"]),
-        correctOptionId: "qwen",
+        correctOptionId: "tokenizer-depends",
         options: Object.freeze([
           Object.freeze({ id: "whole", pieces: Object.freeze(["unhelpful"]) }),
           Object.freeze({ id: "human", pieces: Object.freeze(["un", "helpful"]) }),
-          Object.freeze({ id: "qwen", pieces: Object.freeze(["un", "help", "ful"]) })
+          Object.freeze({ id: "qwen", pieces: Object.freeze(["un", "help", "ful"]) }),
+          Object.freeze({ id: "tokenizer-depends", statement: "It depends on the tokenizer. Different tokenizers may split &ldquo;unhelpful&rdquo; differently." })
         ])
       })
     });
@@ -1753,30 +2121,24 @@
       ]),
       accuracyNote: "Simplified teaching row — real models use much larger learned representations."
     });
-    const finalModelPieces = [
-      { id: "tokens", label: "Text becomes tokens" },
-      { id: "numbers", label: "Tokens point to numbers" },
-      { id: "context", label: "Context keeps earlier tokens available" },
-      { id: "connections", label: "Helpful tokens shape the current representation" },
-      { id: "prediction", label: "Predict one next token" },
-      { id: "repeat", label: "Add it to the text and repeat" }
+    const finalConceptPieces = [
+      { id: "training", label: "Training" },
+      { id: "tokens", label: "Tokens" },
+      { id: "context", label: "Context" },
+      { id: "connections", label: "Connections" },
+      { id: "prediction", label: "Prediction" }
     ];
-    const finalReviewPieces = [
-      { id: "examples", label: "Read a training example" },
-      { id: "train-predict", label: "Predict its next token" },
-      { id: "actual", label: "Reveal the actual token" },
-      { id: "adjust", label: "Adjust internal parameters" },
-      { id: "train-repeat", label: "Repeat across many examples" }
-    ];
-    const finalModelOrder = finalModelPieces.map((piece) => piece.id);
-    const finalReviewOrder = finalReviewPieces.map((piece) => piece.id);
+    const finalConceptOrder = finalConceptPieces.map((piece) => piece.id);
+    const finalConceptTrayOrder = ["prediction", "context", "training", "connections", "tokens"];
+    const finalConceptTrayPieces = finalConceptTrayOrder.map((id) => finalConceptPieces.find((piece) => piece.id === id));
 
     const state = {
       completed: new Set(),
       crystals: new Set(),
       exitPlaced: new Set(),
-      exitModel: [],
-      exitReview: [],
+      exitOrder: [],
+      exitHint: false,
+      exitStage: "placing",
       exitFeedback: "",
       finalComplete: false,
       currentScreen: "room-select",
@@ -1789,6 +2151,7 @@
     let activeExitDrag = null;
     let lastExitPointerTarget = null;
     let suppressExitClick = false;
+    let fusionTimer = null;
 
     const $ = (id) => document.getElementById(id);
     const mapScreen = $("mapScreen");
@@ -1812,8 +2175,9 @@
       state.crystals = new Set(payload.crystals || []);
       state.finalComplete = Boolean(payload.finalExitCompleted);
       state.exitPlaced = state.finalComplete ? new Set(rooms.map((room) => room.crystal)) : new Set();
-      state.exitModel = state.finalComplete ? [...finalModelOrder] : [];
-      state.exitReview = state.finalComplete ? [...finalReviewOrder] : [];
+      state.exitOrder = state.finalComplete ? [...finalConceptOrder] : [];
+      state.exitHint = false;
+      state.exitStage = state.finalComplete ? "fused" : "placing";
       state.exitFeedback = "";
       const requestedScreen = ["room-select", "room", "final-exit"].includes(payload.currentScreen) ? payload.currentScreen : "room-select";
       const requestedRoom = roomById(payload.currentRoom)?.id || null;
@@ -1822,6 +2186,26 @@
       state.currentStep = typeof payload.currentStep === "string" ? payload.currentStep : state.currentScreen === "room-select" ? "hub" : "playing";
       state.roomData = state.currentRoom ? defaultRoomData(state.currentRoom) : state.roomData;
       render();
+    }
+
+    function finishFinalFusion() {
+      if (state.exitStage !== "fusing") return;
+      state.exitStage = "fused";
+      state.exitFeedback = "Final crystal formed. The Final Lock is now active.";
+      fusionTimer = null;
+      renderExit();
+    }
+
+    function startFinalFusion() {
+      if (state.exitStage !== "fusing" || fusionTimer) return;
+      const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      fusionTimer = window.setTimeout(finishFinalFusion, reducedMotion ? 320 : 1900);
+    }
+
+    function resetFinalFusion() {
+      if (fusionTimer) window.clearTimeout(fusionTimer);
+      fusionTimer = null;
+      state.exitStage = "placing";
     }
 
     function roomById(id) {
@@ -1903,27 +2287,27 @@
         feedback: ""
       };
       if (id === "numbers") return {
-        selectedDrawer: "",
-        drawerOpened: false,
-        showConcept: false,
-        selectedConcept: "",
-        conceptPassed: false,
-        drawerAttempts: 0,
-        conceptAttempts: 0,
+        inspected: false,
+        scannerActive: false,
+        selectedOption: "",
+        submitted: false,
+        attempts: 0,
+        showHint: false,
         feedbackKind: "",
         feedback: ""
       };
       if (id === "context") return {
-        scene: 1,
-        choice: "",
-        solved: false,
-        shifted: false,
+        inspected: false,
+        scannerActive: false,
+        selectedOption: "",
+        submitted: false,
         attempts: 0,
+        showHint: false,
         feedbackKind: "",
         feedback: ""
       };
-      if (id === "connections") return { selected: [], feedback: "" };
-      if (id === "prediction") return { round: 0, choice: "", generated: [], feedback: "" };
+      if (id === "connections") return { inspected: false, machineRan: false, selectedOption: "", submitted: false, attempts: 0, showHint: false, feedbackKind: "", feedback: "" };
+      if (id === "prediction") return { inspected: false, predictionRevealed: false, selectedOption: "", submitted: false, attempts: 0, showHint: false, feedbackKind: "", feedback: "" };
       if (id === "training") return { step: 0, feedback: "" };
       return {};
     }
@@ -1971,7 +2355,7 @@
           <div>
             <span class="clue">Final Challenge</span>
             <h1>Language Model Escape Room</h1>
-            <p>Restore six crystals with your guide. Each room follows one step in how a language model processes text, predicts, and learns.</p>
+            <p>Restore five crystals with your guide. Each room reviews one of the five lessons about how language models process text, predict, and learn.</p>
             <button type="button" class="gold" data-action="continue">${completedCount ? "Continue adventure" : "Start Room 1"}</button>
           </div>
           <img class="robot" src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot">
@@ -2008,7 +2392,7 @@
     function renderRoom(room, replay = false, completedView = false) {
       const data = state.roomData;
       roomScreen.innerHTML = `
-        <section class="room ${room.id === "token" ? "room-bg-token" : room.id === "numbers" ? "room-bg-numbers" : room.id === "context" ? "room-bg-context" : ""}" style="--room:${room.colour}; --tilt:0deg">
+        <section class="room ${room.id === "token" ? "room-bg-token" : room.id === "numbers" ? "room-bg-numbers" : room.id === "context" ? "room-bg-context" : room.id === "connections" ? "room-bg-connections" : room.id === "prediction" ? "room-bg-prediction" : ""}" style="--room:${room.colour}; --tilt:0deg">
           <div class="room-inner">
             <header class="room-head">
               <div class="room-objective">
@@ -2030,11 +2414,15 @@
       const crystalName = `${room.power} Crystal`;
       const crystalSrc = crystalAsset(room);
       const completionNote = room.id === "token"
-        ? "A Token can be a whole word, part of a word, punctuation, or another text piece. The exact split depends on the tokenizer."
+        ? "Correct! Token boundaries depend on the tokenizer. Different tokenizers may split the same text differently."
         : room.id === "numbers"
-          ? "The token ID is a lookup label. It points to a learned number row that the model can use in later calculations."
+          ? "Correct! Those tokens are inside the current context window, so they are available to the model right now. Tokens outside the window may not be available for this prediction."
         : room.id === "context"
-          ? "The model can use only the Tokens currently inside its Context Window. As new text arrives, older Tokens can move outside it."
+          ? "Correct! In this simplified connection pattern, reader has the strongest connection to opened. A thicker arrow shows a stronger contribution."
+        : room.id === "connections"
+          ? "Correct! Book had the highest probability shown, so it was the most likely option. A higher probability does not guarantee which token will be chosen."
+        : room.id === "prediction"
+          ? "Pattern restored. Repeated training examples can contribute to learned patterns that influence later predictions."
         : next
           ? `Door opened. Room ${next.number} is ready.`
           : "All rooms cleared. The final exit is ready.";
@@ -2045,13 +2433,15 @@
         <i aria-hidden="true">↓</i>
         <span class="token-success-pieces"><small>Token pieces</small><b>${tokenRoomTeachingData.challenge.targetPieces.map((piece) => `[${piece}]`).join(" ")}</b></span>
       </div>` : "";
-      const numbersMechanism = room.id === "numbers" ? `<div class="token-success-chain" aria-label="Token reader uses ID 305 to find a learned number row">
-        <span><small>Token</small><b>${numbersRoomTeachingData.token}</b></span>
-        <i aria-hidden="true">→</i>
-        <span><small>Lookup label</small><b>${numbersRoomTeachingData.tokenId}</b></span>
-        <i aria-hidden="true">→</i>
-        <span><small>Learned number row</small><b>[${numbersRoomTeachingData.illustrativeRow.join(", ")}]</b></span>
-      </div><p class="numbers-accuracy-note">${numbersRoomTeachingData.accuracyNote}</p>` : "";
+      const numbersMechanism = room.id === "numbers" ? `<div class="token-success-chain context-success-chain" aria-label="Tokens inside the current context window are available">
+        <span><small>Current context window</small><b>curious · reader · opened · the · old · book</b></span>
+      </div>` : "";
+      const predictionMechanism = room.id === "connections" ? `<div class="token-success-chain context-success-chain prediction-context-payoff" aria-label="The new token book has joined the context">
+        <span><small>Updated context</small><b>The little reader opened the book</b></span>
+      </div><p>One token has been added. To continue generating, the model would use this updated context and predict again.</p>` : "";
+      const patternMechanism = room.id === "prediction" ? `<div class="pattern-success-nodes" aria-label="Training examples lead through repeated small adjustments to learned patterns and later predictions">
+        <span>Training examples</span><i>→</i><span>Small adjustments</span><i>→</i><span>Learned patterns</span><i>→</i><span>Later predictions</span>
+      </div>` : "";
       return `<section class="completion">
         <div class="crystal-stage" aria-hidden="true">
           <img class="completion-crystal" src="${crystalSrc}" alt="">
@@ -2060,6 +2450,8 @@
         <h2>${room.power} restored</h2>
         ${tokenMechanism}
         ${numbersMechanism}
+        ${predictionMechanism}
+        ${patternMechanism}
         <p>${completionNote}</p>
         <div>
           <button type="button" class="secondary" data-action="map">Room Map</button>
@@ -2070,12 +2462,12 @@
     }
 
     function crystalAsset(room) {
-      if (room.crystal === "token") {
-        return "/assets/img/final-challenge/room1/token-crystal-clean.png";
-      }
+      if (room.crystal === "token") return "/assets/img/final-challenge/crystals/crystal-fairness.png";
       const reusedArtwork = {
-        numbers: "prediction",
+        numbers: "context",
+        "connection-lab": "verification",
         context: "context",
+        "prediction-machine": "prediction",
         connections: "verification",
         prediction: "patterns",
         training: "fairness"
@@ -2083,12 +2475,26 @@
       return `/assets/img/final-challenge/crystals/crystal-${reusedArtwork[room.crystal] || room.crystal}.png`;
     }
 
+    function finalCrystalColour(room) {
+      return {
+        token: "#ff5f9e",
+        numbers: "#46d49b",
+        "connection-lab": "#ff7655",
+        "prediction-machine": "#ffd15a",
+        prediction: "#6da9ff"
+      }[room.crystal] || room.colour;
+    }
+
+    function finalCrystalLabel(room) {
+      return room.crystal === "prediction" ? "Training" : room.power;
+    }
+
     function puzzleMarkup(room, data) {
       if (room.id === "token") return tokenPuzzle(data);
-      if (room.id === "numbers") return numbersPuzzle(data);
+      if (room.id === "numbers") return contextChamberPuzzle(data);
       if (room.id === "context") return contextWindowPuzzle(data);
       if (room.id === "connections") return connectionsPuzzle(data);
-      if (room.id === "prediction") return nextTokenPuzzle(data);
+      if (room.id === "prediction") return patternWorkshopPuzzle(data);
       if (room.id === "training") return trainingLoopPuzzle(data);
       return "";
     }
@@ -2157,12 +2563,12 @@
               </div>
               <div class="token-split-challenge">
                 <span class="token-question-badge">Lock question</span>
-                <h2>Which split matches the tokenizer used in AI Explorer?</h2>
+                <h2>Which statement about tokenising &ldquo;unhelpful&rdquo; is the most accurate?</h2>
                 <p class="token-target-sentence">The reader found an <mark>${challenge.targetWord}</mark> clue.</p>
-                <p>Choose one Token split. You do not need to reorder the sentence.</p>
-                <div class="token-split-options" role="group" aria-label="Choose the tokenizer split for ${challenge.targetWord}">${challenge.options.map((option, index) => `<button type="button" class="token-split-option ${data.selectedOption === option.id ? "selected" : ""}" data-token-option="${option.id}" aria-pressed="${data.selectedOption === option.id}"><small>Option ${String.fromCharCode(65 + index)}</small><span>${option.pieces.map((piece) => `<b>${piece}</b>`).join("")}</span></button>`).join("")}</div>
+                <p>Choose the most accurate statement. You do not need to reorder the sentence.</p>
+                <div class="token-split-options" role="group" aria-label="Choose the most accurate statement about tokenising ${challenge.targetWord}">${challenge.options.map((option, index) => `<button type="button" class="token-split-option ${data.selectedOption === option.id ? "selected" : ""}" data-token-option="${option.id}" aria-pressed="${data.selectedOption === option.id}"><small>Option ${String.fromCharCode(65 + index)}</small><span>${option.statement ? `<strong>${option.statement}</strong>` : option.pieces.map((piece) => `<b>${piece}</b>`).join("")}</span></button>`).join("")}</div>
                 ${comparison}
-                ${data.showHint ? `<p class="token-hint" role="status">Hint: this tokenizer makes three pieces. The first piece also carries the space before the word.</p>` : ""}
+                ${data.showHint ? `<p class="token-hint" role="status">Hint: Think back to the verified example. Do all tokenizers have to split the same text in exactly the same way?</p>` : ""}
                 <div class="token-room-actions"><button type="button" data-action="check" ${data.selectedOption ? "" : "disabled"}>Activate lock</button><button type="button" class="secondary" data-action="token-hint">${data.showHint ? "Hide hint" : "Show hint"}</button><button type="button" class="secondary" data-action="reset-room">Reset room</button></div>
               </div>
             `}
@@ -2250,88 +2656,209 @@
       </div>`;
     }
 
-    function contextWindowPuzzle(data) {
+    function contextChamberPuzzle(data) {
+      const step = !data.inspected ? 0 : !data.scannerActive ? 1 : 2;
+      const beforeWindow = ["Once", "upon", "a", "time", "a"];
+      const insideWindow = ["curious", "reader", "opened", "the", "old", "book"];
+      const afterWindow = ["quietly", "."];
       const options = [
-        ["umbrella", "umbrella", "umbrella at home"],
-        ["clouds", "cloud", "dark clouds"],
-        ["outside", "eye", "looked outside"]
+        { id: "inside", tokens: insideWindow },
+        { id: "before", tokens: beforeWindow },
+        { id: "almost", tokens: ["reader", "opened", "the", "old", "book", "quietly"] },
+        { id: "all", tokens: [...beforeWindow, ...insideWindow, ...afterWindow], label: "The entire sentence" }
       ];
-      const scene = data.scene || 1;
-      const sceneDots = `<div class="context-scene-progress" aria-label="Scene ${scene} of 3"><b>${scene} / 3</b><span class="active"></span><span class="${scene >= 2 ? "active" : ""}"></span><span class="${scene >= 3 ? "active" : ""}"></span></div>`;
-      const windowVisual = `<div class="context-reading-stage ${data.shifted ? "shifted" : ""}" aria-label="Older text is outside the current Context Window while newer text remains inside">
-        <div class="context-track" aria-hidden="true"><span></span>${contextIcon("arrow")}</div>
-        <section class="context-old-zone" aria-label="Outside the Context Window">
-          <span class="context-zone-label">Outside window</span>
-          <article class="context-sentence old-sentence ${data.choice === "umbrella" ? "linked" : ""}"><small>Older text</small><p>Mia left her <b>umbrella</b> at home.</p></article>
-          ${data.shifted ? `<article class="context-sentence newly-outside"><small>Moved outside</small><p>Dark clouds covered the sky.</p></article>` : ""}
-        </section>
-        <div class="context-boundary"><span>Window edge</span></div>
-        <section class="context-current-window" aria-label="Current Context Window">
-          <span class="context-zone-label">Current Context Window</span>
-          ${!data.shifted ? `<article class="context-sentence ${data.choice === "clouds" ? "linked pulse" : ""}"><p>Dark clouds covered the sky.</p></article>` : ""}
-          <article class="context-sentence ${data.choice === "outside" ? "linked pulse" : ""}"><p>She looked outside and ...</p></article>
-          ${data.shifted ? `<article class="context-sentence incoming"><small>New text</small><p>hurried toward the bus stop.</p></article>` : `<span class="context-incoming">New text arrives here →</span>`}
-        </section>
-        <img class="context-guide-robot" src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot beside the Context Window edge">
-      </div>`;
-
-      if (scene === 1) {
-        return `<div class="context-scene-wrap">
-          <section class="context-scene-card">
-            ${sceneDots}
-            <span class="clue">Moving reading window</span>
-            <h2>What can the model see right now?</h2>
-            <p>The model can use only the Tokens inside the bright frame.</p>
-            ${windowVisual}
-            <button type="button" data-action="start-context">Find the clue that moved out</button>
-          </section>
-        </div>`;
-      }
-
-      if (scene === 2) {
-        return `<div class="context-scene-wrap">
-          <section class="context-scene-card">
-            ${sceneDots}
-            <span class="clue">Trace the window</span>
-            <h2>Which clue can the model no longer use?</h2>
-            ${windowVisual}
-            <div class="context-clue-chips" role="radiogroup" aria-label="Choose the clue outside the current Context Window">
-              ${options.map(([id, icon, text]) => `<button type="button" role="radio" aria-checked="${data.choice === id}" class="context-clue-chip ${data.choice === id ? "selected" : ""}" data-context-clue="${id}">${contextIcon(icon)}<strong>${text}</strong></button>`).join("")}
-            </div>
-            ${data.feedbackKind === "bad" ? `<aside class="context-robot-feedback" role="status" aria-live="polite"><img src="/assets/img/final-challenge/room1/guide-robot.png" alt="Guide robot"><p>${data.feedback}</p></aside>` : `<p class="context-task-hint">Choose one clue and watch where it connects.</p>`}
-          </section>
-        </div>`;
-      }
-
-      return `<div class="context-scene-wrap">
-        <section class="context-scene-card context-shift-scene">
-          ${sceneDots}
-          <span class="clue">Window shifted</span>
-          <h2>New text moves the window forward</h2>
-          ${windowVisual}
-          <div class="context-takeaway" role="status" aria-live="polite">
-            <strong>The umbrella clue is outside the current Context Window.</strong>
-            <p>The model cannot use it right now. As new text arrives, older Tokens can move outside the window.</p>
+      const feedbackClass = data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : "";
+      const token = (value, extra = "") => `<span class="context-chamber-token ${extra}">${value}</span>`;
+      const optionMarkup = options.map((option, index) => {
+        const selected = data.selectedOption === option.id;
+        const submittedState = data.submitted && selected ? (option.id === "inside" ? "correct" : "wrong") : "";
+        return `<button type="button" class="context-lock-option ${selected ? "selected" : ""} ${submittedState}" data-context-option="${option.id}" aria-pressed="${selected}">
+          <small>Option ${String.fromCharCode(65 + index)}</small>
+          <span class="context-lock-option-chips">${option.label ? `<b>${option.label}</b>` : option.tokens.map((item) => `<b>${item}</b>`).join("")}</span>
+        </button>`;
+      }).join("");
+      const scanner = data.scannerActive ? `<div class="context-chamber-scanner" aria-label="Token sequence with the current context window highlighted">
+        <div class="context-chamber-sequence">
+          <div class="context-chamber-outside">${beforeWindow.map((item) => token(item, "outside")).join("")}</div>
+          <div class="context-chamber-window">
+            <span class="context-chamber-window-label">Current context window</span>
+            <div>${insideWindow.map((item) => token(item, "inside")).join("")}</div>
           </div>
-          <button type="button" class="context-collect" data-action="check">Collect the Context Crystal</button>
+          <div class="context-chamber-outside">${afterWindow.map((item) => token(item, "outside")).join("")}</div>
+        </div>
+        <div class="context-chamber-legend" aria-label="Context window key">
+          <span>Inside the window = available context</span>
+          <span>Outside the window = may not be available right now</span>
+        </div>
+      </div>` : "";
+      const lock = data.scannerActive ? `<section class="context-lock-question">
+        <span class="token-question-badge">Lock question</span>
+        <h2>Which tokens are available to the model right now?</h2>
+        <p>Choose the group that matches the tokens inside the glowing context window.</p>
+        <div class="context-lock-options" role="group" aria-label="Choose the tokens available inside the current context window">${optionMarkup}</div>
+        ${data.showHint ? `<p class="context-lock-hint" role="status">Hint: Don't choose the words that seem most important. Look only at the glowing window boundary. Which token is the first one inside it? Which token is the last?</p>` : ""}
+        <div class="token-room-actions"><button type="button" data-action="check" ${data.selectedOption ? "" : "disabled"}>Unlock context door</button><button type="button" class="secondary" data-action="context-hint">${data.showHint ? "Hide hint" : "Show hint"}</button><button type="button" class="secondary" data-action="reset-room">Reset room</button></div>
+      </section>` : "";
+      const consoleState = !data.inspected
+        ? `<div class="context-console-state"><span class="context-console-orb" aria-hidden="true"></span><strong>Door scanner offline</strong><p>The console is waiting for an inspection.</p><button type="button" class="gold" data-action="inspect-context">Inspect console</button></div>`
+        : !data.scannerActive
+          ? `<div class="context-console-state inspected"><span class="context-console-orb" aria-hidden="true"></span><strong>Console inspected</strong><p>The scanner can now reveal the tokens available to the model.</p><button type="button" data-action="activate-context-scanner">Activate context scanner</button></div>`
+          : `<div class="context-console-state scanned"><span class="context-console-orb" aria-hidden="true"></span><strong>Context scanner active</strong><p>The glowing frame marks the current available context.</p></div>`;
+      return `<div class="room-body context-chamber-body">
+        <section class="puzzle-board context-chamber-board">
+          ${stepStrip(["Inspect console", "Activate context scanner", "Unlock context door"], step)}
+          <div class="context-chamber-console">
+            <span class="clue">Context scanner</span>
+            ${consoleState}
+          </div>
+          ${scanner}
+          ${lock}
+          <div class="feedback ${feedbackClass}" role="status" aria-live="polite">${data.feedback || "The door scanner is offline. Inspect the console to find out what it needs."}</div>
         </section>
+        ${guide(step === 0 ? "Activate the scanner to reveal which tokens are available right now." : step === 1 ? "The lock only reads the tokens inside the glowing context window." : "The glowing frame shows the context available to the model right now. Now choose the matching group of tokens.")}
       </div>`;
     }
 
+    function contextWindowPuzzle(data) {
+      const step = !data.inspected ? 0 : !data.scannerActive ? 1 : 2;
+      const sentence = ["The", "little", "reader", "opened", "the", "old", "book"];
+      const connections = [
+        { token: "reader", strength: 8 }, { token: "book", strength: 6 }, { token: "little", strength: 4 },
+        { token: "old", strength: 3 }, { token: "The", strength: 2 }, { token: "the", strength: 1 }
+      ];
+      const options = ["reader", "book", "little", "the"];
+      const feedbackClass = data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : "";
+      const scanner = data.scannerActive ? `<section class="connection-scanner" aria-label="Simplified connection pattern showing arrows toward the focus token opened">
+        <div class="connection-sentence">${sentence.map((token) => `<span class="connection-token ${token === "opened" ? "connection-focus" : ""}">${token}</span>`).join("")}</div>
+        <span class="connection-focus-label">Focus token · opened</span>
+        <div class="connection-pattern">${connections.map(({ token, strength }) => `<div class="connection-row"><span class="connection-source">${token}</span><i class="connection-arrow" style="--strength:${strength}px" aria-label="${token} contributes to opened"></i><span class="connection-focus">opened</span></div>`).join("")}</div>
+        <p class="connection-teaching-note">Different token positions can contribute different amounts of information. The thicker the arrow, the stronger the contribution shown here.<br><small>Simplified connection pattern for this challenge.</small></p>
+        <div class="connection-legend" aria-label="Connection strength legend"><span><i style="--legend-strength:7px"></i>Strong contribution</span><span><i style="--legend-strength:4px"></i>Medium contribution</span><span><i style="--legend-strength:2px"></i>Weak contribution</span></div>
+      </section>` : "";
+      const lock = data.scannerActive ? `<section class="connection-lock-question">
+        <span class="token-question-badge">Lock question</span>
+        <h2>Which token is shown contributing the most information to &ldquo;opened&rdquo;?</h2>
+        <p>Use the connection pattern above. You do not need to guess.</p>
+        <div class="connection-lock-options" role="group" aria-label="Choose the token with the strongest shown connection to opened">${options.map((option, index) => {
+          const selected = data.selectedOption === option;
+          const submittedState = data.submitted && selected ? (option === "reader" ? "correct" : "wrong") : "";
+          return `<button type="button" class="connection-lock-option ${selected ? "selected" : ""} ${submittedState}" data-connection-option="${option}" aria-pressed="${selected}"><small>Option ${String.fromCharCode(65 + index)}</small><b>${option}</b></button>`;
+        }).join("")}</div>
+        ${data.showHint ? `<p class="connection-lock-hint" role="status">Hint: Look at the arrows pointing toward &ldquo;opened&rdquo;. Which one is the thickest? The pattern is already shown — you only need to read it.</p>` : ""}
+        <div class="token-room-actions"><button type="button" data-action="check" ${data.selectedOption ? "" : "disabled"}>Unlock connection door</button><button type="button" class="secondary" data-action="connection-hint">${data.showHint ? "Hide hint" : "Show hint"}</button><button type="button" class="secondary" data-action="reset-room">Reset room</button></div>
+      </section>` : "";
+      const consoleState = !data.inspected
+        ? `<div class="connection-console-state"><span class="connection-console-orb" aria-hidden="true"></span><strong>Connection console offline</strong><p>The door is receiving signals from several token positions.</p><button type="button" class="gold" data-action="inspect-connections">Inspect console</button></div>`
+        : !data.scannerActive
+          ? `<div class="connection-console-state inspected"><span class="connection-console-orb" aria-hidden="true"></span><strong>Console inspected</strong><p>The scanner can reveal the already-computed connection pattern.</p><button type="button" data-action="activate-connection-scanner">Activate connection scanner</button></div>`
+          : `<div class="connection-console-state scanned"><span class="connection-console-orb" aria-hidden="true"></span><strong>Connection scanner active</strong><p>The scanner has revealed the pattern. Now decode it to open the lock.</p></div>`;
+      return `<div class="room-body connection-lab-body"><section class="puzzle-board connection-lab-board">
+        ${stepStrip(["Inspect console", "Reveal connections", "Decode the pattern"], step)}
+        <div class="connection-console"><span class="clue">Connection console</span>${consoleState}</div>
+        ${scanner}${lock}
+        <div class="feedback ${feedbackClass}" role="status" aria-live="polite">${data.feedback || "The connection console is offline. Inspect it to find out what the door needs."}</div>
+      </section>${guide(step === 0 ? "Something is feeding information into the locked token console." : step === 1 ? "Activate the scanner to reveal the connection pattern." : "Read the already-shown arrow thicknesses. You do not need to guess which word matters most.")}</div>`;
+    }
+
     function connectionsPuzzle(data) {
-      const tokens = ["The", "tired", "dog", "slept", "beside", "the", "warm", "fire", "."];
-      return `<div class="room-body">
-        <section class="puzzle-board">
-          ${stepStrip(["Read the task", "Connect two clues", "Explain the answer"], data.selected.length >= 2 ? 2 : 1)}
-          <span class="clue">All tokens are visible</span>
-          <h2>What is likely to be sleeping?</h2>
-          <p>Choose the two tokens that connect most directly to this question.</p>
-          <div class="chip-grid">${tokens.map((token, index) => `<button type="button" class="${data.selected.includes(token) ? "selected" : ""}" data-chip="${token}">${token}</button>`).join("")}</div>
-          <button type="button" data-action="check">Test the connections</button>
-          <div class="feedback ${data.feedback?.startsWith("Good") ? "good" : data.feedback ? "bad" : ""}">${data.feedback || "Visible tokens do not all help equally. The current task changes which connections matter most."}</div>
-        </section>
-        ${guide("Choose the thing that can sleep and the action that tells you it slept.")}
-      </div>`;
+      const step = !data.inspected ? 0 : !data.machineRan ? 1 : 2;
+      const probabilities = [
+        { token: "book", value: 46, colour: "#79adff" }, { token: "door", value: 27, colour: "#b79aff" },
+        { token: "box", value: 15, colour: "#72ddb2" }, { token: "window", value: 8, colour: "#ffb26b" }, { token: "other", value: 4, colour: "#aeb9d0" }
+      ];
+      const options = [
+        "“book” will definitely be chosen next.",
+        "“book” is the most likely option shown, but it is not guaranteed to be chosen.",
+        "Every possible next token has the same chance.",
+        "The model has already generated the whole sentence."
+      ];
+      const feedbackClass = data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : "";
+      const signal = data.machineRan ? `<section class="prediction-signal" aria-label="Illustrative next-token probability signal">
+        <div class="prediction-prompt">The little reader opened the <b>___</b></div>
+        <span class="prediction-signal-label">Next-token signal</span><small>Higher probability = more likely right now.</small>
+        <div class="prediction-bars">${probabilities.map(({ token, value, colour }) => `<div class="prediction-signal-row" style="--chip:${colour}; --value:${value}%"><b>${token}</b><span class="prediction-signal-track"><i></i></span><em>${value}%</em></div>`).join("")}</div>
+        <p class="prediction-not-guaranteed">Higher probability means more likely, but it does not guarantee which token will be chosen. Models can use different ways to choose from the possible next tokens.</p>
+        ${data.correctSolved ? `<p class="prediction-context-payoff" role="status"><strong>Prediction complete.</strong> The little reader opened the <b>book</b>. One token has been added; to continue generating, the model would use the updated context and predict again.</p>` : ""}
+      </section>` : "";
+      const lock = data.machineRan ? `<section class="prediction-lock-question">
+        <span class="token-question-badge">Lock question</span>
+        <h2>Which statement best matches the prediction shown by the machine?</h2>
+        <p>Read both the probabilities and the machine note.</p>
+        <div class="prediction-lock-options" role="group" aria-label="Choose the statement that matches the prediction signal">${options.map((option, index) => {
+          const selected = data.selectedOption === index;
+          const submittedState = data.submitted && selected ? (index === 1 ? "correct" : "wrong") : "";
+          return `<button type="button" class="prediction-lock-option ${selected ? "selected" : ""} ${submittedState}" data-prediction-option="${index}" aria-pressed="${selected}"><small>Option ${String.fromCharCode(65 + index)}</small><span>${option}</span></button>`;
+        }).join("")}</div>
+        ${data.showHint ? `<p class="prediction-lock-hint" role="status">Hint: The largest probability tells you which option is more likely. Does “more likely” mean “certain”?</p>` : ""}
+        <div class="token-room-actions"><button type="button" data-action="check" ${data.selectedOption === "" ? "disabled" : ""}>Unlock prediction door</button><button type="button" class="secondary" data-action="prediction-hint">${data.showHint ? "Hide hint" : "Show hint"}</button><button type="button" class="secondary" data-action="reset-room">Reset room</button></div>
+      </section>` : "";
+      const consoleState = !data.inspected
+        ? `<div class="prediction-console-state"><span class="prediction-console-orb" aria-hidden="true"></span><strong>Prediction console offline</strong><p>The door needs a next-token signal, but the prediction machine is offline.</p><button type="button" class="gold" data-action="inspect-prediction">Inspect console</button></div>`
+        : !data.machineRan
+          ? `<div class="prediction-console-state inspected"><span class="prediction-console-orb" aria-hidden="true"></span><strong>Console inspected</strong><p>The machine compares several possible next tokens before the door can respond.</p><button type="button" data-action="run-prediction">Run prediction machine</button></div>`
+          : `<div class="prediction-console-state running"><span class="prediction-console-orb" aria-hidden="true"></span><strong>Prediction machine running</strong><p>The probabilities are visible. Read what the machine is actually telling you.</p></div>`;
+      return `<div class="room-body prediction-machine-body"><section class="puzzle-board prediction-machine-board">
+        ${stepStrip(["Inspect console", "Run prediction", "Decode the signal"], step)}
+        <div class="prediction-console"><span class="clue">Prediction console</span>${consoleState}</div>
+        ${signal}${lock}
+        <div class="feedback ${feedbackClass}" role="status" aria-live="polite">${data.feedback || "The prediction console is offline. Inspect it to find out what signal the door needs."}</div>
+      </section>${guide(step === 0 ? "The locked door needs a next-token signal." : step === 1 ? "Run the prediction machine to reveal the probabilities." : "The probabilities are visible. Read what the machine is actually telling you.")}</div>`;
+    }
+
+    function patternWorkshopPuzzle(data) {
+      const step = !data.inspected ? 0 : !data.predictionRevealed ? 1 : 2;
+      const examples = [
+        "The dragon sleeps in the <mark>cave</mark>.",
+        "The dragon hides in the <mark>cave</mark>.",
+        "The dragon waits in the <mark>cave</mark>.",
+        "The dragon flew over the <mark>castle</mark>."
+      ];
+      const prediction = [
+        { token: "cave", value: 48, colour: "#ff79b6" },
+        { token: "castle", value: 29, colour: "#ffd16e" },
+        { token: "forest", value: 23, colour: "#72d9ad" }
+      ];
+      const options = [
+        "The model stores every sentence and searches for an exact copy later.",
+        "Repeated examples can strengthen learned patterns, which can influence later predictions.",
+        "The model learns one perfect answer after seeing a single example.",
+        "The examples directly tell the model what to say in every future conversation."
+      ];
+      const feedbackClass = data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : "";
+      const consoleState = !data.inspected
+        ? `<div class="pattern-console-state"><span class="pattern-console-orb" aria-hidden="true"></span><strong>Training console offline</strong><p>Its archive contains the evidence needed to restore the model's pattern.</p><button type="button" class="gold" data-action="inspect-training-console">Inspect training console</button></div>`
+        : !data.predictionRevealed
+          ? `<div class="pattern-console-state inspected"><span class="pattern-console-orb" aria-hidden="true"></span><strong>Training records found</strong><p>The archive contains simplified records from the toy training system.</p></div>`
+          : `<div class="pattern-console-state online"><span class="pattern-console-orb" aria-hidden="true"></span><strong>Pattern console online</strong><p>The records and later prediction are connected. Use them to unlock the final crystal.</p></div>`;
+      const records = data.inspected ? `<section class="pattern-records">
+        <span class="clue">Training records</span>
+        <h2>Training records</h2>
+        <p>These simplified examples were used by the toy training system earlier.</p>
+        <div class="pattern-example-grid">${examples.map((example) => `<div class="pattern-example">${example}</div>`).join("")}</div>
+        ${data.predictionRevealed ? `<section class="pattern-prediction" aria-label="Simplified illustrative toy prediction">
+          <header><strong>TEST RECORD</strong><small>Simplified · illustrative</small></header>
+          <div class="pattern-test-prompt">The dragon returned to the ___</div>
+          <div class="pattern-bars">${prediction.map(({ token, value, colour }) => `<div class="pattern-bar" style="--value:${value}%;--bar:${colour}"><b>${token}</b><span><i></i></span><em>${value}%</em></div>`).join("")}</div>
+          <p class="pattern-accuracy-note">These are illustrative teaching values, not real model output. These examples helped shape the toy model's learned pattern; a count is not automatically a probability.</p>
+        </section>` : `<button type="button" data-action="reveal-pattern-prediction">Reveal prediction</button>`}
+      </section>` : "";
+      const lock = data.predictionRevealed ? `<section class="pattern-lock-question">
+        <span class="token-question-badge">Lock question</span>
+        <h2>Why can the training examples change the toy model's later prediction?</h2>
+        <div class="pattern-lock-options" role="group" aria-label="Choose why training examples can change a later prediction">${options.map((option, index) => {
+          const selected = data.selectedOption === index;
+          const submittedState = data.submitted && selected ? (index === 1 ? "correct" : "wrong") : "";
+          return `<button type="button" class="pattern-lock-option ${selected ? "selected" : ""} ${submittedState}" data-pattern-option="${index}" aria-pressed="${selected}"><small>Option ${String.fromCharCode(65 + index)}</small><span>${option}</span></button>`;
+        }).join("")}</div>
+        ${data.showHint ? `<p class="pattern-lock-hint" role="status">Hint: Think back to the tiny toy model. Adding similar examples made one prediction gradually more likely.</p>` : ""}
+        <div class="token-room-actions"><button type="button" data-action="check" ${data.selectedOption === "" ? "disabled" : ""}>Activate lock</button><button type="button" class="secondary" data-action="pattern-hint">${data.showHint ? "Hide hint" : "Show hint"}</button><button type="button" class="secondary" data-action="reset-room">Reset room</button></div>
+      </section>` : "";
+      return `<div class="room-body pattern-workshop-body"><section class="puzzle-board pattern-workshop-board">
+        ${stepStrip(["Inspect console", "Read training records", "Unlock the pattern"], step)}
+        <div class="pattern-console"><span class="clue">Training archive console</span>${consoleState}</div>
+        ${records}${lock}
+        <div class="feedback ${feedbackClass}" role="status" aria-live="polite">${data.feedback || "The training console is offline. Inspect its records to see how the model learned."}</div>
+      </section>${guide(step === 0 ? "The training console is offline. Inspect its records to see how the model learned." : step === 1 ? "The console contains records from earlier training examples. Reveal the later prediction." : "The examples affected what became more likely later. But why?")}</div>`;
     }
 
     function nextTokenPuzzle(data) {
@@ -2571,10 +3098,10 @@
       roomScreen.querySelector("[data-action='reset-room']")?.addEventListener("click", () => openRoom(room.id, false));
 
       if (room.id === "token") bindTokenRoom(room);
-      if (room.id === "numbers") bindNumbersRoom(room);
+      if (room.id === "numbers") bindContextChamberRoom(room);
       if (room.id === "context") bindContextRoom(room);
-      if (room.id === "prediction") bindChoiceRoom(room, "choice");
-      if (room.id === "connections") bindChipRoom(room);
+      if (room.id === "prediction") bindPatternWorkshopRoom(room);
+      if (room.id === "connections") bindPredictionMachineRoom(room);
       if (room.id === "training") bindTrainingRoom(room);
       roomScreen.querySelector("[data-action='check']")?.addEventListener("click", () => checkRoom(room));
     }
@@ -2624,7 +3151,36 @@
       }));
     }
 
-    function bindNumbersRoom(room) {
+    function bindPredictionMachineRoom(room) {
+      const data = state.roomData;
+      roomScreen.querySelector("[data-action='inspect-prediction']")?.addEventListener("click", () => {
+        data.inspected = true;
+        data.feedbackKind = "good";
+        data.feedback = "The machine compares several possible next tokens before the door can respond.";
+        renderRoom(room);
+        send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "prediction-console-inspected" });
+      });
+      roomScreen.querySelector("[data-action='run-prediction']")?.addEventListener("click", () => {
+        data.machineRan = true;
+        data.feedbackKind = "good";
+        data.feedback = "Prediction signal ready. Higher probability means more likely right now, not guaranteed.";
+        renderRoom(room);
+        send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "prediction-machine-ran" });
+      });
+      roomScreen.querySelectorAll("[data-prediction-option]").forEach((button) => button.addEventListener("click", () => {
+        data.selectedOption = Number(button.dataset.predictionOption);
+        data.submitted = false;
+        data.feedbackKind = "";
+        data.feedback = "Selection ready. Read both the largest probability and the machine note, then unlock the door.";
+        renderRoom(room);
+      }));
+      roomScreen.querySelector("[data-action='prediction-hint']")?.addEventListener("click", () => {
+        data.showHint = !data.showHint;
+        renderRoom(room);
+      });
+    }
+
+    function bindLegacyNumbersRoom(room) {
       const data = state.roomData;
       roomScreen.querySelectorAll("[data-number-drawer]").forEach((button) => button.addEventListener("click", () => {
         const drawer = Number(button.dataset.numberDrawer);
@@ -2671,38 +3227,96 @@
       }));
     }
 
+    function bindContextChamberRoom(room) {
+      const data = state.roomData;
+      roomScreen.querySelector("[data-action='inspect-context']")?.addEventListener("click", () => {
+        data.inspected = true;
+        data.feedbackKind = "good";
+        data.feedback = "Console inspected. Activate the context scanner to reveal the tokens the lock can read.";
+        renderRoom(room);
+        send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "console-inspected" });
+      });
+      roomScreen.querySelector("[data-action='activate-context-scanner']")?.addEventListener("click", () => {
+        data.scannerActive = true;
+        data.feedbackKind = "good";
+        data.feedback = "Scanner active. The glowing frame is the current context window.";
+        renderRoom(room);
+        send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "context-scanner-activated" });
+      });
+      roomScreen.querySelectorAll("[data-context-option]").forEach((button) => button.addEventListener("click", () => {
+        data.selectedOption = button.dataset.contextOption;
+        data.submitted = false;
+        data.feedbackKind = "";
+        data.feedback = "Selection ready. Check the glowing window boundary, then unlock the door.";
+        renderRoom(room);
+      }));
+      roomScreen.querySelector("[data-action='context-hint']")?.addEventListener("click", () => {
+        data.showHint = !data.showHint;
+        renderRoom(room);
+      });
+    }
+
     function bindContextRoom(room) {
       const data = state.roomData;
-      roomScreen.querySelector("[data-action='start-context']")?.addEventListener("click", () => {
-        data.scene = 2;
-        data.feedbackKind = "";
-        data.feedback = "";
+      roomScreen.querySelector("[data-action='inspect-connections']")?.addEventListener("click", () => {
+        data.inspected = true;
+        data.feedbackKind = "good";
+        data.feedback = "The lock combines information from several token positions. But the connections are not all equally strong.";
         renderRoom(room);
-        queueMicrotask(() => roomScreen.querySelector("[data-context-clue]")?.focus());
+        send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "connection-console-inspected" });
       });
-      roomScreen.querySelectorAll("[data-context-clue]").forEach((button) => button.addEventListener("click", () => {
-        data.choice = button.dataset.contextClue;
-        data.attempts += 1;
-        if (data.choice === "umbrella") {
-          data.solved = true;
-          data.shifted = true;
-          data.scene = 3;
-          data.feedbackKind = "good";
-          data.feedback = "This clue is outside the current Context Window. The model cannot use it right now.";
-          send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "context-window-shifted" });
-        } else {
-          data.solved = false;
-          data.feedbackKind = "bad";
-          data.feedback = "This clue is still inside the highlighted window. Look for the sentence that has faded to the left of the frame.";
-        }
+      roomScreen.querySelector("[data-action='activate-connection-scanner']")?.addEventListener("click", () => {
+        data.scannerActive = true;
+        data.feedbackKind = "good";
+        data.feedback = "Scanner active. Follow each arrow toward the focus token, then compare their thicknesses.";
         renderRoom(room);
-        queueMicrotask(() => roomScreen.querySelector(data.solved ? "[data-action='check']" : `[data-context-clue='${data.choice}']`)?.focus());
+        send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "connection-scanner-activated" });
+      });
+      roomScreen.querySelectorAll("[data-connection-option]").forEach((button) => button.addEventListener("click", () => {
+        data.selectedOption = button.dataset.connectionOption;
+        data.submitted = false;
+        data.feedbackKind = "";
+        data.feedback = "Selection ready. Compare the shown arrow thicknesses, then unlock the door.";
+        renderRoom(room);
       }));
+      roomScreen.querySelector("[data-action='connection-hint']")?.addEventListener("click", () => {
+        data.showHint = !data.showHint;
+        renderRoom(room);
+      });
     }
 
     function bindTrainingRoom(room) {
       roomScreen.querySelector("[data-action='training-step']")?.addEventListener("click", () => {
         state.roomData.step = Math.min(5, (state.roomData.step || 0) + 1);
+        renderRoom(room);
+      });
+    }
+
+    function bindPatternWorkshopRoom(room) {
+      const data = state.roomData;
+      roomScreen.querySelector("[data-action='inspect-training-console']")?.addEventListener("click", () => {
+        data.inspected = true;
+        data.feedbackKind = "good";
+        data.feedback = "Good. The console contains records from earlier training examples.";
+        renderRoom(room);
+        send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "training-console-inspected" });
+      });
+      roomScreen.querySelector("[data-action='reveal-pattern-prediction']")?.addEventListener("click", () => {
+        data.predictionRevealed = true;
+        data.feedbackKind = "good";
+        data.feedback = "The examples affected what became more likely later. Now explain why.";
+        renderRoom(room);
+        send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "training-records-revealed" });
+      });
+      roomScreen.querySelectorAll("[data-pattern-option]").forEach((button) => button.addEventListener("click", () => {
+        data.selectedOption = Number(button.dataset.patternOption);
+        data.submitted = false;
+        data.feedbackKind = "";
+        data.feedback = "Selection ready. Use the records and later prediction to activate the lock.";
+        renderRoom(room);
+      }));
+      roomScreen.querySelector("[data-action='pattern-hint']")?.addEventListener("click", () => {
+        data.showHint = !data.showHint;
         renderRoom(room);
       });
     }
@@ -2734,36 +3348,78 @@
           data.submitted = true;
           data.attempts += 1;
           data.feedbackKind = "bad";
-          data.feedback = "Not quite. Token boundaries do not always match whole-word or human word-part boundaries. Compare the two rows, then try again.";
+          data.feedback = "Not quite. There is no single split that every tokenizer must use. Different tokenizers can split the same text in different ways.";
         }
       }
       if (room.id === "numbers") {
-        if (data.drawerOpened && data.conceptPassed) return roomComplete(room);
-        data.feedbackKind = "bad";
-        data.feedback = "Open the matching drawer and explain what the token ID does before collecting the crystal.";
+        if (!data.scannerActive) {
+          data.feedbackKind = "bad";
+          data.feedback = "Inspect the console and activate the context scanner before opening the door.";
+        } else if (!data.selectedOption) {
+          data.feedbackKind = "bad";
+          data.feedback = "Choose the group of tokens inside the glowing context window.";
+        } else if (data.selectedOption === "inside") {
+          return roomComplete(room);
+        } else {
+          data.submitted = true;
+          data.attempts += 1;
+          data.feedbackKind = "bad";
+          data.feedback = "Not quite. Look at the edges of the glowing context window. Only the tokens inside that frame are available in this example.";
+        }
       }
       if (room.id === "context") {
-        if (data.solved && data.shifted) return roomComplete(room);
-        data.feedbackKind = "bad";
-        data.feedback = "Find the clue outside the current Context Window before collecting the crystal.";
+        if (!data.scannerActive) {
+          data.feedbackKind = "bad";
+          data.feedback = "Inspect the console and activate the connection scanner before opening the door.";
+        } else if (!data.selectedOption) {
+          data.feedbackKind = "bad";
+          data.feedback = "Choose the token with the thickest arrow pointing toward opened.";
+        } else if (data.selectedOption === "reader") {
+          return roomComplete(room);
+        } else {
+          data.submitted = true;
+          data.attempts += 1;
+          data.feedbackKind = "bad";
+          data.feedback = "Not quite. You do not need to guess which word seems most important. Compare the arrow thicknesses in the connection pattern.";
+        }
       }
       if (room.id === "connections") {
-        const selected = new Set(data.selected);
-        if (selected.size === 2 && selected.has("dog") && selected.has("slept")) return roomComplete(room);
-        data.feedback = "Choose exactly two clues: who can sleep, and which action confirms it?";
+        if (!data.machineRan) {
+          data.feedbackKind = "bad";
+          data.feedback = "Inspect the console and run the prediction machine before opening the door.";
+        } else if (data.selectedOption === "") {
+          data.feedbackKind = "bad";
+          data.feedback = "Choose the statement that best matches the displayed prediction signal.";
+        } else if (data.selectedOption === 1) {
+          data.correctSolved = true;
+          data.feedbackKind = "good";
+          data.feedback = "Correct! “book” has the highest probability shown, so it is currently the most likely option. But a higher probability does not guarantee that it will be chosen.";
+          renderRoom(room);
+          return roomComplete(room);
+        } else {
+          data.submitted = true;
+          data.attempts += 1;
+          data.feedbackKind = "bad";
+          data.feedback = "Not quite. Look at both parts of the clue: 46% makes “book” the most likely option shown, but probability is not a guarantee.";
+        }
       }
       if (room.id === "prediction") {
-        const expected = data.round === 0 ? "door" : "inside";
-        if (data.choice === expected && data.round === 0) {
-          data.generated = [data.choice];
-          data.round = 1;
-          data.choice = "";
-          data.feedback = "Good. The selected token joins the text, so the model predicts again.";
-          renderRoom(room);
-          return;
+        if (!data.predictionRevealed) {
+          data.feedbackKind = "bad";
+          data.feedback = "Inspect the training console and reveal the later prediction before opening the lock.";
+        } else if (data.selectedOption === "") {
+          data.feedbackKind = "bad";
+          data.feedback = "Choose the explanation that connects repeated examples, learned patterns and later predictions.";
+        } else if (data.selectedOption === 1) {
+          data.feedbackKind = "good";
+          data.feedback = "Pattern restored. Repeated training examples can contribute to learned patterns that influence later predictions.";
+          return roomComplete(room);
+        } else {
+          data.submitted = true;
+          data.attempts += 1;
+          data.feedbackKind = "bad";
+          data.feedback = "The engine stays locked. One example does not become a stored answer. Think about what repeated training examples can change over time.";
         }
-        if (data.choice === expected && data.round === 1) return roomComplete(room);
-        data.feedback = "Compare the reviewed chances and choose the strongest candidate.";
       }
       if (room.id === "training") {
         if (data.step >= 5) return roomComplete(room);
@@ -2776,32 +3432,48 @@
       const allDone = rooms.every((room) => state.completed.has(room.id) && state.crystals.has(room.crystal));
       const placedCrystals = state.finalComplete ? new Set(rooms.map((room) => room.crystal)) : state.exitPlaced;
       const allPlaced = allDone && rooms.every((room) => placedCrystals.has(room.crystal));
-      const modelPlaced = state.finalComplete ? finalModelOrder : state.exitModel;
-      const reviewPlaced = state.finalComplete ? finalReviewOrder : state.exitReview;
-      const modelCorrect = finalModelOrder.every((id, index) => modelPlaced[index] === id);
-      const reviewCorrect = finalReviewOrder.every((id, index) => reviewPlaced[index] === id);
-      const modelReady = finalModelOrder.every((_, index) => Boolean(modelPlaced[index]));
-      const reviewReady = finalReviewOrder.every((_, index) => Boolean(reviewPlaced[index]));
-      const canTryFinal = allPlaced && modelReady && reviewReady;
-      const finalReady = allPlaced && modelCorrect && reviewCorrect;
+      const fusionActive = allPlaced && state.exitStage === "fusing";
+      const fused = state.finalComplete || state.exitStage === "fused";
+      const puzzleUnlocked = fused;
+      const conceptPlaced = state.finalComplete ? finalConceptOrder : state.exitOrder;
+      const conceptCorrect = finalConceptOrder.every((id, index) => conceptPlaced[index] === id);
+      const conceptReady = finalConceptOrder.every((_, index) => Boolean(conceptPlaced[index]));
+      const canTryFinal = puzzleUnlocked && conceptReady;
+      const finalReady = puzzleUnlocked && conceptCorrect;
       const exitComplete = state.finalComplete;
-      const hasPlacedCards = state.exitModel.length > 0 || state.exitReview.length > 0;
+      const hasPlacedCards = state.exitOrder.length > 0;
       const titleText = exitComplete ? "Language Model Door opened" : allDone ? "Power the Language Model Door" : "Final room not ready";
       const leadText = exitComplete
         ? "Review mode: the exit is already open. Replay the final lock if you want to solve it again."
         : allDone
-          ? "Use the six crystals to rebuild the generation path and the separate training loop."
-          : "Collect all six room crystals before opening the final exit.";
-      const consoleTitle = exitComplete ? "Final model complete" : allPlaced ? "Build the final model" : "Place the crystals";
+          ? "Combine the five crystals, then rebuild one learning-to-prediction path."
+          : "Collect all five room crystals before opening the final exit.";
+      const consoleTitle = exitComplete ? "Final lock solved" : puzzleUnlocked ? "Final Lock" : fusionActive ? "Final crystal is forming..." : "Final Lock";
       const consoleInstruction = exitComplete
         ? "The puzzle is complete. Click Replay final puzzle to unlock the controls again."
-        : allPlaced
+        : puzzleUnlocked
           ? canTryFinal
-            ? "Both paths are full. Click Activate Language Model. If the order feels wrong, use Reset cards."
+            ? "All five slots are full. Solve the Final Lock, or use Reset cards to try again."
             : "Drag each card into an empty slot. You can also click a card to fill the next empty slot. Click a filled slot to remove it."
+          : fusionActive
+            ? "Combining the five ideas..."
           : allDone
-            ? "Click each crystal chip. It will move into a slot around the language model."
+            ? "Place all five crystals to reveal the last challenge."
             : "The brain door needs every room crystal.";
+      const fusionPaths = [
+        { d: "M300 54 C286 136 322 176 300 270", colour: "#ff5f9e" },
+        { d: "M520 154 C430 158 410 242 300 270", colour: "#46d49b" },
+        { d: "M470 430 C410 362 394 320 300 270", colour: "#ff7655" },
+        { d: "M130 430 C190 360 210 320 300 270", colour: "#ffd15a" },
+        { d: "M80 154 C170 164 194 236 300 270", colour: "#6da9ff" }
+      ];
+      const fusionOverlay = fusionActive ? `<div class="fusion-overlay" aria-hidden="true">
+        <svg class="fusion-trails" viewBox="0 0 600 540" preserveAspectRatio="none">
+          ${fusionPaths.map((path, index) => `<path class="fusion-trail-glow" style="--trail:${path.colour};--trail-delay:${index * 70}ms" d="${path.d}"/><path class="fusion-trail-core" style="--trail:${path.colour};--trail-delay:${index * 70}ms" d="${path.d}"/>`).join("")}
+        </svg>
+        <div class="fusion-particles">${Array.from({ length: 20 }, (_, index) => `<i style="--particle:${fusionPaths[index % fusionPaths.length].colour};--angle:${index * 18}deg;--radius:${82 + (index % 4) * 22}px;--particle-delay:${(index % 5) * 80}ms"></i>`).join("")}</div>
+        <div class="fusion-flash"></div>
+      </div>` : "";
       const pieceLabel = (collection, id) => collection.find((piece) => piece.id === id)?.label || "";
       const renderSequence = (kind, pieces, order, placed, title, hint) => `
         <section class="sequence-board">
@@ -2833,93 +3505,122 @@
           <p>${leadText}</p>
           <div class="exit-steps" aria-label="Final exit steps">
             <span class="${allPlaced ? "done" : "active"}">1. Place crystals</span>
-            <span class="${modelCorrect ? "done" : allPlaced ? "active" : ""}">2. Build the generation path</span>
-            <span class="${reviewCorrect ? "done" : modelReady ? "active" : ""}">3. Build the training loop</span>
+            <span class="${fused ? "done" : fusionActive ? "active" : ""}">2. Form final crystal</span>
+            <span class="${conceptCorrect ? "done" : puzzleUnlocked ? "active" : ""}">3. Solve final lock</span>
           </div>
         </div>
         <div class="brain-door">
-          <section class="brain-chamber" aria-label="Language Model Door">
+          <section class="brain-chamber ${fusionActive ? "is-fusing" : ""} ${fused ? "is-fused" : ""}" aria-label="Language Model Door">
             <div class="brain-core ${allPlaced ? "charged" : ""} ${finalReady ? "ready" : ""}">
-              <span>AI</span>
+              ${fused ? `<img class="final-crystal" src="/assets/img/final-challenge/crystals/final-multicolour-crystal.svg" alt="Final multicolour crystal">` : `<span>AI</span>`}
             </div>
             ${rooms.map((room) => {
               const placed = placedCrystals.has(room.crystal);
-              return `<div class="brain-slot ${placed ? "filled" : ""}" style="--room:${room.colour}" aria-label="${room.power} slot">
-                ${placed ? `<img src="${crystalAsset(room)}" alt="${room.power} crystal">` : `<span>${room.number}</span>`}
+              return `<div class="brain-slot ${placed ? "filled" : ""}" style="--room:${finalCrystalColour(room)}" data-exit-crystal-slot aria-label="${finalCrystalLabel(room)} slot">
+                ${placed ? `<img src="${crystalAsset(room)}" alt="${finalCrystalLabel(room)} crystal">` : `<span>${room.number}</span>`}
               </div>`;
             }).join("")}
-            <div class="brain-status">${state.finalComplete ? "Door open" : finalReady ? "Ready to open" : allPlaced ? "Brain charged" : "Waiting for crystals"}</div>
+            ${fusionOverlay}
+            <div class="brain-status">${state.finalComplete ? "Door open" : finalReady ? "Ready to open" : fused ? "Final crystal formed" : fusionActive ? "Fusion sequence active" : allPlaced ? "Five crystals placed" : "Waiting for crystals"}</div>
           </section>
           <section class="review-console">
             <h2>${consoleTitle}</h2>
-            <p>${consoleInstruction}</p>
-            <div class="exit-guide ${exitComplete ? "complete" : ""}">
-              ${exitComplete
-                ? "Complete. Review both paths here, or replay the final puzzle to practise again."
-                : allPlaced
-                  ? "Step 2: build how a model generates text. Step 3: build the earlier training loop. Training does not happen during each reply."
-                  : "Step 1: click the crystal chips below to power the Language Model Door."}
-            </div>
-            <div class="crystal-tray" aria-label="Collected crystals">
+            ${puzzleUnlocked ? "" : `<p>${consoleInstruction}</p><div class="exit-guide">${fusionActive ? "The five crystal energies are combining. The Final Lock will activate when the final crystal forms." : "Step 1: click or drag the crystal chips below to power the Language Model Door."}</div>`}
+            ${!fused ? `<div class="crystal-tray" aria-label="Collected crystals">
               ${rooms.map((room) => {
                 const collected = state.crystals.has(room.crystal);
                 const placed = placedCrystals.has(room.crystal);
-                return `<button type="button" class="crystal-token ${placed ? "placed" : ""}" style="--room:${room.colour}" data-exit-crystal="${room.crystal}" ${collected && !state.finalComplete ? "" : "disabled"}>
+                return `<button type="button" class="crystal-token ${placed ? "placed" : ""}" style="--room:${finalCrystalColour(room)}" data-exit-crystal="${room.crystal}" draggable="${collected && !placed && state.exitStage === "placing" ? "true" : "false"}" ${collected && !state.finalComplete && state.exitStage === "placing" ? "" : "disabled"}>
                   ${collected ? `<img src="${crystalAsset(room)}" alt="">` : `<span>${room.number}</span>`}
-                  <span>${room.power}</span>
+                  <span>${finalCrystalLabel(room)}</span>
                 </button>`;
               }).join("")}
-            </div>
-            <div class="brain-puzzle" ${allPlaced ? "" : "hidden"}>
-              ${renderSequence("model", finalModelPieces, finalModelOrder, modelPlaced, "Generation path", "What happens while the model makes a reply?")}
-              ${renderSequence("review", finalReviewPieces, finalReviewOrder, reviewPlaced, "Training loop", "What happened earlier while the model learned from examples?")}
-            </div>
+            </div>` : ""}
+            ${puzzleUnlocked ? `<div class="brain-puzzle">
+                ${renderSequence("final", finalConceptTrayPieces, finalConceptOrder, conceptPlaced, "Arrange the five ideas", "Drag each card into slots 1–5 in a sensible learning-to-prediction order. You can also click a card to fill the next empty slot, and click a filled slot to remove it.")}
+                ${state.exitHint ? `<div class="exit-hint" role="status"><strong>Hint</strong> Training happened earlier. When the model is used, text becomes tokens, available context is processed, information is combined, and a prediction is made.</div>` : ""}
+              </div>` : `<div class="final-lock-locked ${fusionActive ? "forming" : ""}" aria-live="polite"><strong>FINAL LOCK</strong><span>${fusionActive ? "Combining the five ideas..." : "Combine all five crystals to reveal the last challenge."}</span></div>`}
             <div class="exit-actions">
               <button type="button" class="secondary" data-action="map">Room Map</button>
-              ${!exitComplete && allPlaced ? `<button type="button" class="ghost-reset" data-action="clear-final" ${hasPlacedCards ? "" : "disabled"}>Reset cards</button>` : ""}
+              ${!exitComplete && puzzleUnlocked ? `<button type="button" class="ghost-reset" data-action="clear-final" ${hasPlacedCards ? "" : "disabled"}>Reset cards</button>` : ""}
+              ${!exitComplete && puzzleUnlocked ? `<button type="button" class="secondary" data-action="hint-final">${state.exitHint ? "Hide hint" : "Show hint"}</button>` : ""}
               ${exitComplete ? `<button type="button" class="gold" data-action="replay-final">Replay final puzzle</button>` : ""}
-              <button type="button" class="success" data-action="complete" ${canTryFinal && !exitComplete ? "" : "disabled"}>${exitComplete ? "Exit is open" : "Activate Language Model"}</button>
+              <button type="button" class="success" data-action="complete" ${canTryFinal && !exitComplete ? "" : "disabled"}>${exitComplete ? "Exit is open" : "Solve Final Lock"}</button>
             </div>
           </section>
         </div>
-        <div class="feedback ${finalReady || state.finalComplete ? "good" : "bad"}">${state.finalComplete ? "You followed the full path: text becomes tokens and numbers; context and helpful connections shape one next-token prediction; the chosen token is added and the process repeats. Training is a separate earlier loop that adjusts the model across many examples." : state.exitFeedback || (finalReady ? "Both paths are correct. Activate the Language Model Door." : allPlaced ? "Build the generation path and the separate training loop." : allDone ? "Place all six crystals around the model door." : "The final room needs every room crystal.")}</div>
+        <div class="feedback ${finalReady || state.finalComplete ? "good" : "bad"}">${state.finalComplete ? "Final lock solved. Training happened earlier; during use, tokens, context and connections lead to one next-token prediction." : state.exitFeedback || (finalReady ? "The order is correct. Solve the Final Lock." : fusionActive ? "Final crystal is forming..." : puzzleUnlocked ? "Put the five ideas in order to solve the Final Lock." : allDone ? "Place all five crystals around the model door." : "The final room needs every room crystal.")}</div>
       </section>`;
+      if (fusionActive) startFinalFusion();
       exitScreen.querySelector("[data-action='map']").addEventListener("click", openMap);
       const replayButton = exitScreen.querySelector("[data-action='replay-final']");
       if (replayButton) replayButton.addEventListener("click", () => {
         state.finalComplete = false;
+        resetFinalFusion();
         state.exitPlaced = new Set();
-        state.exitModel = [];
-        state.exitReview = [];
-        state.exitFeedback = "Final lock reset. Place the six crystals, then rebuild the model.";
+        state.exitOrder = [];
+        state.exitHint = false;
+        state.exitFeedback = "Final lock reset. Place the five crystals, then rebuild the path.";
         renderExit();
       });
       const clearButton = exitScreen.querySelector("[data-action='clear-final']");
       if (clearButton) clearButton.addEventListener("click", () => {
-        state.exitModel = [];
-        state.exitReview = [];
-        state.exitFeedback = "Cards cleared. Build the generation path, then the separate training loop.";
+        state.exitOrder = [];
+        state.exitFeedback = "Cards cleared. Rebuild the learning-to-prediction path.";
         renderExit();
       });
-      exitScreen.querySelectorAll("[data-exit-crystal]").forEach((button) => button.addEventListener("click", () => {
-        if (!allDone || state.finalComplete) return;
-        const crystal = button.dataset.exitCrystal;
-        if (state.exitPlaced.has(crystal)) state.exitPlaced.delete(crystal);
+      const hintButton = exitScreen.querySelector("[data-action='hint-final']");
+      if (hintButton) hintButton.addEventListener("click", () => {
+        state.exitHint = !state.exitHint;
+        renderExit();
+      });
+      const updatePlacedCrystals = (crystal, removePlaced = false) => {
+        if (!allDone || state.finalComplete || state.exitStage !== "placing") return;
+        if (removePlaced && state.exitPlaced.has(crystal)) state.exitPlaced.delete(crystal);
         else state.exitPlaced.add(crystal);
+        if (state.exitPlaced.size === rooms.length && state.exitStage === "placing") {
+          state.exitStage = "fusing";
+        }
         state.exitFeedback = state.exitPlaced.size === rooms.length
-          ? "All crystals are placed. Now build the generation path and the training loop."
+          ? "Five crystals placed. Fusion sequence started."
           : `${state.exitPlaced.size} / ${rooms.length} crystals placed. Keep powering the Language Model Door.`;
         if (!state.exitPlaced.size) {
-          state.exitModel = [];
-          state.exitReview = [];
+          state.exitOrder = [];
         }
         renderExit();
-      }));
+      };
+      exitScreen.querySelectorAll("[data-exit-crystal]").forEach((button) => {
+        button.addEventListener("click", () => updatePlacedCrystals(button.dataset.exitCrystal, true));
+        button.addEventListener("dragstart", (event) => {
+          if (button.getAttribute("draggable") !== "true" || !event.dataTransfer) {
+            event.preventDefault();
+            return;
+          }
+          event.dataTransfer.effectAllowed = "move";
+          event.dataTransfer.setData("application/x-ai-crystal", button.dataset.exitCrystal);
+          event.dataTransfer.setData("text/plain", button.dataset.exitCrystal);
+        });
+      });
+      exitScreen.querySelectorAll("[data-exit-crystal-slot]").forEach((slot) => {
+        slot.addEventListener("dragover", (event) => {
+          if (state.exitStage !== "placing") return;
+          event.preventDefault();
+          if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
+          slot.classList.add("drop-ready");
+        });
+        slot.addEventListener("dragleave", () => slot.classList.remove("drop-ready"));
+        slot.addEventListener("drop", (event) => {
+          event.preventDefault();
+          slot.classList.remove("drop-ready");
+          const crystal = event.dataTransfer?.getData("application/x-ai-crystal") || event.dataTransfer?.getData("text/plain");
+          if (rooms.some((room) => room.crystal === crystal)) updatePlacedCrystals(crystal);
+        });
+      });
 
-      const exitTarget = (kind) => kind === "review" ? state.exitReview : state.exitModel;
-      const exitLimit = (kind) => kind === "review" ? finalReviewOrder.length : finalModelOrder.length;
+      const exitTarget = () => state.exitOrder;
+      const exitLimit = () => finalConceptOrder.length;
       const placeExitPiece = (kind, piece, requestedIndex = null, fromIndex = null) => {
-        if (!allPlaced || state.finalComplete) return;
+        if (!puzzleUnlocked || state.finalComplete) return;
         const target = exitTarget(kind);
         const limit = exitLimit(kind);
         const safeIndex = (value) => {
@@ -2951,7 +3652,7 @@
         }
 
         state.exitFeedback = Array.from({ length: limit }, (_, index) => target[index]).filter(Boolean).length === limit
-          ? "This console is filled. Drag cards to change the order, or fill the other console."
+          ? "All five slots are filled. Check the order, then solve the Final Lock."
           : "Card added to a slot. Keep filling the empty slots.";
         renderExit();
       };
@@ -3003,7 +3704,7 @@
         }
         if (payload.kind !== boardKind) {
           if (visualTarget) visualTarget.classList.add("drop-error");
-          state.exitFeedback = "That card belongs in the other console. Match the card to its console title.";
+          state.exitFeedback = "Drop that card inside the Final Lock slots.";
           renderExit();
           return;
         }
@@ -3135,7 +3836,7 @@
       };
 
       const startExitPointerDrag = (event, payload, label, sourceElement) => {
-        if (!allPlaced || state.finalComplete || sourceElement.disabled) return;
+        if (!puzzleUnlocked || state.finalComplete || sourceElement.disabled) return;
         if (event.button !== undefined && event.button !== 0) return;
 
         event.preventDefault();
@@ -3221,7 +3922,7 @@
             return;
           }
           if (target.kind !== payload.kind) {
-            state.exitFeedback = "That card belongs in the other console. Match the card to its console title.";
+            state.exitFeedback = "Drop that card inside the Final Lock slots.";
             renderExit();
             return;
           }
@@ -3264,7 +3965,7 @@
           );
         });
         button.addEventListener("dragstart", (event) => {
-          if (!allPlaced || state.finalComplete || button.disabled) {
+          if (!puzzleUnlocked || state.finalComplete || button.disabled) {
             event.preventDefault();
             return;
           }
@@ -3354,30 +4055,24 @@
 
       exitScreen.querySelector("[data-action='complete']").addEventListener("click", () => {
         if (state.finalComplete) return;
-        if (!allPlaced) {
-          state.exitFeedback = "Place every crystal around the Language Model Door first.";
+        if (!puzzleUnlocked) {
+          state.exitFeedback = fusionActive ? "Wait for the final crystal to form." : "Place every crystal around the Language Model Door first.";
           renderExit();
           return;
         }
-        if (!modelReady || !reviewReady) {
-          state.exitFeedback = "Fill every empty slot before activating the brain.";
+        if (!conceptReady) {
+          state.exitFeedback = "Fill every empty slot before solving the Final Lock.";
           renderExit();
           return;
         }
-        if (!modelCorrect) {
-          state.exitFeedback = "The generation order is not right yet. Start with tokens and numbers, then use context and connections before predicting and repeating.";
-          renderExit();
-          return;
-        }
-        if (!reviewCorrect) {
-          state.exitFeedback = "The training order is not right yet. Start with an example, predict, reveal the actual token, adjust, then repeat.";
+        if (!conceptCorrect) {
+          state.exitFeedback = "The final lock is still closed. Check the order and try again.";
           renderExit();
           return;
         }
         state.finalComplete = true;
         state.exitPlaced = new Set(rooms.map((room) => room.crystal));
-        state.exitModel = [...finalModelOrder];
-        state.exitReview = [...finalReviewOrder];
+        state.exitOrder = [...finalConceptOrder];
         state.exitFeedback = "";
         send("ESCAPE_ROOM_COMPLETE", {});
         renderExit();
@@ -3398,11 +4093,12 @@
       if (data.type === "ESCAPE_ROOM_OPEN_FINAL_EXIT") openExit();
       if (data.type === "ESCAPE_ROOM_OPEN_ROOM" || data.type === "ESCAPE_ROOM_REPLAY_ROOM") openRoom(data.payload?.roomId || "token", Boolean(data.payload?.replay));
       if (data.type === "ESCAPE_ROOM_RESET") {
+        resetFinalFusion();
         state.completed.clear();
         state.crystals.clear();
         state.exitPlaced.clear();
-        state.exitModel = [];
-        state.exitReview = [];
+        state.exitOrder = [];
+        state.exitHint = false;
         state.exitFeedback = "";
         state.finalComplete = false;
         openMap();

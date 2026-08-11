@@ -19,10 +19,14 @@ export const TOKEN_ROOM_CHALLENGE = Object.freeze({
   targetIds: Object.freeze([650, 8653, 1262]),
   targetRawPieces: Object.freeze(["Ġun", "help", "ful"]),
   targetDecodedPieces: Object.freeze([" un", "help", "ful"]),
-  correctOptionId: "qwen",
+  correctOptionId: "tokenizer-depends",
   options: Object.freeze([
     Object.freeze({ id: "whole", pieces: Object.freeze(["unhelpful"]) }),
     Object.freeze({ id: "human", pieces: Object.freeze(["un", "helpful"]) }),
-    Object.freeze({ id: "qwen", pieces: Object.freeze(["un", "help", "ful"]) })
+    Object.freeze({ id: "qwen", pieces: Object.freeze(["un", "help", "ful"]) }),
+    Object.freeze({
+      id: "tokenizer-depends",
+      statement: "It depends on the tokenizer. Different tokenizers may split \"unhelpful\" differently."
+    })
   ])
 });

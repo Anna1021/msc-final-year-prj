@@ -1,0 +1,16 @@
+services:
+  - type: web
+    # The existing `ai-explorer` resource was originally created as a static
+    # site. Render service runtimes are immutable, so use a new resource name
+    # to let the Blueprint create the Node service required by the live API.
+    name: ai-explorer-live
+    runtime: node
+    plan: free
+    branch: main
+    autoDeployTrigger: commit
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 20

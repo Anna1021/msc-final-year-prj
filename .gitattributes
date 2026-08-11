@@ -55,3 +55,11 @@ public/ethics/Parent_Guardian_Consent_Form.pdf filter=lfs diff=lfs merge=lfs -te
 public/ethics/Parent_Guardian_Participant_Information_Sheet.pdf filter=lfs diff=lfs merge=lfs -text
 public/ethics/Young_Participant_Assent_Form.pdf filter=lfs diff=lfs merge=lfs -text
 public/ethics/Young_Participant_Information_Sheet.pdf filter=lfs diff=lfs merge=lfs -text
+assets/img/mission-robot-pointing.png filter=lfs diff=lfs merge=lfs -text
+assets/img/mission-robot-reading.png filter=lfs diff=lfs merge=lfs -text
+assets/img/mission3-book.png filter=lfs diff=lfs merge=lfs -text
+assets/img/mission3-robot-hallucination.png filter=lfs diff=lfs merge=lfs -text
+assets/img/mission5-robot-training-source.png filter=lfs diff=lfs merge=lfs -text
+assets/img/mission5-robot-training.png filter=lfs diff=lfs merge=lfs -text
+assets/img/missions-robot-target.png filter=lfs diff=lfs merge=lfs -text
+public/assets/img/lesson1-open-book.png filter=lfs diff=lfs merge=lfs -text

@@ -3,6 +3,10 @@
     "label": "Langue",
     "choose": "Choisir la langue"
   },
+  "lesson": {
+    "progress": "Leçon {{current}} sur {{total}}",
+    "navigationLabel": "Pages de la leçon"
+  },
   "app": {
     "name": "LLM Explorer",
     "tagline": "Comment fonctionnent les modèles de langage"

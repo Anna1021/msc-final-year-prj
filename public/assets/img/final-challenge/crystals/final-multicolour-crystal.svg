@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="620" viewBox="0 0 520 620" role="img" aria-labelledby="title description">
+  <title id="title">Final multicolour crystal</title>
+  <desc id="description">A softly glowing crystal formed from the five Escape Room crystal colours.</desc>
+  <defs>
+    <radialGradient id="aura" cx="50%" cy="46%" r="52%">
+      <stop offset="0" stop-color="#fff" stop-opacity=".76"/>
+      <stop offset=".22" stop-color="#cdbdff" stop-opacity=".42"/>
+      <stop offset=".48" stop-color="#70dfff" stop-opacity=".2"/>
+      <stop offset=".72" stop-color="#ff6fbd" stop-opacity=".1"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="leftFacet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff62b5"/>
+      <stop offset=".52" stop-color="#ca3bb0"/>
+      <stop offset="1" stop-color="#6f50de"/>
+    </linearGradient>
+    <linearGradient id="rightFacet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5ca9ff"/>
+      <stop offset=".48" stop-color="#34d5d0"/>
+      <stop offset="1" stop-color="#49bc78"/>
+    </linearGradient>
+    <linearGradient id="centreFacet" x1=".12" y1="0" x2=".82" y2="1">
+      <stop offset="0" stop-color="#fff6a9"/>
+      <stop offset=".25" stop-color="#ffd355"/>
+      <stop offset=".52" stop-color="#fff"/>
+      <stop offset=".7" stop-color="#7ce3ff"/>
+      <stop offset="1" stop-color="#9868ff"/>
+    </linearGradient>
+    <linearGradient id="lowerFacet" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ff5f9e"/>
+      <stop offset=".25" stop-color="#ffd15a"/>
+      <stop offset=".5" stop-color="#46d49b"/>
+      <stop offset=".75" stop-color="#6da9ff"/>
+      <stop offset="1" stop-color="#ff7655"/>
+    </linearGradient>
+    <filter id="softGlow" x="-80%" y="-60%" width="260%" height="240%">
+      <feGaussianBlur stdDeviation="17" result="blur"/>
+      <feColorMatrix in="blur" values="1 0 0 0 .25 0 1 0 0 .18 0 0 1 0 .55 0 0 0 .8 0"/>
+    </filter>
+    <filter id="crystalGlow" x="-60%" y="-40%" width="220%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="crystalClip">
+      <path d="M260 83 354 213 328 443 260 535 192 443 166 213Z"/>
+    </clipPath>
+  </defs>
+
+  <ellipse cx="260" cy="306" rx="206" ry="258" fill="url(#aura)"/>
+  <path d="M260 92 345 218 320 437 260 520 200 437 175 218Z" fill="#b98bff" opacity=".3" filter="url(#softGlow)"/>
+
+  <g clip-path="url(#crystalClip)" filter="url(#crystalGlow)">
+    <rect x="160" y="78" width="200" height="462" fill="#5b3cc2"/>
+    <path d="M260 83 166 213 216 237 260 190Z" fill="#ff83c7"/>
+    <path d="M260 83 354 213 304 237 260 190Z" fill="#77c4ff"/>
+    <path d="M166 213 216 237 226 405 192 443Z" fill="url(#leftFacet)"/>
+    <path d="M354 213 304 237 294 405 328 443Z" fill="url(#rightFacet)"/>
+    <path d="M216 237 260 190 304 237 294 405 260 446 226 405Z" fill="url(#centreFacet)"/>
+    <path d="M192 443 226 405 260 446 260 535Z" fill="#e350ba"/>
+    <path d="M328 443 294 405 260 446 260 535Z" fill="#3ebc9e"/>
+    <path d="M192 443 260 535 328 443 294 405 260 446 226 405Z" fill="url(#lowerFacet)" opacity=".58"/>
+    <ellipse cx="260" cy="310" rx="42" ry="96" fill="#fff" opacity=".22"/>
+    <path d="M239 156 269 118 252 196 226 232Z" fill="#fff" opacity=".62"/>
+    <path d="M278 226 307 244 286 378 264 413Z" fill="#fff" opacity=".2"/>
+    <image href="crystal-patterns.png" x="0" y="0" width="520" height="620" opacity=".22" style="mix-blend-mode:screen"/>
+  </g>
+
+  <g fill="none" stroke="#fff" stroke-linejoin="round">
+    <path d="M260 83 354 213 328 443 260 535 192 443 166 213Z" stroke-width="5"/>
+    <path d="M260 83 260 190M166 213 216 237 260 190 304 237 354 213M216 237 226 405 260 446 294 405 304 237M192 443 226 405M328 443 294 405M260 446V535" stroke-width="3" opacity=".86"/>
+    <path d="M260 92 342 215" stroke="#fff6c8" stroke-width="2" opacity=".8"/>
+  </g>
+
+  <g fill="#fff">
+    <path d="m150 160 5 14 14 5-14 5-5 14-5-14-14-5 14-5Z" opacity=".92"/>
+    <path d="m379 198 4 11 11 4-11 4-4 11-4-11-11-4 11-4Z" opacity=".82"/>
+    <path d="m148 382 3 9 9 3-9 3-3 9-3-9-9-3 9-3Z" opacity=".72"/>
+    <path d="m372 416 5 13 13 5-13 5-5 13-5-13-13-5 13-5Z" opacity=".86"/>
+    <circle cx="185" cy="122" r="3" opacity=".8"/>
+    <circle cx="344" cy="144" r="2.5" opacity=".74"/>
+    <circle cx="374" cy="340" r="3" opacity=".76"/>
+    <circle cx="168" cy="460" r="2.5" opacity=".72"/>
+  </g>
+</svg>

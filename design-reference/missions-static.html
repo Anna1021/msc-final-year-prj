@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Explorer - All Missions</title>
+  <link rel="stylesheet" href="../assets/css/mission.css" />
+</head>
+<body>
+  <div class="mission-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="logo" href="index.html" aria-label="AI Explorer dashboard">
+        <span class="robot-logo" aria-hidden="true"><span class="antenna"></span><span class="robot-face"><span></span></span></span>
+        <span><strong>AI Explorer</strong><small>How ChatGPT Thinks</small></span>
+      </a>
+      <nav class="side-nav">
+        <a href="index.html"><span class="nav-icon icon-home"></span>Home</a>
+        <a class="active" href="missions.html"><span class="nav-icon icon-target"></span>Missions</a>
+        <a href="/progress" data-route="/progress"><span class="nav-icon icon-chart"></span>Progress</a>
+        <a href="/badges" data-route="/badges"><span class="nav-icon icon-badge"></span>Badges</a>
+        <a href="/glossary" data-route="/glossary"><span class="nav-icon icon-book"></span>Glossary</a>
+        <a href="/about" data-route="/about"><span class="nav-icon icon-info"></span>About</a>
+      </nav>
+      <a class="profile-card" href="/profile" data-route="/profile">
+        <span class="avatar" aria-hidden="true"><span class="avatar-hair"></span><span class="avatar-face"></span></span>
+        <span class="profile-copy"><strong>Explorer</strong><em>Level 3</em></span>
+        <span class="xp-track"><span id="profileXpBar" style="width: 60%"></span></span>
+        <small id="profileXpText">1200 / 2000 XP</small>
+      </a>
+    </aside>
+
+    <main class="all-missions-page">
+      <header class="missions-topbar">
+        <div></div>
+        <div class="missions-status">
+          <button class="status-pill" type="button" data-popover="You earn XP by completing missions and challenges."><span class="star-icon"></span><span class="status-text">1200 XP</span></button>
+          <button class="status-pill" type="button" data-popover="You have learned for 7 days in a row."><span class="flame-icon"></span><span class="status-text">7 day streak</span></button>
+          <button class="icon-button bell-button" type="button" aria-label="Notifications"></button>
+          <button class="profile-menu-button" type="button" aria-label="Open profile menu">
+            <span class="avatar small-avatar" aria-hidden="true"><span class="avatar-hair"></span><span class="avatar-face"></span></span>
+            <span>⌄</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="all-missions-grid">
+        <div class="missions-main">
+          <header class="all-missions-hero">
+            <div class="hero-title-row">
+              <span class="hero-target-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="4"></circle><path d="M15.5 8.5 20 4m-2.5 0H20v2.5"></path></svg>
+              </span>
+              <div>
+                <h1>All Missions</h1>
+                <p>Complete missions step by step to understand how ChatGPT works.<br />Finish all missions to unlock the Final Challenge!</p>
+              </div>
+            </div>
+            <img src="../assets/img/mission-robot-pointing.png" alt="Friendly robot mascot" />
+          </header>
+
+          <section id="missionSequence" class="mission-sequence" aria-label="Mission list">
+          </section>
+        </div>
+
+        <aside class="missions-side">
+          <section class="missions-panel progress-summary">
+            <h2><span class="panel-icon icon-trend"></span>Your Progress</h2>
+            <a class="missions-progress-ring" href="/progress" data-route="/progress">
+              <strong id="completedCount">0 / 6</strong>
+              <small>Missions Completed</small>
+            </a>
+            <div class="summary-stats">
+              <button type="button" data-popover="Mission completed: +100 XP. Mini challenge completed: +50 XP. Final challenge completed: +200 XP."><span class="star-icon"></span><span id="summaryXp">1200 XP</span></button>
+              <button type="button" data-popover="You have learned for 7 days in a row."><span class="flame-icon"></span>7 day streak</button>
+            </div>
+          </section>
+
+          <section id="learnPanel" class="missions-panel learn-panel">
+            <h2>What You’ll Learn</h2>
+          </section>
+
+          <section class="missions-panel recent-badges-panel">
+            <div class="panel-heading-row">
+              <h2>Recent Badges</h2>
+              <a href="/badges" data-route="/badges">View all</a>
+            </div>
+            <div id="badgeRow" class="mission-badge-row">
+            </div>
+          </section>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="popover-menu" id="profileMenu" aria-hidden="true">
+    <a href="/profile" data-route="/profile">Profile</a>
+    <button type="button" data-menu-action="settings">Settings</button>
+    <button type="button" data-menu-action="reset">Reset Progress</button>
+    <button type="button" data-menu-action="logout">Log out</button>
+  </div>
+  <script src="../assets/js/shared-ui.js"></script>
+  <script src="../assets/js/missions.js"></script>
+</body>
+</html>

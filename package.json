@@ -26,6 +26,8 @@
     "model:validate-next-token": "node scripts/validate-smollm-next-token.mjs",
     "test:mission5-paged": "node scripts/test-mission5-paged.mjs",
     "test:lesson-structure": "node scripts/test-lesson-structure.mjs",
+    "test:lesson-page-hero": "node scripts/test-lesson-page-hero.mjs",
+    "test:i18n-parity": "node scripts/test-i18n-parity.mjs",
     "test:p13-acceptance": "node scripts/test-p13-acceptance.mjs",
     "test:p14-final-challenge": "node scripts/test-p14-final-challenge.mjs",
     "test:p14-cleanup": "node scripts/test-p14-cleanup.mjs",

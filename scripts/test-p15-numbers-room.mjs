@@ -71,9 +71,9 @@ const unchanged = [
 ];
 for (const [name, nextName, hash] of unchanged) assert.equal(sourceHash(name, nextName), hash, `${name} is unchanged`);
 
-// 17. Six-room and final-exit requirements remain intact.
-assert.deepEqual(rooms.map((room) => room.id), ["token", "numbers", "context", "connections", "prediction", "training"]);
-assert.equal(new Set(rooms.map((room) => room.crystalId)).size, 6);
+// 17. Five-room and final-exit requirements remain intact.
+assert.deepEqual(rooms.map((room) => room.id), ["token", "numbers", "context", "connections", "prediction"]);
+assert.equal(new Set(rooms.map((room) => room.crystalId)).size, 5);
 assert.match(runtime, /const allDone = rooms\.every\(\(room\) => state\.completed\.has\(room\.id\) && state\.crystals\.has\(room\.crystal\)\)/);
 assert.match(runtime, /if \(!allPlaced\)[\s\S]*?Place every crystal around the Language Model Door first/);
 
