@@ -45,6 +45,47 @@
       "decoded": "The uncharacteristically quiet reader smiled."
     },
     {
+      "id": "intro-chinese-cat",
+      "role": "intro",
+      "language": "zh",
+      "text": "那只小猫安静地坐在窗边。",
+      "count": 9,
+      "ids": [
+        113946,
+        30709,
+        100472,
+        106305,
+        29490,
+        104427,
+        100237,
+        99319,
+        1773
+      ],
+      "rawPieces": [
+        "éĤ£åıª",
+        "å°ı",
+        "çĮ«",
+        "å®īéĿĻ",
+        "åľ°",
+        "åĿĲåľ¨",
+        "çªĹ",
+        "è¾¹",
+        "ãĢĤ"
+      ],
+      "decodedPieces": [
+        "那只",
+        "小",
+        "猫",
+        "安静",
+        "地",
+        "坐在",
+        "窗",
+        "边",
+        "。"
+      ],
+      "decoded": "那只小猫安静地坐在窗边。"
+    },
+    {
       "id": "challenge-robots-learn",
       "role": "part-b",
       "language": "en",

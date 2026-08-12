@@ -20,10 +20,12 @@
     "page4Subtitle": "The model does not become perfect from one example. It improves through many small adjustments over time.",
     "page5Title": "Try it yourself: train a tiny toy model",
     "page5Subtitle": "Add training examples and see how the model's predictions change. You'll see how patterns in data shape what comes next!",
-    "page6Title": "Check what you learned",
-    "page6Subtitle": "Four quick questions about how models learn patterns during training.",
-    "page7Title": "Lesson summary",
-    "page7Subtitle": "Training examples, repeated small adjustments, and learned patterns shape later predictions.",
+    "page6Title": "From one token to a full response",
+    "page6Subtitle": "You've seen how a model predicts the next token. Now see how repeating that process can build a longer response.",
+    "page7Title": "Check what you learned",
+    "page7Subtitle": "Four quick questions about how models learn patterns during training.",
+    "page8Title": "Lesson summary",
+    "page8Subtitle": "Training examples, repeated small adjustments, and learned patterns shape later predictions.",
     "placeholder": "This page is connected in the seven-page route and is ready for its approved content."
   },
   "labels": {
@@ -339,6 +341,38 @@
     "removedFeedback": "A {{location}} example was removed. The prediction shifted back slightly."
   },
   "page6": {
+    "kicker": "Building a response",
+    "intro": "Autoregressive language models generate text by predicting one next Token, adding it to the context, and predicting again.",
+    "flowTitle": "How a response is built",
+    "flowAria": "Four steps showing a prompt becoming context, next Token prediction, appending the Token, and repeating the process",
+    "selected": "Selected Token",
+    "illustrative": "Illustrative teaching probabilities — not live model output",
+    "loop": "Predict → Add → Update context → Predict again",
+    "growthTitle": "Repeat many times...",
+    "growthAria": "A response growing step by step as more Tokens are added",
+    "finalLabel": "After many steps",
+    "finalNote": "After many prediction steps, a longer response has been built Token by Token.",
+    "sidebarAria": "Why repeated next-Token prediction can build a response",
+    "sidebarTitle": "Why this happens",
+    "labTitle": "Try it yourself!",
+    "labBody": "See this repeated prediction process in action in the Real Model Lab.",
+    "labAction": "Open Real Model Lab",
+    "steps": {
+      "prompt": {"title": "Your prompt becomes the context", "body": "Your question or instruction becomes part of the context available to the model."},
+      "predict": {"title": "Predict the next Token", "body": "The model uses the context to assign probabilities to possible next Tokens.", "distributionAria": "Illustrative first next-Token probability distribution"},
+      "append": {"title": "Add it to the context", "body": "The selected Token becomes part of the context."},
+      "repeat": {"title": "Predict again and repeat", "body": "With the updated context, the model predicts another next Token.", "distributionAria": "Illustrative updated next-Token probability distribution"}
+    },
+    "candidates": {"because": "Because", "the": "The", "it": "It", "well": "Well", "i": "I", "sunlight": "sunlight", "light": "light", "a": "a", "this": "this"},
+    "example": {"prompt": "Why is the sky blue?", "fullResponse": "Because sunlight is scattered by molecules in Earth's atmosphere, making blue light more noticeable."},
+    "growth": {"because": "Because", "sunlight": "Because sunlight", "is": "Because sunlight is", "scattered": "Because sunlight is scattered"},
+    "support": {
+      "patterns": {"title": "Patterns from training", "body": "During training, the model learns statistical patterns from many examples."},
+      "context": {"title": "Context guides generation", "body": "The prompt becomes part of the context and shapes which Tokens are more likely."},
+      "prediction": {"title": "Still prediction", "body": "Even when the model answers a question or writes a story, it still predicts one next Token at a time."}
+    }
+  },
+  "page7": {
     "title": "Check what you learned",
     "subtitle": "Four quick questions about how models learn patterns during training.",
     "conceptCheckpoint": "Concept checkpoint",
@@ -393,7 +427,7 @@
     "q4Correct": "Yes! This is the key connection: training examples → learned patterns → later predictions.",
     "q4Incorrect": "Think about the tiny toy model: changing the training examples changed the learned pattern, which changed the later prediction."
   },
-  "page7": {
+  "page8": {
     "eyebrow": "Summary",
     "idea1Title": "Training Examples",
     "idea1Copy": "The model learns from many examples.",

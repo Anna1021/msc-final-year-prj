@@ -37,6 +37,7 @@ export const PAGED_MISSIONS = Object.freeze({
       ["repeat", "Patterns start to shape predictions", "Connect learned patterns with later predictions."],
       ["connect", "How does the model improve?", "Follow how training improves prediction patterns."],
       ["try", "Try it yourself", "Lesson 5 practice."],
+      ["response", "From one token to a full response", "See how repeated next-Token prediction builds a longer response."],
       ["quiz", "Quiz", "Check the key Lesson 5 ideas."],
       ["summary", "Summary", "Connect the complete Lesson 5 journey."]
     ]

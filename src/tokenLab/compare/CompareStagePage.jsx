@@ -3,7 +3,7 @@ import { AlertCircle, ArrowDown, ArrowLeftRight, ArrowRight, BrainCircuit, Check
 import { tokenizeWithQwen, validateQwenTokenizerInput } from "../../mission1/qwenTokenizer.js";
 import { useI18n } from "../../i18n/index.jsx";
 import AiLabStickerGuide from "../../playfulLearning/AiLabStickerGuide.jsx";
-import { changedTokenIndexes, comparePairs, swapPairSides } from "./compareData.js";
+import { changedTokenIndexes, getComparePairs, getDefaultCompareInputs, swapPairSides } from "./compareData.js";
 import "./compareStage.css";
 
 const layers = ["text", "tokens", "context", "prediction"];
@@ -33,16 +33,20 @@ function PredictionRace({ candidates, side, t }) {
 
 export default function CompareStagePage({ transientContract, onRunComparison, onNavigateStage }) {
   const { language, t } = useI18n();
+  const pairs = getComparePairs(language);
   const [pairIndex, setPairIndex] = useState(0);
   const [swapped, setSwapped] = useState(false);
   const [custom, setCustom] = useState(false);
-  const [customInputs, setCustomInputs] = useState([transientContract?.input || "Models can learn patterns.", "Models learn useful patterns from examples."]);
+  const [customInputs, setCustomInputs] = useState(() => {
+    const defaults = getDefaultCompareInputs(language);
+    return [transientContract?.input || defaults[0], defaults[1]];
+  });
   const [results, setResults] = useState(null);
   const [layer, setLayer] = useState("text");
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
   const [replaying, setReplaying] = useState(false);
-  const basePair = comparePairs[pairIndex];
+  const basePair = pairs[pairIndex];
   const pair = useMemo(() => swapped ? swapPairSides(basePair) : basePair, [basePair, swapped]);
   const inputs = custom ? customInputs : pair.inputs;
   const availableLayers = custom ? ["text", "tokens"] : layers;
@@ -63,8 +67,8 @@ export default function CompareStagePage({ transientContract, onRunComparison, o
     if (results) setResults(([a, b]) => [b, a]);
     setReplaying(false); requestAnimationFrame(() => setReplaying(true));
   }
-  function another() { choosePair((pairIndex + 1) % comparePairs.length); }
-  function restart() { setPairIndex(0); setSwapped(false); setCustom(false); setCustomInputs([transientContract?.input || "Models can learn patterns.", "Models learn useful patterns from examples."]); clearRun(); }
+  function another() { choosePair((pairIndex + 1) % pairs.length); }
+  function restart() { const defaults = getDefaultCompareInputs(language); setPairIndex(0); setSwapped(false); setCustom(false); setCustomInputs([transientContract?.input || defaults[0], defaults[1]]); clearRun(); }
   function replay() { setReplaying(false); requestAnimationFrame(() => setReplaying(true)); }
   function startCustom() { setCustom(true); setSwapped(false); clearRun(); }
   function moveLayerTab(event) {
@@ -83,7 +87,7 @@ export default function CompareStagePage({ transientContract, onRunComparison, o
   return <section className={`compare-stage ${replaying ? "replaying" : ""}`} aria-labelledby="compare-stage-title">
     <header className="compare-hero" data-tour-id="compare-stage"><AiLabStickerGuide src="/assets/img/mission3-robot-hallucination.png" className="compare-hero-robot" /><div><span>{t("compareStage.header.term")}</span><h2 id="compare-stage-title">{t("compareStage.header.title")}</h2><p>{t("compareStage.header.intro")}</p></div><button type="button" className="outline" data-tour-id="compare-reset" onClick={restart}><RotateCcw size={16} />{t("compareStage.actions.restart")}</button></header>
 
-    <nav className="compare-categories" aria-label={t("compareStage.categories.label")}>{comparePairs.map((item, index) => <button type="button" key={item.id} aria-pressed={!custom && pairIndex === index} className={!custom && pairIndex === index ? "active" : ""} onClick={() => choosePair(index)}><span>{index + 1}</span><strong>{t(`compareStage.categories.${item.id}.title`)}</strong><small>{t(`compareStage.categories.${item.id}.hint`)}</small></button>)}<button type="button" aria-pressed={custom} className={custom ? "active custom" : "custom"} onClick={startCustom}><Type size={18} /><strong>{t("compareStage.custom.title")}</strong><small>{t("compareStage.custom.hint")}</small></button></nav>
+    <nav className="compare-categories" aria-label={t("compareStage.categories.label")}>{pairs.map((item, index) => <button type="button" key={item.id} aria-pressed={!custom && pairIndex === index} className={!custom && pairIndex === index ? "active" : ""} onClick={() => choosePair(index)}><span>{index + 1}</span><strong>{t(`compareStage.categories.${item.id}.title`)}</strong><small>{t(`compareStage.categories.${item.id}.hint`)}</small></button>)}<button type="button" aria-pressed={custom} className={custom ? "active custom" : "custom"} onClick={startCustom}><Type size={18} /><strong>{t("compareStage.custom.title")}</strong><small>{t("compareStage.custom.hint")}</small></button></nav>
 
     <section className="compare-desk" data-tour-id="compare-inputs"><div className="compare-desk-head"><div><small>{t("compareStage.workspace.eyebrow")}</small><h3>{custom ? t("compareStage.custom.title") : t(`compareStage.categories.${pair.id}.title`)}</h3></div><div className="compare-source-notes">{custom && transientContract && <span>{t("numbersStage.notice.transient")}</span>}{language !== "en" && !custom && <span>{t("compareStage.workspace.english")}</span>}</div></div><div className="compare-input-grid"><InputCard side="A" text={inputs[0]} highlights={custom ? [] : pair.highlights[0]} custom={custom} onChange={(value) => { setCustomInputs(([a, b]) => [value, b]); clearRun(); }} t={t} /><div className="compare-divider"><AiLabStickerGuide src="/assets/img/mission-robot-pointing.png" className="compare-desk-robot" /><ArrowLeftRight size={20} /><span>{t("compareStage.workspace.comparedWith")}</span></div><InputCard side="B" text={inputs[1]} highlights={custom ? [] : pair.highlights[1]} custom={custom} onChange={(value) => { setCustomInputs(([a, b]) => [a, value]); clearRun(); }} t={t} /></div><div className="compare-desk-actions"><button type="button" className="primary" data-tour-id="compare-run" disabled={status === "loading"} onClick={runComparison}>{status === "loading" ? <LoaderCircle className="compare-spinner" size={18} /> : <Play size={18} />}{t(status === "loading" ? "compareStage.actions.running" : results ? "compareStage.actions.runAgain" : "compareStage.actions.run")}</button><button type="button" className="outline" onClick={swapSides}><ArrowLeftRight size={17} />{t("compareStage.actions.swap")}</button><button type="button" className="outline" onClick={another}><Shuffle size={17} />{t("compareStage.actions.another")}</button><button type="button" className="outline" disabled={!results} onClick={replay}><RefreshCcw size={17} />{t("compareStage.actions.replay")}</button></div>{error && <p className="compare-error" role="alert"><AlertCircle size={17} />{error}</p>}</section>
 

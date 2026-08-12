@@ -4,7 +4,7 @@ import Mission1PagedKnowledgeQuiz from "../mission1/Mission1PagedKnowledgeQuiz.j
 import {useI18n} from "../i18n/index.jsx";
 import {writeProgress} from "../state/progress.js";
 import LessonPageHero from "../pagedMissions/LessonPageHero.jsx";
-import {Lesson5NewPage1,Lesson5NewPage2,Lesson5NewPage3,Lesson5NewPage4,Lesson5NewPage5,Lesson5NewPage7} from "./Lesson5Pages.jsx";
+import {Lesson5NewPage1,Lesson5NewPage2,Lesson5NewPage3,Lesson5NewPage4,Lesson5NewPage5,Lesson5NewPage6,Lesson5NewPage8} from "./Lesson5Pages.jsx";
 import {createMission5QuizCopy} from "./mission5QuizCopy.js";
 import "../mission1/mission1Paged.css";
 import "./lesson5Paged.css";
@@ -15,10 +15,11 @@ export const LESSON_5_PAGES=Object.freeze([
   ["repeat","mission5.navigation.page3Title","mission5.navigation.page3Subtitle"],
   ["connect","mission5.navigation.page4Title","mission5.navigation.page4Subtitle"],
   ["try","mission5.navigation.page5Title","mission5.navigation.page5Subtitle"],
-  ["quiz","mission5.navigation.page6Title","mission5.navigation.page6Subtitle"],
-  ["summary","mission5.navigation.page7Title","mission5.navigation.page7Subtitle"]
+  ["response","mission5.navigation.page6Title","mission5.navigation.page6Subtitle"],
+  ["quiz","mission5.navigation.page7Title","mission5.navigation.page7Subtitle"],
+  ["summary","mission5.navigation.page8Title","mission5.navigation.page8Subtitle"]
 ]);
-const ROBOTS=["mission5-robot-training.png","mission-robot-pointing.png","mission5-robot-training.png","mission-robot-reading.png","mission-robot-pointing.png","mission5-robot-training.png","mission-robot-reading.png"];
+const ROBOTS=["mission5-robot-training.png","mission-robot-pointing.png","mission5-robot-training.png","mission-robot-reading.png","mission-robot-pointing.png","mission5-robot-training.png","mission5-robot-training.png","mission-robot-reading.png"];
 const REQUIRED=["reveal-target","adjust-parameters","repeat-examples","connect-paths"];
 
 export default function Lesson5Paged({setProgress,navigate,notify}){
@@ -53,13 +54,14 @@ export default function Lesson5Paged({setProgress,navigate,notify}){
   // Rebuilt Lesson 5 pages use the shared Hero, retain a numbered in-card kicker, and never repeat the full page title.
   const pageHero=<LessonPageHero lessonIndex={5} lessonCount={5} lessonProgressLabel={t("common.lesson.progress",{current:5,total:5})} lessonName={t("mission5.shell.topic")} title={t(page[1])} subtitle={pageSubtitle} illustration={`/assets/img/${ROBOTS[currentPage-1]}`} illustrationAlt={labels.robotAlt} headingId={`lesson-5-page-${currentPage}-title`}/>;
 
-  return <MissionLessonShell currentPage={currentPage} pageCount={pageCount} onPageChange={changePage} onEnd={continueToFinalChallenge} onBackToMissions={()=>navigate("/missions")} title={t(page[1])} subtitle={pageSubtitle} labels={{...labels,prototypeEndAction:t("mission5.shell.nextChallenge")}} recommendation={recommendation} hideNext={currentPage===6} skipAction={currentPage===6?{label:t("mission5.skipQuiz"),onClick:()=>changePage(7)}:null} rootClassName={`lesson-5-paged l5-new-root l5-page-${page[0]} paged-mission-playful playful-learning-scope ${currentPage===6?"mission-1-paged mission-2-paged lesson-quiz-layout":""}`} robotImage={`/assets/img/${ROBOTS[currentPage-1]}`} pageHero={pageHero}>
+  return <MissionLessonShell currentPage={currentPage} pageCount={pageCount} onPageChange={changePage} onEnd={continueToFinalChallenge} onBackToMissions={()=>navigate("/missions")} title={t(page[1])} subtitle={pageSubtitle} labels={{...labels,prototypeEndAction:t("mission5.shell.nextChallenge")}} recommendation={recommendation} hideNext={currentPage===7} skipAction={currentPage===7?{label:t("mission5.skipQuiz"),onClick:()=>changePage(8)}:null} rootClassName={`lesson-5-paged l5-new-root l5-page-${page[0]} paged-mission-playful playful-learning-scope ${currentPage===7?"mission-1-paged mission-2-paged lesson-quiz-layout":""}`} robotImage={`/assets/img/${ROBOTS[currentPage-1]}`} pageHero={pageHero}>
     <Lesson5NewPage1 active={currentPage===1} t={t} onComplete={()=>mark("reveal-target")}/>
     <Lesson5NewPage2 active={currentPage===2} t={t} onComplete={()=>mark("adjust-parameters")}/>
     <Lesson5NewPage3 active={currentPage===3} t={t} onComplete={()=>mark("repeat-examples")}/>
     <Lesson5NewPage4 active={currentPage===4} t={t} onComplete={()=>mark("connect-paths")}/>
     <Lesson5NewPage5 active={currentPage===5} t={t}/>
-    <Mission1PagedKnowledgeQuiz active={currentPage===6} copy={quizCopy} resetKey={0} onResultChange={setQuizResult} onContinue={()=>changePage(7)} pageNumber={6} lessonClassName="lesson-5-paged__lesson" showLesson1Visuals={false}/>
-    <Lesson5NewPage7 active={currentPage===7} t={t} complete={complete}/>
+    <Lesson5NewPage6 active={currentPage===6} t={t} onOpenLab={()=>navigate("/mission/4-training-data-paged?page=4")}/>
+    <Mission1PagedKnowledgeQuiz active={currentPage===7} copy={quizCopy} resetKey={0} onResultChange={setQuizResult} onContinue={()=>changePage(8)} pageNumber={7} lessonClassName="lesson-5-paged__lesson" showLesson1Visuals={false}/>
+    <Lesson5NewPage8 active={currentPage===8} t={t} complete={complete}/>
   </MissionLessonShell>;
 }

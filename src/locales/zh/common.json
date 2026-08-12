@@ -26,18 +26,18 @@
     "heroTitleStart": "理解",
     "heroTitleAccent": "LLM",
     "heroTitleEnd": "如何工作。",
-    "heroCopy": "通过 5 节互动课程，探索 LLM 如何处理 Token、使用上下文、发现模式并预测下一个 Token。",
+    "heroCopy": "通过 5 节互动课程，探索 LLM 如何处理词元、使用上下文、发现模式并预测下一个词元。",
     "startLesson": "从第 1 课开始",
     "flowLabel": "语言模型如何生成文字",
-    "flow": { "text": "文字", "tokens": "Token", "context": "上下文", "patterns": "模式", "nextToken": "下一个 Token", "repeat": "重复" },
+    "flow": { "text": "文字", "tokens": "词元", "context": "上下文", "patterns": "模式", "nextToken": "下一个词元", "repeat": "重复" },
     "lessonsTitle": "探索课程",
     "lessonsCopy": "点击任意课程开始学习。",
     "duration": "5–7 分钟",
     "lessons": {
-      "tokens": { "title": "Token", "subtitle": "文字变成 Token" },
+      "tokens": { "title": "词元", "subtitle": "文字变成词元" },
       "context": { "title": "上下文", "subtitle": "LLM 能看到什么？" },
-      "patterns": { "title": "模式与连接", "subtitle": "Token 如何相互关联？" },
-      "prediction": { "title": "下一个 Token 预测", "subtitle": "接下来会是什么？" },
+      "patterns": { "title": "模式与连接", "subtitle": "词元如何相互关联？" },
+      "prediction": { "title": "下一个词元预测", "subtitle": "接下来会是什么？" },
       "learning": { "title": "学习", "subtitle": "模式从哪里来？" }
     },
     "finalChallenge": "最终挑战",
@@ -75,11 +75,11 @@
   },
   "why": {
     "responsibleTitle": "跟随处理流程",
-    "responsibleText": "看看文字如何变成 Token 和数字表示。",
+    "responsibleText": "看看文字如何变成词元和数字表示。",
     "criticalTitle": "连接上下文",
-    "criticalText": "了解可见的 Token 如何分享有用信息。",
+    "criticalText": "了解可见的词元如何分享有用信息。",
     "biasTitle": "预测接下来的内容",
-    "biasText": "看看语言模型如何比较并选择可能的下一个 Token。",
+    "biasText": "看看语言模型如何比较并选择可能的下一个词元。",
     "futureTitle": "理解学习过程",
     "futureText": "沿着预测、修正和重复，理解模型如何学到模式。"
   },
@@ -116,7 +116,7 @@
   "profile": {
     "name": "探索者",
     "tipTitle": "今日提示",
-    "tipCopy": "语言模型通过一次预测一个 Token 来生成文字。",
+    "tipCopy": "语言模型通过一次预测一个词元来生成文字。",
     "missionsComplete": "已完成 {{completed}} / {{total}} 节课程"
   },
   "status": {
@@ -173,11 +173,11 @@
     "missionOption": "任务 {{id}}"
   },
   "notes": {
-    "savedToActivity": "已保存到 Activity 里的 My Notes。",
-    "savedButton": "已保存到 My Notes",
+    "savedToActivity": "已保存到活动记录中的“我的笔记”。",
+    "savedButton": "已保存到“我的笔记”",
     "saveNote": "保存笔记",
     "saveReflection": "保存反思",
-    "viewInNotes": "在 My Notes 中查看",
+    "viewInNotes": "在“我的笔记”中查看",
     "notesHeading": "笔记",
     "notesPrompt": "写下你学到的内容，或想记住的想法。",
     "notePlaceholder": "在这里输入你的笔记...",

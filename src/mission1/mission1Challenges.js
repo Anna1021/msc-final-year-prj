@@ -8,8 +8,9 @@ export function getMission1ChallengePool(language = "en") {
   return matching.length >= 2 ? matching : [...matching, ...english.filter((fixture) => !matching.includes(fixture))];
 }
 
-export function getMission1IntroFixture() {
-  return fixtureSet.fixtures.find((fixture) => fixture.role === "intro");
+export function getMission1IntroFixture(language = "en") {
+  return fixtureSet.fixtures.find((fixture) => fixture.role === "intro" && fixture.language === language)
+    ?? fixtureSet.fixtures.find((fixture) => fixture.role === "intro" && fixture.language === "en");
 }
 
 export function shuffleChallengePieces(fixture, random = Math.random) {

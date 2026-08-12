@@ -130,13 +130,18 @@ assert.equal(locales[0].page1.title, "What is context?", "Page 1 is titled aroun
 assert.doesNotMatch(JSON.stringify(locales.map((locale) => locale.page1)), /flashlight|Taschenlampe|lampe|手电筒/i, "the removed flashlight metaphor does not remain in Page 1 copy");
 for (const [index, locale] of locales.entries()) {
   const language = ["en", "zh", "fr", "de"][index];
-  assert.ok(locale.page1.englishExampleLabel, `${language} labels the intentional English ambiguity fixture`);
+  assert.ok(locale.page1.englishExampleLabel, `${language} labels its locale-specific ambiguity fixture`);
   assert.ok(locale.page2.windowTokens.split("|").length >= 6, `${language} Page 2 provides a complete locale-specific context sequence`);
   assert.ok(locale.page4.sequenceTokens.trim().split(/\s+/).length >= 18, `${language} Page 4 provides a complete localized long sequence`);
   assert.ok(Object.values(locale.page3.candidates).every(Boolean), `${language} Page 3 candidate labels are localized`);
 }
 assert.equal(new Set(locales.map((locale) => locale.page2.windowTokens)).size, 4, "Lesson 2 context examples differ by locale");
-assert.ok(locales.every((locale) => locale.page1.sentenceABefore === locales[0].page1.sentenceABefore), "the ambiguity-preserving English fixture remains original in every locale");
+assert.equal(locales[0].page1.bank, "bank", "English keeps the original bank ambiguity example");
+assert.match(`${locales[0].page1.sentenceABefore} ${locales[0].page1.bank} ${locales[0].page1.sentenceAAfter}`, /bank.*deposit/i);
+assert.doesNotMatch(Object.values(locales[1].page1).join(" "), /\bbank\b/i, "Chinese does not depend on the English bank ambiguity");
+for (const expected of ["苹果", "水果", "科技公司"]) assert.match(JSON.stringify(locales[1].page1), new RegExp(expected), `Chinese Page 1 includes ${expected}`);
+assert.match(prototypeSource, /const \{ language, t \} = useI18n\(\)/, "Lesson 2 selects locale-specific teaching fixtures semantically");
+assert.match(prototypeSource, /Mission2OpeningPage active=\{currentPage === 1\} language=\{language\}/, "Lesson 2 passes the runtime locale without using display strings as logic");
 
 const playgroundTokens = "Once upon a time there was a curious little reader who loved to learn new things every day in a far away land".split(" ");
 assert.equal(moveContextWindow(7, 7, playgroundTokens.length, -1), 6, "Move left shifts the context start by one token");

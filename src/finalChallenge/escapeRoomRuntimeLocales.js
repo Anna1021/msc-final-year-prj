@@ -218,24 +218,43 @@ const extendedReplacements = {
 };
 
 const commonEntries = Object.keys(commonKeys);
+const localiseChineseTerminology = (value) => typeof value === "string" ? value
+  .replace(/Token ID/g, "词元编号")
+  .replace(/Tokenizer|tokenizer|tokeniser/g, "分词器")
+  .replace(/tokenisation|tokenization|tokenising/g, "词元切分")
+  .replace(/Tokens|tokens|Token|token/g, "词元")
+  .replace(/词元(?:ize|ise)/g, "拆分文字")
+  .replace(/\breader\b/g, "读者")
+  .replace(/\bopened\b/g, "“打开”")
+  .replace(/\bID\b/g, "编号")
+  .replace(/\s+(词元|分词器|词元切分)/g, "$1")
+  .replace(/(词元|分词器|词元切分)\s+/g, "$1") : value;
+const localiseChineseRuntime = (value) => Array.isArray(value)
+  ? value.map(localiseChineseRuntime)
+  : value && typeof value === "object"
+    ? Object.fromEntries(Object.entries(value).map(([key, child]) => [key, localiseChineseRuntime(child)]))
+    : localiseChineseTerminology(value);
 export const activeEscapeRoomEnglish = [...new Set([
   ...commonEntries,
   ...Object.keys(activeReplacements.zh),
   ...Object.keys(extendedReplacements.zh)
 ])];
-export const escapeRoomRuntimeLocales = Object.fromEntries(["zh","fr","de"].map((language) => [language, {
-  messages: {
-    top: messages[language].top,
-    common: messages[language].common,
-    feedback: messages[language].feedback,
-    exit: messages[language].exit,
-    completion: messages[language].completion
-  },
-  fallbackMessages: {},
-  replacements: {
-    ...Object.fromEntries(commonEntries.map((source, index) => [source, sharedTranslations[language][index] || source])),
-    ...Object.fromEntries(Object.entries(messages[language]).filter(([key]) => !["top", "common", "feedback", "exit", "completion"].includes(key))),
-    ...activeReplacements[language],
-    ...extendedReplacements[language]
-  }
-}]));
+export const escapeRoomRuntimeLocales = Object.fromEntries(["zh","fr","de"].map((language) => {
+  const runtime = {
+    messages: {
+      top: messages[language].top,
+      common: messages[language].common,
+      feedback: messages[language].feedback,
+      exit: messages[language].exit,
+      completion: messages[language].completion
+    },
+    fallbackMessages: {},
+    replacements: {
+      ...Object.fromEntries(commonEntries.map((source, index) => [source, sharedTranslations[language][index] || source])),
+      ...Object.fromEntries(Object.entries(messages[language]).filter(([key]) => !["top", "common", "feedback", "exit", "completion"].includes(key))),
+      ...activeReplacements[language],
+      ...extendedReplacements[language]
+    }
+  };
+  return [language, language === "zh" ? localiseChineseRuntime(runtime) : runtime];
+}));

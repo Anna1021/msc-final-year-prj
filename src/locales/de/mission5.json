@@ -20,13 +20,15 @@
     "page4Subtitle": "Ein einziges Beispiel macht das Modell nicht perfekt. Es verbessert sich mit der Zeit durch viele kleine Anpassungen.",
     "page5Title": "Probiere es selbst: Trainiere ein winziges Spielzeugmodell",
     "page5Subtitle": "Füge Trainingsbeispiele hinzu und beobachte, wie sich die Vorhersagen ändern. Du siehst, wie Datenmuster das Nächste formen!",
-    "page6Title": "Überprüfe, was du gelernt hast",
-    "page6Subtitle": "Vier kurze Fragen dazu, wie Modelle beim Training Muster lernen.",
-    "page7Title": "Lektionszusammenfassung",
-    "page7Subtitle": "Trainingsbeispiele, wiederholte kleine Anpassungen und gelernte Muster formen spätere Vorhersagen.",
+    "page6Title": "Von einem Token zu einer vollständigen Antwort",
+    "page6Subtitle": "Du hast gesehen, wie ein Modell das nächste Token vorhersagt. Jetzt siehst du, wie die Wiederholung dieses Prozesses eine längere Antwort aufbaut.",
+    "page7Title": "Überprüfe, was du gelernt hast",
+    "page7Subtitle": "Vier kurze Fragen dazu, wie Modelle beim Training Muster lernen.",
+    "page8Title": "Lektionszusammenfassung",
+    "page8Subtitle": "Trainingsbeispiele, wiederholte kleine Anpassungen und gelernte Muster formen spätere Vorhersagen.",
     "placeholder": "Diese Seite ist in die siebenseitige Route eingebunden und wartet auf freigegebene Inhalte."
   },
-  "page7": {
+  "page8": {
     "eyebrow": "Zusammenfassung",
     "idea1Title": "Trainingsbeispiele",
     "idea1Copy": "Das Modell lernt aus vielen Beispielen.",
@@ -355,6 +357,38 @@
     "removedFeedback": "Ein {{location}}-Beispiel wurde entfernt. Die Vorhersage verschob sich leicht zurück."
   },
   "page6": {
+    "kicker": "Eine Antwort aufbauen",
+    "intro": "Autoregressive Sprachmodelle erzeugen Text, indem sie ein nächstes Token vorhersagen, es zum Kontext hinzufügen und erneut vorhersagen.",
+    "flowTitle": "Wie eine Antwort aufgebaut wird",
+    "flowAria": "Vier Schritte: Ein Prompt wird Kontext, das nächste Token wird vorhergesagt und hinzugefügt, dann wiederholt sich der Prozess",
+    "selected": "Ausgewähltes Token",
+    "illustrative": "Beispielhafte Lernwahrscheinlichkeiten — keine echte Modellausgabe",
+    "loop": "Vorhersagen → Hinzufügen → Kontext aktualisieren → Erneut vorhersagen",
+    "growthTitle": "Oft wiederholen…",
+    "growthAria": "Eine Antwort wächst Schritt für Schritt, während weitere Tokens hinzugefügt werden",
+    "finalLabel": "Nach vielen Schritten",
+    "finalNote": "Nach vielen Vorhersageschritten wurde Token für Token eine längere Antwort aufgebaut.",
+    "sidebarAria": "Warum wiederholte Vorhersage des nächsten Tokens eine Antwort aufbauen kann",
+    "sidebarTitle": "Warum das funktioniert",
+    "labTitle": "Probiere es selbst!",
+    "labBody": "Beobachte diesen wiederholten Vorhersageprozess im Labor mit dem echten Modell.",
+    "labAction": "Echtes Modelllabor öffnen",
+    "steps": {
+      "prompt": {"title": "Dein Prompt wird zum Kontext", "body": "Deine Frage oder Anweisung wird Teil des Kontexts, den das Modell nutzen kann."},
+      "predict": {"title": "Das nächste Token vorhersagen", "body": "Das Modell nutzt den Kontext, um möglichen nächsten Tokens Wahrscheinlichkeiten zuzuweisen.", "distributionAria": "Beispielhafte erste Wahrscheinlichkeitsverteilung für das nächste Token"},
+      "append": {"title": "Zum Kontext hinzufügen", "body": "Das ausgewählte Token wird Teil des Kontexts."},
+      "repeat": {"title": "Erneut vorhersagen und wiederholen", "body": "Mit dem aktualisierten Kontext sagt das Modell ein weiteres nächstes Token voraus.", "distributionAria": "Beispielhafte aktualisierte Wahrscheinlichkeitsverteilung für das nächste Token"}
+    },
+    "candidates": {"because": "Weil", "the": "Der", "it": "Es", "well": "Nun", "i": "Ich", "sunlight": "Sonnenlicht", "light": "Licht", "a": "ein", "this": "dieses"},
+    "example": {"prompt": "Warum ist der Himmel blau?", "fullResponse": "Weil Sonnenlicht von Molekülen in der Erdatmosphäre gestreut wird und blaues Licht dadurch sichtbarer wird."},
+    "growth": {"because": "Weil", "sunlight": "Weil Sonnenlicht", "is": "Weil Sonnenlicht von", "scattered": "Weil Sonnenlicht von Molekülen gestreut wird"},
+    "support": {
+      "patterns": {"title": "Muster aus dem Training", "body": "Beim Training lernt das Modell statistische Muster aus vielen Beispielen."},
+      "context": {"title": "Kontext lenkt die Erzeugung", "body": "Der Prompt wird Teil des Kontexts und beeinflusst, welche Tokens wahrscheinlicher sind."},
+      "prediction": {"title": "Weiterhin Vorhersage", "body": "Auch wenn das Modell eine Frage beantwortet oder eine Geschichte schreibt, sagt es immer nur ein nächstes Token nach dem anderen voraus."}
+    }
+  },
+  "page7": {
     "title": "Überprüfe, was du gelernt hast",
     "subtitle": "Vier kurze Fragen dazu, wie Modelle beim Training Muster lernen.",
     "conceptCheckpoint": "Konzept-Checkpoint",

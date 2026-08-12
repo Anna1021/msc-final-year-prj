@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   AlertCircle,
+  Apple,
   ArrowRight,
   BookOpen,
-  Building2,
   Check,
   ChevronDown,
   ChevronLeft,
@@ -12,9 +12,11 @@ import {
   Info,
   Lightbulb,
   LoaderCircle,
+  Building2,
   RefreshCw,
   RotateCcw,
   ScanLine,
+  Smartphone,
   Waves,
 } from "lucide-react";
 import useContextPlaygroundPredictions, {
@@ -43,7 +45,7 @@ function Takeaway({ children }) {
   </div>;
 }
 
-export function Mission2OpeningPage({ active, t, onComplete }) {
+export function Mission2OpeningPage({ active, language, t, onComplete }) {
   const [choices, setChoices] = useState({ finance: null, river: null });
 
   function choose(context, option) {
@@ -52,8 +54,8 @@ export function Mission2OpeningPage({ active, t, onComplete }) {
   }
 
   const examples = [
-    { id: "finance", answer: "money", icon: Building2, sentenceKey: "sentenceA", prefixKey: "promptA", meaningKey: "meaningA", options: ["money", "river", "cat", "more"] },
-    { id: "river", answer: "river", icon: Waves, sentenceKey: "sentenceB", prefixKey: "promptB", meaningKey: "meaningB", options: ["river", "money", "book", "more"] }
+    { id: "finance", answer: "money", icon: language === "zh" ? Apple : Building2, sentenceKey: "sentenceA", prefixKey: "promptA", meaningKey: "meaningA", options: ["money", "river", "cat", "more"] },
+    { id: "river", answer: "river", icon: language === "zh" ? Smartphone : Waves, sentenceKey: "sentenceB", prefixKey: "promptB", meaningKey: "meaningB", options: ["river", "money", "book", "more"] }
   ];
 
   return <section hidden={!active} className="mission-2-paged__lesson m2-reading-page m2-context-intro-page" data-lesson-page="1">
@@ -77,7 +79,7 @@ export function Mission2OpeningPage({ active, t, onComplete }) {
       <div className="m2-context-cases">
         {examples.map(({ id, icon: Icon, sentenceKey, meaningKey }) => <article className={`m2-context-case is-${id}`} key={id}>
           <strong><Icon aria-hidden="true" />{t(`mission2.page1.context${id === "finance" ? "A" : "B"}`)}</strong>
-          <p className="m2-context-sentence">{t(`mission2.page1.${sentenceKey}Before`)} <mark>{t("mission2.page1.bank")}</mark> {t(`mission2.page1.${sentenceKey}After`)}</p>
+          <p className="m2-context-sentence">{t(`mission2.page1.${sentenceKey}Before`)}{language === "zh" ? "" : " "}<mark>{t("mission2.page1.bank")}</mark>{language === "zh" ? "" : " "}{t(`mission2.page1.${sentenceKey}After`)}</p>
           <ArrowRight aria-hidden="true" />
           <p className="m2-context-meaning">{t("mission2.page1.hereBank")} <span><Icon aria-hidden="true" />{t(`mission2.page1.${meaningKey}`)}</span></p>
         </article>)}

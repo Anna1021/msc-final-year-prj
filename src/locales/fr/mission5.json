@@ -20,13 +20,15 @@
     "page4Subtitle": "Le modèle ne devient pas parfait avec un seul exemple. Il s'améliore grâce à de nombreux petits ajustements au fil du temps.",
     "page5Title": "À toi de jouer : entraîne un tout petit modèle-jouet",
     "page5Subtitle": "Ajoute des exemples d'entraînement et observe les prédictions changer. Tu verras comment les motifs des données influencent la suite !",
-    "page6Title": "Vérifie ce que tu as appris",
-    "page6Subtitle": "Quatre questions rapides sur la façon dont les modèles apprennent des motifs pendant l'entraînement.",
-    "page7Title": "Résumé de la leçon",
-    "page7Subtitle": "Les exemples, les petits ajustements répétés et les motifs appris façonnent les prédictions ultérieures.",
+    "page6Title": "D'un Token à une réponse complète",
+    "page6Subtitle": "Tu as vu comment un modèle prédit le prochain Token. Découvre maintenant comment la répétition de ce processus construit une réponse plus longue.",
+    "page7Title": "Vérifie ce que tu as appris",
+    "page7Subtitle": "Quatre questions rapides sur la façon dont les modèles apprennent des motifs pendant l'entraînement.",
+    "page8Title": "Résumé de la leçon",
+    "page8Subtitle": "Les exemples, les petits ajustements répétés et les motifs appris façonnent les prédictions ultérieures.",
     "placeholder": "Cette page est reliée au parcours en sept pages et attend son contenu approuvé."
   },
-  "page7": {
+  "page8": {
     "eyebrow": "Résumé",
     "idea1Title": "Exemples d'entraînement",
     "idea1Copy": "Le modèle apprend à partir de nombreux exemples.",
@@ -355,6 +357,38 @@
     "removedFeedback": "Un exemple {{location}} a été retiré. La prédiction est légèrement revenue en arrière."
   },
   "page6": {
+    "kicker": "Construire une réponse",
+    "intro": "Les modèles de langage autorégressifs génèrent du texte en prédisant un prochain Token, en l'ajoutant au contexte, puis en recommençant.",
+    "flowTitle": "Comment une réponse se construit",
+    "flowAria": "Quatre étapes montrant le prompt devenir contexte, la prédiction du prochain Token, son ajout et la répétition du processus",
+    "selected": "Token sélectionné",
+    "illustrative": "Probabilités pédagogiques illustratives — pas une sortie réelle du modèle",
+    "loop": "Prédire → Ajouter → Actualiser le contexte → Prédire encore",
+    "growthTitle": "Répéter de nombreuses fois…",
+    "growthAria": "Une réponse qui s'allonge étape par étape à mesure que des Tokens sont ajoutés",
+    "finalLabel": "Après de nombreuses étapes",
+    "finalNote": "Après de nombreuses prédictions, une réponse plus longue a été construite Token par Token.",
+    "sidebarAria": "Pourquoi la prédiction répétée du prochain Token peut construire une réponse",
+    "sidebarTitle": "Pourquoi cela fonctionne",
+    "labTitle": "À toi de jouer !",
+    "labBody": "Observe ce processus de prédiction répétée dans le laboratoire du modèle réel.",
+    "labAction": "Ouvrir le laboratoire réel",
+    "steps": {
+      "prompt": {"title": "Ton prompt devient le contexte", "body": "Ta question ou instruction fait partie du contexte disponible pour le modèle."},
+      "predict": {"title": "Prédire le prochain Token", "body": "Le modèle utilise le contexte pour attribuer des probabilités aux prochains Tokens possibles.", "distributionAria": "Première distribution illustrative des probabilités du prochain Token"},
+      "append": {"title": "L'ajouter au contexte", "body": "Le Token sélectionné fait désormais partie du contexte."},
+      "repeat": {"title": "Prédire encore et répéter", "body": "Avec le contexte actualisé, le modèle prédit un autre prochain Token.", "distributionAria": "Distribution illustrative actualisée des probabilités du prochain Token"}
+    },
+    "candidates": {"because": "Parce que", "the": "Le", "it": "Il", "well": "Eh bien", "i": "Je", "sunlight": "la lumière solaire", "light": "la lumière", "a": "une", "this": "cette"},
+    "example": {"prompt": "Pourquoi le ciel est-il bleu ?", "fullResponse": "Parce que la lumière solaire est diffusée par les molécules de l'atmosphère terrestre, ce qui rend la lumière bleue plus visible."},
+    "growth": {"because": "Parce que", "sunlight": "Parce que la lumière solaire", "is": "Parce que la lumière solaire est", "scattered": "Parce que la lumière solaire est diffusée"},
+    "support": {
+      "patterns": {"title": "Motifs issus de l'entraînement", "body": "Pendant l'entraînement, le modèle apprend des motifs statistiques à partir de nombreux exemples."},
+      "context": {"title": "Le contexte guide la génération", "body": "Le prompt fait partie du contexte et influence les Tokens les plus probables."},
+      "prediction": {"title": "Toujours une prédiction", "body": "Même lorsqu'il répond à une question ou écrit une histoire, le modèle prédit toujours un prochain Token à la fois."}
+    }
+  },
+  "page7": {
     "title": "Vérifie ce que tu as appris",
     "subtitle": "Quatre questions rapides sur la façon dont les modèles apprennent des motifs pendant l'entraînement.",
     "conceptCheckpoint": "Point de contrôle des concepts",

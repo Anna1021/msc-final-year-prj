@@ -1,8 +1,6 @@
 export const SUPPORTED_LANGUAGES = [
   { code: "en", htmlLang: "en", nativeName: "English", shortName: "EN" },
-  { code: "zh", htmlLang: "zh-CN", nativeName: "简体中文", shortName: "中" },
-  { code: "fr", htmlLang: "fr", nativeName: "Français", shortName: "FR" },
-  { code: "de", htmlLang: "de", nativeName: "Deutsch", shortName: "DE" }
+  { code: "zh", htmlLang: "zh-CN", nativeName: "中文", shortName: "中" }
 ];
 
 export const DEFAULT_LANGUAGE = "en";
