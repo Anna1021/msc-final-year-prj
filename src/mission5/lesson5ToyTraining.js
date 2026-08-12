@@ -1,17 +1,17 @@
 export const TOY_LOCATIONS = Object.freeze(["cave", "forest", "castle"]);
 
 export const STARTER_TRAINING_EXAMPLES = Object.freeze([
-  { id: "starter-sleeps", text: "The dragon sleeps in the cave.", location: "cave", starter: true },
-  { id: "starter-hides", text: "The dragon hides in the cave.", location: "cave", starter: true },
-  { id: "starter-waits", text: "The dragon waits in the cave.", location: "cave", starter: true }
+  { id: "starter-sleeps", location: "cave", starter: true },
+  { id: "starter-hides", location: "cave", starter: true },
+  { id: "starter-waits", location: "cave", starter: true }
 ]);
 
 export const AVAILABLE_TRAINING_EXAMPLES = Object.freeze([
-  { id: "rests-cave", text: "The dragon rests in the cave.", location: "cave" },
-  { id: "guards-cave", text: "The dragon guards the cave.", location: "cave" },
-  { id: "flies-castle", text: "The dragon flew over the castle.", location: "castle" },
-  { id: "wanders-forest", text: "The dragon wandered through the forest.", location: "forest" },
-  { id: "stands-castle", text: "The dragon stood near the castle.", location: "castle" }
+  { id: "rests-cave", location: "cave" },
+  { id: "guards-cave", location: "cave" },
+  { id: "flies-castle", location: "castle" },
+  { id: "wanders-forest", location: "forest" },
+  { id: "stands-castle", location: "castle" }
 ]);
 
 const INITIAL_WEIGHTS = Object.freeze({ cave: 34, forest: 33, castle: 33 });

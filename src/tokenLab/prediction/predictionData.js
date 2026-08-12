@@ -3,10 +3,10 @@ export const predictionExamples=[
 {id:"lunch",contexts:[{id:"sport",prompt:"The goalkeeper caught the",candidates:[[" ball",78],[" train",10],[" sandwich",8],[" cloud",4]]},{id:"food",prompt:"At lunch, he ate the",candidates:[[" sandwich",48],[" apple",32],[" ball",12],[" cloud",8]]}]},
 {id:"weather",contexts:[{id:"rain",prompt:"Dark clouds filled the sky, so it might",candidates:[[" rain",64],[" storm",20],[" clear",11],[" dance",5]]},{id:"sun",prompt:"The sky was bright and clear, so it might stay",candidates:[[" sunny",66],[" warm",19],[" dry",12],[" purple",3]]}]},
 {id:"school",contexts:[{id:"lesson",prompt:"The teacher wrote the answer on the",candidates:[[" board",67],[" page",18],[" desk",11],[" sandwich",4]]},{id:"student",prompt:"The student wrote the answer on the",candidates:[[" page",51],[" worksheet",29],[" board",15],[" cloud",5]]}]},
-{id:"story",contexts:[{id:"forest",prompt:"Once upon a time, a robot walked into the",candidates:[[" forest",43],[" city",31],[" cave",20],[" .",6]]},{id:"space",prompt:"Once upon a time, a robot flew towards the",candidates:[[" moon",39],[" station",34],[" planet",22],[" .",5]]}]},
+{id:"story",contexts:[{id:"forest",prompt:"Once upon a time, a traveller walked into the",candidates:[[" forest",43],[" city",31],[" cave",20],[" .",6]]},{id:"space",prompt:"Once upon a time, a pilot flew towards the",candidates:[[" moon",39],[" station",34],[" planet",22],[" .",5]]}]},
 {id:"animal",contexts:[{id:"cat",prompt:"The cat curled up on the soft",candidates:[[" bed",52],[" mat",28],[" chair",16],[" moon",4]]},{id:"dog",prompt:"The dog chased the red",candidates:[[" ball",69],[" frisbee",19],[" car",9],[" cloud",3]]}]}
 ];
-export const predictionContinuationSets=[[[" and",38],[".",32],[" with",18],[" because",12]],[[" the",44],[" a",28],[" two",17],[" bright",11]],[[" friends",36],[" story",29],[" game",23],[" robot",12]],[[".",55],["!",21],[" today",16],[" again",8]]];
+export const predictionContinuationSets=[[[" and",38],[".",32],[" with",18],[" because",12]],[[" the",44],[" a",28],[" two",17],[" bright",11]],[[" friends",36],[" story",29],[" game",23],[" lesson",12]],[[".",55],["!",21],[" today",16],[" again",8]]];
 
 // Reviewed classroom examples only. These probabilities are not Qwen output.
 export const greedyTeachingExamples={

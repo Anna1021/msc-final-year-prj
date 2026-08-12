@@ -20,6 +20,7 @@ import { createMission4QuizCopy } from "./mission4QuizCopy.js";
 
 const IDEA_ICONS = [GitBranch, ListFilter, Target, Repeat2];
 const ORDER_STEPS = ["compare", "choose", "add", "repeat"];
+const candidateLabel = (t, id) => t(`mission4.teachingCandidates.${id}`);
 
 function TechnicalWord({ t, page, term, children, visual }) {
   const [open, setOpen] = useState(true);
@@ -58,11 +59,11 @@ export function Lesson4ScorePage({ active, t, onComplete }) {
   return <section hidden={!active} className="l4-new-page l4-score-page"><LearningLayout sidebar={sidebar}>
     <header className="l4-score-heading"><span className="l4-score-number">2</span><div><small className="l4-section-kicker">{t("mission4.scorePage.possible")}</small><p>{t("mission4.scorePage.intro1")}</p><p>{t("mission4.scorePage.intro2Before")} <strong>{t("mission4.scorePage.termLower")}</strong> {t("mission4.scorePage.intro2After")}</p></div></header>
     <article className="l4-score-card">
-      <section className="l4-score-context"><h2>{t("mission4.scorePage.prompt")}</h2><div>{["The", "little", "reader", "opened", "the"].map((token, index) => <span className={`tone-${["purple", "pink", "blue", "green", "purple"][index]}`} key={token + index}>{token}</span>)}</div></section>
+      <section className="l4-score-context"><h2>{t("mission4.scorePage.prompt")}</h2><div>{t("mission4.scorePage.promptTokens").split("|").map((token, index) => <span className={`tone-${["purple", "pink", "blue", "green", "purple"][index]}`} key={token + index}>{token}</span>)}</div></section>
       <div className="l4-score-rule" />
       <h3>{t("mission4.scorePage.possible")}</h3>
       <div className="l4-score-comparison">
-        <div className="l4-score-rows">{SCORE_PROBABILITY_CANDIDATES.slice(0, -1).map((item) => <div className={`l4-score-row tone-${item.tone}`} key={item.token}><span>{item.token}</span><i aria-hidden="true"><b style={{ width: `${item.scoreWidth}%` }} /></i></div>)}<div className="l4-score-more">…</div></div>
+        <div className="l4-score-rows">{SCORE_PROBABILITY_CANDIDATES.slice(0, -1).map((item) => <div className={`l4-score-row tone-${item.tone}`} key={item.token}><span>{candidateLabel(t, item.token)}</span><i aria-hidden="true"><b style={{ width: `${item.scoreWidth}%` }} /></i></div>)}<div className="l4-score-more">…</div></div>
         <div className="l4-score-guide" aria-label={`${t("mission4.scorePage.higher")} / ${t("mission4.scorePage.lower")}`}><span>{t("mission4.scorePage.higher")}</span><i /><span>{t("mission4.scorePage.lower")}</span></div>
         <aside className="l4-score-explanation"><Sparkles /><p><strong>{t("mission4.scorePage.different")}</strong><span>{t("mission4.scorePage.higherMeans")}</span><small>{t("mission4.scorePage.notProbability")}</small></p></aside>
       </div>
@@ -71,8 +72,8 @@ export function Lesson4ScorePage({ active, t, onComplete }) {
   </LearningLayout></section>;
 }
 
-function ProcessedRepresentation() {
-  return <div className="l4-p1-representation" aria-label="Abstract processed-context representation">
+function ProcessedRepresentation({ label }) {
+  return <div className="l4-p1-representation" aria-label={label}>
     <span /><span /><span className="wide" /><span /><span />
     <span /><span className="wide" /><span /><span /><span />
     <span /><span /><span /><span className="wide" /><span />
@@ -90,7 +91,7 @@ export function Lesson4NewPage1({ active, t }) {
     <article className="l4-p1-card">
       <div className="l4-p1-flow">
         <section><h2>{t("mission4.page1.processed")}</h2><p>{t("mission4.page1.processedCopy")}</p></section>
-        <ProcessedRepresentation />
+        <ProcessedRepresentation label={t("mission4.page1.processedVisualLabel")} />
         <ArrowRight className="l4-p1-arrow" aria-hidden="true" />
         <div className="l4-p1-question" aria-hidden="true">?</div>
         <section><h2>{t("mission4.page1.whatNext")}</h2><p>{t("mission4.page1.whatNextCopy")}</p></section>
@@ -116,30 +117,30 @@ export function Lesson4NewPage2({ active, t, onComplete }) {
     <header className="l4-probability-heading"><span className="l4-probability-number">3</span><div><small className="l4-section-kicker">{t("mission4.probabilityPage.term")}</small><p>{t("mission4.probabilityPage.intro1")}</p><p>{t("mission4.probabilityPage.intro2Before")} <strong>{t("mission4.probabilityPage.termLower")}</strong> {t("mission4.probabilityPage.intro2After")}</p></div></header>
     <article className="l4-probability-card">
       <div className="l4-probability-comparison">
-        <section><header><h2>{t("mission4.probabilityPage.scoresTitle")}</h2><small>{t("mission4.probabilityPage.scoresNote")}</small></header><ProbabilityScoreRows /></section>
+        <section><header><h2>{t("mission4.probabilityPage.scoresTitle")}</h2><small>{t("mission4.probabilityPage.scoresNote")}</small></header><ProbabilityScoreRows t={t} /></section>
         <ArrowRight className="l4-probability-arrow" aria-hidden="true" />
-        <section className="l4-probability-list"><header><h2>{t("mission4.probabilityPage.probabilitiesTitle")}</h2><small>{t("mission4.probabilityPage.probabilitiesNote")}</small></header><ProbabilityChanceRows /><aside>{t("mission4.probabilityPage.total")}</aside></section>
+        <section className="l4-probability-list"><header><h2>{t("mission4.probabilityPage.probabilitiesTitle")}</h2><small>{t("mission4.probabilityPage.probabilitiesNote")}</small></header><ProbabilityChanceRows t={t} /><aside>{t("mission4.probabilityPage.total")}</aside></section>
       </div>
-      <footer><div><Sparkles /><div><h3>{t("mission4.probabilityPage.guaranteeTitle")}</h3><p>{t("mission4.probabilityPage.guaranteeLine1")}</p><p>{t("mission4.probabilityPage.guaranteeLine2")}</p><p>{t("mission4.probabilityPage.guaranteeLine3")}</p></div></div><ProbabilityChoiceVisual /></footer>
+      <footer><div><Sparkles /><div><h3>{t("mission4.probabilityPage.guaranteeTitle")}</h3><p>{t("mission4.probabilityPage.guaranteeLine1")}</p><p>{t("mission4.probabilityPage.guaranteeLine2")}</p><p>{t("mission4.probabilityPage.guaranteeLine3")}</p></div></div><ProbabilityChoiceVisual t={t} /></footer>
       <small className="l4-probability-illustrative">{t("mission4.probabilityPage.illustrative")}</small>
     </article>
   </LearningLayout></section>;
 }
 
-function ProbabilityScoreRows() {
-  return <div className="l4-probability-rows">{SCORE_PROBABILITY_CANDIDATES.map((item) => <div className={`tone-${item.tone}`} key={item.token}><span>{item.token}</span><i aria-hidden="true"><b style={{ width: `${item.scoreWidth}%` }} /></i></div>)}</div>;
+function ProbabilityScoreRows({ t }) {
+  return <div className="l4-probability-rows">{SCORE_PROBABILITY_CANDIDATES.map((item) => <div className={`tone-${item.tone}`} key={item.token}><span>{candidateLabel(t, item.token)}</span><i aria-hidden="true"><b style={{ width: `${item.scoreWidth}%` }} /></i></div>)}</div>;
 }
 
-function ProbabilityChanceRows() {
-  return <div className="l4-probability-rows l4-probability-chance-rows">{SCORE_PROBABILITY_CANDIDATES.map((item) => <div className={`tone-${item.tone}`} key={item.token}><span>{item.token}</span><i aria-hidden="true"><b style={{ width: `${item.probability / 46 * 100}%` }} /></i><strong>{item.probability}%</strong></div>)}</div>;
+function ProbabilityChanceRows({ t }) {
+  return <div className="l4-probability-rows l4-probability-chance-rows">{SCORE_PROBABILITY_CANDIDATES.map((item) => <div className={`tone-${item.tone}`} key={item.token}><span>{candidateLabel(t, item.token)}</span><i aria-hidden="true"><b style={{ width: `${item.probability / 46 * 100}%` }} /></i><strong>{item.probability}%</strong></div>)}</div>;
 }
 
 function ProbabilityKeywordVisual() {
   return <div className="l4-probability-key-visual" aria-hidden="true"><b>%</b><i /><i /><i /><i /><i /></div>;
 }
 
-function ProbabilityChoiceVisual() {
-  return <div className="l4-probability-choice-visual" aria-hidden="true">{SCORE_PROBABILITY_CANDIDATES.slice(0, 4).map((item) => <span className={`tone-${item.tone}`} key={item.token}><b>{item.probability}%</b>{item.token}</span>)}<i>?</i></div>;
+function ProbabilityChoiceVisual({ t }) {
+  return <div className="l4-probability-choice-visual" aria-hidden="true">{SCORE_PROBABILITY_CANDIDATES.slice(0, 4).map((item) => <span className={`tone-${item.tone}`} key={item.token}><b>{item.probability}%</b>{candidateLabel(t, item.token)}</span>)}<i>?</i></div>;
 }
 
 class LiveLabErrorBoundary extends React.Component {

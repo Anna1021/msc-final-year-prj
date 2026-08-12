@@ -13,13 +13,23 @@ import {
   Network,
   Sparkles
 } from "lucide-react";
-import {
-  LESSON_3_POSITION_SENTENCES
-} from "./lesson3TeachingData.js";
-import { analyseConnections, LESSON_3_PLAYGROUND_SENTENCES, teachingTokenize } from "./lesson3ConnectionAnalysis.js";
+import { analyseConnections, teachingTokenize } from "./lesson3ConnectionAnalysis.js";
 import LessonSummaryPage from "../pagedMissions/LessonSummaryPage.jsx";
 
 const IDEA_ICONS = [Eye, Network, Layers3, Lightbulb];
+const localizedTokens = (t, key) => t(key).split("|");
+const localizedPlaygroundSentences = (t) => ({
+  A: {
+    text: t("mission3.page5.presets.A.text"),
+    tokens: localizedTokens(t, "mission3.page5.presets.A.tokens"),
+    defaultFocusIndex: 7
+  },
+  B: {
+    text: t("mission3.page5.presets.B.text"),
+    tokens: localizedTokens(t, "mission3.page5.presets.B.tokens"),
+    defaultFocusIndex: 1
+  }
+});
 function PageSectionHeading({ number, label }) {
   return <header className="l3-page-section-heading"><span>{number}</span><small>{label}</small></header>;
 }
@@ -104,10 +114,10 @@ function Representation({ activeCount = 0, updated = false, token = "dog", t }) 
 }
 
 export function Lesson3Page1({ active, t }) {
-  const tokens = ["The", "little", "reader", "opened", "the", "book"];
+  const tokens = localizedTokens(t, "mission3.page1.exampleTokens");
   const connectionTokens = [
-    ["The", "is-one"], ["reader", "is-two"], ["the", "is-three"],
-    ["little", "is-four"], ["book", "is-five"]
+    [tokens[0], "is-one"], [tokens[2], "is-two"], [tokens[4], "is-three"],
+    [tokens[1], "is-four"], [tokens[5], "is-five"]
   ];
   return <section hidden={!active} className="lesson-3-page l3-page-one l3-context-connections-page" data-lesson-page="1">
     <div className="l3-p1-composition">
@@ -127,7 +137,7 @@ export function Lesson3Page1({ active, t }) {
           <div className="l3-p1-connection-map" role="img" aria-label={t("mission3.page1.connectionLabel")}>
             <svg viewBox="0 0 620 250" aria-hidden="true"><defs><marker id="l3-p1-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" /></marker></defs><path className="is-dashed" d="M92 76 C174 76 226 85 278 96" /><path d="M310 64 L310 91" /><path className="is-dashed" d="M528 76 C448 76 397 85 343 96" /><path className="is-dashed" d="M92 174 C174 174 226 166 278 155" /><path d="M528 174 C447 174 396 166 343 155" /></svg>
             {connectionTokens.map(([token, position]) => <span className={`l3-p1-source ${position}`} key={token}>{token}</span>)}
-            <span className="l3-p1-target"><small>{t("mission3.page1.targetLabel")}</small><strong>opened</strong></span>
+            <span className="l3-p1-target"><small>{t("mission3.page1.targetLabel")}</small><strong>{tokens[3]}</strong></span>
           </div>
         </section>
         <div className="l3-p1-key-idea"><span><Sparkles aria-hidden="true" /></span><div><strong>{t("mission3.page1.keyIdeaLabel")}</strong><p>{t("mission3.page1.keyIdea")}</p></div></div>
@@ -141,7 +151,7 @@ export function Lesson3Page1({ active, t }) {
 
 export function Lesson3Page2({ active, t, onComplete }) {
   useEffect(() => { if (active) onComplete?.(); }, [active, onComplete]);
-  const tokens = ["The", "little", "reader", "opened", "the", "book"];
+  const tokens = localizedTokens(t, "mission3.page1.exampleTokens");
   return <section hidden={!active} className="lesson-3-page l3-page-two l3-share-information-page" data-lesson-page="2">
     <div className="l3-p2-layout">
       <article className="l3-p2-teaching-surface">
@@ -184,8 +194,9 @@ export function Lesson3Page2({ active, t, onComplete }) {
 
 export function Lesson3Page3({ active, t, onComplete }) {
   useEffect(() => { if (active) onComplete?.(); }, [active, onComplete]);
-  const tokens = ["The", "dog", "chased", "the", "ball", "because", "it", "was", "tired", "."];
-  const sources = ["The", "dog", "chased", "the", "ball", "because"];
+  const tokens = localizedTokens(t, "mission3.page3.exampleTokens");
+  const sources = tokens.slice(0, 6);
+  const target = tokens[6];
   return <section hidden={!active} className="lesson-3-page l3-page-three l3-contribution-page" data-lesson-page="3">
     <div className="l3-p3-composition">
       <article className="l3-p3-teaching-surface">
@@ -193,7 +204,7 @@ export function Lesson3Page3({ active, t, onComplete }) {
           <div className="l3-p3-hero-copy"><span className="l3-p3-number">3</span><div><small className="l3-section-kicker">{t("mission3.page3.keywordTerm")}</small><p>{t("mission3.page3.heroLine1")}</p><p>{t("mission3.page3.heroLine2")}</p></div></div>
         </header>
         <section className="l3-p3-focus">
-          <div><span>{t("mission3.page3.focusLabel")}</span><h2>{t("mission3.page3.focusTitle")}</h2><p>{t("mission3.page3.focusBody")}</p></div>
+          <div><span>{t("mission3.page3.focusLabel")}</span><h2>{t("mission3.page3.focusTitle", { token: target })}</h2><p>{t("mission3.page3.focusBody", { token: target })}</p></div>
           <div className="l3-p3-explanation"><Lightbulb aria-hidden="true" /><p>{t("mission3.page3.explanationLine1")}<br /><strong>{t("mission3.page3.explanationEmphasis")}</strong> {t("mission3.page3.explanationLine2")}</p></div>
         </section>
         <section className="l3-p3-example" aria-labelledby="l3-p3-example-heading">
@@ -208,7 +219,7 @@ export function Lesson3Page3({ active, t, onComplete }) {
             <div className="l3-p3-arrow-map" role="img" aria-label={t("mission3.page3.diagramLabel")}>
               <div className="l3-p3-source-row">{sources.map((token, index) => <span className={`is-tone-${index + 1}`} key={`${token}-${index}`}><strong>{token}</strong><small>{index + 1}</small></span>)}</div>
               <svg viewBox="0 0 760 190" preserveAspectRatio="none" aria-hidden="true"><defs><marker id="l3-p3-arrow-strong" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" /></marker><marker id="l3-p3-arrow-medium" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" /></marker><marker id="l3-p3-arrow-weak" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" /></marker></defs><path className="is-veryweak" d="M62 20 C118 88 245 105 365 118" /><path className="is-strong" d="M190 20 C219 88 292 108 367 118" /><path className="is-medium" d="M316 20 C325 75 347 103 370 118" /><path className="is-weak" d="M444 20 C435 75 411 103 390 118" /><path className="is-strong" d="M570 20 C545 88 473 108 393 118" /><path className="is-veryweak" d="M698 20 C644 88 515 105 395 118" /></svg>
-              <div className="l3-p3-target"><strong>it</strong><small>7</small><em>{t("mission3.page3.focusToken")}</em></div>
+              <div className="l3-p3-target"><strong>{target}</strong><small>7</small><em>{t("mission3.page3.focusToken")}</em></div>
             </div>
           </div>
           <div className="l3-p3-diagram-note"><Lightbulb aria-hidden="true" /><p>{t("mission3.page3.explanationLine1")} <strong>{t("mission3.page3.explanationEmphasis")}</strong> {t("mission3.page3.explanationLine2")}</p><Sparkles aria-hidden="true" /></div>
@@ -225,14 +236,15 @@ export function Lesson3Page3({ active, t, onComplete }) {
 }
 
 function PositionComparison({ variant, t }) {
-  const tokens = variant === "a" ? LESSON_3_POSITION_SENTENCES.a : LESSON_3_POSITION_SENTENCES.b;
+  const tokens = localizedTokens(t, `mission3.page4.example${variant.toUpperCase()}Tokens`);
   const dogPosition = variant === "a" ? 2 : 5;
+  const target = tokens[dogPosition - 1];
   const paths = variant === "a" ? ["M54 12 C77 48 130 68 202 78", "M142 12 C155 45 179 64 204 78", "M230 12 C230 43 221 64 208 78", "M318 12 C299 47 263 67 214 78", "M406 12 C361 49 299 70 218 78"] : ["M54 12 C90 49 145 69 234 78", "M142 12 C165 47 198 66 236 78", "M230 12 C235 47 239 66 240 78", "M318 12 C297 48 273 67 245 78", "M406 12 C361 50 305 70 249 78"];
   return <article className={`l3-p4-example is-${variant}`}>
     <header><span>{t(`mission3.page4.example${variant.toUpperCase()}`)}</span><h3>“{tokens.join(" ")}”</h3></header>
-    <div className="l3-p4-token-row" role="list" aria-label={t(`mission3.page4.tokenRow${variant.toUpperCase()}`)}>{tokens.map((token, index) => <span role="listitem" className={token === "dog" ? "is-dog" : `is-tone-${index + 1}`} key={`${token}-${index}`}><strong>{token}</strong><small>{index + 1}</small></span>)}</div>
-    <h4>{t("mission3.page4.connectionsFor", { position: dogPosition })}</h4>
-    <div className="l3-p4-connection-map" role="img" aria-label={t(`mission3.page4.connectionDiagram${variant.toUpperCase()}`)}><div className="l3-p4-source-row">{tokens.filter((token) => token !== "dog").map((token, index) => <span key={`${token}-${index}`}>{token}</span>)}</div><svg viewBox="0 0 460 132" aria-hidden="true"><defs><marker id={`l3-p4-arrow-${variant}`} markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" /></marker></defs>{paths.map((path, index) => <path className={`is-strength-${index + 1}`} d={path} markerEnd={`url(#l3-p4-arrow-${variant})`} key={path} />)}</svg><span className="l3-p4-focus">dog<small>{dogPosition}</small></span></div>
+    <div className="l3-p4-token-row" role="list" aria-label={t(`mission3.page4.tokenRow${variant.toUpperCase()}`)}>{tokens.map((token, index) => <span role="listitem" className={index === dogPosition - 1 ? "is-dog" : `is-tone-${index + 1}`} key={`${token}-${index}`}><strong>{token}</strong><small>{index + 1}</small></span>)}</div>
+    <h4>{t("mission3.page4.connectionsFor", { token: target, position: dogPosition })}</h4>
+    <div className="l3-p4-connection-map" role="img" aria-label={t(`mission3.page4.connectionDiagram${variant.toUpperCase()}`, { token: target })}><div className="l3-p4-source-row">{tokens.filter((_, index) => index !== dogPosition - 1).map((token, index) => <span key={`${token}-${index}`}>{token}</span>)}</div><svg viewBox="0 0 460 132" aria-hidden="true"><defs><marker id={`l3-p4-arrow-${variant}`} markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" /></marker></defs>{paths.map((path, index) => <path className={`is-strength-${index + 1}`} d={path} markerEnd={`url(#l3-p4-arrow-${variant})`} key={path} />)}</svg><span className="l3-p4-focus">{target}<small>{dogPosition}</small></span></div>
   </article>;
 }
 
@@ -269,19 +281,20 @@ function ConnectionPlayground({ tokens, text, focusIndex, t }) {
 }
 
 export function Lesson3Page5({ active, t, onComplete }) {
+  const presets = localizedPlaygroundSentences(t);
   const [selectedSentence, setSelectedSentence] = useState("A");
   const [customText, setCustomText] = useState("");
   const [customSentence, setCustomSentence] = useState(null);
-  const [focusIndex, setFocusIndex] = useState(LESSON_3_PLAYGROUND_SENTENCES.A.defaultFocusIndex);
+  const [focusIndex, setFocusIndex] = useState(7);
   const [errorType, setErrorType] = useState("");
-  const current = selectedSentence === "custom" ? customSentence : LESSON_3_PLAYGROUND_SENTENCES[selectedSentence];
-  const chooseSentence = (id) => { const next = LESSON_3_PLAYGROUND_SENTENCES[id]; setSelectedSentence(id); setFocusIndex(next.defaultFocusIndex); setErrorType(""); onComplete?.(); };
+  const current = selectedSentence === "custom" ? customSentence : presets[selectedSentence];
+  const chooseSentence = (id) => { const next = presets[id]; setSelectedSentence(id); setFocusIndex(next.defaultFocusIndex); setErrorType(""); onComplete?.(); };
   const chooseFocus = (index) => { setFocusIndex(index); onComplete?.(); };
   const analyseCustom = (event) => { event.preventDefault(); const text = customText.trim(); const tokens = teachingTokenize(text); if (!text) { setErrorType("emptyError"); return; } if (tokens.length > 16) { setErrorType("longError"); return; } const defaultFocusIndex = Math.max(0, tokens.length - 1); setCustomSentence({ text, tokens, defaultFocusIndex }); setSelectedSentence("custom"); setFocusIndex(defaultFocusIndex); setErrorType(""); onComplete?.(); };
   return <section hidden={!active} className="lesson-3-page l3-page-five l3-p5-playground" data-lesson-page="5">
     <div className="l3-p5-layout"><main className="l3-p5-main">
       <PageSectionHeading number="5" label={t("mission3.page5.tryTitle")} />
-      <section className="l3-p5-step l3-p5-sentences" aria-labelledby="l3-p5-step1"><header><span>{t("mission3.activeUi.step", { number: 1 })}</span><h2 id="l3-p5-step1">{t("mission3.page5.chooseSentence")}</h2></header><div>{["A", "B"].map((id) => { const sentence = LESSON_3_PLAYGROUND_SENTENCES[id]; return <button type="button" className={`l3-p5-sentence ${selectedSentence === id ? "is-selected" : ""}`} aria-pressed={selectedSentence === id} onClick={() => chooseSentence(id)} key={id}><small>{t(`mission3.page5.sentence${id}`)}</small><strong>“{sentence.text}”</strong><PlaygroundTokens tokens={sentence.tokens} focusIndex={sentence.defaultFocusIndex} compact label={t("mission3.page5.sentenceTokens", { sentence: id })} />{selectedSentence === id && <Check aria-hidden="true" />}</button>; })}</div></section>
+      <section className="l3-p5-step l3-p5-sentences" aria-labelledby="l3-p5-step1"><header><span>{t("mission3.activeUi.step", { number: 1 })}</span><h2 id="l3-p5-step1">{t("mission3.page5.chooseSentence")}</h2></header><div>{["A", "B"].map((id) => { const sentence = presets[id]; return <button type="button" className={`l3-p5-sentence ${selectedSentence === id ? "is-selected" : ""}`} aria-pressed={selectedSentence === id} onClick={() => chooseSentence(id)} key={id}><small>{t(`mission3.page5.sentence${id}`)}</small><strong>“{sentence.text}”</strong><PlaygroundTokens tokens={sentence.tokens} focusIndex={sentence.defaultFocusIndex} compact label={t("mission3.page5.sentenceTokens", { sentence: id })} />{selectedSentence === id && <Check aria-hidden="true" />}</button>; })}</div></section>
       <section className="l3-p5-step l3-p5-focus-step" aria-labelledby="l3-p5-step2"><header><span>{t("mission3.activeUi.step", { number: 2 })}</span><div><h2 id="l3-p5-step2">{t("mission3.page5.chooseFocus")}</h2><p>{t("mission3.page5.chooseFocusHint")}</p></div></header><div className="l3-p5-focus-content"><PlaygroundTokens tokens={current.tokens} focusIndex={focusIndex} onFocus={chooseFocus} label={t("mission3.page5.focusTokens")} focusLabel={t("mission3.activeUi.focus")} /><aside aria-live="polite"><small>{t("mission3.page5.currentFocus")}</small><strong>{current.tokens[focusIndex]}</strong><span>{t("mission3.page5.position", { position: focusIndex + 1 })}</span><CircleDot aria-hidden="true" /></aside></div></section>
       <section className="l3-p5-step l3-p5-connections" aria-labelledby="l3-p5-step3"><header><span>{t("mission3.activeUi.step", { number: 3 })}</span><h2 id="l3-p5-step3">{t("mission3.page5.connectionsTo", { token: current.tokens[focusIndex] })}</h2></header><ConnectionPlayground tokens={current.tokens} text={current.text} focusIndex={focusIndex} t={t} /><p className="l3-p5-accuracy"><CircleDot />{t("mission3.page5.accuracy")}</p></section>
       <section className="l3-p5-step l3-p5-custom" aria-labelledby="l3-p5-step4"><header><span>{t("mission3.activeUi.step", { number: 4 })}</span><div><h2 id="l3-p5-step4">{t("mission3.page5.customTitle")}</h2><p>{t("mission3.page5.customHint")}</p></div></header><form onSubmit={analyseCustom}><label htmlFor="l3-p5-custom-input" className="sr-only">{t("mission3.page5.customTitle")}</label><input id="l3-p5-custom-input" value={customText} onChange={(event) => setCustomText(event.target.value)} placeholder={t("mission3.page5.customPlaceholder")} maxLength={180} /><button type="submit">{t("mission3.page5.analyse")}<ArrowRight /></button></form>{errorType && <p className="l3-p5-error" role="alert">{t(`mission3.page5.${errorType}`)}</p>}</section>

@@ -14,6 +14,6 @@ export const LESSON_3_POSITION_SENTENCES = Object.freeze({
 });
 
 export const LESSON_3_PROCESS_EXAMPLE = Object.freeze({
-  tokens: ["The", "robot", "picked", "up", "the", "red", "key", "."],
+  tokens: ["The", "reader", "picked", "up", "the", "red", "key", "."],
   targets: ["key", "red"]
 });

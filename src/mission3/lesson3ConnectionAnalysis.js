@@ -1,12 +1,12 @@
 export const LESSON_3_PLAYGROUND_SENTENCES = Object.freeze({
   A: Object.freeze({
-    text: "The robot picked up the book because it needed the information.",
-    tokens: Object.freeze(["The", "robot", "picked", "up", "the", "book", "because", "it", "needed", "the", "information", "."]),
+    text: "The reader picked up the book because they needed the information.",
+    tokens: Object.freeze(["The", "reader", "picked", "up", "the", "book", "because", "they", "needed", "the", "information", "."]),
     defaultFocusIndex: 7
   }),
   B: Object.freeze({
-    text: "Because it needed the information, the robot picked up the book.",
-    tokens: Object.freeze(["Because", "it", "needed", "the", "information", ",", "the", "robot", "picked", "up", "the", "book", "."]),
+    text: "Because they needed the information, the reader picked up the book.",
+    tokens: Object.freeze(["Because", "they", "needed", "the", "information", ",", "the", "reader", "picked", "up", "the", "book", "."]),
     defaultFocusIndex: 1
   })
 });

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+let loggedModelIdentity = false;
+
 function getSessionId() {
   if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
   return `lesson4-${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -40,6 +42,10 @@ export default function useLivePredictionModel() {
           durationMs:Math.round(performance.now() - startedAt)
         });
         throw new Error(data.error || `Prediction service returned ${response.status}.`);
+      }
+      if (import.meta.env.DEV && !loggedModelIdentity) {
+        console.log("[LivePrediction] model:", data.model);
+        loggedModelIdentity = true;
       }
       setStatus("ready");
       return data;
