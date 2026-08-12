@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { DEFAULT_LANGUAGE, normaliseLanguage, SUPPORTED_LANGUAGES } from "../src/i18n/languageConfig.js";
+import { escapeRoomRuntimeLocales } from "../src/finalChallenge/escapeRoomRuntimeLocales.js";
 
 const languages = ["en", "zh", "fr", "de"];
 const runtimeNamespaces = [
@@ -37,6 +39,12 @@ async function readLocaleNamespace(language, namespace) {
 
 const differences = [];
 
+assert.deepEqual(SUPPORTED_LANGUAGES.map(({ code }) => code), ["en", "zh"], "Only English and Chinese are selectable at runtime.");
+assert.equal(DEFAULT_LANGUAGE, "en");
+assert.equal(normaliseLanguage("fr"), "en", "A previously persisted French locale falls back to English.");
+assert.equal(normaliseLanguage("de-DE"), "en", "A previously persisted German locale falls back to English.");
+assert.equal(normaliseLanguage("zh-CN"), "zh");
+
 for (const namespace of runtimeNamespaces) {
   const english = await readLocaleNamespace("en", namespace);
   if (namespace === "escapeRoom") delete english.runtime;
@@ -62,4 +70,19 @@ if (differences.length) {
 }
 
 assert.equal(differences.length, 0, "Runtime locale namespaces must match the English leaf-key structure.");
-process.stdout.write(`i18n parity passed for ${runtimeNamespaces.length} runtime namespaces across ${languages.length} locales.\n`);
+
+function stringLeaves(value) {
+  if (typeof value === "string") return [value];
+  if (!value || typeof value !== "object") return [];
+  return Object.values(value).flatMap(stringLeaves);
+}
+
+const chineseNamespaces = await Promise.all(runtimeNamespaces.map((namespace) => readLocaleNamespace("zh", namespace)));
+const chineseVisibleText = [
+  ...chineseNamespaces.flatMap(stringLeaves),
+  ...stringLeaves(escapeRoomRuntimeLocales.zh)
+].join("\n").replace(/\{\{\w+\}\}/g, "");
+assert.doesNotMatch(chineseVisibleText, /\bTokens?\b/i, "Chinese educational UI must use 词元 instead of standalone Token/Tokens.");
+assert.match(chineseVisibleText, /词元/);
+
+process.stdout.write(`i18n parity passed for ${runtimeNamespaces.length} resource namespaces across ${languages.length} retained locales; runtime selection is en/zh only.\n`);

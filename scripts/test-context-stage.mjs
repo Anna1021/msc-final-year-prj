@@ -1,10 +1,13 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { composeContextResponse, contextScenarios, contextWordExamples } from "../src/tokenLab/context/contextLabData.js";
+import { composeContextResponse, contextScenarios, contextWordExamples, getContextWordExamples } from "../src/tokenLab/context/contextLabData.js";
 
 assert.equal(contextWordExamples.length, 8);
 assert.deepEqual(contextWordExamples.map((example) => example.id), ["bank", "bat", "match", "light", "wave", "ring", "mouse", "spring"], "Reviewed word pool stays unchanged");
 assert.ok(contextWordExamples.every((example) => example.senses.length === 2 && example.senses.every((sense) => sense.contextWords.length >= 2)));
+const chineseExamples = getContextWordExamples("zh");
+assert.equal(chineseExamples[0].target, "苹果", "Chinese uses a genuine Chinese ambiguity example");
+assert.doesNotMatch(chineseExamples.flatMap((example) => [example.target, ...example.senses.flatMap((sense) => [sense.sentence, ...sense.contextWords])]).join(" "), /\bbank\b|\bbat\b/i, "Chinese reviewed display examples do not require English vocabulary");
 assert.equal(contextScenarios.length, 2);
 assert.ok(contextScenarios.every((scenario) => scenario.details.some((detail) => detail.category === "useful") && scenario.details.some((detail) => detail.category === "extra") && scenario.details.some((detail) => detail.category === "unrelated")));
 
@@ -35,7 +38,7 @@ for (const category of ["useful", "extra", "unrelated"]) assert.ok(page.includes
 assert.ok(page.includes("timers.current.forEach(window.clearTimeout)"), "Replay cancels old timers before starting again");
 assert.ok(page.includes('window.matchMedia?.("(prefers-reduced-motion: reduce)")'), "Replay resolves immediately under reduced motion");
 for (const key of ["whyTitle", "whyBody", "notHuman", "promptTray", "emptyTray", "finalDiscovery"]) assert.ok(keys.some((path) => path.endsWith(key)), `Context includes ${key} in every language`);
-assert.ok(locales[0].builder.demo.includes("not a live AI response"));
+assert.ok(locales[0].builder.demo.includes("not a live language-model response"));
 assert.ok(locales[0].safeguards.noGuarantee.includes("not simply more context"));
 assert.ok(page.includes("setSenseIndex(null)") && page.includes("hiddenMeaning"), "Experiment A does not reveal a meaning before scene selection");
 assert.ok(page.includes("step>=index+1") && page.includes("step>=3") && page.includes("step>=4"), "Scene selection progressively reveals reviewed clues, target and meaning");
@@ -52,7 +55,7 @@ for(const scenario of contextScenarios){
 }
 for(const locale of locales){
   assert.match(locale.meaning.notHuman,/not.*understand|不表示.*理解|ne signifie pas.*comprend|bedeutet nicht.*versteht/i,"Explanation rejects human-like understanding");
-  assert.match(locale.meaning.notHuman,/not real attention|并不是真实 attention|pas de vrais poids d’attention|keine echten Aufmerksamkeitsgewichte/i,"Clue highlights are not presented as real attention weights");
+  assert.match(locale.meaning.notHuman,/not real attention|不是真实注意力|pas de vrais poids d’attention|keine echten Aufmerksamkeitsgewichte/i,"Clue highlights are not presented as real attention weights");
   assert.match(locale.builder.finalDiscovery,/not automatically|不一定|pas toujours|nicht automatisch/i,"More context is not described as always better");
   assert.match(locale.safeguards.canStillFail,/incorrect|出错|incorrecte|falsch/i,"Clearer responses still carry an accuracy warning");
 }

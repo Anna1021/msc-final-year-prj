@@ -1,7 +1,7 @@
 export const MISSION_5_QUIZ_CORRECT_ANSWERS = Object.freeze([0, 1, 1, 0]);
 
 export function createMission5QuizCopy(t) {
-  const key = (name) => t(`mission5.page6.${name}`);
+  const key = (name) => t(`mission5.page7.${name}`);
 
   return {
     quizTitle: key("conceptCheckpoint"),
@@ -11,7 +11,7 @@ export function createMission5QuizCopy(t) {
     answerEach: key("answerEach"),
     yourProgress: key("yourProgress"),
     questionLabel: key("questionLabel"),
-    questionOf: t("mission5.page6.questionOf", {
+    questionOf: t("mission5.page7.questionOf", {
       current: "{{current}}",
       total: "{{total}}"
     }),

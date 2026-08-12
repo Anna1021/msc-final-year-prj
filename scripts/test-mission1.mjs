@@ -8,6 +8,10 @@ const intro = getMission1IntroFixture();
 assert.equal(intro.text, "The uncharacteristically quiet reader smiled.");
 assert.deepEqual(intro.rawPieces, ["The", "Ġun", "character", "istically", "Ġquiet", "Ġreader", "Ġsmiled", "."]);
 assert.equal(intro.count, 8);
+const chineseIntro = getMission1IntroFixture("zh");
+assert.equal(chineseIntro.text, "那只小猫安静地坐在窗边。");
+assert.deepEqual(chineseIntro.decodedPieces, ["那只", "小", "猫", "安静", "地", "坐在", "窗", "边", "。"]);
+assert.equal(chineseIntro.count, 9);
 
 for (const language of ["en", "zh", "fr", "de"]) {
   const pool = getMission1ChallengePool(language);

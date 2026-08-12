@@ -9,6 +9,17 @@ export const contextWordExamples = [
   { id:"spring", target:"spring", senses:[{id:"season",sentence:"Flowers begin to grow in spring.",contextWords:["flowers","grow"]},{id:"coil",sentence:"The metal spring bounced back into shape.",contextWords:["metal","bounced"]}] }
 ];
 
+const chineseContextWordExamples = [
+  { id:"bank", target:"苹果", senses:[{id:"money",sentence:"桌上放着一个红苹果。",contextWords:["桌上","红"]},{id:"river",sentence:"苹果发布了新手机。",contextWords:["发布","手机"]}] },
+  { id:"bat", target:"杜鹃", senses:[{id:"animal",sentence:"杜鹃在树林里啼叫。",contextWords:["树林","啼叫"]},{id:"sport",sentence:"春天山坡上开满了杜鹃。",contextWords:["春天","开满"]}] },
+  { id:"match", target:"打", senses:[{id:"game",sentence:"他打了一下球。",contextWords:["一下","球"]},{id:"fire",sentence:"下雨了，她打了一把伞。",contextWords:["下雨","伞"]}] },
+  { id:"light", target:"花", senses:[{id:"weight",sentence:"花园里开了一朵花。",contextWords:["花园","一朵"]},{id:"lamp",sentence:"我花十元买了这本书。",contextWords:["十元","买"]}] }
+];
+
+export function getContextWordExamples(language) {
+  return language === "zh" ? chineseContextWordExamples : contextWordExamples;
+}
+
 export const contextScenarios = [
   { id:"party", details:[{id:"age",category:"useful"},{id:"guests",category:"useful"},{id:"indoors",category:"useful"},{id:"budget",category:"useful"},{id:"anime",category:"useful"},{id:"blue",category:"extra"},{id:"saturn",category:"unrelated"}], rules:[{requires:["age","guests","budget","anime"],key:"full"},{requires:["guests","anime"],key:"themedGroup"},{requires:["budget","indoors"],key:"budgetIndoor"},{requires:["age"],key:"age"},{requires:["guests"],key:"guests"},{requires:["budget"],key:"budget"},{requires:["anime"],key:"anime"}] },
   { id:"weekend", details:[{id:"age",category:"useful"},{id:"friends",category:"useful"},{id:"outdoors",category:"useful"},{id:"budget",category:"useful"},{id:"rain",category:"useful"},{id:"photos",category:"extra"},{id:"saturn",category:"unrelated"}], rules:[{requires:["friends","outdoors","budget","rain"],key:"full"},{requires:["friends","outdoors"],key:"groupOutdoor"},{requires:["budget","rain"],key:"budgetRain"},{requires:["outdoors"],key:"outdoors"},{requires:["friends"],key:"friends"},{requires:["budget"],key:"budget"},{requires:["rain"],key:"rain"}] }

@@ -35,7 +35,7 @@ const counts={
   4:registryCount(lesson4,"LESSON_4_PAGES",/\["[^"]+","mission4\./g),
   5:registryCount(lesson5,"LESSON_5_PAGES",/^\s*\["/gm)
 };
-assert.deepEqual(counts,{1:6,2:7,3:7,4:6,5:7});
+assert.deepEqual(counts,{1:6,2:7,3:7,4:6,5:8});
 assert.equal(PAGED_MISSIONS[3].pages.length,counts[3]);
 assert.equal(PAGED_MISSIONS[5].pages.length,counts[4]);
 assert.equal(PAGED_MISSIONS[6].pages.length,counts[5]);

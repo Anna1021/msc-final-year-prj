@@ -1,7 +1,8 @@
 import React,{useEffect,useState} from "react";
 import {
   ArrowDown,ArrowRight,BarChart3,BookOpenCheck,Check,CircleDot,
-  GripVertical,Info,Lightbulb,Network,Plus,RotateCcw,Settings,Sparkles,Target,Trash2,TrendingUp
+  FlaskConical,GripVertical,Info,Lightbulb,MessageSquare,Network,Plus,RefreshCcw,
+  RotateCcw,Settings,Sparkles,Target,Trash2,TrendingUp,UserRound,Zap
 } from "lucide-react";
 import {
   AVAILABLE_TRAINING_EXAMPLES,STARTER_TRAINING_EXAMPLES,TOY_LOCATIONS,
@@ -155,12 +156,51 @@ export function Lesson5NewPage5({active,t}){
   </LearningLayout></section>;
 }
 
-export function Lesson5NewPage7({active,t,complete}){
-  const ideas=[
-    {Icon:BookOpenCheck,title:t("mission5.page7.idea1Title"),copy:t("mission5.page7.idea1Copy")},
-    {Icon:Settings,title:t("mission5.page7.idea2Title"),copy:t("mission5.page7.idea2Copy")},
-    {Icon:Network,title:t("mission5.page7.idea3Title"),copy:t("mission5.page7.idea3Copy")},
-    {Icon:TrendingUp,title:t("mission5.page7.idea4Title"),copy:t("mission5.page7.idea4Copy")}
+const PAGE_6_FIRST_CANDIDATES=Object.freeze([
+  {id:"because",value:42},{id:"the",value:21},{id:"it",value:12},{id:"well",value:8},{id:"i",value:5}
+]);
+const PAGE_6_NEXT_CANDIDATES=Object.freeze([
+  {id:"sunlight",value:31},{id:"light",value:24},{id:"the",value:18},{id:"a",value:9},{id:"this",value:6}
+]);
+const PAGE_6_GROWTH_IDS=Object.freeze(["prompt","because","sunlight","is","scattered"]);
+
+function Page6ProbabilityBars({items,t,label}){
+  return <div className="l5-page-six-probabilities" aria-label={label}>{items.map(({id,value},index)=><div className={`is-tone-${index+1}`} key={id}><span>{t(`mission5.page6.candidates.${id}`)}</span><i aria-hidden="true"><b style={{width:`${(value/items[0].value)*100}%`}}/></i><strong>{value}%</strong></div>)}</div>;
+}
+
+export function Lesson5NewPage6({active,t,onOpenLab}){
+  const support=[
+    {Icon:Network,id:"patterns"},
+    {Icon:MessageSquare,id:"context"},
+    {Icon:Zap,id:"prediction"}
   ];
-  return <LessonSummaryPage active={active} pageNumber="7" kicker={t("mission5.page7.eyebrow")} ideas={ideas} recap={t("mission5.page7.recap")} nuance={t("mission5.page7.nuance")} nextLabel={t("mission5.page7.nextLabel")} nextTitle={t("mission5.page7.nextTitle")} nextCopy={t("mission5.page7.next")} advisory={!complete?t("learningMode.notice"):""}/>;
+  const step=(number,id,content)=><section className={`l5-page-six-step is-${id}`}><header><span>{number}</span><h3>{t(`mission5.page6.steps.${id}.title`)}</h3></header>{content}<p>{t(`mission5.page6.steps.${id}.body`)}</p></section>;
+  return <section hidden={!active} className="l5-new-page l5-new-page-six"><div className="l5-page-six-layout">
+    <main className="l5-page-six-card">
+      <header className="l5-page-six-intro"><span className="l5-page-number-badge">6</span><div><h2>{t("mission5.page6.kicker")}</h2><p>{t("mission5.page6.intro")}</p></div></header>
+      <section className="l5-page-six-teaching" aria-label={t("mission5.page6.flowAria")}>
+        <div className="l5-page-six-steps">
+          {step(1,"prompt",<div className="l5-page-six-prompt"><strong>{t("mission5.page6.example.prompt")}</strong><UserRound aria-hidden="true"/></div>)}
+          <ArrowRight className="l5-page-six-arrow" aria-hidden="true"/>
+          {step(2,"predict",<><Page6ProbabilityBars items={PAGE_6_FIRST_CANDIDATES} t={t} label={t("mission5.page6.steps.predict.distributionAria")}/><div className="l5-page-six-selected"><small>{t("mission5.page6.selected")}</small><strong>{t("mission5.page6.candidates.because")}</strong></div><p className="l5-page-six-illustrative">{t("mission5.page6.illustrative")}</p></>)}
+          <ArrowRight className="l5-page-six-arrow" aria-hidden="true"/>
+          {step(3,"append",<div className="l5-page-six-context"><span>{t("mission5.page6.example.prompt")}</span><strong>{t("mission5.page6.candidates.because")}</strong><Plus aria-hidden="true"/></div>)}
+          <ArrowRight className="l5-page-six-arrow" aria-hidden="true"/>
+          {step(4,"repeat",<><Page6ProbabilityBars items={PAGE_6_NEXT_CANDIDATES} t={t} label={t("mission5.page6.steps.repeat.distributionAria")}/><div className="l5-page-six-loop"><RefreshCcw aria-hidden="true"/><span>{t("mission5.page6.loop")}</span></div><p className="l5-page-six-illustrative">{t("mission5.page6.illustrative")}</p></>)}
+        </div>
+        <section className="l5-page-six-growth" aria-label={t("mission5.page6.growthAria")}><h2><Sparkles aria-hidden="true"/>{t("mission5.page6.growthTitle")}</h2><div className="l5-page-six-growth-row">{PAGE_6_GROWTH_IDS.map((id,index)=><React.Fragment key={id}><article><p>{t("mission5.page6.example.prompt")}</p>{id!=="prompt"&&<strong>{t(`mission5.page6.growth.${id}`)}</strong>}</article>{index<PAGE_6_GROWTH_IDS.length-1&&<ArrowRight aria-hidden="true"/>}</React.Fragment>)}<b aria-hidden="true">…</b><ArrowRight aria-hidden="true"/><article className="is-final"><small>{t("mission5.page6.finalLabel")}</small><p>{t("mission5.page6.example.prompt")}</p><strong>{t("mission5.page6.example.fullResponse")}</strong></article></div><p className="l5-page-six-final-note">{t("mission5.page6.finalNote")}</p></section>
+      </section>
+    </main>
+    <aside className="l5-page-six-sidebar" aria-label={t("mission5.page6.sidebarAria")}><section><h2>{t("mission5.page6.sidebarTitle")}</h2>{support.map(({Icon,id})=><article key={id}><Icon aria-hidden="true"/><div><h3>{t(`mission5.page6.support.${id}.title`)}</h3><p>{t(`mission5.page6.support.${id}.body`)}</p></div></article>)}</section><section className="l5-page-six-lab"><FlaskConical aria-hidden="true"/><div><h2>{t("mission5.page6.labTitle")}</h2><p>{t("mission5.page6.labBody")}</p><button type="button" onClick={onOpenLab}>{t("mission5.page6.labAction")}<ArrowRight aria-hidden="true"/></button></div></section></aside>
+  </div></section>;
+}
+
+export function Lesson5NewPage8({active,t,complete}){
+  const ideas=[
+    {Icon:BookOpenCheck,title:t("mission5.page8.idea1Title"),copy:t("mission5.page8.idea1Copy")},
+    {Icon:Settings,title:t("mission5.page8.idea2Title"),copy:t("mission5.page8.idea2Copy")},
+    {Icon:Network,title:t("mission5.page8.idea3Title"),copy:t("mission5.page8.idea3Copy")},
+    {Icon:TrendingUp,title:t("mission5.page8.idea4Title"),copy:t("mission5.page8.idea4Copy")}
+  ];
+  return <LessonSummaryPage active={active} pageNumber="8" kicker={t("mission5.page8.eyebrow")} ideas={ideas} recap={t("mission5.page8.recap")} nuance={t("mission5.page8.nuance")} nextLabel={t("mission5.page8.nextLabel")} nextTitle={t("mission5.page8.nextTitle")} nextCopy={t("mission5.page8.next")} advisory={!complete?t("learningMode.notice"):""}/>;
 }

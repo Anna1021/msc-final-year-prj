@@ -255,7 +255,7 @@ function pagedLessonMeta(route, t) {
     "/mission/2-prediction-paged": { number: 2, total: 7, topic: t("mission2.shell.topic") },
     "/mission/3-hallucination-paged": { number: 3, total: 7, topic: t("mission3.shell.topic") },
     "/mission/4-training-data-paged": { number: 4, total: 6, topic: t("mission4.shell.topic") },
-    "/mission/5-bias-paged": { number: 5, total: 7, topic: t("mission5.shell.topic") }
+    "/mission/5-bias-paged": { number: 5, total: 8, topic: t("mission5.shell.topic") }
   };
   return lessons[route] || null;
 }

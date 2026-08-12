@@ -38,7 +38,7 @@ const HERO_ROBOTS = [
 const REQUIRED_ACTIVITIES = ["move-window", "show-boundary", "grow-text", "visible-clue", "resize-window"];
 
 export default function Mission2PagedPrototype({ setProgress, navigate, notify }) {
-  const { t } = useI18n();
+  const { language, t } = useI18n();
   const initialPage = parseLessonPage(window.location.search, MISSION_2_PAGED_PAGES.length);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [visitedPages, setVisitedPages] = useState(() => new Set([initialPage]));
@@ -133,7 +133,7 @@ export default function Mission2PagedPrototype({ setProgress, navigate, notify }
       headingId={`lesson-2-page-${currentPage}-title`}
     />}
   >
-    <Mission2OpeningPage active={currentPage === 1} t={t} onComplete={() => mark("move-window")} />
+    <Mission2OpeningPage active={currentPage === 1} language={language} t={t} onComplete={() => mark("move-window")} />
     <Mission2WindowPage active={currentPage === 2} t={t} onComplete={() => mark("show-boundary")} />
     <Mission2GrowingTextPage active={currentPage === 3} t={t} onComplete={() => mark("grow-text")} />
     <Mission2OutsidePage active={currentPage === 4} t={t} onComplete={() => mark("visible-clue")} />

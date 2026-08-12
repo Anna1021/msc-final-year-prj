@@ -1,8 +1,8 @@
 {
   "terms": {
-    "token": "Token",
-    "tokenisation": "Tokenisation（分词）",
-    "nextToken": "下一个 token 预测",
+    "token": "词元",
+    "tokenisation": "词元切分（分词）",
+    "nextToken": "下一个词元预测",
     "trainingData": "训练数据",
     "hallucination": "幻觉",
     "context": "上下文",

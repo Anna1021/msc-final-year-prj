@@ -22,7 +22,7 @@ export default function MissionLessonShell({ currentPage, pageCount, progressPag
     <header className="mission-lesson-paged__header">
       <button type="button" className="mission-lesson-paged__back-to-missions" onClick={onBackToMissions}><ArrowLeft size={18} strokeWidth={1.8} />{labels.backToMissions}</button>
       <div className="mission-lesson-paged__identity"><strong>{labels.missionCount}</strong><span>{pageLabel}</span></div>
-      <div className="mission-lesson-paged__progress" role="progressbar" aria-label={pageLabel} aria-valuemin="1" aria-valuemax={progressPageCount} aria-valuenow={currentPage}>
+      <div className="mission-lesson-paged__progress" role="progressbar" aria-label={pageLabel} aria-valuetext={pageLabel} aria-valuemin="1" aria-valuemax={progressPageCount} aria-valuenow={currentPage}>
         {Array.from({ length: progressPageCount }, (_, index) => <span className={index + 1 <= currentPage ? "is-active" : ""} key={index} />)}
       </div>
     </header>

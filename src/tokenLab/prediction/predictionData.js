@@ -8,6 +8,16 @@ export const predictionExamples=[
 ];
 export const predictionContinuationSets=[[[" and",38],[".",32],[" with",18],[" because",12]],[[" the",44],[" a",28],[" two",17],[" bright",11]],[[" friends",36],[" story",29],[" game",23],[" lesson",12]],[[".",55],["!",21],[" today",16],[" again",8]]];
 
+const chinesePredictionExamples=[
+{id:"spread",contexts:[{id:"food",prompt:"她把黄油抹在",candidates:[["面包",62],["吐司",24],["桌上",10],["月亮",4]]},{id:"book",prompt:"她把书放在",candidates:[["桌上",46],["书架上",34],["书桌上",16],["吐司上",4]]}]},
+{id:"lunch",contexts:[{id:"sport",prompt:"守门员接住了",candidates:[["球",78],["火车",10],["三明治",8],["云",4]]},{id:"food",prompt:"午餐时，他吃了",candidates:[["三明治",48],["苹果",32],["球",12],["云",8]]}]},
+{id:"weather",contexts:[{id:"rain",prompt:"天空布满乌云，所以可能会",candidates:[["下雨",64],["打雷",20],["放晴",11],["跳舞",5]]},{id:"sun",prompt:"天空明亮晴朗，所以天气可能继续",candidates:[["晴朗",66],["温暖",19],["干燥",12],["紫色",3]]}]}
+];
+const chinesePredictionContinuationSets=[[['，而且',38],['。',32],['，还',18],['，因为',12]],[['这',44],['一个',28],['两个',17],['明亮的',11]],[['朋友',36],['故事',29],['游戏',23],['课程',12]],[['。',55],['！',21],['今天',16],['再次',8]]];
+
+export function getPredictionExamples(language){return language==="zh"?chinesePredictionExamples:predictionExamples}
+export function getPredictionContinuationSets(language){return language==="zh"?chinesePredictionContinuationSets:predictionContinuationSets}
+
 // Reviewed classroom examples only. These probabilities are not Qwen output.
 export const greedyTeachingExamples={
 en:{prompt:"I feel very",candidates:[[" happy",46],[" tired",27],[" excited",17],[" nervous",10]]},

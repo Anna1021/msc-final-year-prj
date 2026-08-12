@@ -1,13 +1,197 @@
 {
-  "hero": { "eyebrow": "LLM 实验室 · 语言模型", "title": "看看语言模型如何构建回答", "intro": "试试每个阶段，看看会发生什么变化。" },
-  "flow": { "label": "LLM 实验室阶段", "open": "打开", "planned": "规划中", "plannedTooltip": "此阶段计划在后续版本中推出。", "stages": { "tokenize": { "title": "拆文字", "hint": "Tokenize" }, "numbers": { "title": "数字卡", "hint": "Token ID 与 embedding" }, "context": { "title": "前面的词", "hint": "Context" }, "predict": { "title": "猜下一个", "hint": "Prediction" }, "compare": { "title": "比较", "hint": "比较结果" } } },
-  "experiment": { "eyebrow": "阶段 1 · 拆文字", "title": "试一个句子", "intro": "输入文字，看看它如何拆成 token。", "inputLabel": "你的文字", "placeholder": "输入最多 200 个字符……", "privacyShort": "只留在此设备", "privacyFull": "文字只在当前浏览器处理，不会上传或保存。" },
-  "presets": { "label": "示例架", "more": "更多示例", "categories": { "everyday": "日常", "longWords": "长单词", "contractions": "缩写", "hyphens": "连字符", "punctuation": "标点", "emoji": "Emoji", "chinese": "另一种语言", "french": "法语", "german": "德语", "spacing": "空格" } },
-  "actions": { "tokenize": "拆分 Token", "loading": "正在加载 tokenizer……", "tokenizing": "正在拆分……", "runAgain": "再次运行", "retry": "重试", "tryAnother": "换一个示例", "tryExample": "试个示例", "restartLab": "重新开始实验", "check": "检查", "reset": "重置", "retryAnswer": "再试一次" },
-  "errors": { "empty": "请先输入一些文字。", "tooLong": "请输入不超过 200 个字符。", "load": "无法加载 Qwen tokenizer，请检查连接后重试。" },
-  "result": { "eyebrow": "发现", "title": "Token 结果", "became": "你的文字变成了 {{count}} 个 token", "total": "个 token", "original": "你的文字", "discovery": "有些词保持完整，有些会拆成更小的片段。", "different": "不同模型可能会用不同方式拆分文字。", "whyTitle": "为什么会这样拆分？", "whyVocabulary": "Tokenizer 会使用固定词表中的片段来匹配文字。", "whyCommon": "常见文字可能会保留为较大的片段。", "whyUnusual": "不常见、拼错或自造的文字往往会被拆成更小的片段。", "whyMeaning": "单个 token 片段不一定独自具有意义。", "whyStep1": "它有一组文字片段。", "whyStep2": "熟悉的片段可能保持完整。", "whyStep3": "其他文字可能拆得更小。", "showTechnical": "技术细节", "hideTechnical": "隐藏技术细节", "technicalNote": "Qwen2.5 tokenizer · 可选原始片段和 ID，不需要记忆。" },
-  "tokens": { "leadingSpace": "前置空格", "spaceLegend": "表示这个 token 开头保存了一个空格。", "spaceShort": "开头含空格", "groupCount": "{{count}} 个 token" },
-  "challenge": { "eyebrow": "用本次结果创建", "title": "重组这些 Token", "buildTitle": "Token 挑战", "buildIntro": "重新排列可视 token 组，重建你的文字。", "readyTitle": "准备好重组这些 token 了吗？", "readyIntro": "把彩色片段放回正确顺序。", "start": "开始挑战", "build": "重组这些 Token", "trySuitable": "试试合适的示例", "buttons": { "tooShort": "尚不可用", "tooLong": "尚不可用", "unavailable": "尚不可用" }, "status": { "tooShort": "试试稍长一点的句子。", "tooLong": "试试更短的句子。", "unavailable": "这个示例不容易重组，请换一个。" }, "return": "返回 Token 结果", "original": "原始句子", "groupCount": "{{count}} 个可视 token 组", "instructions": "按原顺序重组。一个可视组可能包含多个真实 byte-level token。", "available": "可用 token 组", "answer": "你的重组顺序", "placeholder": "点击或拖动 token 组到这里", "remove": "移回这个组", "left": "向左移动", "right": "向右移动", "keyboard": "点击组可添加或移回；使用箭头按钮可通过键盘或触屏调整顺序。", "feedback": { "correct": "正确。你的文字已由真实 tokenizer 输出重建。", "incorrect": "这些组来自真实结果，但当前顺序还没有匹配原文。" } },
-  "notice": { "eyebrow": "探索示例", "title": "可以观察", "intro": "试试：", "tryNext": "接下来试试：", "suggestions": { "longword": "长单词", "punctuation": "标点", "emoji": "Emoji", "chinese": "另一种语言", "spacing": "不同空格" }, "prompt": "修改文字后，什么发生了变化？", "missionLink": "如果需要引导式介绍，请从任务 1 开始。" },
-  "tour": { "label": "LLM 实验室引导", "progress": "第 {{current}} 步，共 {{total}} 步", "start": "开始", "skip": "跳过", "next": "下一步", "back": "上一步", "finish": "完成", "replay": "重新播放引导", "guide": "使用引导", "clickTarget": "点击高亮按钮继续。", "steps": { "welcome": { "title": "欢迎来到 LLM 实验室", "body": "我们会用大约 30 秒带你熟悉这里。\n\n之后你可以随时点击上方的“重新播放引导”，再次查看这个指引。" }, "stage": { "title": "一切从这里开始", "body": "语言模型首先把文字拆成称为 token 的小片段。" }, "input": { "title": "在这里输入任何文字", "body": "试试英语、中文、法语、德语或 emoji。内容不会上传。" }, "tokenize": { "title": "运行 tokenizer", "body": "点击这里，把文字拆成真实 token 片段。" }, "result": { "title": "查看真实 token", "body": "这些彩色片段是真实 token。不同模型可能有不同拆分方式。" }, "why": { "title": "想知道为什么？", "body": "在这里打开一个简单解释。" }, "challenge": { "title": "亲自试一试", "body": "把 token 片段恢复为原顺序，或者现在完成引导。" } } }
+  "hero": {
+    "eyebrow": "LLM 实验室 · 语言模型",
+    "title": "看看语言模型如何构建回答",
+    "intro": "试试每个阶段，看看会发生什么变化。"
+  },
+  "flow": {
+    "label": "LLM 实验室阶段",
+    "open": "打开",
+    "planned": "规划中",
+    "plannedTooltip": "此阶段计划在后续版本中推出。",
+    "stages": {
+      "tokenize": {
+        "title": "拆文字",
+        "hint": "拆分文字"
+      },
+      "numbers": {
+        "title": "数字卡",
+        "hint": "词元编号与嵌入表示"
+      },
+      "context": {
+        "title": "前面的词",
+        "hint": "上下文"
+      },
+      "predict": {
+        "title": "猜下一个",
+        "hint": "预测"
+      },
+      "compare": {
+        "title": "比较",
+        "hint": "比较结果"
+      }
+    }
+  },
+  "experiment": {
+    "eyebrow": "阶段 1 · 拆文字",
+    "title": "试一个句子",
+    "intro": "输入文字，看看它如何拆成词元。",
+    "inputLabel": "你的文字",
+    "placeholder": "输入最多 200 个字符……",
+    "privacyShort": "只留在此设备",
+    "privacyFull": "文字只在当前浏览器处理，不会上传或保存。"
+  },
+  "presets": {
+    "label": "示例架",
+    "more": "更多示例",
+    "categories": {
+      "everyday": "日常",
+      "longWords": "长单词",
+      "contractions": "缩写",
+      "hyphens": "连字符",
+      "punctuation": "标点",
+      "emoji": "Emoji",
+      "chinese": "另一种语言",
+      "french": "法语",
+      "german": "德语",
+      "spacing": "空格"
+    }
+  },
+  "actions": {
+    "tokenize": "拆分词元",
+    "loading": "正在加载分词器……",
+    "tokenizing": "正在拆分……",
+    "runAgain": "再次运行",
+    "retry": "重试",
+    "tryAnother": "换一个示例",
+    "tryExample": "试个示例",
+    "restartLab": "重新开始实验",
+    "check": "检查",
+    "reset": "重置",
+    "retryAnswer": "再试一次"
+  },
+  "errors": {
+    "empty": "请先输入一些文字。",
+    "tooLong": "请输入不超过 200 个字符。",
+    "load": "无法加载 Qwen 分词器，请检查连接后重试。"
+  },
+  "result": {
+    "eyebrow": "发现",
+    "title": "词元结果",
+    "became": "你的文字变成了 {{count}} 个词元",
+    "total": "个词元",
+    "original": "你的文字",
+    "discovery": "有些词保持完整，有些会拆成更小的片段。",
+    "different": "不同模型可能会用不同方式拆分文字。",
+    "whyTitle": "为什么会这样拆分？",
+    "whyVocabulary": "分词器会使用固定词表中的片段来匹配文字。",
+    "whyCommon": "常见文字可能会保留为较大的片段。",
+    "whyUnusual": "不常见、拼错或自造的文字往往会被拆成更小的片段。",
+    "whyMeaning": "单个词元片段不一定独自具有意义。",
+    "whyStep1": "它有一组文字片段。",
+    "whyStep2": "熟悉的片段可能保持完整。",
+    "whyStep3": "其他文字可能拆得更小。",
+    "showTechnical": "技术细节",
+    "hideTechnical": "隐藏技术细节",
+    "technicalNote": "Qwen2.5 分词器 · 可选原始片段和编号，不需要记忆。"
+  },
+  "tokens": {
+    "leadingSpace": "前置空格",
+    "spaceLegend": "表示这个词元开头保存了一个空格。",
+    "spaceShort": "开头含空格",
+    "groupCount": "{{count}} 个词元"
+  },
+  "challenge": {
+    "eyebrow": "用本次结果创建",
+    "title": "重组这些词元",
+    "buildTitle": "词元挑战",
+    "buildIntro": "重新排列可视词元组，重建你的文字。",
+    "readyTitle": "准备好重组这些词元了吗？",
+    "readyIntro": "把彩色片段放回正确顺序。",
+    "start": "开始挑战",
+    "build": "重组这些词元",
+    "trySuitable": "试试合适的示例",
+    "buttons": {
+      "tooShort": "尚不可用",
+      "tooLong": "尚不可用",
+      "unavailable": "尚不可用"
+    },
+    "status": {
+      "tooShort": "试试稍长一点的句子。",
+      "tooLong": "试试更短的句子。",
+      "unavailable": "这个示例不容易重组，请换一个。"
+    },
+    "return": "返回词元结果",
+    "original": "原始句子",
+    "groupCount": "{{count}} 个可视词元组",
+    "instructions": "按原顺序重组。一个可视组可能包含多个真实的字节级词元。",
+    "available": "可用词元组",
+    "answer": "你的重组顺序",
+    "placeholder": "点击或拖动词元组到这里",
+    "remove": "移回这个组",
+    "left": "向左移动",
+    "right": "向右移动",
+    "keyboard": "点击组可添加或移回；使用箭头按钮可通过键盘或触屏调整顺序。",
+    "feedback": {
+      "correct": "正确。你的文字已由真实分词器输出重建。",
+      "incorrect": "这些组来自真实结果，但当前顺序还没有匹配原文。"
+    }
+  },
+  "notice": {
+    "eyebrow": "探索示例",
+    "title": "可以观察",
+    "intro": "试试：",
+    "tryNext": "接下来试试：",
+    "suggestions": {
+      "longword": "长单词",
+      "punctuation": "标点",
+      "emoji": "Emoji",
+      "chinese": "另一种语言",
+      "spacing": "不同空格"
+    },
+    "prompt": "修改文字后，什么发生了变化？",
+    "missionLink": "如果需要引导式介绍，请从任务 1 开始。"
+  },
+  "tour": {
+    "label": "LLM 实验室引导",
+    "progress": "第 {{current}} 步，共 {{total}} 步",
+    "start": "开始",
+    "skip": "跳过",
+    "next": "下一步",
+    "back": "上一步",
+    "finish": "完成",
+    "replay": "重新播放引导",
+    "guide": "使用引导",
+    "clickTarget": "点击高亮按钮继续。",
+    "steps": {
+      "welcome": {
+        "title": "欢迎来到 LLM 实验室",
+        "body": "我们会用大约 30 秒带你熟悉这里。\n\n之后你可以随时点击上方的“重新播放引导”，再次查看这个指引。"
+      },
+      "stage": {
+        "title": "一切从这里开始",
+        "body": "语言模型首先把文字拆成称为词元的小片段。"
+      },
+      "input": {
+        "title": "在这里输入任何文字",
+        "body": "试试英语、中文或表情符号。内容不会上传。"
+      },
+      "tokenize": {
+        "title": "运行分词器",
+        "body": "点击这里，把文字拆成真实词元片段。"
+      },
+      "result": {
+        "title": "查看真实词元",
+        "body": "这些彩色片段是真实词元。不同模型可能有不同拆分方式。"
+      },
+      "why": {
+        "title": "想知道为什么？",
+        "body": "在这里打开一个简单解释。"
+      },
+      "challenge": {
+        "title": "亲自试一试",
+        "body": "把词元片段恢复为原顺序，或者现在完成引导。"
+      }
+    }
+  }
 }

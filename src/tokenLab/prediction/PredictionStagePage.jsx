@@ -2,11 +2,13 @@ import React, { useMemo, useState } from "react";
 import { ArrowDown, Check, Gauge, Lightbulb, RefreshCcw, RotateCcw, Shuffle, Sparkles, Trophy, Undo2, WandSparkles } from "lucide-react";
 import { useI18n } from "../../i18n/index.jsx";
 import AiLabStickerGuide from "../../playfulLearning/AiLabStickerGuide.jsx";
-import { likelihood, predictionContinuationSets, predictionExamples, transformProbabilities, weightedChoice } from "./predictionData.js";
+import { getPredictionContinuationSets, getPredictionExamples, likelihood, transformProbabilities, weightedChoice } from "./predictionData.js";
 import "./predictionStage.css";
 
 export default function PredictionStagePage({ onCandidateSelected }) {
   const { language, t } = useI18n();
+  const examples = getPredictionExamples(language);
+  const continuationSets = getPredictionContinuationSets(language);
   const [exampleIndex, setExampleIndex] = useState(0);
   const [recentRuns, setRecentRuns] = useState([]);
   const [contextIndex, setContextIndex] = useState(0);
@@ -15,9 +17,9 @@ export default function PredictionStagePage({ onCandidateSelected }) {
   const [pulse, setPulse] = useState(false);
   const [lastChoice, setLastChoice] = useState("");
   const [raceReplay, setRaceReplay] = useState(false);
-  const example = predictionExamples[exampleIndex];
+  const example = examples[exampleIndex % examples.length];
   const context = example.contexts[contextIndex];
-  const candidateSource = generated.length ? predictionContinuationSets[(generated.length - 1) % predictionContinuationSets.length] : context.candidates;
+  const candidateSource = generated.length ? continuationSets[(generated.length - 1) % continuationSets.length] : context.candidates;
   const distribution = useMemo(() => transformProbabilities(candidateSource, temperature), [candidateSource, temperature]);
   const text = `${context.prompt}${generated.join("")}`;
 
@@ -38,7 +40,7 @@ export default function PredictionStagePage({ onCandidateSelected }) {
   }
   function replayRace() { setPulse(false); setRaceReplay(false); requestAnimationFrame(() => { setPulse(true); setRaceReplay(true); window.setTimeout(() => setRaceReplay(false), 700); }); }
   function another() {
-    setExampleIndex((index) => (index + 1) % predictionExamples.length);
+    setExampleIndex((index) => (index + 1) % examples.length);
     setContextIndex(0); setTemperature(50); reset();
   }
 
@@ -54,7 +56,7 @@ export default function PredictionStagePage({ onCandidateSelected }) {
     <div className="predict-truth" data-tour-id="predict-truth"><Lightbulb size={17} /><strong>{t("predictionStage.truth.label")}</strong></div>
 
     <section className="predict-story" data-tour-id="predict-context">
-      <div className="predict-story-heading"><span className="predict-step-badge">1</span><div><small>{t("predictionStage.story.clueEyebrow")}</small><h3>{t("predictionStage.context.title")}</h3></div>{language !== "en" && <em>{t("predictionStage.context.english")}</em>}</div>
+      <div className="predict-story-heading"><span className="predict-step-badge">1</span><div><small>{t("predictionStage.story.clueEyebrow")}</small><h3>{t("predictionStage.context.title")}</h3></div></div>
       <div className="context-switch">{example.contexts.map((item, index) => <button type="button" className={index === contextIndex ? "active" : ""} aria-pressed={index === contextIndex} onClick={() => { setContextIndex(index); reset(); }} key={item.id}>{item.prompt} …</button>)}</div>
       <div className={`predict-sentence ${pulse ? "pulse" : ""}`}><span>{text}</span><i aria-hidden="true">▍</i><div className="generated-strip" data-tour-id="predict-generated-text"><small>{t("predictionStage.generated.count", { count: generated.length })}</small>{generated.map((token, index) => <b key={`${token}-${index}`}>{token.trim() || token}</b>)}</div></div>
       <ArrowDown className="predict-flow-arrow" aria-hidden="true" />

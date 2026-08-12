@@ -7,7 +7,7 @@ import{
 }from"lucide-react";
 import{useI18n}from"../../i18n/index.jsx";
 import AiLabStickerGuide from"../../playfulLearning/AiLabStickerGuide.jsx";
-import{composeContextResponse,contextScenarios,contextWordExamples}from"./contextLabData.js";
+import{composeContextResponse,contextScenarios,getContextWordExamples}from"./contextLabData.js";
 import"./contextStage.css";
 
 const senseIcons={
@@ -33,7 +33,7 @@ function DetailIcon({id,size=18}){const Icon=detailIcons[id]||CircleHelp;return 
 
 function MeaningExperiment({t,language,onSceneSelected=()=>{}}){
   const[exampleIndex,setExampleIndex]=useState(0),[senseIndex,setSenseIndex]=useState(null),[step,setStep]=useState(0),[playing,setPlaying]=useState(false),[whyOpen,setWhyOpen]=useState(false);
-  const timers=useRef([]),example=contextWordExamples[exampleIndex],sense=senseIndex===null?null:example.senses[senseIndex];
+  const examples=getContextWordExamples(language),timers=useRef([]),example=examples[exampleIndex%examples.length],sense=senseIndex===null?null:example.senses[senseIndex];
   function clear(){timers.current.forEach(window.clearTimeout);timers.current=[];}
   function play(nextSense){
     clear();setSenseIndex(nextSense);setWhyOpen(false);onSceneSelected();
@@ -44,7 +44,7 @@ function MeaningExperiment({t,language,onSceneSelected=()=>{}}){
     timers.current.push(window.setTimeout(()=>setPlaying(false),1900));
   }
   useEffect(()=>()=>clear(),[]);
-  function another(){clear();setExampleIndex(index=>(index+1)%contextWordExamples.length);setSenseIndex(null);setStep(0);setPlaying(false);setWhyOpen(false);}
+  function another(){clear();setExampleIndex(index=>(index+1)%examples.length);setSenseIndex(null);setStep(0);setPlaying(false);setWhyOpen(false);}
 
   return <section className="context-workspace meaning-workspace">
     <div className="context-word-head"><div><small>{t("contextStage.meaning.mystery")}</small><strong data-tour-id="context-target-word">{example.target}</strong>{language!=="en"&&<em>{t("contextStage.meaning.englishNote")}</em>}</div><button type="button" className="context-discovery-control" data-tour-id="context-another-word" onClick={another}><Shuffle size={17}/><span>{t("contextStage.actions.anotherExample")}</span></button></div>

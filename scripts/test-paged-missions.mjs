@@ -13,10 +13,10 @@ const fallbacks = await readFile(new URL("./create-spa-route-fallbacks.mjs", imp
 
 assert.equal(PAGED_MISSIONS[3].pages.length, 7, "Lesson 3 metadata has seven focused pages");
 assert.equal(PAGED_MISSIONS[5].pages.length, 6, "Lesson 4 metadata has six focused pages");
-assert.equal(PAGED_MISSIONS[6].pages.length, 7, "Lesson 5 metadata has seven pages");
+assert.equal(PAGED_MISSIONS[6].pages.length, 8, "Lesson 5 metadata has eight pages");
 assert.deepEqual(PAGED_MISSIONS[3].pages.map((page) => page[0]), ["connections","attention","representation","position","process","quiz","summary"]);
 assert.deepEqual(PAGED_MISSIONS[5].pages.map((page) => page[0]), ["predict","scores","probabilities","live","check","summary"]);
-assert.deepEqual(PAGED_MISSIONS[6].pages.map((page) => page[0]), ["origin","adjust","repeat","connect","try","quiz","summary"]);
+assert.deepEqual(PAGED_MISSIONS[6].pages.map((page) => page[0]), ["origin","adjust","repeat","connect","try","response","quiz","summary"]);
 for (const [id, route] of Object.entries(PAGED_MISSION_ROUTES)) {
   assert.match(app, new RegExp(route.replaceAll("/", "\\/")), `paged Mission storage ID ${id} route is registered`);
   assert.match(fallbacks, new RegExp(route.slice(1).replaceAll("/", "\\/")), `${route} has an SPA fallback`);
