@@ -73,6 +73,7 @@ const resources = {
 };
 
 const I18nContext = createContext(null);
+const warnedMissingKeys = new Set();
 
 function readPath(object, path) {
   return path.split(".").reduce((value, key) => value?.[key], object);
@@ -103,6 +104,15 @@ export function LanguageProvider({ children }) {
       const path = rest.join(".");
       const translated = readPath(resources[language]?.[namespace], path);
       const fallback = readPath(resources[DEFAULT_LANGUAGE]?.[namespace], path);
+
+      if (import.meta.env.DEV && language !== DEFAULT_LANGUAGE && translated == null && fallback != null) {
+        const warningId = `${language}:${key}`;
+        if (!warnedMissingKeys.has(warningId)) {
+          warnedMissingKeys.add(warningId);
+          console.warn(`[i18n] Missing key "${key}" for locale "${language}"; falling back to English.`);
+        }
+      }
+
       return interpolate(translated ?? fallback ?? key, params);
     }
 

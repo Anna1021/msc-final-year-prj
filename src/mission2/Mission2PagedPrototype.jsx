@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import MissionLessonShell, { parseLessonPage } from "../mission1/MissionLessonShell.jsx";
 import Mission1PagedKnowledgeQuiz from "../mission1/Mission1PagedKnowledgeQuiz.jsx";
+import LessonPageHero from "../pagedMissions/LessonPageHero.jsx";
 import { useI18n } from "../i18n/index.jsx";
 import {
   Mission2GrowingTextPage,
@@ -46,6 +47,8 @@ export default function Mission2PagedPrototype({ setProgress, navigate, notify }
   const [quizResult, setQuizResult] = useState("idle");
   const page = MISSION_2_PAGED_PAGES[currentPage - 1];
   const quizCopy = createMission2QuizCopy(t);
+  const pageQuizCopy = { ...quizCopy, quizTitle: quizCopy.conceptCheckpoint };
+  const heroSubtitle = currentPage === 2 ? t("mission2.page2.introLead") : t(page.subtitleKey);
 
   useEffect(() => {
     const onPopState = () => {
@@ -86,6 +89,7 @@ export default function Mission2PagedPrototype({ setProgress, navigate, notify }
     next: t("mission2.shell.next"),
     prototypeEndAction: t("mission2.shell.endAction"),
     prototypeLabel: t("mission2.shell.topic"),
+    navigationLabel: t("common.lesson.navigationLabel"),
     robotAlt: t("mission2.shell.robotAlt")
   };
   const complete = REQUIRED_ACTIVITIES.every((key) => activities.has(key)) && quizResult === "correct" && visitedPages.has(7);
@@ -115,15 +119,26 @@ export default function Mission2PagedPrototype({ setProgress, navigate, notify }
     recommendation={recommendation}
     hideNext={currentPage === 6}
     skipAction={currentPage === 6 ? { label: t("mission2.skipQuiz"), onClick: () => changePage(7) } : null}
-    rootClassName={`mission-2-paged mission-2-reading-context mission-2-open-hero m2-reading-page-${currentPage} m2-hero-page-${currentPage} paged-mission-playful playful-learning-scope`}
+    rootClassName={`mission-2-paged mission-2-reading-context mission-2-open-hero m2-reading-page-${currentPage} m2-hero-page-${currentPage} paged-mission-playful playful-learning-scope ${currentPage === 6 ? "lesson-quiz-layout" : ""}`}
     robotImage={HERO_ROBOTS[currentPage - 1]}
+    pageHero={<LessonPageHero
+      lessonIndex={2}
+      lessonCount={5}
+      lessonProgressLabel={t("common.lesson.progress", { current: 2, total: 5 })}
+      lessonName={t("mission2.shell.topic")}
+      title={t(page.titleKey)}
+      subtitle={heroSubtitle}
+      illustration={HERO_ROBOTS[currentPage - 1]}
+      illustrationAlt={t("mission2.shell.robotAlt")}
+      headingId={`lesson-2-page-${currentPage}-title`}
+    />}
   >
     <Mission2OpeningPage active={currentPage === 1} t={t} onComplete={() => mark("move-window")} />
     <Mission2WindowPage active={currentPage === 2} t={t} onComplete={() => mark("show-boundary")} />
     <Mission2GrowingTextPage active={currentPage === 3} t={t} onComplete={() => mark("grow-text")} />
     <Mission2OutsidePage active={currentPage === 4} t={t} onComplete={() => mark("visible-clue")} />
     <Mission2SizePage active={currentPage === 5} t={t} onComplete={() => mark("resize-window")} />
-    <Mission1PagedKnowledgeQuiz active={currentPage === 6} copy={quizCopy} resetKey={0} onResultChange={setQuizResult} onContinue={() => changePage(7)} pageNumber={6} lessonClassName="mission-2-paged__lesson" showLesson1Visuals={false} />
+    <Mission1PagedKnowledgeQuiz active={currentPage === 6} copy={pageQuizCopy} resetKey={0} onResultChange={setQuizResult} onContinue={() => changePage(7)} pageNumber={6} lessonClassName="mission-2-paged__lesson" showLesson1Visuals={false} />
     <Mission2SummaryPage active={currentPage === 7} t={t} complete={complete} onContinue={continueToNextLesson} />
   </MissionLessonShell>;
 }

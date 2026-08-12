@@ -14,25 +14,31 @@ export const PAGED_MISSIONS = Object.freeze({
       ["representation", "Build a context-aware Token", "Update a simplified Token representation."],
       ["position", "Position changes relationships", "See how order changes Token relationships."],
       ["process", "Watch the Transformer process a sentence", "Run one controlled mechanism demonstration."],
+      ["quiz", "Check the idea", "Review how tokens connect and share information."],
       ["summary", "Before prediction", "Connect contextual processing to the prediction gate."]
     ]
   },
   5: {
     order: 4, topic: "Predicting the Next Token", robot: "/assets/img/missions-robot-target.png",
     pages: [
-      ["predict", "How does the model predict the next Token?", "Connect candidate scores to probabilities."],
-      ["choose", "How does the model choose one Token?", "Compare selection rules and add the chosen Token."],
-      ["live", "Live Next Token Lab", "Run genuine next-token inference in your browser."],
-      ["check", "Check what you discovered", "Explain the next-token generation loop."]
+      ["predict", "What happens next?", "From processed context to the next-Token prediction."],
+      ["scores", "How does the model score possibilities?", "Compare possible next Tokens using internal scores."],
+      ["probabilities", "From scores to probabilities", "Turn internal scores into easier-to-compare probabilities."],
+      ["live", "Live Next Token Lab", "Run genuine next-token inference with the server model."],
+      ["check", "Check what you discovered", "Explain the next-token generation loop."],
+      ["summary", "Your prediction discovery", "Connect the complete prediction route."]
     ]
   },
   6: {
     order: 5, topic: "How the Model Learns to Predict", robot: "/assets/img/mission5-robot-training.png",
     pages: [
-      ["origin", "Where do prediction probabilities come from?", "Compare a prediction with the real next Token."],
-      ["adjust", "How does the model improve a prediction?", "Nudge many adjustable numbers by tiny amounts."],
-      ["repeat", "Why does training use so many examples?", "Repeat prediction, comparison and adjustment."],
-      ["connect", "Training vs Generation", "Connect learned parameters with later generation."]
+      ["origin", "Where do the patterns come from?", "Training introduction."],
+      ["adjust", "Learning patterns, not storing one answer", "Patterns emerge across many examples."],
+      ["repeat", "Patterns start to shape predictions", "Connect learned patterns with later predictions."],
+      ["connect", "How does the model improve?", "Follow how training improves prediction patterns."],
+      ["try", "Try it yourself", "Lesson 5 practice."],
+      ["quiz", "Quiz", "Check the key Lesson 5 ideas."],
+      ["summary", "Summary", "Connect the complete Lesson 5 journey."]
     ]
   }
 });

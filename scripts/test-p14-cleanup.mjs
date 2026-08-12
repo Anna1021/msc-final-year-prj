@@ -86,9 +86,9 @@ assert.match(await read("../src/locales/en/navigation.json"), /"missions": "Less
 assert.match(await read("../src/locales/en/missions.json"), /"allTitle": "All Lessons"/);
 assert.match(app, /t\("mission2\.shell\.backToMissions"\)/);
 
-// 16. Escape Room remains a six-crystal experience.
-assert.equal(rooms.length, 6);
-assert.equal(new Set(rooms.map((room) => room.crystalId)).size, 6);
+// 16. Escape Room follows the five-Lesson/five-crystal structure.
+assert.equal(rooms.length, 5);
+assert.equal(new Set(rooms.map((room) => room.crystalId)).size, 5);
 
 // 17–18. Existing completion IDs and curriculum migration version stay compatible.
 assert.deepEqual(Object.keys(emptyProgress.missions).map(Number), [1, 2, 3, 5, 6]);

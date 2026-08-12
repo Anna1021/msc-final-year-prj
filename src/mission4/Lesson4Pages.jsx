@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { ArrowRight, BarChart3, Check, ChevronRight, CircleDot, DoorOpen, Gauge, GitCompareArrows, LockKeyhole, Play, Plus, RefreshCcw, RotateCcw, Sparkles, Target, Undo2 } from "lucide-react";
 import { CAT_CANDIDATES, CAT_PROMPT, REVIEWED_SAMPLING_SEQUENCE, REVIEWED_STORIES } from "./lesson4TeachingData.js";
+import LessonSummaryPage from "../pagedMissions/LessonSummaryPage.jsx";
 
-function Question({number,eyebrow,children}){return <header className="l4-question"><span aria-hidden="true">{number}</span><div><small>{eyebrow}</small><h2>{children}</h2></div></header>}
+function Question({number,eyebrow,children=null}){return <header className="l4-question"><span aria-hidden="true">{number}</span><div><small>{eyebrow}</small>{children&&<h2>{children}</h2>}</div></header>}
 function Takeaway({children}){return <div className="l4-takeaway" role="status"><span><Check/></span><p>{children}</p></div>}
 function Bridge({children}){return <div className="l4-bridge"><span><ChevronRight/></span><p>{children}</p></div>}
 function PromptStrip({extra=[],slot=true}){return <div className="l4-prompt-strip"><span>{CAT_PROMPT}</span>{extra.map((token,index)=><b key={`${token}-${index}`}>{token}</b>)}{slot&&<em>next?</em>}</div>}
@@ -42,6 +43,11 @@ export function Lesson4Page5({active,t,onComplete}){
 }
 
 export function Lesson4Page6({active,t,complete,onContinue}){
-  const route=[[Gauge,"context"],[BarChart3,"scores"],[CircleDot,"probabilities"],[GitCompareArrows,"rule"],[Plus,"selected"],[RefreshCcw,"repeat"]];
-  return <section hidden={!active} className="lesson-4-page l4-page-six"><Question number="6" eyebrow={t("mission4.page6.eyebrow")}>{t("mission4.page6.question")}</Question><p className="l4-intro">{t("mission4.page6.intro")}</p><div className="l4-journey-route">{route.map(([Icon,key],index)=><React.Fragment key={key}><article><span>{index+1}</span><Icon/><strong>{t(`mission4.page6.${key}`)}</strong><small>{t(`mission4.page6.${key}Note`)}</small></article>{index<route.length-1&&<ArrowRight/>}</React.Fragment>)}</div><div className="l4-summary-list"><h3>{t("mission4.page6.discovered")}</h3>{[1,2,3,4,5,6].map(number=><p key={number}><Check/>{t(`mission4.page6.point${number}`)}</p>)}</div><div className="l4-truth-note"><Target/><p>{t("mission4.page6.accuracy")}</p></div><div className="l4-training-gate"><span><DoorOpen/></span><div><small>{t("mission4.page6.nextLabel")}</small><strong>{t("mission4.page6.nextTitle")}</strong><p>{t("mission4.page6.next")}</p></div><img src="/assets/img/mission5-robot-training.png" alt="" aria-hidden="true"/></div>{!complete&&<p className="lesson-summary-advisory">{t("learningMode.notice")}</p>}<button type="button" className="primary l4-complete" onClick={onContinue}>{t("mission4.shell.nextLesson")} <ArrowRight/></button></section>
+  const ideas=[
+    {Icon:Gauge,title:t("mission4.page6.idea1Title"),copy:t("mission4.page6.idea1Copy")},
+    {Icon:BarChart3,title:t("mission4.page6.idea2Title"),copy:t("mission4.page6.idea2Copy")},
+    {Icon:CircleDot,title:t("mission4.page6.idea3Title"),copy:t("mission4.page6.idea3Copy")},
+    {Icon:Target,title:t("mission4.page6.idea4Title"),copy:t("mission4.page6.idea4Copy")}
+  ];
+  return <LessonSummaryPage active={active} pageNumber="6" kicker={t("mission4.page6.eyebrow")} ideas={ideas} recap={t("mission4.page6.recap")} nuance={t("mission4.page6.nuance")} nextLabel={t("mission4.page6.nextLabel")} nextTitle={t("mission4.page6.nextTitle")} nextCopy={t("mission4.page6.next")} advisory={!complete?t("learningMode.notice"):""}/>
 }

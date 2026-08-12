@@ -7,6 +7,18 @@ export const CAT_CANDIDATES = Object.freeze([
   { token:"roof", probability:8, tone:"pink" }
 ]);
 
+// A shared, illustrative comparison used by Lesson 4's score and probability
+// teaching pages. These are deliberately not model outputs; the live model is
+// introduced separately on Page 4.
+export const SCORE_PROBABILITY_CANDIDATES = Object.freeze([
+  { token: "book", scoreWidth: 100, probability: 46, tone: "blue" },
+  { token: "door", scoreWidth: 68, probability: 27, tone: "purple" },
+  { token: "box", scoreWidth: 48, probability: 15, tone: "green" },
+  { token: "window", scoreWidth: 29, probability: 8, tone: "yellow" },
+  { token: "banana", scoreWidth: 12, probability: 3, tone: "pink" },
+  { token: "other", scoreWidth: 5, probability: 1, tone: "neutral" }
+]);
+
 export const REVIEWED_STORIES = Object.freeze([
   {
     id:"robot",

@@ -23,15 +23,16 @@ import useContextPlaygroundPredictions, {
   moveContextWindow,
   resizeContextWindow,
 } from "./useContextPlaygroundPredictions.js";
+import LessonSummaryPage from "../pagedMissions/LessonSummaryPage.jsx";
 
 const PLAYGROUND_WINDOW_SIZES = [5, 7, 10, 12];
 const PLAYGROUND_DEFAULT_START = 7;
 const PLAYGROUND_DEFAULT_SIZE = 7;
 
-function LessonQuestion({ number, label, children }) {
+function LessonQuestion({ number, label, children = null }) {
   return <header className="m2-reading-question">
     <span aria-hidden="true">{number}</span>
-    <div><small>{label}</small><h2>{children}</h2></div>
+    <div><small>{label}</small>{children && <h2>{children}</h2>}</div>
   </header>;
 }
 
@@ -58,7 +59,7 @@ export function Mission2OpeningPage({ active, t, onComplete }) {
   return <section hidden={!active} className="mission-2-paged__lesson m2-reading-page m2-context-intro-page" data-lesson-page="1">
     <div className="m2-context-hero">
       <div>
-        <LessonQuestion number="1" label={t("mission2.page1.eyebrow")}>{t("mission2.page1.question")}</LessonQuestion>
+        <LessonQuestion number="1" label={t("mission2.page1.eyebrow")} />
         <p className="m2-reading-intro">{t("mission2.page1.intro")}</p>
       </div>
       <div className="m2-context-hero-art" aria-hidden="true">
@@ -71,7 +72,7 @@ export function Mission2OpeningPage({ active, t, onComplete }) {
     <div className="m2-context-meaning-board">
       <div className="m2-context-principle">
         <span><Lightbulb aria-hidden="true" />{t("mission2.page1.sameWord")}</span>
-        <p>{t("mission2.page1.definition")}</p>
+        <p>{t("mission2.page1.definition")}</p><small>{t("mission2.page1.englishExampleLabel")}</small>
       </div>
       <div className="m2-context-cases">
         {examples.map(({ id, icon: Icon, sentenceKey, meaningKey }) => <article className={`m2-context-case is-${id}`} key={id}>
@@ -106,9 +107,9 @@ export function Mission2OpeningPage({ active, t, onComplete }) {
 
 export function Mission2WindowPage({ active, t, onComplete }) {
   const [technicalOpen, setTechnicalOpen] = useState(true);
-  const windowTokens = ["a", "curious", "little", "reader", "who", "loved", "to", "learn"];
-  const outsideBefore = ["Once", "upon", "a", "time", "there"];
-  const outsideAfter = ["new", "things", "every", "day"];
+  const windowTokens = t("mission2.page2.windowTokens").split("|");
+  const outsideBefore = t("mission2.page2.outsideBeforeTokens").split("|");
+  const outsideAfter = t("mission2.page2.outsideAfterTokens").split("|");
 
   function toggleKeyword(event) {
     setTechnicalOpen(event.currentTarget.open);
@@ -118,7 +119,7 @@ export function Mission2WindowPage({ active, t, onComplete }) {
   return <section hidden={!active} className="mission-2-paged__lesson m2-reading-page m2-window-page" data-lesson-page="2">
     <div className="m2-window-page-heading">
       <div>
-        <LessonQuestion number="2" label={t("mission2.page2.eyebrow")}>{t("mission2.page2.question")}</LessonQuestion>
+        <LessonQuestion number="2" label={t("mission2.page2.eyebrow")} />
         <p className="m2-reading-intro">{t("mission2.page2.introLead")}<br />{t("mission2.page2.intro")} <strong>{t("mission2.page2.term")}</strong>.</p>
       </div>
     </div>
@@ -182,7 +183,7 @@ export function Mission2GrowingTextPage({ active, t, onComplete }) {
 
   return <section hidden={!active} className="mission-2-paged__lesson m2-reading-page m2-context-matters-page" data-lesson-page="3">
     <div className="m2-context-matters-heading">
-      <div><LessonQuestion number="3" label={t("mission2.page3.eyebrow")}>{t("mission2.page3.question")}</LessonQuestion><p className="m2-reading-intro">{t("mission2.page3.intro")}</p></div>
+      <div><LessonQuestion number="3" label={t("mission2.page3.eyebrow")} /><p className="m2-reading-intro">{t("mission2.page3.intro")}</p></div>
       <div className="m2-context-matters-art" aria-hidden="true"><span /><span /><span /><span /><img src="/assets/img/mission-robot-pointing.png" alt="" /><b>?</b></div>
     </div>
 
@@ -194,7 +195,7 @@ export function Mission2GrowingTextPage({ active, t, onComplete }) {
           <p>{t(`mission2.page3.${context.lead}`)}</p><strong className="m2-context-shared-ending">{t(`mission2.page3.${context.sentence}`)}</strong>
           <ArrowRight aria-hidden="true" />
           <h3>{t("mission2.page3.predictions")}</h3>
-          <div className="m2-prediction-bars">{context.candidates.map(([token, probability]) => <div key={token}><b>{token}</b><span aria-hidden="true"><i style={{ width: `${probability}%` }} /></span><strong>{probability}%</strong></div>)}</div>
+          <div className="m2-prediction-bars">{context.candidates.map(([token, probability]) => <div key={token}><b>{t(`mission2.page3.candidates.${token}`)}</b><span aria-hidden="true"><i style={{ width: `${probability}%` }} /></span><strong>{probability}%</strong></div>)}</div>
           <p className="m2-context-likely"><Check aria-hidden="true" />{t(`mission2.page3.${context.id === "a" ? "likelyA" : "likelyB"}`)}</p>
         </article>)}
         <aside className="m2-context-explanation-sidebar">
@@ -219,7 +220,7 @@ export function Mission2OutsidePage({ active, t, onComplete }) {
 
   return <section hidden={!active} className="mission-2-paged__lesson m2-reading-page m2-too-long-page" data-lesson-page="4">
     <div className="m2-too-long-heading">
-      <div><LessonQuestion number="4" label={t("mission2.page4.eyebrow")}>{t("mission2.page4.question")}</LessonQuestion><p className="m2-reading-intro">{t("mission2.page4.introLead")}<br />{t("mission2.page4.intro")}</p></div>
+      <div><LessonQuestion number="4" label={t("mission2.page4.eyebrow")} /><p className="m2-reading-intro">{t("mission2.page4.introLead")}<br />{t("mission2.page4.intro")}</p></div>
       <div className="m2-too-long-art" aria-hidden="true"><span /><span /><span /><span /><img src="/assets/img/mission-robot-pointing.png" alt="" /><b>!</b></div>
     </div>
 
@@ -296,7 +297,7 @@ export function Mission2SizePage({ active, t, onComplete }) {
 
   return <section hidden={!active} className="mission-2-paged__lesson m2-reading-page m2-context-playground" data-lesson-page="5">
     <div className="m2-playground-heading">
-      <div><LessonQuestion number="5" label={t("mission2.page5.eyebrow")}>{t("mission2.page5.question")}</LessonQuestion><p className="m2-reading-intro">{t("mission2.page5.introLead")}<br />{t("mission2.page5.intro")}</p></div>
+      <div><LessonQuestion number="5" label={t("mission2.page5.eyebrow")} /><p className="m2-reading-intro">{t("mission2.page5.introLead")}<br />{t("mission2.page5.intro")}</p></div>
       <div className="m2-playground-guide" aria-hidden="true"><span /><span /><span /><img src="/assets/img/mission-robot-pointing.png" alt="" /><p>{t("mission2.page5.guide")}</p></div>
     </div>
 
@@ -340,17 +341,11 @@ export function Mission2SizePage({ active, t, onComplete }) {
 }
 
 export function Mission2SummaryPage({ active, t, complete, onContinue }) {
-  return <section hidden={!active} className="mission-2-paged__lesson m2-reading-page" data-lesson-page="7">
-    <LessonQuestion number="7" label={t("mission2.page7.eyebrow")}>{t("mission2.page7.question")}</LessonQuestion>
-    <p className="m2-reading-intro">{t("mission2.page7.intro")}</p>
-    <div className="m2-context-journey">
-      <article><span>1</span><BookOpen /><strong>{t("mission2.page7.step1")}</strong><small>{t("mission2.page7.step1Note")}</small></article><ArrowRight />
-      <article><span>2</span><ScanLine /><strong>{t("mission2.page7.step2")}</strong><small>{t("mission2.page7.step2Note")}</small></article><ArrowRight />
-      <article><span>3</span><Eye /><strong>{t("mission2.page7.step3")}</strong><small>{t("mission2.page7.step3Note")}</small></article>
-    </div>
-    <div className="m2-discovery-list"><h3>{t("mission2.page7.discovered")}</h3><p><Check />{t("mission2.page7.point1")}</p><p><Check />{t("mission2.page7.point2")}</p><p><Check />{t("mission2.page7.point3")}</p></div>
-    <div className="m2-next-lesson"><img src="/assets/img/mission-robot-pointing.png" alt="A robot shines a light on helpful words." /><div><small>{t("mission2.page7.nextLabel")}</small><strong>{t("mission2.page7.nextTitle")}</strong><p>{t("mission2.page7.next")}</p></div></div>
-    {!complete && <p className="lesson-summary-advisory">{t("learningMode.notice")}</p>}
-    <button type="button" className="primary m2-complete-lesson" onClick={onContinue}>{t("mission2.shell.next")} <ArrowRight /></button>
-  </section>;
+  const ideas = [
+    { Icon: BookOpen, title: t("mission2.page7.idea1Title"), copy: t("mission2.page7.idea1Copy") },
+    { Icon: ScanLine, title: t("mission2.page7.idea2Title"), copy: t("mission2.page7.idea2Copy") },
+    { Icon: Eye, title: t("mission2.page7.idea3Title"), copy: t("mission2.page7.idea3Copy") },
+    { Icon: Waves, title: t("mission2.page7.idea4Title"), copy: t("mission2.page7.idea4Copy") }
+  ];
+  return <LessonSummaryPage active={active} pageNumber="7" kicker={t("mission2.page7.eyebrow")} ideas={ideas} recap={t("mission2.page7.recap")} nextLabel={t("mission2.page7.nextLabel")} nextTitle={t("mission2.page7.nextTitle")} nextCopy={t("mission2.page7.next")} advisory={!complete ? t("learningMode.notice") : ""} />;
 }

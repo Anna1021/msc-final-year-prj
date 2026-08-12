@@ -38,11 +38,23 @@ const targetStart = challengeResult.rawPieces.indexOf(TOKEN_ROOM_CHALLENGE.targe
 assert.ok(targetStart >= 0, "target token sequence exists in the full sentence");
 assert.deepEqual(challengeResult.ids.slice(targetStart, targetStart + TOKEN_ROOM_CHALLENGE.targetIds.length), [...TOKEN_ROOM_CHALLENGE.targetIds]);
 assert.deepEqual(challengeResult.rawPieces.slice(targetStart, targetStart + TOKEN_ROOM_CHALLENGE.targetRawPieces.length), [...TOKEN_ROOM_CHALLENGE.targetRawPieces]);
-assert.deepEqual(TOKEN_ROOM_CHALLENGE.options.find((option) => option.id === TOKEN_ROOM_CHALLENGE.correctOptionId).pieces, ["un", "help", "ful"]);
+assert.equal(TOKEN_ROOM_CHALLENGE.correctOptionId, "tokenizer-depends");
+assert.equal(TOKEN_ROOM_CHALLENGE.options.length, 4);
+assert.deepEqual(TOKEN_ROOM_CHALLENGE.options.find((option) => option.id === "qwen").pieces, ["un", "help", "ful"]);
+assert.equal(
+  TOKEN_ROOM_CHALLENGE.options.find((option) => option.id === TOKEN_ROOM_CHALLENGE.correctOptionId).statement,
+  "It depends on the tokenizer. Different tokenizers may split \"unhelpful\" differently."
+);
 for (const piece of [...TOKEN_ROOM_EXAMPLE.rawPieces, ...TOKEN_ROOM_CHALLENGE.targetRawPieces]) assert.ok(runtime.includes(JSON.stringify(piece)) || runtime.includes(`>${piece.replace(/^Ġ/, "")}<`));
 
-// 7–8. A wrong response teaches and retries; only the verified option can complete the room.
-assert.match(runtime, /Not quite\. Token boundaries do not always match whole-word or human word-part boundaries/);
+// 7–8. A wrong split teaches tokenizer dependence; only the accurate statement can complete the room.
+assert.match(runtime, /Which statement about tokenising &ldquo;unhelpful&rdquo; is the most accurate/);
+assert.match(runtime, /It depends on the tokenizer\. Different tokenizers may split &ldquo;unhelpful&rdquo; differently/);
+assert.match(runtime, /Choose the most accurate statement\. You do not need to reorder the sentence/);
+assert.match(runtime, /grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+assert.match(runtime, /Not quite\. There is no single split that every tokenizer must use\. Different tokenizers can split the same text in different ways/);
+assert.match(runtime, /Hint: Think back to the verified example\. Do all tokenizers have to split the same text in exactly the same way/);
+assert.match(runtime, /Correct! Token boundaries depend on the tokenizer\. Different tokenizers may split the same text differently/);
 assert.match(runtime, /data-action="token-hint"/);
 assert.match(runtime, /data\.submitted = true;[\s\S]*?data\.attempts \+= 1;[\s\S]*?renderRoom\(room\)/);
 assert.match(runtime, /if \(!data\.selectedOption\)[\s\S]*?else if \(data\.selectedOption === tokenRoomTeachingData\.challenge\.correctOptionId\) \{\s*return roomComplete\(room\)/);
@@ -58,13 +70,12 @@ assert.match(runtime, /\.token-split-option:focus-visible/);
 assert.match(runtime, /@media \(prefers-reduced-motion: reduce\)/);
 assert.match(runtime, /role="status" aria-live="polite"/);
 
-// 12. Rooms 4–6 remain byte-for-byte unchanged from the P15A baseline.
+// 12. The retired Room 5–6 puzzle functions remain available as untouched legacy code, but are no longer routed.
 const hashes = {
-  connectionsPuzzle: "2d19ac8a064c60b3c243af829d53405d53d338735e086774742f715f6d31752a",
   nextTokenPuzzle: "5b5593302f112954c546ecd04c2cd30f46c250f1889d1f44394ee09b8fd249e5",
   trainingLoopPuzzle: "91917d2b3be02e751f09cd1ae48c5fe325fa4a8d7428ddc6e8fb5e79d6fc1f61"
 };
-const functionOrder = ["connectionsPuzzle", "nextTokenPuzzle", "trainingLoopPuzzle", "predictionPuzzle"];
+const functionOrder = ["nextTokenPuzzle", "trainingLoopPuzzle", "predictionPuzzle"];
 for (let index = 0; index < functionOrder.length - 1; index += 1) {
   const name = functionOrder[index];
   const nextName = functionOrder[index + 1];
@@ -73,10 +84,12 @@ for (let index = 0; index < functionOrder.length - 1; index += 1) {
   assert.equal(createHash("sha256").update(source).digest("hex"), hashes[name], `${name} is unchanged`);
 }
 
-// 13. The overall six-room/six-crystal architecture remains intact.
+// 13. The active Final Challenge now follows the five-Lesson/five-crystal architecture.
 assert.equal(tokenRoom.challenge, TOKEN_ROOM_CHALLENGE);
-assert.deepEqual(rooms.map((room) => room.id), ["token", "numbers", "context", "connections", "prediction", "training"]);
-assert.equal(new Set(rooms.map((room) => room.crystalId)).size, 6);
+assert.deepEqual(rooms.map((room) => room.id), ["token", "numbers", "context", "connections", "prediction"]);
+assert.equal(new Set(rooms.map((room) => room.crystalId)).size, 5);
+assert.equal(rooms.at(-1).title, "Pattern Workshop");
+assert.equal(tokenRoom.accent, "#46b86f", "Room 1 no longer exposes the retired purple crystal accent");
 
 new Function(runtime.match(/<script>([\s\S]*)<\/script>/)?.[1] || "");
 process.stdout.write("Phase P15A real-tokenisation Token Room checks passed.\n");

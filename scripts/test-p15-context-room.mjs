@@ -48,7 +48,7 @@ const sourceHash = (name, nextName) => {
   return createHash("sha256").update(source).digest("hex");
 };
 
-// Global regression: Room 1 and Rooms 4–6 remain unchanged.
+// Global regression: Room 1 and the retained legacy puzzle functions remain unchanged.
 assert.equal(sourceHash("tokenPuzzle", "numbersPuzzle"), "54dfe05178fbbe4d027d088fa3fe18d289cd275c1e83fd4023ba344e10913548");
 for (const [name, nextName, hash] of [
   ["connectionsPuzzle", "nextTokenPuzzle", "2d19ac8a064c60b3c243af829d53405d53d338735e086774742f715f6d31752a"],
@@ -56,8 +56,8 @@ for (const [name, nextName, hash] of [
   ["trainingLoopPuzzle", "predictionPuzzle", "91917d2b3be02e751f09cd1ae48c5fe325fa4a8d7428ddc6e8fb5e79d6fc1f61"]
 ]) assert.equal(sourceHash(name, nextName), hash, `${name} is unchanged`);
 
-assert.deepEqual(rooms.map((room) => room.id), ["token", "numbers", "context", "connections", "prediction", "training"]);
-assert.equal(new Set(rooms.map((room) => room.crystalId)).size, 6);
+assert.deepEqual(rooms.map((room) => room.id), ["token", "numbers", "context", "connections", "prediction"]);
+assert.equal(new Set(rooms.map((room) => room.crystalId)).size, 5);
 assert.match(runtime, /const allDone = rooms\.every\(\(room\) => state\.completed\.has\(room\.id\) && state\.crystals\.has\(room\.crystal\)\)/);
 
 new Function(runtime.match(/<script>([\s\S]*)<\/script>/)?.[1] || "");

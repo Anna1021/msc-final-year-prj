@@ -5,49 +5,51 @@ import {
 } from "lucide-react";
 import useLivePredictionModel from "./useLivePredictionModel.js";
 
-const DEFAULT_PROMPT = "The little robot opened the";
-const STARTERS = ["The cat sat on the", "Today the weather feels", "A dragon found a"];
+const STARTER_IDS = ["cat", "weather", "dragon"];
 const MAX_PROMPT_LENGTH = 120;
 const TOKEN_LIMITS = [5, 10, 20, 50, 100];
 const VISUAL_HOLD_MS = 550;
 
 const sleep = (duration) => new Promise(resolve => setTimeout(resolve, duration));
 
-function CandidateBoard({ candidates = [], selectedId, reviewing, onLatest }) {
+function CandidateBoard({ candidates = [], selectedId, reviewing, onLatest, t }) {
   const maximum = candidates[0]?.probability || 1;
   return <section className="l4-watch-candidates" aria-labelledby="l4-watch-candidate-title">
-    <header><div><h3 id="l4-watch-candidate-title">{reviewing ? `Reviewing Step ${reviewing}` : "What could come next?"}</h3><p>Top predictions from the real model</p></div>{reviewing && <button type="button" className="outline" onClick={onLatest}><ArrowRight />Return to latest</button>}</header>
+    <header><div><h3 id="l4-watch-candidate-title">{reviewing ? t("mission4.live.lab.reviewingStep", { step: reviewing }) : t("mission4.live.lab.candidateTitle")}</h3><p>{t("mission4.live.lab.candidateSubtitle")}</p></div>{reviewing && <button type="button" className="outline" onClick={onLatest}><ArrowRight />{t("mission4.live.lab.returnLatest")}</button>}</header>
     {candidates.length ? <ol>{candidates.map((candidate, index) => <li className={selectedId === candidate.token_id ? "is-selected" : ""} key={candidate.token_id}>
-      <b>{index + 1}</b><span title={candidate.raw_token}>{candidate.display_token}</span><i aria-hidden="true"><em style={{ width:`${(candidate.probability / maximum) * 100}%` }} /></i><strong>{(candidate.probability * 100).toFixed(1)}%</strong>{selectedId === candidate.token_id && <small><Check />selected</small>}
-    </li>)}</ol> : <div className="l4-watch-empty"><CircleDot /><p>Run the model to see five real next-Token probabilities.</p></div>}
-    <p className="l4-watch-top-five">Top 5 shown. Many other Tokens may also have smaller probabilities.</p>
+      <b>{index + 1}</b><span title={candidate.raw_token}>{candidate.display_token}</span><i aria-hidden="true"><em style={{ width:`${(candidate.probability / maximum) * 100}%` }} /></i><strong>{(candidate.probability * 100).toFixed(1)}%</strong>{selectedId === candidate.token_id && <small><Check />{t("mission4.live.lab.selected")}</small>}
+    </li>)}</ol> : <div className="l4-watch-empty"><CircleDot /><p>{t("mission4.live.lab.candidateEmpty")}</p></div>}
+    <p className="l4-watch-top-five">{t("mission4.live.lab.topFive")}</p>
   </section>;
 }
 
-function CurrentContext({ text, latest, generated, maximum, contextRef }) {
+function CurrentContext({ text, latest, generated, maximum, contextRef, t }) {
   return <section className="l4-watch-context" aria-labelledby="l4-watch-context-title">
-    <h3 id="l4-watch-context-title">Current context <small>(live text)</small></h3>
+    <h3 id="l4-watch-context-title">{t("mission4.live.lab.currentContext")} <small>{t("mission4.live.lab.liveText")}</small></h3>
     <div ref={contextRef} className="l4-watch-context-text" aria-live="polite">
-      {latest ? <>{latest.before}<mark aria-label={`Latest generated Token: ${latest.display}`}>{latest.raw}</mark></> : text}
+      {latest ? <>{latest.before}<mark aria-label={t("mission4.live.lab.latestToken", { token: latest.display })}>{latest.raw}</mark></> : text}
     </div>
-    <span>Tokens generated: <b>{generated} / {maximum}</b></span>
+    <span>{t("mission4.live.lab.tokensGenerated")} <b>{generated} / {maximum}</b></span>
   </section>;
 }
 
-function History({ steps, reviewStep, onReview, scrollerRef }) {
+function History({ steps, reviewStep, onReview, scrollerRef, t }) {
   function scroll(direction) { scrollerRef.current?.scrollBy({ left:direction * 460, behavior:"smooth" }); }
   return <section className="l4-watch-history" aria-labelledby="l4-watch-history-title">
-    <header><div><h3 id="l4-watch-history-title">Generation history</h3><p>Showing the most recent 5 steps. Scroll to review earlier steps.</p></div><div><button type="button" aria-label="Scroll history left" onClick={() => scroll(-1)}><ChevronLeft /></button><button type="button" aria-label="Scroll history right" onClick={() => scroll(1)}><ChevronRight /></button></div></header>
-    <div ref={scrollerRef} className="l4-watch-history-track" tabIndex="0" aria-label="Generated Token history">
-      {steps.length ? steps.map(step => <button type="button" className={`${reviewStep === step.step ? "is-reviewing" : ""} ${step.step === steps.length ? "is-latest" : ""}`} onClick={() => onReview(step.step)} key={step.step}><small>Step {step.step}</small><strong>{step.selected.display_token}</strong><span>{(step.selected.probability * 100).toFixed(1)}%</span></button>) : <p>Your generated Tokens will appear here one step at a time.</p>}
+    <header><div><h3 id="l4-watch-history-title">{t("mission4.live.lab.historyTitle")}</h3><p>{t("mission4.live.lab.historySubtitle")}</p></div><div><button type="button" aria-label={t("mission4.live.lab.scrollLeft")} onClick={() => scroll(-1)}><ChevronLeft /></button><button type="button" aria-label={t("mission4.live.lab.scrollRight")} onClick={() => scroll(1)}><ChevronRight /></button></div></header>
+    <div ref={scrollerRef} className="l4-watch-history-track" tabIndex="0" aria-label={t("mission4.live.lab.historyAria")}>
+      {steps.length ? steps.map(step => <button type="button" className={`${reviewStep === step.step ? "is-reviewing" : ""} ${step.step === steps.length ? "is-latest" : ""}`} onClick={() => onReview(step.step)} key={step.step}><small>{t("mission4.live.lab.step", { step: step.step })}</small><strong>{step.selected.display_token}</strong><span>{(step.selected.probability * 100).toFixed(1)}%</span></button>) : <p>{t("mission4.live.lab.historyEmpty")}</p>}
     </div>
   </section>;
 }
 
 export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
   const model = useLivePredictionModel();
-  const [prompt, setPrompt] = useState(DEFAULT_PROMPT);
-  const [currentText, setCurrentText] = useState(DEFAULT_PROMPT);
+  const defaultPrompt = t("mission4.live.lab.defaultPrompt");
+  const starters = STARTER_IDS.map((id) => ({ id, text:t(`mission4.live.lab.starters.${id}`) }));
+  const starterSignature = starters.map((starter) => starter.text).join("\u0000");
+  const [prompt, setPrompt] = useState(() => defaultPrompt);
+  const [currentText, setCurrentText] = useState(() => defaultPrompt);
   const [steps, setSteps] = useState([]);
   const [temperature, setTemperature] = useState(1);
   const [generationMode, setGenerationMode] = useState("auto");
@@ -55,7 +57,7 @@ export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
   const [runState, setRunState] = useState("idle");
   const [latestHighlight, setLatestHighlight] = useState(null);
   const [reviewStep, setReviewStep] = useState(null);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(null);
   const currentTextRef = useRef(currentText);
   const stepsRef = useRef(steps);
   const maxTokensRef = useRef(maxTokens);
@@ -66,6 +68,8 @@ export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
   const completionRef = useRef(false);
   const contextRef = useRef(null);
   const historyRef = useRef(null);
+  const promptSourceRef = useRef("default");
+  const promptLockedRef = useRef(false);
 
   currentTextRef.current = currentText;
   stepsRef.current = steps;
@@ -80,11 +84,20 @@ export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
   useEffect(() => { if (contextRef.current) contextRef.current.scrollTop = contextRef.current.scrollHeight; }, [currentText]);
   useEffect(() => { if (historyRef.current) historyRef.current.scrollTo({ left:historyRef.current.scrollWidth, behavior:"smooth" }); }, [steps.length]);
   useEffect(() => () => { runIdRef.current += 1; pauseRequestedRef.current = true; }, []);
+  useEffect(() => {
+    if (promptLockedRef.current) return;
+    const source = promptSourceRef.current;
+    const localizedPrompt = source === "default" ? defaultPrompt : starters.find((starter) => starter.id === source)?.text;
+    if (!localizedPrompt || localizedPrompt === currentTextRef.current) return;
+    setPrompt(localizedPrompt);
+    setCurrentText(localizedPrompt);
+    currentTextRef.current = localizedPrompt;
+  }, [defaultPrompt, starterSignature]);
 
   function pause() {
     pauseRequestedRef.current = true;
     setRunState("paused");
-    setMessage("Generation paused. The current context and history are preserved.");
+    setMessage({ key:"pausedMessage" });
   }
 
   function clearGeneration(nextPrompt = prompt) {
@@ -98,14 +111,25 @@ export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
     setLatestHighlight(null);
     setReviewStep(null);
     setRunState("idle");
-    setMessage("");
+    setMessage(null);
     completionRef.current = false;
   }
 
-  function chooseStarter(starter) { setPrompt(starter); clearGeneration(starter); }
-  function updatePrompt(value) { setPrompt(value); clearGeneration(value); }
+  function chooseStarter(starter) {
+    promptSourceRef.current = starter.id;
+    promptLockedRef.current = false;
+    setPrompt(starter.text);
+    clearGeneration(starter.text);
+  }
+  function updatePrompt(value) {
+    promptSourceRef.current = "user";
+    promptLockedRef.current = true;
+    setPrompt(value);
+    clearGeneration(value);
+  }
 
   async function performOne(runId) {
+    promptLockedRef.current = true;
     if (stepsRef.current.length >= maxTokensRef.current) return { limit:true };
     const before = currentTextRef.current;
     const started = performance.now();
@@ -127,7 +151,7 @@ export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
     setCurrentText(after);
     setSteps(nextSteps);
     setLatestHighlight({ before, raw:prediction.selected.raw_token, display:prediction.selected.display_token });
-    setMessage(`Step ${step.step}: selected ${prediction.selected.display_token}. The updated text is now the next context.`);
+    setMessage({ key:"stepMessage", params:{ step:step.step, token:prediction.selected.display_token } });
     if (nextSteps.length >= 2 && !completionRef.current) { completionRef.current = true; onSuccessfulPrediction?.(); }
     return { prediction, elapsed:performance.now() - started, limit:nextSteps.length >= maxTokensRef.current };
   }
@@ -144,12 +168,12 @@ export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
       while (!pauseRequestedRef.current && runId === runIdRef.current) {
         const outcome = await performOne(runId);
         if (outcome.stale) break;
-        if (outcome.prediction?.is_eos) { setRunState("complete"); setMessage("The model produced its end-of-text Token."); break; }
-        if (outcome.limit) { setRunState("limit"); setMessage(`Generation paused at the ${maxTokensRef.current}-Token limit.`); break; }
+        if (outcome.prediction?.is_eos) { setRunState("complete"); setMessage({ key:"endMessage" }); break; }
+        if (outcome.limit) { setRunState("limit"); setMessage({ key:"limitMessage", params:{ limit:maxTokensRef.current } }); break; }
         await sleep(Math.max(0, VISUAL_HOLD_MS - (outcome.elapsed || 0)));
       }
     } catch (failure) {
-      if (failure.message !== "Live model request cancelled.") { setRunState("error"); setMessage(failure.message); }
+      if (failure.message !== "Live model request cancelled.") { setRunState("error"); setMessage({ key:"errorMessage" }); }
     } finally {
       autoLoopRef.current = false;
       if (pauseRequestedRef.current && runId === runIdRef.current) setRunState("paused");
@@ -168,7 +192,7 @@ export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
       else if (outcome.limit) setRunState("limit");
       else setRunState("paused");
     } catch (failure) {
-      if (failure.message !== "Live model request cancelled.") { setRunState("error"); setMessage(failure.message); }
+      if (failure.message !== "Live model request cancelled.") { setRunState("error"); setMessage({ key:"errorMessage" }); }
     }
   }
 
@@ -180,13 +204,13 @@ export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
     const next = Number(value);
     setMaxTokens(next);
     maxTokensRef.current = next;
-    if (runState === "limit" && stepsRef.current.length < next) { setRunState("paused"); setMessage(`Limit raised to ${next}. You can resume from the current context.`); }
+    if (runState === "limit" && stepsRef.current.length < next) { setRunState("paused"); setMessage({ key:"limitRaisedMessage", params:{ limit:next } }); }
   }
 
   function retryPrediction() {
     model.retry();
     setRunState(stepsRef.current.length ? "paused" : "idle");
-    setMessage("");
+    setMessage(null);
     if (generationMode === "auto") runAuto();
     else runOneStep();
   }
@@ -194,26 +218,28 @@ export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
   const viewed = reviewStep ? steps.find(step => step.step === reviewStep) : steps.at(-1);
   const busy = model.status === "predicting";
   const canRun = prompt.trim() && prompt.length <= MAX_PROMPT_LENGTH && !busy;
-  const autoLabel = runState === "running" ? "Pause" : runState === "paused" ? "Resume" : runState === "complete" ? "Run again" : runState === "limit" ? "Continue" : "Run";
+  const autoLabel = t(`mission4.live.lab.${runState === "running" ? "pause" : runState === "paused" ? "resume" : runState === "complete" ? "runAgain" : runState === "limit" ? "continue" : "run"}`);
+  const statusKey = busy ? "predicting" : runState === "running" ? "generating" : runState === "paused" ? "paused" : runState === "limit" ? "limitReached" : runState === "complete" ? "generationComplete" : "ready";
+  const temperatureDescription = t(`mission4.live.lab.${temperature < .8 ? "temperatureFocused" : temperature > 1.2 ? "temperatureSpread" : "temperatureBalanced"}`);
 
   return <div className="lesson-4-live-lab l4-watch-lab">
     <div className="l4-watch-prompt-panel">
-      <section className="l4-watch-prompt"><label htmlFor="l4-watch-input"><input id="l4-watch-input" aria-label="Text beginning" value={prompt} maxLength={MAX_PROMPT_LENGTH} disabled={steps.length > 0 || runState === "running"} onChange={event => updatePrompt(event.target.value)} /><small>{prompt.length} / {MAX_PROMPT_LENGTH}</small></label><button type="button" className="primary" disabled={runState !== "running" && (!canRun || (runState === "limit" && steps.length >= maxTokens))} onClick={() => generationMode === "auto" ? (runState === "running" ? pause() : runAuto({ again:runState === "complete" })) : runOneStep()}>{runState === "running" ? <Pause /> : busy ? <LoaderCircle className="is-spinning" /> : generationMode === "step" ? <ArrowRight /> : <Play />}{generationMode === "auto" ? autoLabel : "Predict next Token"}</button></section>
-      <div className="l4-watch-examples"><span>Try an example:</span>{STARTERS.map(starter => <button type="button" disabled={runState === "running"} onClick={() => chooseStarter(starter)} key={starter}>{starter}</button>)}<button type="button" className="l4-watch-reset" onClick={() => clearGeneration(prompt)}><RotateCcw />Reset</button></div>
+      <section className="l4-watch-prompt"><label htmlFor="l4-watch-input"><input id="l4-watch-input" aria-label={t("mission4.live.lab.textBeginning")} value={prompt} maxLength={MAX_PROMPT_LENGTH} disabled={steps.length > 0 || runState === "running"} onChange={event => updatePrompt(event.target.value)} /><small>{prompt.length} / {MAX_PROMPT_LENGTH}</small></label><button type="button" className="primary" disabled={runState !== "running" && (!canRun || (runState === "limit" && steps.length >= maxTokens))} onClick={() => generationMode === "auto" ? (runState === "running" ? pause() : runAuto({ again:runState === "complete" })) : runOneStep()}>{runState === "running" ? <Pause /> : busy ? <LoaderCircle className="is-spinning" /> : generationMode === "step" ? <ArrowRight /> : <Play />}{generationMode === "auto" ? autoLabel : t("mission4.live.lab.predictNext")}</button></section>
+      <div className="l4-watch-examples"><span>{t("mission4.live.lab.tryExample")}</span>{starters.map(starter => <button type="button" disabled={runState === "running"} onClick={() => chooseStarter(starter)} key={starter.id}>{starter.text}</button>)}<button type="button" className="l4-watch-reset" onClick={() => clearGeneration(prompt)}><RotateCcw />{t("mission4.live.lab.reset")}</button></div>
     </div>
     <section className="l4-watch-controls">
-      <fieldset><legend>Generation mode</legend><div><button type="button" aria-pressed={generationMode === "auto"} onClick={() => switchMode("auto")}><Play />Auto <small>recommended</small></button><button type="button" aria-pressed={generationMode === "step"} onClick={() => switchMode("step")}><CircleDot />Step by step</button></div></fieldset>
-      <label>Max Tokens<select value={maxTokens} onChange={event => changeLimit(event.target.value)}>{TOKEN_LIMITS.map(limit => <option value={limit} key={limit}>{limit} Tokens</option>)}</select></label>
-      <span className={`l4-watch-run-status is-${runState}`}><i />{busy ? "Predicting…" : runState === "running" ? "Generating…" : runState === "paused" ? "Paused" : runState === "limit" ? "Token limit reached" : runState === "complete" ? "Generation complete" : "Ready"}</span>
+      <fieldset><legend>{t("mission4.live.lab.generationMode")}</legend><div><button type="button" aria-pressed={generationMode === "auto"} onClick={() => switchMode("auto")}><Play />{t("mission4.live.lab.auto")} <small>{t("mission4.live.lab.recommended")}</small></button><button type="button" aria-pressed={generationMode === "step"} onClick={() => switchMode("step")}><CircleDot />{t("mission4.live.lab.stepByStep")}</button></div></fieldset>
+      <label>{t("mission4.live.lab.maxTokens")}<select value={maxTokens} onChange={event => changeLimit(event.target.value)}>{TOKEN_LIMITS.map(limit => <option value={limit} key={limit}>{t("mission4.live.lab.tokenOption", { count:limit })}</option>)}</select></label>
+      <span className={`l4-watch-run-status is-${runState}`}><i />{t(`mission4.live.lab.${statusKey}`)}</span>
     </section>
-    {model.status === "error" && <div className="l4-watch-error" role="alert"><AlertCircle /><div><strong>The model couldn't respond just now.</strong><p>Please try the prediction again.</p></div><button type="button" onClick={retryPrediction}><RefreshCw />Try again</button></div>}
+    {model.status === "error" && <div className="l4-watch-error" role="alert"><AlertCircle /><div><strong>{t("mission4.live.lab.modelErrorTitle")}</strong><p>{t("mission4.live.lab.modelErrorBody")}</p></div><button type="button" onClick={retryPrediction}><RefreshCw />{t("mission4.live.lab.tryAgain")}</button></div>}
     <div className="l4-watch-workspace">
-      <CurrentContext text={currentText} latest={latestHighlight} generated={steps.length} maximum={maxTokens} contextRef={contextRef} />
-      <div className="l4-watch-next"><CandidateBoard candidates={viewed?.candidates} selectedId={viewed?.selected.token_id} reviewing={reviewStep} onLatest={() => setReviewStep(null)} />
-        <section className="l4-watch-temperature"><label htmlFor="l4-watch-temperature"><strong>Temperature</strong><output>{temperature.toFixed(1)}</output></label><input id="l4-watch-temperature" type="range" min="0.4" max="1.6" step="0.1" value={temperature} onChange={event => setTemperature(Number(event.target.value))} aria-valuetext={`Temperature ${temperature.toFixed(1)}. ${temperature < .8 ? "The strongest choices stand out more." : temperature > 1.2 ? "More choices get noticeable chances." : "Balanced probability spread."}`} /><div><span>More focused</span><span>More spread out</span></div><p>Applies to the next real prediction.</p></section>
+      <CurrentContext text={currentText} latest={latestHighlight} generated={steps.length} maximum={maxTokens} contextRef={contextRef} t={t} />
+      <div className="l4-watch-next"><CandidateBoard candidates={viewed?.candidates} selectedId={viewed?.selected.token_id} reviewing={reviewStep} onLatest={() => setReviewStep(null)} t={t} />
+        <section className="l4-watch-temperature"><label htmlFor="l4-watch-temperature"><strong>{t("mission4.live.lab.temperature")}</strong><output>{temperature.toFixed(1)}</output></label><input id="l4-watch-temperature" type="range" min="0.4" max="1.6" step="0.1" value={temperature} onChange={event => setTemperature(Number(event.target.value))} aria-valuetext={t("mission4.live.lab.temperatureAria", { value:temperature.toFixed(1), description:temperatureDescription })} /><div><span>{t("mission4.live.lab.moreFocused")}</span><span>{t("mission4.live.lab.moreSpread")}</span></div><p>{t("mission4.live.lab.temperatureApplies")}</p></section>
       </div>
     </div>
-    <History steps={steps} reviewStep={reviewStep} onReview={step => { if (runState === "running") pause(); setReviewStep(step); }} scrollerRef={historyRef} />
-    <p className="l4-live-announcement" aria-live="polite">{message}</p>
+    <History steps={steps} reviewStep={reviewStep} onReview={step => { if (runState === "running") pause(); setReviewStep(step); }} scrollerRef={historyRef} t={t} />
+    <p className="l4-live-announcement" aria-live="polite">{message ? t(`mission4.live.lab.${message.key}`, message.params) : ""}</p>
   </div>;
 }

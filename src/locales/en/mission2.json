@@ -34,6 +34,7 @@
     "question": "What is context?",
     "intro": "LLMs do not work with one word in isolation. They can use the words or tokens that came before to help predict what might come next.",
     "sameWord": "Same word, different context",
+    "englishExampleLabel": "English ambiguity example",
     "definition": "Context is information from the earlier text or tokens that the model can use.",
     "contextA": "Context A",
     "contextB": "Context B",
@@ -84,7 +85,10 @@
     "largeWindow": "Large window",
     "smallAmount": "Fewer tokens",
     "mediumAmount": "More tokens",
-    "largeAmount": "Many more tokens"
+    "largeAmount": "Many more tokens",
+    "outsideBeforeTokens": "Once|upon|a|time|there",
+    "windowTokens": "a|curious|little|reader|who|loved|to|learn",
+    "outsideAfterTokens": "new|things|every|day"
   },
   "page3": {
     "title": "Why does context matter?",
@@ -104,6 +108,7 @@
     "predictions": "Top next-token predictions",
     "likelyA": "‘hole’ is much more likely here.",
     "likelyB": "‘kitchen’ is much more likely here.",
+    "candidates": {"hole":"hole","house":"house","room":"room","kitchen":"kitchen","pantry":"pantry","fridge":"fridge"},
     "happeningTitle": "What’s happening?",
     "sameEnding": "The last words are identical. Only the earlier context is different.",
     "differentChances": "Because the context differs, the model assigns different probabilities to possible next tokens.",
@@ -234,23 +239,20 @@
     "q4Incorrect": "Not quite. Text outside the current usable window is not necessarily deleted — it may simply not be available for that prediction."
   },
   "page7": {
-    "title": "Your context discovery",
-    "subtitle": "Connect the idea before the Transformer combines information.",
-    "eyebrow": "Put it together",
-    "question": "What did the model have available?",
-    "intro": "Follow the reading journey from a long story to the tokens available right now.",
-    "step1": "Long text",
-    "step1Note": "The story may contain many tokens.",
-    "step2": "Context window",
-    "step2Note": "A limited reading space moves through them.",
-    "step3": "Available context",
-    "step3Note": "Only the tokens in view can help now.",
-    "discovered": "You discovered",
-    "point1": "The model does not have an unlimited view of all text.",
-    "point2": "Its context window contains the tokens available right now.",
-    "point3": "When text grows, older tokens can move outside that window.",
-    "nextLabel": "Next lesson",
+    "title": "Lesson summary",
+    "subtitle": "Context determines which earlier tokens are available and can influence what the model predicts next.",
+    "eyebrow": "Summary",
+    "idea1Title": "Earlier text",
+    "idea1Copy": "Earlier text provides context.",
+    "idea2Title": "Context window",
+    "idea2Copy": "The context window limits what the model can use.",
+    "idea3Title": "Available context",
+    "idea3Copy": "Only information inside the current window may be available.",
+    "idea4Title": "Different predictions",
+    "idea4Copy": "Different context can change next-token probabilities.",
+    "recap": "Context helps the model use earlier information when deciding what might come next.",
+    "nextLabel": "Next: Lesson 3",
     "nextTitle": "Connecting the Tokens",
-    "next": "Next, see how a Transformer combines information between the Tokens inside this window."
+    "next": "Now that we know which tokens are available, Lesson 3 explores how information can be combined between them."
   }
 }

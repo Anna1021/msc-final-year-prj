@@ -104,3 +104,4 @@
 .lesson-4-paged .l4-watch-prompt input{min-width:0;border-radius:13px 0 0 13px;padding:15px 18px;background:#fff}
 .lesson-4-paged .l4-watch-prompt label small{position:static;display:flex;align-items:center;border-radius:0 13px 13px 0;padding:0 15px;color:#77829b;background:#fff;white-space:nowrap}
 .lesson-4-paged .l4-watch-prompt label:focus-within{box-shadow:0 0 0 3px rgba(102,76,220,.16),0 10px 23px rgba(73,72,139,.12)}
+@media(max-width:760px){.lesson-4-paged.l4-page-predict .mission-lesson-paged__content,.lesson-4-paged .l4-p1-page,.lesson-4-paged .l4-p1-page .l4-new-layout,.lesson-4-paged .l4-p1-page .l4-new-main{width:calc(100vw - 28px)!important;max-width:calc(100vw - 28px)!important;box-sizing:border-box}.lesson-4-paged .l4-p1-page .l4-new-main{overflow:hidden}.lesson-4-paged .l4-p1-heading,.lesson-4-paged .l4-p1-card{width:100%;box-sizing:border-box}}
