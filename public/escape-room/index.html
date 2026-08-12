@@ -189,7 +189,7 @@
     .room-card.locked { opacity: .58; }
     .room-card.locked button { background: rgba(255,255,255,.08); color: #d8d0f4; }
     .room-card.completed::after {
-      content: "Crystal collected";
+      content: attr(data-complete-label);
       position: absolute;
       right: 14px;
       top: 14px;
@@ -1462,6 +1462,102 @@
         radial-gradient(circle at 84% 16%, rgba(255,209,90,.18), transparent 24%),
         linear-gradient(135deg, #111927, #080a19);
     }
+    .completion-epilogue {
+      min-height: calc(100vh - 104px);
+      display: grid;
+      align-content: center;
+      gap: clamp(20px, 3vw, 34px);
+      overflow: hidden;
+      border: 1px solid rgba(224,212,255,.2);
+      border-radius: 28px;
+      padding: clamp(22px, 4vw, 54px);
+      background:
+        radial-gradient(circle at 18% 18%, rgba(109,169,255,.19), transparent 28%),
+        radial-gradient(circle at 82% 20%, rgba(255,209,90,.12), transparent 25%),
+        radial-gradient(circle at 50% 42%, rgba(155,108,255,.26), transparent 36%),
+        linear-gradient(145deg, rgba(23,16,51,.98), rgba(6,9,25,.98));
+      animation: softReveal .6s ease both;
+    }
+    body.embedded .completion-epilogue { min-height: calc(100vh - 16px); }
+    .completion-hero {
+      display: grid;
+      grid-template-columns: minmax(230px, .65fr) minmax(0, 1.35fr);
+      align-items: center;
+      gap: clamp(22px, 4vw, 56px);
+    }
+    .completion-energy {
+      position: relative;
+      min-height: 260px;
+      display: grid;
+      place-items: center;
+    }
+    .completion-energy::before,
+    .completion-energy::after {
+      content: "";
+      position: absolute;
+      width: min(76%, 290px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid rgba(208,188,255,.26);
+      box-shadow: inset 0 0 36px rgba(155,108,255,.08);
+    }
+    .completion-energy::after { width: min(55%, 210px); border-color: rgba(109,169,255,.3); }
+    .completion-final-crystal {
+      position: relative;
+      z-index: 2;
+      width: min(54%, 175px);
+      filter: drop-shadow(0 0 14px rgba(255,255,255,.4)) drop-shadow(0 0 28px rgba(155,108,255,.42));
+      animation: finalCrystalFloat 3.2s ease-in-out infinite;
+    }
+    .completion-guide {
+      position: absolute;
+      z-index: 3;
+      right: 4%;
+      bottom: 2%;
+      width: clamp(76px, 9vw, 118px);
+      filter: drop-shadow(0 12px 18px rgba(0,0,0,.32));
+    }
+    .completion-copy .clue { color: #ffd15a; }
+    .completion-copy h1 {
+      max-width: 840px;
+      margin: 10px 0 14px;
+      font-size: clamp(2.3rem, 5vw, 5.2rem);
+      line-height: .98;
+      letter-spacing: -.045em;
+    }
+    .completion-copy > p { max-width: 780px; color: var(--muted); font-size: clamp(1rem, 1.6vw, 1.24rem); line-height: 1.62; }
+    .completion-guide-line {
+      max-width: 780px;
+      margin-top: 18px;
+      border-left: 3px solid #9b6cff;
+      border-radius: 0 14px 14px 0;
+      padding: 12px 16px;
+      color: #f7f2ff;
+      background: rgba(255,255,255,.065);
+      font-weight: 800;
+    }
+    .completion-recap {
+      border: 1px solid rgba(230,220,255,.16);
+      border-radius: 22px;
+      padding: clamp(16px, 2.5vw, 26px);
+      background: rgba(255,255,255,.055);
+      backdrop-filter: blur(12px);
+    }
+    .completion-recap h2 { margin: 0 0 16px; font-size: clamp(1.2rem, 2vw, 1.55rem); }
+    .completion-concepts { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+    .completion-concept {
+      min-width: 0;
+      border: 1px solid color-mix(in srgb, var(--room) 42%, rgba(230,220,255,.16));
+      border-radius: 17px;
+      padding: 14px;
+      background: color-mix(in srgb, var(--room) 9%, rgba(7,9,23,.58));
+    }
+    .completion-concept img { width: 38px; height: 38px; object-fit: contain; float: right; margin: -3px -3px 6px 8px; }
+    .completion-concept strong { display: block; color: #fff; margin-bottom: 7px; }
+    .completion-concept p { clear: both; margin: 0; color: #d8d0f4; font-size: .86rem; line-height: 1.45; }
+    .completion-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .completion-actions button { min-width: 210px; }
+    .completion-actions .primary-return { color: #261c05; background: linear-gradient(135deg, #ffe48e, #ffbd37); }
     .brain-door {
       display: grid;
       grid-template-columns: minmax(360px, .9fr) minmax(460px, 1.1fr);
@@ -2042,16 +2138,24 @@
       .app { min-height: 100vh; height: auto; }
       .stage { overflow: visible; }
       .hero, .room-body, .brain-door { grid-template-columns: 1fr; }
+      .completion-hero { grid-template-columns: 1fr; }
+      .completion-energy { min-height: 220px; }
+      .completion-concepts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .fairness-data-row, .fix-controls { grid-template-columns: 1fr; }
       .map-grid { grid-template-columns: 1fr; }
       .screen, .room, .room-inner, .exit { min-height: auto; }
+    }
+    @media (max-width: 620px) {
+      .completion-epilogue { border-radius: 20px; }
+      .completion-concepts { grid-template-columns: 1fr; }
+      .completion-actions button { width: 100%; }
     }
   </style>
 </head>
 <body>
   <div class="app">
     <header class="topbar">
-      <div class="brand"><span>Final learning challenge</span><strong>Language Model Escape Room</strong></div>
+      <div class="brand"><span id="topEyebrow">Final learning challenge</span><strong id="topTitle">Language Model Escape Room</strong></div>
       <div class="top-actions">
         <button class="secondary" type="button" id="topMap">Room Map</button>
         <button type="button" id="topContinue">Continue</button>
@@ -2063,6 +2167,7 @@
       <section class="screen active" id="mapScreen"></section>
       <section class="screen" id="roomScreen"></section>
       <section class="screen" id="exitScreen"></section>
+      <section class="screen" id="completionScreen"></section>
     </main>
   </div>
 
@@ -2131,6 +2236,13 @@
     const finalConceptOrder = finalConceptPieces.map((piece) => piece.id);
     const finalConceptTrayOrder = ["prediction", "context", "training", "connections", "tokens"];
     const finalConceptTrayPieces = finalConceptTrayOrder.map((id) => finalConceptPieces.find((piece) => piece.id === id));
+    const completionConcepts = [
+      { id: "tokens", room: "token" },
+      { id: "context", room: "numbers" },
+      { id: "connections", room: "context" },
+      { id: "prediction", room: "connections" },
+      { id: "patterns", room: "prediction" }
+    ];
 
     const state = {
       completed: new Set(),
@@ -2139,25 +2251,90 @@
       exitOrder: [],
       exitHint: false,
       exitStage: "placing",
-      exitFeedback: "",
+      exitFeedbackKey: "",
+      exitFeedbackParams: {},
       finalComplete: false,
       currentScreen: "room-select",
       currentRoom: null,
       currentStep: "hub",
       selected: null,
       roomData: {},
+      localeContent: {},
+      language: "en",
       latestInit: null
     };
     let activeExitDrag = null;
     let lastExitPointerTarget = null;
     let suppressExitClick = false;
     let fusionTimer = null;
+    let completionTimer = null;
 
     const $ = (id) => document.getElementById(id);
     const mapScreen = $("mapScreen");
     const roomScreen = $("roomScreen");
     const exitScreen = $("exitScreen");
+    const completionScreen = $("completionScreen");
     const log = $("log");
+
+    function message(path, params = {}) {
+      const value = path.split(".").reduce((current, key) => current?.[key], state.localeContent?.runtime?.messages);
+      const fallback = path.split(".").reduce((current, key) => current?.[key], state.localeContent?.runtime?.fallbackMessages);
+      return String(value ?? fallback ?? path).replace(/\{\{(\w+)\}\}/g, (_, key) => params[key] ?? "");
+    }
+
+    function setRoomFeedback(data, key, kind = data.feedbackKind, params = {}) {
+      data.feedbackKey = key;
+      data.feedbackParams = params;
+      data.feedbackKind = kind;
+    }
+
+    function roomFeedback(data, fallbackKey) {
+      return message(data.feedbackKey || fallbackKey, data.feedbackParams || {});
+    }
+
+    function setExitFeedback(key, params = {}) {
+      state.exitFeedbackKey = key;
+      state.exitFeedbackParams = params;
+    }
+
+    function exitFeedback() {
+      return state.exitFeedbackKey ? message(state.exitFeedbackKey, state.exitFeedbackParams || {}) : "";
+    }
+
+    function localise(root = document) {
+      const replacements = state.localeContent?.runtime?.replacements || {};
+      const decoder = document.createElement("textarea");
+      const entries = Object.entries(replacements).map(([source, translated]) => {
+        decoder.innerHTML = source;
+        return [decoder.value, translated];
+      }).sort(([a], [b]) => b.length - a.length);
+      if (!entries.length) return;
+      const exact = new Map(entries);
+      const replace = (value) => {
+        if (exact.has(value)) return exact.get(value);
+        const leading = value.match(/^\s*/)?.[0] || "";
+        const trailing = value.match(/\s*$/)?.[0] || "";
+        const coreEnd = trailing.length ? value.length - trailing.length : value.length;
+        const core = value.slice(leading.length, coreEnd);
+        if (exact.has(core)) return `${leading}${exact.get(core)}${trailing}`;
+        return entries.reduce((result, [source, translated]) => {
+          const isTemplateFragment = /^Room\s$/.test(source) || /^The .+\s$/.test(source);
+          return isTemplateFragment ? result.split(source).join(translated) : result;
+        }, value);
+      };
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      let node;
+      while ((node = walker.nextNode())) {
+        if (node.parentElement?.closest("script, style")) continue;
+        node.nodeValue = replace(node.nodeValue);
+      }
+      root.querySelectorAll?.("[aria-label], [title], [alt], [placeholder], [data-complete-label]").forEach((element) => {
+        for (const attribute of ["aria-label", "title", "alt", "placeholder", "data-complete-label"]) {
+          if (element.hasAttribute(attribute)) element.setAttribute(attribute, replace(element.getAttribute(attribute)));
+        }
+      });
+      document.title = replace("How Language Models Work — Escape Room");
+    }
 
     function write(message) {
       if (!debug) return;
@@ -2170,28 +2347,41 @@
     }
 
     function applyInit(payload = {}) {
+      const previousRoom = state.currentRoom;
+      const wasInitialised = Boolean(state.latestInit);
       state.latestInit = payload;
+      state.language = ["en", "zh", "fr", "de"].includes(payload.preferredLanguage) ? payload.preferredLanguage : "en";
+      state.localeContent = payload.localeContent || state.localeContent || {};
+      document.documentElement.lang = state.language === "zh" ? "zh-CN" : state.language;
       state.completed = new Set(payload.completedRooms || []);
       state.crystals = new Set(payload.crystals || []);
       state.finalComplete = Boolean(payload.finalExitCompleted);
-      state.exitPlaced = state.finalComplete ? new Set(rooms.map((room) => room.crystal)) : new Set();
-      state.exitOrder = state.finalComplete ? [...finalConceptOrder] : [];
-      state.exitHint = false;
-      state.exitStage = state.finalComplete ? "fused" : "placing";
-      state.exitFeedback = "";
-      const requestedScreen = ["room-select", "room", "final-exit"].includes(payload.currentScreen) ? payload.currentScreen : "room-select";
+      if (state.finalComplete) {
+        state.exitPlaced = new Set(rooms.map((room) => room.crystal));
+        state.exitOrder = [...finalConceptOrder];
+        state.exitStage = "fused";
+      } else if (!wasInitialised) {
+        state.exitPlaced = new Set();
+        state.exitOrder = [];
+        state.exitHint = false;
+        state.exitStage = "placing";
+        setExitFeedback("");
+      }
+      const requestedScreen = ["room-select", "room", "final-exit", "completion"].includes(payload.currentScreen) ? payload.currentScreen : state.finalComplete ? "completion" : "room-select";
       const requestedRoom = roomById(payload.currentRoom)?.id || null;
-      state.currentScreen = requestedScreen === "room" && requestedRoom ? "room" : requestedScreen === "final-exit" ? "final-exit" : "room-select";
+      state.currentScreen = requestedScreen === "room" && requestedRoom ? "room" : requestedScreen === "final-exit" ? "final-exit" : requestedScreen === "completion" && state.finalComplete ? "completion" : "room-select";
       state.currentRoom = state.currentScreen === "room" ? requestedRoom : null;
       state.currentStep = typeof payload.currentStep === "string" ? payload.currentStep : state.currentScreen === "room-select" ? "hub" : "playing";
-      state.roomData = state.currentRoom ? defaultRoomData(state.currentRoom) : state.roomData;
+      if (state.currentRoom && (previousRoom !== state.currentRoom || !state.roomData || !Object.keys(state.roomData).length)) {
+        state.roomData = defaultRoomData(state.currentRoom);
+      }
       render();
     }
 
     function finishFinalFusion() {
       if (state.exitStage !== "fusing") return;
       state.exitStage = "fused";
-      state.exitFeedback = "Final crystal formed. The Final Lock is now active.";
+      setExitFeedback("exit.fusionComplete");
       fusionTimer = null;
       renderExit();
     }
@@ -2223,7 +2413,12 @@
     }
 
     function updateTop() {
-      $("topProgress").textContent = `${state.crystals.size} / ${rooms.length} crystals`;
+      $("topEyebrow").textContent = message("top.eyebrow");
+      $("topTitle").textContent = message("top.title");
+      $("topMap").textContent = message("common.roomMap");
+      $("topContinue").textContent = message("common.continue");
+      $("topProgress").textContent = message("top.progress", { count: state.crystals.size, total: rooms.length });
+      localise(document.querySelector(".topbar"));
     }
 
     function showScreen(name) {
@@ -2231,8 +2426,9 @@
       mapScreen.classList.toggle("active", name === "room-select");
       roomScreen.classList.toggle("active", name === "room");
       exitScreen.classList.toggle("active", name === "final-exit");
+      completionScreen.classList.toggle("active", name === "completion");
       if (name === "room-select") send("ESCAPE_ROOM_RETURNED_TO_HUB");
-      else send("ESCAPE_ROOM_SCREEN_CHANGED", { currentScreen: name, roomId: state.currentRoom, step: "playing" });
+      else send("ESCAPE_ROOM_SCREEN_CHANGED", { currentScreen: name, roomId: state.currentRoom, step: name === "completion" ? "completion" : "playing" });
     }
 
     function openMap() {
@@ -2270,9 +2466,18 @@
     }
 
     function openExit() {
+      if (state.finalComplete) return openCompletion();
       state.currentRoom = null;
       renderExit();
       showScreen("final-exit");
+    }
+
+    function openCompletion({ focus = false } = {}) {
+      if (!state.finalComplete) return openExit();
+      state.currentRoom = null;
+      renderCompletion();
+      showScreen("completion");
+      if (focus) window.requestAnimationFrame(() => $("completionTitle")?.focus());
     }
 
     function defaultRoomData(id) {
@@ -2284,7 +2489,8 @@
         attempts: 0,
         showHint: false,
         feedbackKind: "",
-        feedback: ""
+        feedbackKey: "",
+        feedbackParams: {}
       };
       if (id === "numbers") return {
         inspected: false,
@@ -2294,7 +2500,8 @@
         attempts: 0,
         showHint: false,
         feedbackKind: "",
-        feedback: ""
+        feedbackKey: "",
+        feedbackParams: {}
       };
       if (id === "context") return {
         inspected: false,
@@ -2304,10 +2511,11 @@
         attempts: 0,
         showHint: false,
         feedbackKind: "",
-        feedback: ""
+        feedbackKey: "",
+        feedbackParams: {}
       };
-      if (id === "connections") return { inspected: false, machineRan: false, selectedOption: "", submitted: false, attempts: 0, showHint: false, feedbackKind: "", feedback: "" };
-      if (id === "prediction") return { inspected: false, predictionRevealed: false, selectedOption: "", submitted: false, attempts: 0, showHint: false, feedbackKind: "", feedback: "" };
+      if (id === "connections") return { inspected: false, machineRan: false, selectedOption: "", submitted: false, attempts: 0, showHint: false, feedbackKind: "", feedbackKey: "", feedbackParams: {} };
+      if (id === "prediction") return { inspected: false, predictionRevealed: false, selectedOption: "", submitted: false, attempts: 0, showHint: false, feedbackKind: "", feedbackKey: "", feedbackParams: {} };
       if (id === "training") return { step: 0, feedback: "" };
       return {};
     }
@@ -2343,9 +2551,11 @@
       renderMap();
       if (state.currentScreen === "room" && state.currentRoom) renderRoom(roomById(state.currentRoom), false, state.currentStep === "complete" || state.currentStep === "completion");
       if (state.currentScreen === "final-exit") renderExit();
+      if (state.currentScreen === "completion") renderCompletion();
       mapScreen.classList.toggle("active", state.currentScreen === "room-select");
       roomScreen.classList.toggle("active", state.currentScreen === "room");
       exitScreen.classList.toggle("active", state.currentScreen === "final-exit");
+      completionScreen.classList.toggle("active", state.currentScreen === "completion");
     }
 
     function renderMap() {
@@ -2364,7 +2574,7 @@
           ${rooms.map((room) => {
             const done = state.completed.has(room.id);
             const unlocked = isUnlocked(room);
-            return `<article class="room-card ${unlocked ? "" : "locked"} ${done ? "completed" : ""}" style="--room:${room.colour}">
+            return `<article class="room-card ${unlocked ? "" : "locked"} ${done ? "completed" : ""}" data-complete-label="Crystal collected" style="--room:${room.colour}">
               <small>Room ${room.number}</small>
               <strong>${room.title}</strong>
               <p>${room.aim}</p>
@@ -2387,6 +2597,7 @@
       mapScreen.querySelectorAll("[data-room]").forEach((button) => button.addEventListener("click", () => openRoom(button.dataset.room, state.completed.has(button.dataset.room))));
       mapScreen.querySelector("[data-action='continue']").addEventListener("click", continueAdventure);
       mapScreen.querySelector("[data-action='exit']").addEventListener("click", openExit);
+      localise(mapScreen);
     }
 
     function renderRoom(room, replay = false, completedView = false) {
@@ -2407,6 +2618,7 @@
         </section>
       `;
       bindRoomEvents(room);
+      localise(roomScreen);
     }
 
     function completionMarkup(room) {
@@ -2556,7 +2768,7 @@
                 <img src="/assets/img/final-challenge/room1/tokeniser-machine.png" alt="">
                 <div>
                   <strong>Verified example</strong>
-                  <p>Here is how the tokenizer used in AI Explorer splits <b>${example.text}</b></p>
+                  <p>Here is how the tokenizer used in LLM Explorer splits <b>${example.text}</b></p>
                   <div class="output-tokens">${example.pieces.map((piece) => `<span class="token example-token">${piece}</span>`).join("")}</div>
                   <p>Different tokenizers may split the same text differently.</p>
                 </div>
@@ -2573,7 +2785,7 @@
               </div>
             `}
           </div>
-          <div class="feedback ${data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : ""}" role="status" aria-live="polite">${data.feedback || "A Token can be a whole word, part of a word, punctuation, or another text piece."}</div>
+          <div class="feedback ${data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : ""}" role="status" aria-live="polite">${roomFeedback(data, "feedback.tokenDefault")}</div>
         </section>
         ${guide(step === 0 ? "Start by checking the door." : step === 1 ? "Run the machine to see a verified tokenizer example." : "Compare the three splits, choose one, then activate the lock. The exact boundaries come from this tokenizer.")}
       </div>`;
@@ -2650,7 +2862,7 @@
               return `<button type="button" role="radio" aria-checked="${selected}" class="numbers-short-choice ${selected ? "selected" : ""} ${data.conceptPassed && concept.id === teaching.correctConceptId ? "correct" : ""}" data-number-concept="${concept.id}">${numbersIcon(icon)}<strong>${shortLabel}</strong></button>`;
             }).join("")}
           </div>
-          <div class="numbers-final-feedback ${feedbackClass}" role="status" aria-live="polite">${data.feedback || "Choose the job performed by the ID."}</div>
+          <div class="numbers-final-feedback ${feedbackClass}" role="status" aria-live="polite">${roomFeedback(data, "feedback.numbersDefault")}</div>
           ${data.conceptPassed ? `<div class="numbers-crystal-ready"><strong>Numbers Crystal ready</strong><p>Exactly — an ID is a lookup label.</p><button type="button" class="numbers-collect" data-action="check">Collect the Numbers Crystal</button></div>` : ""}
         </section>
       </div>`;
@@ -2713,7 +2925,7 @@
           </div>
           ${scanner}
           ${lock}
-          <div class="feedback ${feedbackClass}" role="status" aria-live="polite">${data.feedback || "The door scanner is offline. Inspect the console to find out what it needs."}</div>
+          <div class="feedback ${feedbackClass}" role="status" aria-live="polite">${roomFeedback(data, "feedback.contextDefault")}</div>
         </section>
         ${guide(step === 0 ? "Activate the scanner to reveal which tokens are available right now." : step === 1 ? "The lock only reads the tokens inside the glowing context window." : "The glowing frame shows the context available to the model right now. Now choose the matching group of tokens.")}
       </div>`;
@@ -2756,7 +2968,7 @@
         ${stepStrip(["Inspect console", "Reveal connections", "Decode the pattern"], step)}
         <div class="connection-console"><span class="clue">Connection console</span>${consoleState}</div>
         ${scanner}${lock}
-        <div class="feedback ${feedbackClass}" role="status" aria-live="polite">${data.feedback || "The connection console is offline. Inspect it to find out what the door needs."}</div>
+        <div class="feedback ${feedbackClass}" role="status" aria-live="polite">${roomFeedback(data, "feedback.connectionDefault")}</div>
       </section>${guide(step === 0 ? "Something is feeding information into the locked token console." : step === 1 ? "Activate the scanner to reveal the connection pattern." : "Read the already-shown arrow thicknesses. You do not need to guess which word matters most.")}</div>`;
     }
 
@@ -2801,7 +3013,7 @@
         ${stepStrip(["Inspect console", "Run prediction", "Decode the signal"], step)}
         <div class="prediction-console"><span class="clue">Prediction console</span>${consoleState}</div>
         ${signal}${lock}
-        <div class="feedback ${feedbackClass}" role="status" aria-live="polite">${data.feedback || "The prediction console is offline. Inspect it to find out what signal the door needs."}</div>
+        <div class="feedback ${feedbackClass}" role="status" aria-live="polite">${roomFeedback(data, "feedback.predictionDefault")}</div>
       </section>${guide(step === 0 ? "The locked door needs a next-token signal." : step === 1 ? "Run the prediction machine to reveal the probabilities." : "The probabilities are visible. Read what the machine is actually telling you.")}</div>`;
     }
 
@@ -2857,7 +3069,7 @@
         ${stepStrip(["Inspect console", "Read training records", "Unlock the pattern"], step)}
         <div class="pattern-console"><span class="clue">Training archive console</span>${consoleState}</div>
         ${records}${lock}
-        <div class="feedback ${feedbackClass}" role="status" aria-live="polite">${data.feedback || "The training console is offline. Inspect its records to see how the model learned."}</div>
+        <div class="feedback ${feedbackClass}" role="status" aria-live="polite">${roomFeedback(data, "feedback.patternDefault")}</div>
       </section>${guide(step === 0 ? "The training console is offline. Inspect its records to see how the model learned." : step === 1 ? "The console contains records from earlier training examples. Reveal the later prediction." : "The examples affected what became more likely later. But why?")}</div>`;
     }
 
@@ -3110,23 +3322,20 @@
       const data = state.roomData;
       roomScreen.querySelector("[data-action='inspect']")?.addEventListener("click", () => {
         data.inspected = true;
-        data.feedbackKind = "good";
-        data.feedback = "Good. The tokenizer must split text into Token pieces before the lock can use it.";
+        setRoomFeedback(data, "feedback.tokenInspected", "good");
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "door-inspected" });
       });
       roomScreen.querySelector("[data-action='tokenise']")?.addEventListener("click", () => {
         data.tokenised = true;
-        data.feedbackKind = "good";
-        data.feedback = "This verified example came from the Qwen2.5 tokenizer. Now transfer the idea to a different word.";
+        setRoomFeedback(data, "feedback.tokenised", "good");
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "tokeniser-activated" });
       });
       roomScreen.querySelectorAll("[data-token-option]").forEach((button) => button.addEventListener("click", () => {
         data.selectedOption = button.dataset.tokenOption;
         data.submitted = false;
-        data.feedbackKind = "";
-        data.feedback = "Selection ready. Activate the lock to compare it with the tokenizer.";
+        setRoomFeedback(data, "feedback.tokenSelection", "");
         renderRoom(room);
       }));
       roomScreen.querySelector("[data-action='token-hint']")?.addEventListener("click", () => {
@@ -3155,23 +3364,20 @@
       const data = state.roomData;
       roomScreen.querySelector("[data-action='inspect-prediction']")?.addEventListener("click", () => {
         data.inspected = true;
-        data.feedbackKind = "good";
-        data.feedback = "The machine compares several possible next tokens before the door can respond.";
+        setRoomFeedback(data, "feedback.predictionInspected", "good");
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "prediction-console-inspected" });
       });
       roomScreen.querySelector("[data-action='run-prediction']")?.addEventListener("click", () => {
         data.machineRan = true;
-        data.feedbackKind = "good";
-        data.feedback = "Prediction signal ready. Higher probability means more likely right now, not guaranteed.";
+        setRoomFeedback(data, "feedback.predictionRan", "good");
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "prediction-machine-ran" });
       });
       roomScreen.querySelectorAll("[data-prediction-option]").forEach((button) => button.addEventListener("click", () => {
         data.selectedOption = Number(button.dataset.predictionOption);
         data.submitted = false;
-        data.feedbackKind = "";
-        data.feedback = "Selection ready. Read both the largest probability and the machine note, then unlock the door.";
+        setRoomFeedback(data, "feedback.predictionSelection", "");
         renderRoom(room);
       }));
       roomScreen.querySelector("[data-action='prediction-hint']")?.addEventListener("click", () => {
@@ -3231,23 +3437,20 @@
       const data = state.roomData;
       roomScreen.querySelector("[data-action='inspect-context']")?.addEventListener("click", () => {
         data.inspected = true;
-        data.feedbackKind = "good";
-        data.feedback = "Console inspected. Activate the context scanner to reveal the tokens the lock can read.";
+        setRoomFeedback(data, "feedback.contextInspected", "good");
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "console-inspected" });
       });
       roomScreen.querySelector("[data-action='activate-context-scanner']")?.addEventListener("click", () => {
         data.scannerActive = true;
-        data.feedbackKind = "good";
-        data.feedback = "Scanner active. The glowing frame is the current context window.";
+        setRoomFeedback(data, "feedback.contextScanned", "good");
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "context-scanner-activated" });
       });
       roomScreen.querySelectorAll("[data-context-option]").forEach((button) => button.addEventListener("click", () => {
         data.selectedOption = button.dataset.contextOption;
         data.submitted = false;
-        data.feedbackKind = "";
-        data.feedback = "Selection ready. Check the glowing window boundary, then unlock the door.";
+        setRoomFeedback(data, "feedback.contextSelection", "");
         renderRoom(room);
       }));
       roomScreen.querySelector("[data-action='context-hint']")?.addEventListener("click", () => {
@@ -3260,23 +3463,20 @@
       const data = state.roomData;
       roomScreen.querySelector("[data-action='inspect-connections']")?.addEventListener("click", () => {
         data.inspected = true;
-        data.feedbackKind = "good";
-        data.feedback = "The lock combines information from several token positions. But the connections are not all equally strong.";
+        setRoomFeedback(data, "feedback.connectionInspected", "good");
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "connection-console-inspected" });
       });
       roomScreen.querySelector("[data-action='activate-connection-scanner']")?.addEventListener("click", () => {
         data.scannerActive = true;
-        data.feedbackKind = "good";
-        data.feedback = "Scanner active. Follow each arrow toward the focus token, then compare their thicknesses.";
+        setRoomFeedback(data, "feedback.connectionScanned", "good");
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "connection-scanner-activated" });
       });
       roomScreen.querySelectorAll("[data-connection-option]").forEach((button) => button.addEventListener("click", () => {
         data.selectedOption = button.dataset.connectionOption;
         data.submitted = false;
-        data.feedbackKind = "";
-        data.feedback = "Selection ready. Compare the shown arrow thicknesses, then unlock the door.";
+        setRoomFeedback(data, "feedback.connectionSelection", "");
         renderRoom(room);
       }));
       roomScreen.querySelector("[data-action='connection-hint']")?.addEventListener("click", () => {
@@ -3296,23 +3496,20 @@
       const data = state.roomData;
       roomScreen.querySelector("[data-action='inspect-training-console']")?.addEventListener("click", () => {
         data.inspected = true;
-        data.feedbackKind = "good";
-        data.feedback = "Good. The console contains records from earlier training examples.";
+        setRoomFeedback(data, "feedback.patternInspected", "good");
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "training-console-inspected" });
       });
       roomScreen.querySelector("[data-action='reveal-pattern-prediction']")?.addEventListener("click", () => {
         data.predictionRevealed = true;
-        data.feedbackKind = "good";
-        data.feedback = "The examples affected what became more likely later. Now explain why.";
+        setRoomFeedback(data, "feedback.patternRevealed", "good");
         renderRoom(room);
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "training-records-revealed" });
       });
       roomScreen.querySelectorAll("[data-pattern-option]").forEach((button) => button.addEventListener("click", () => {
         data.selectedOption = Number(button.dataset.patternOption);
         data.submitted = false;
-        data.feedbackKind = "";
-        data.feedback = "Selection ready. Use the records and later prediction to activate the lock.";
+        setRoomFeedback(data, "feedback.patternSelection", "");
         renderRoom(room);
       }));
       roomScreen.querySelector("[data-action='pattern-hint']")?.addEventListener("click", () => {
@@ -3340,85 +3537,69 @@
       const data = state.roomData;
       if (room.id === "token") {
         if (!data.selectedOption) {
-          data.feedbackKind = "bad";
-          data.feedback = "Choose one Token split before activating the lock.";
+          setRoomFeedback(data, "feedback.tokenChoose", "bad");
         } else if (data.selectedOption === tokenRoomTeachingData.challenge.correctOptionId) {
           return roomComplete(room);
         } else {
           data.submitted = true;
           data.attempts += 1;
-          data.feedbackKind = "bad";
-          data.feedback = "Not quite. There is no single split that every tokenizer must use. Different tokenizers can split the same text in different ways.";
+          setRoomFeedback(data, "feedback.tokenIncorrect", "bad");
         }
       }
       if (room.id === "numbers") {
         if (!data.scannerActive) {
-          data.feedbackKind = "bad";
-          data.feedback = "Inspect the console and activate the context scanner before opening the door.";
+          setRoomFeedback(data, "feedback.contextNeedScanner", "bad");
         } else if (!data.selectedOption) {
-          data.feedbackKind = "bad";
-          data.feedback = "Choose the group of tokens inside the glowing context window.";
+          setRoomFeedback(data, "feedback.contextChoose", "bad");
         } else if (data.selectedOption === "inside") {
           return roomComplete(room);
         } else {
           data.submitted = true;
           data.attempts += 1;
-          data.feedbackKind = "bad";
-          data.feedback = "Not quite. Look at the edges of the glowing context window. Only the tokens inside that frame are available in this example.";
+          setRoomFeedback(data, "feedback.contextIncorrect", "bad");
         }
       }
       if (room.id === "context") {
         if (!data.scannerActive) {
-          data.feedbackKind = "bad";
-          data.feedback = "Inspect the console and activate the connection scanner before opening the door.";
+          setRoomFeedback(data, "feedback.connectionNeedScanner", "bad");
         } else if (!data.selectedOption) {
-          data.feedbackKind = "bad";
-          data.feedback = "Choose the token with the thickest arrow pointing toward opened.";
+          setRoomFeedback(data, "feedback.connectionChoose", "bad");
         } else if (data.selectedOption === "reader") {
           return roomComplete(room);
         } else {
           data.submitted = true;
           data.attempts += 1;
-          data.feedbackKind = "bad";
-          data.feedback = "Not quite. You do not need to guess which word seems most important. Compare the arrow thicknesses in the connection pattern.";
+          setRoomFeedback(data, "feedback.connectionIncorrect", "bad");
         }
       }
       if (room.id === "connections") {
         if (!data.machineRan) {
-          data.feedbackKind = "bad";
-          data.feedback = "Inspect the console and run the prediction machine before opening the door.";
+          setRoomFeedback(data, "feedback.predictionNeedMachine", "bad");
         } else if (data.selectedOption === "") {
-          data.feedbackKind = "bad";
-          data.feedback = "Choose the statement that best matches the displayed prediction signal.";
+          setRoomFeedback(data, "feedback.predictionChoose", "bad");
         } else if (data.selectedOption === 1) {
           data.correctSolved = true;
-          data.feedbackKind = "good";
-          data.feedback = "Correct! “book” has the highest probability shown, so it is currently the most likely option. But a higher probability does not guarantee that it will be chosen.";
+          setRoomFeedback(data, "feedback.predictionCorrect", "good");
           renderRoom(room);
           return roomComplete(room);
         } else {
           data.submitted = true;
           data.attempts += 1;
-          data.feedbackKind = "bad";
-          data.feedback = "Not quite. Look at both parts of the clue: 46% makes “book” the most likely option shown, but probability is not a guarantee.";
+          setRoomFeedback(data, "feedback.predictionIncorrect", "bad");
         }
       }
       if (room.id === "prediction") {
         if (!data.predictionRevealed) {
-          data.feedbackKind = "bad";
-          data.feedback = "Inspect the training console and reveal the later prediction before opening the lock.";
+          setRoomFeedback(data, "feedback.patternNeedPrediction", "bad");
         } else if (data.selectedOption === "") {
-          data.feedbackKind = "bad";
-          data.feedback = "Choose the explanation that connects repeated examples, learned patterns and later predictions.";
+          setRoomFeedback(data, "feedback.patternChoose", "bad");
         } else if (data.selectedOption === 1) {
-          data.feedbackKind = "good";
-          data.feedback = "Pattern restored. Repeated training examples can contribute to learned patterns that influence later predictions.";
+          setRoomFeedback(data, "feedback.patternCorrect", "good");
           return roomComplete(room);
         } else {
           data.submitted = true;
           data.attempts += 1;
-          data.feedbackKind = "bad";
-          data.feedback = "The engine stays locked. One example does not become a stored answer. Think about what repeated training examples can change over time.";
+          setRoomFeedback(data, "feedback.patternIncorrect", "bad");
         }
       }
       if (room.id === "training") {
@@ -3426,6 +3607,43 @@
         data.feedback = "Complete each part of the training loop before collecting the crystal.";
       }
       renderRoom(room);
+    }
+
+    function renderCompletion() {
+      completionScreen.innerHTML = `<section class="completion-epilogue" aria-labelledby="completionTitle">
+        <div class="completion-hero">
+          <div class="completion-energy" aria-hidden="true">
+            <img class="completion-final-crystal" src="/assets/img/final-challenge/crystals/final-multicolour-crystal.svg" alt="">
+            <img class="completion-guide" src="/assets/img/final-challenge/room1/guide-robot.png" alt="">
+          </div>
+          <div class="completion-copy">
+            <span class="clue">${message("completion.eyebrow")}</span>
+            <h1 id="completionTitle" tabindex="-1">${message("completion.title")}</h1>
+            <p>${message("completion.intro")}</p>
+            <p>${message("completion.summary")}</p>
+            <div class="completion-guide-line">${message("completion.guide")}</div>
+          </div>
+        </div>
+        <section class="completion-recap" aria-labelledby="completionRecapTitle">
+          <h2 id="completionRecapTitle">${message("completion.recapTitle")}</h2>
+          <div class="completion-concepts">
+            ${completionConcepts.map((concept) => {
+              const room = roomById(concept.room);
+              return `<article class="completion-concept" style="--room:${finalCrystalColour(room)}">
+                <img src="${crystalAsset(room)}" alt="">
+                <strong>${message(`completion.concepts.${concept.id}.title`)}</strong>
+                <p>${message(`completion.concepts.${concept.id}.body`)}</p>
+              </article>`;
+            }).join("")}
+          </div>
+        </section>
+        <div class="completion-actions">
+          <button type="button" class="primary-return" data-completion-action="return">${message("completion.return")}</button>
+          <button type="button" class="secondary" data-completion-action="replay">${message("completion.replay")}</button>
+        </div>
+      </section>`;
+      completionScreen.querySelector("[data-completion-action='return']").addEventListener("click", () => send("ESCAPE_ROOM_NAVIGATE", { route: "missions" }));
+      completionScreen.querySelector("[data-completion-action='replay']").addEventListener("click", () => send("ESCAPE_ROOM_REPLAY", {}));
     }
 
     function renderExit() {
@@ -3446,7 +3664,7 @@
       const leadText = exitComplete
         ? "Review mode: the exit is already open. Replay the final lock if you want to solve it again."
         : allDone
-          ? "Combine the five crystals, then rebuild one learning-to-prediction path."
+          ? "Combine the five crystals, then Rebuild the learning-to-prediction path."
           : "Collect all five room crystals before opening the final exit.";
       const consoleTitle = exitComplete ? "Final lock solved" : puzzleUnlocked ? "Final Lock" : fusionActive ? "Final crystal is forming..." : "Final Lock";
       const consoleInstruction = exitComplete
@@ -3549,8 +3767,9 @@
             </div>
           </section>
         </div>
-        <div class="feedback ${finalReady || state.finalComplete ? "good" : "bad"}">${state.finalComplete ? "Final lock solved. Training happened earlier; during use, tokens, context and connections lead to one next-token prediction." : state.exitFeedback || (finalReady ? "The order is correct. Solve the Final Lock." : fusionActive ? "Final crystal is forming..." : puzzleUnlocked ? "Put the five ideas in order to solve the Final Lock." : allDone ? "Place all five crystals around the model door." : "The final room needs every room crystal.")}</div>
+        <div class="feedback ${finalReady || state.finalComplete ? "good" : "bad"}">${state.finalComplete ? message("exit.complete") : exitFeedback() || (finalReady ? message("exit.ready") : fusionActive ? message("exit.forming") : puzzleUnlocked ? message("exit.orderPrompt") : allDone ? message("exit.placePrompt") : message("exit.needsCrystals"))}</div>
       </section>`;
+      localise(exitScreen);
       if (fusionActive) startFinalFusion();
       exitScreen.querySelector("[data-action='map']").addEventListener("click", openMap);
       const replayButton = exitScreen.querySelector("[data-action='replay-final']");
@@ -3560,13 +3779,13 @@
         state.exitPlaced = new Set();
         state.exitOrder = [];
         state.exitHint = false;
-        state.exitFeedback = "Final lock reset. Place the five crystals, then rebuild the path.";
+        setExitFeedback("exit.reset");
         renderExit();
       });
       const clearButton = exitScreen.querySelector("[data-action='clear-final']");
       if (clearButton) clearButton.addEventListener("click", () => {
         state.exitOrder = [];
-        state.exitFeedback = "Cards cleared. Rebuild the learning-to-prediction path.";
+        setExitFeedback("exit.cardsCleared");
         renderExit();
       });
       const hintButton = exitScreen.querySelector("[data-action='hint-final']");
@@ -3581,9 +3800,7 @@
         if (state.exitPlaced.size === rooms.length && state.exitStage === "placing") {
           state.exitStage = "fusing";
         }
-        state.exitFeedback = state.exitPlaced.size === rooms.length
-          ? "Five crystals placed. Fusion sequence started."
-          : `${state.exitPlaced.size} / ${rooms.length} crystals placed. Keep powering the Language Model Door.`;
+        setExitFeedback(state.exitPlaced.size === rooms.length ? "exit.fusionStarted" : "exit.placedProgress", { count: state.exitPlaced.size, total: rooms.length });
         if (!state.exitPlaced.size) {
           state.exitOrder = [];
         }
@@ -3637,7 +3854,7 @@
         if (destination !== null) {
           if (source === destination) return;
           if (source === null && target[destination]) {
-            state.exitFeedback = "That slot already has a card. Drag the card to swap, or choose an empty slot.";
+            setExitFeedback("exit.slotOccupied");
             renderExit();
             return;
           }
@@ -3651,9 +3868,7 @@
           target[emptyIndex] = piece;
         }
 
-        state.exitFeedback = Array.from({ length: limit }, (_, index) => target[index]).filter(Boolean).length === limit
-          ? "All five slots are filled. Check the order, then solve the Final Lock."
-          : "Card added to a slot. Keep filling the empty slots.";
+        setExitFeedback(Array.from({ length: limit }, (_, index) => target[index]).filter(Boolean).length === limit ? "exit.slotsFull" : "exit.cardPlaced");
         renderExit();
       };
 
@@ -3698,13 +3913,13 @@
         const payload = readExitDragPayload(event);
         activeExitDrag = null;
         if (!payload) {
-          state.exitFeedback = "I could not read that card. Try dragging it again, or click it instead.";
+          setExitFeedback("exit.unreadableCard");
           renderExit();
           return;
         }
         if (payload.kind !== boardKind) {
           if (visualTarget) visualTarget.classList.add("drop-error");
-          state.exitFeedback = "Drop that card inside the Final Lock slots.";
+          setExitFeedback("exit.wrongDropArea");
           renderExit();
           return;
         }
@@ -3902,7 +4117,7 @@
               const target = exitTarget(payload.kind);
               if (target[payload.fromIndex] === payload.piece) {
                 target[payload.fromIndex] = undefined;
-                state.exitFeedback = "Card removed. Try the order again.";
+                setExitFeedback("exit.cardRemoved");
                 renderExit();
               }
             }
@@ -3917,12 +4132,12 @@
           activeExitDrag = null;
           lastExitPointerTarget = null;
           if (!target) {
-            state.exitFeedback = "Drop the card onto a slot or inside the matching console.";
+            setExitFeedback("exit.dropOnSlot");
             renderExit();
             return;
           }
           if (target.kind !== payload.kind) {
-            state.exitFeedback = "Drop that card inside the Final Lock slots.";
+            setExitFeedback("exit.wrongDropArea");
             renderExit();
             return;
           }
@@ -3995,7 +4210,7 @@
           const index = Number(button.dataset.index);
           if (!target[index]) return;
           target[index] = undefined;
-          state.exitFeedback = "Card removed. Try the order again.";
+          setExitFeedback("exit.cardRemoved");
           renderExit();
         });
         button.addEventListener("pointerdown", (event) => {
@@ -4056,26 +4271,32 @@
       exitScreen.querySelector("[data-action='complete']").addEventListener("click", () => {
         if (state.finalComplete) return;
         if (!puzzleUnlocked) {
-          state.exitFeedback = fusionActive ? "Wait for the final crystal to form." : "Place every crystal around the Language Model Door first.";
+          setExitFeedback(fusionActive ? "exit.waitFusion" : "exit.placeAllFirst");
           renderExit();
           return;
         }
         if (!conceptReady) {
-          state.exitFeedback = "Fill every empty slot before solving the Final Lock.";
+          setExitFeedback("exit.fillSlots");
           renderExit();
           return;
         }
         if (!conceptCorrect) {
-          state.exitFeedback = "The final lock is still closed. Check the order and try again.";
+          setExitFeedback("exit.incorrectOrder");
           renderExit();
           return;
         }
         state.finalComplete = true;
         state.exitPlaced = new Set(rooms.map((room) => room.crystal));
         state.exitOrder = [...finalConceptOrder];
-        state.exitFeedback = "";
+        setExitFeedback("");
         send("ESCAPE_ROOM_COMPLETE", {});
         renderExit();
+        if (completionTimer) window.clearTimeout(completionTimer);
+        const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+        completionTimer = window.setTimeout(() => {
+          completionTimer = null;
+          openCompletion({ focus: true });
+        }, reducedMotion ? 80 : 700);
       });
     }
 
@@ -4093,13 +4314,15 @@
       if (data.type === "ESCAPE_ROOM_OPEN_FINAL_EXIT") openExit();
       if (data.type === "ESCAPE_ROOM_OPEN_ROOM" || data.type === "ESCAPE_ROOM_REPLAY_ROOM") openRoom(data.payload?.roomId || "token", Boolean(data.payload?.replay));
       if (data.type === "ESCAPE_ROOM_RESET") {
+        if (completionTimer) window.clearTimeout(completionTimer);
+        completionTimer = null;
         resetFinalFusion();
         state.completed.clear();
         state.crystals.clear();
         state.exitPlaced.clear();
         state.exitOrder = [];
         state.exitHint = false;
-        state.exitFeedback = "";
+        setExitFeedback("");
         state.finalComplete = false;
         openMap();
       }

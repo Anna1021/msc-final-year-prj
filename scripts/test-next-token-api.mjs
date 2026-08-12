@@ -18,6 +18,10 @@ const predictor = async (request) => {
       { token_id: 5, raw_token: "ing", display_token: "ing", probability: 0.04 }
     ],
     selected: { token_id: 1, raw_token: " the", display_token: "␠the", probability: 0.42 },
+    input_token_ids: [101],
+    next_input_token_ids: [101, 1],
+    decoded_text: request.text,
+    next_decoded_text: `${request.text} the`,
     is_eos: false,
     model: { id: "test-model", revision: "fixed-test-revision" }
   };
@@ -42,8 +46,8 @@ try {
   const tokenizedBody = await tokenized.json();
   assert.equal(tokenizedBody.decoded, tokenizedBody.text, "the live tokenizer round-trips the learner text exactly");
   assert.equal(tokenizedBody.count, tokenizedBody.ids.length);
-  assert.equal(tokenizedBody.checkpoint, "onnx-community/SmolLM2-135M-Instruct-ONNX");
-  assert.deepEqual(tokenizedBody.ids, [20348,1565,416,20820,9624,5014,30]);
+  assert.equal(tokenizedBody.checkpoint, "onnx-community/Qwen2.5-0.5B");
+  assert.deepEqual(tokenizedBody.ids, [14465,2412,646,89600,3950,7923,13]);
   assert.equal(getModelServiceStats().tokenizerLoaded, true);
   assert.equal(getModelServiceStats().modelLoaded, false, "Mission 1 loads only the tokenizer, not model weights");
   assert.equal((await fetch(`${base}/api/tokenize`, { method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({ text:"" }) })).status, 400);
@@ -62,13 +66,15 @@ try {
   assert.equal(body.candidates[0].probability, 0.42);
   assert.deepEqual(body.candidates.map(candidate => candidate.probability), [0.42, 0.21, 0.12, 0.08, 0.04]);
   assert.equal(body.selected.token_id, body.candidates[0].token_id);
+  assert.deepEqual(body.next_input_token_ids, [101, 1]);
   assert.equal(requests.length, 1);
 
   for (const [payload, expected] of [
     [{ text:"", temperature:1, top_k:5, mode:"greedy" }, 400],
     [{ text:"hello", temperature:0.1, top_k:5, mode:"greedy" }, 400],
     [{ text:"hello", temperature:1, top_k:99, mode:"greedy" }, 400],
-    [{ text:"hello", temperature:1, top_k:5, mode:"invented" }, 400]
+    [{ text:"hello", temperature:1, top_k:5, mode:"invented" }, 400],
+    [{ text:"hello", input_token_ids:[1, -2], temperature:1, top_k:5, mode:"greedy" }, 400]
   ]) {
     const response = await fetch(`${base}/api/next-token`, { method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(payload) });
     assert.equal(response.status, expected);

@@ -1,4 +1,5 @@
 {
+  "skipQuiz": "Quiz überspringen",
   "shell": {
     "backToLearn": "Zurück zum Lernen",
     "lessonCount": "Lektion 5 von 5",
@@ -8,7 +9,7 @@
     "next": "Weiter",
     "nextChallenge": "Weiter: Abschlussaufgabe",
     "incomplete": "Lernaktivitäten abschließen",
-    "robotAlt": "Roboter in der Trainingswerkstatt"
+    "robotAlt": "Roboter-Guide in der Trainingswerkstatt"
   },
   "navigation": {
     "page2Title": "Muster lernen, nicht eine Antwort speichern",

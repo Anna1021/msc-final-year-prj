@@ -9,11 +9,11 @@ server.listen(0, "127.0.0.1");
 await once(server, "listening");
 const base = process.env.AI_EXPLORER_TEST_URL || `http://127.0.0.1:${server.address().port}`;
 
-async function predict(text, temperature = 1, session = "live-sequential") {
+async function predict(text, temperature = 1, session = "live-sequential", inputTokenIds = null) {
   const response = await fetch(`${base}/api/next-token`, {
     method:"POST",
     headers:{ "Content-Type":"application/json", "X-AI-Explorer-Session":session },
-    body:JSON.stringify({ text, temperature, mode:"greedy", top_k:5 })
+    body:JSON.stringify({ text, input_token_ids:inputTokenIds, temperature, mode:"greedy", top_k:5 })
   });
   if (!response.ok) assert.fail(`Prediction service returned ${response.status}: ${await response.text()}`);
   const result = await response.json();
@@ -29,13 +29,15 @@ async function predict(text, temperature = 1, session = "live-sequential") {
 }
 
 let text = "The little robot opened";
+let inputTokenIds = null;
 const generations = [];
 for (let step = 1; step <= 100; step += 1) {
-  const result = await predict(text);
+  const result = await predict(text, 1, "live-sequential", inputTokenIds);
   generations.push({ step, before:text, selected:result.selected, candidates:result.candidates });
-  const next = text + result.selected.raw_token;
-  assert.ok(next.startsWith(text), "raw Token text is appended without destructive cleanup");
-  text = next;
+  assert.deepEqual(result.next_input_token_ids, [...result.input_token_ids, result.selected.token_id], "the selected ID is appended without decode/encode drift");
+  assert.ok(!result.next_decoded_text.includes("�"), "full-sequence display text contains no broken replacement-character decoding");
+  text = result.next_decoded_text;
+  inputTokenIds = result.next_input_token_ids;
   if (result.is_eos) break;
 }
 assert.ok(generations.length >= 2);

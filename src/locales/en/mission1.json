@@ -146,7 +146,7 @@
     "newChallenge": "New challenge",
     "restartActivity": "Restart activity",
     "explore": "Explore another example",
-    "aiLab": "Continue exploring in AI Lab",
+    "aiLab": "Continue exploring in LLM Lab",
     "restartMission": "Restart Lesson",
     "previous": "Previous",
     "nextMission": "Next: Lesson 2"
@@ -165,7 +165,7 @@
     "prototypeEndThree": "You have reached the end of this three-page prototype.",
     "prototypeEndFive": "You rebuilt real token pieces.",
     "prototypeSafe": "No lesson progress or completion state has been changed.",
-    "robotAlt": "Friendly AI Explorer robot reading",
+    "robotAlt": "Friendly guide robot reading",
     "experimentFlowLabel": "Write, tokenize, and discover",
     "writeStep": "Write",
     "discoverStep": "Discover",

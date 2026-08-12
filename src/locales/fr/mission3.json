@@ -8,7 +8,7 @@
     "next": "Suivant",
     "nextLesson": "Suivant : Leçon 4",
     "incomplete": "Activités incomplètes",
-    "robotAlt": "Robot AI Explorer montrant les connexions entre jetons"
+    "robotAlt": "Robot-guide montrant les connexions entre jetons"
   },
   "labels": {
     "insideContext": "Jetons dans la fenêtre de contexte",
@@ -206,12 +206,12 @@
   "page5": {
     "presets": {
       "A": {
-        "text": "Le robot a pris le livre car il avait besoin des informations.",
-        "tokens": "Le|robot|a|pris|le|livre|car|il|avait|besoin|des|informations|."
+        "text": "Le lecteur a pris le livre car il avait besoin des informations.",
+        "tokens": "Le|lecteur|a|pris|le|livre|car|il|avait|besoin|des|informations|."
       },
       "B": {
-        "text": "Parce qu’il avait besoin des informations, le robot a pris le livre.",
-        "tokens": "Parce qu’|il|avait|besoin|des|informations|,|le|robot|a|pris|le|livre|."
+        "text": "Parce qu’il avait besoin des informations, le lecteur a pris le livre.",
+        "tokens": "Parce qu’|il|avait|besoin|des|informations|,|le|lecteur|a|pris|le|livre|."
       }
     },
     "title": "À toi de jouer : relie les jetons",

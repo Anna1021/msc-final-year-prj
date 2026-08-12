@@ -146,7 +146,7 @@
     "newChallenge": "Nouveau défi",
     "restartActivity": "Recommencer l’activité",
     "explore": "Explorer un autre exemple",
-    "aiLab": "Continuer dans le labo IA",
+    "aiLab": "Continuer dans le labo LLM",
     "restartMission": "Recommencer la mission",
     "previous": "Précédent",
     "nextMission": "Suivant : mission 2"
@@ -165,7 +165,7 @@
     "prototypeEndThree": "Tu as atteint la fin de ce prototype de trois pages.",
     "prototypeEndFive": "Tu as reconstruit de vrais tokens.",
     "prototypeSafe": "Aucune progression ni mission débloquée n’a été modifiée.",
-    "robotAlt": "Robot AI Explorer en train de lire",
+    "robotAlt": "Robot-guide en train de lire",
     "experimentFlowLabel": "Écrire, tokeniser et découvrir",
     "writeStep": "Écrire",
     "discoverStep": "Découvrir",

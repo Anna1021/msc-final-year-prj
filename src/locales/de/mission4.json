@@ -1,4 +1,5 @@
 {
+  "skipQuiz": "Quiz überspringen",
   "shell": {
     "backToLearn": "Zurück zum Lernpfad",
     "lessonCount": "Lektion 4 von 5",
@@ -8,7 +9,7 @@
     "next": "Weiter",
     "nextLesson": "Weiter: Lektion 5",
     "incomplete": "Lektionsaktivitäten unvollständig",
-    "robotAlt": "AI-Explorer-Vorhersageroboter"
+    "robotAlt": "Roboter-Guide neben der Vorhersagelektion"
   },
   "labels": {
     "reviewedProbabilities": "Geprüfte Lernwahrscheinlichkeiten — keine Live-Qwen-Ausgabe",
@@ -160,6 +161,7 @@
       "candidateSubtitle": "Wahrscheinlichste Vorhersagen des echten Modells",
       "returnLatest": "Zum neuesten Schritt zurückkehren",
       "selected": "ausgewählt",
+      "byteFragment": "Byte-Fragment · ID {{id}}",
       "candidateEmpty": "Starte das Modell, um fünf echte Wahrscheinlichkeiten für das nächste Token zu sehen.",
       "topFive": "Die ersten 5 werden gezeigt. Viele weitere Tokens können ebenfalls kleinere Wahrscheinlichkeiten haben.",
       "currentContext": "Aktueller Kontext",
@@ -187,7 +189,7 @@
       "textBeginning": "Textanfang",
       "predictNext": "Nächstes Token vorhersagen",
       "tryExample": "Probiere ein Beispiel:",
-      "defaultPrompt": "Der kleine Roboter öffnete",
+      "defaultPrompt": "Der Schüler öffnete",
       "starters": {
         "cat": "Die Katze saß auf",
         "weather": "Das Wetter fühlt sich heute",
@@ -209,14 +211,14 @@
       "modelErrorTitle": "Das Modell kann gerade nicht antworten.",
       "modelErrorBody": "Bitte versuche die Vorhersage erneut.",
       "tryAgain": "Erneut versuchen",
-      "temperature": "Temperatur",
+      "temperature": "Temperatur (Zufälligkeit)",
       "temperatureAria": "Temperatur {{value}}. {{description}}",
       "temperatureFocused": "Die stärksten Optionen treten deutlicher hervor.",
       "temperatureSpread": "Mehr Optionen erhalten merkliche Chancen.",
       "temperatureBalanced": "Ausgewogene Wahrscheinlichkeitsverteilung.",
-      "moreFocused": "Fokussierter",
-      "moreSpread": "Breiter gestreut",
-      "temperatureApplies": "Gilt für die nächste echte Vorhersage."
+      "moreFocused": "Niedriger = besser vorhersagbar.",
+      "moreSpread": "Höher = abwechslungsreicher.",
+      "temperatureApplies": "Die Temperatur steuert, wie zufällig das Modell das nächste Token auswählt."
     }
   },
   "page5": {

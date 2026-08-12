@@ -1,4 +1,5 @@
 {
+  "skipQuiz": "Passer le quiz",
   "shell": {
     "backToLearn": "Retour à l'apprentissage",
     "lessonCount": "Leçon 5 sur 5",
@@ -8,7 +9,7 @@
     "next": "Suivant",
     "nextChallenge": "Suivant : défi final",
     "incomplete": "Termine les activités",
-    "robotAlt": "Robot de l'atelier d'entraînement"
+    "robotAlt": "Robot-guide dans l'atelier d'entraînement"
   },
   "navigation": {
     "page2Title": "Apprendre des motifs, pas stocker une réponse",

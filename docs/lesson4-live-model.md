@@ -13,20 +13,20 @@ they are never used as fallback output for the live page.
 |---|---|---|---|
 | DistilGPT2 | Small, established causal LM | Older English-only model; the reviewed school prompts produced less useful continuation quality than the selected model during the prior architecture audit | Not selected |
 | SmolLM2 135M base | Small modern base model | Base checkpoint is less consistently usable for the short, learner-facing starters | Not selected |
-| SmolLM2 135M Instruct | Small CPU-deployable model; coherent completions on the reviewed starters | Still needs server memory and a first-load warm-up | Selected and validated |
-| Qwen2.5 0.5B | Stronger and multilingual | Roughly four times the parameter count; materially higher RAM, download, and CPU latency for a one-Token educational endpoint | Not required after SmolLM2 passed |
+| SmolLM2 135M Instruct | Small CPU-deployable model | Primarily English; raw Chinese, French and German continuations degraded quickly | Replaced |
+| Qwen2.5 0.5B base | Multilingual raw-prefix continuation across the four lesson languages | Larger download and memory footprint | Selected and validated |
 
-The chosen checkpoint is not presented as the largest or “smartest” model. It
-was selected because it passed real arbitrary-prompt and repeated-generation
-checks while remaining realistic for a persistent CPU service.
+The base checkpoint is used directly for raw next-Token completion. No chat
+template, hidden instruction, system prompt, or language-specific model routing
+is applied.
 
 ## Selected checkpoint
 
-- Repository: `onnx-community/SmolLM2-135M-Instruct-ONNX`
-- Revision: `b8a5c0f183b78c55955a5364f610c36668b5e681`
-- Upstream family: `HuggingFaceTB/SmolLM2-135M-Instruct`
+- Repository: `onnx-community/Qwen2.5-0.5B`
+- Revision: `bae5ceaee026f0d0592858b2bd27645a06f19c42`
+- Upstream family: `Qwen/Qwen2.5-0.5B` (base)
 - Runtime: `@huggingface/transformers` 3.8.1 on Node CPU
-- Graph: q4 ONNX causal-language-model inference graph
+- Graph: q4 ONNX causal-language-model inference graph (about 786 MB)
 - Licence: Apache-2.0
 
 ONNX Runtime executes an exported inference graph and has no training mode.
@@ -39,16 +39,20 @@ do not apply; no gradient or training path exists in this service.
 2. The causal model performs one forward pass.
 3. The final sequence position is selected from the logits tensor.
 4. Temperature is applied as `logits / temperature`.
-5. A numerically stable softmax is calculated across all 49,152 vocabulary
+5. A numerically stable softmax is calculated across all 151,936 vocabulary
    entries.
 6. Five absolute top probabilities are returned without renormalising them.
 7. Greedy mode chooses the full-distribution argmax; sampling support uses the
    full distribution.
-8. The frontend appends `selected.raw_token` and sends the new text for the next
-   real forward pass.
+8. The service returns the selected Token ID and the complete next ID sequence.
+   Later forward passes reuse those IDs directly, avoiding decode/re-encode drift.
+9. Learner-visible text is derived by the matching tokenizer decoding the full
+   sequence. A candidate that is only part of a UTF-8 byte sequence is labelled
+   as a byte fragment until the accumulated IDs decode to readable Unicode.
 
 Leading spaces, punctuation, subwords, newline, tab, and special Tokens are not
-trimmed from `raw_token`. `display_token` is a separate learner-readable value.
+trimmed from decoded contributions. Technical token pieces remain separate from
+the context-aware learner-readable `display_token` value.
 
 ## Persistent service behaviour
 
@@ -60,13 +64,17 @@ request size and fields, and never substitutes fake candidates after failure.
 
 ## Validation evidence
 
-- Three unrelated prompts produced different real Token IDs/distributions.
-- `The little robot opened` produced raw Token ` the` (ID 260, 58.97%).
-- Appending it and rerunning produced raw Token ` door` (ID 6644, 46.87%).
-- Temperature 0.4 concentrated a tested leading probability to about 80.29%; at
-  1.6 it spread to about 3.08%.
+- EN, ZH, FR and DE raw prefixes produced readable, context-specific candidates.
+- All seven 15-Token smoke runs retained valid Unicode and exact cumulative IDs.
+- The four Chinese prompts had 0% repeated bigrams and trigrams over 15 greedy
+  Tokens. The former SmolLM comparison produced corruption and up to 64.3%
+  repeated bigrams on the same prompts.
+- Local q4 cold loading took about 29.7 seconds. The first warmed-model forward
+  pass took about 93–116 ms; later 15-Token smoke passes averaged roughly
+  105–128 ms per Token.
+- The local Node process used about 2.6 GB RSS. The target Space is CPU Basic,
+  so this is within its 16 GB memory allocation.
 - A real sequential HTTP run generated 100 Tokens with one model load.
-- Concurrent requests from distinct sessions completed through the queue.
 
 ## Deployment
 

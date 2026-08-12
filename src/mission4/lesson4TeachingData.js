@@ -21,8 +21,8 @@ export const SCORE_PROBABILITY_CANDIDATES = Object.freeze([
 
 export const REVIEWED_STORIES = Object.freeze([
   {
-    id:"robot",
-    starter:"A small robot opened the",
+    id:"reader",
+    starter:"A curious reader opened the",
     sets:[
       [{token:"door",probability:45},{token:"box",probability:28},{token:"window",probability:18},{token:"book",probability:9}],
       [{token:"and",probability:38},{token:".",probability:32},{token:"with",probability:18},{token:"because",probability:12}],

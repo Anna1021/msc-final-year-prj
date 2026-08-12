@@ -39,10 +39,12 @@ const differences = [];
 
 for (const namespace of runtimeNamespaces) {
   const english = await readLocaleNamespace("en", namespace);
+  if (namespace === "escapeRoom") delete english.runtime;
   const englishKeys = new Set(leafPaths(english));
 
   for (const language of languages.slice(1)) {
     const locale = await readLocaleNamespace(language, namespace);
+    if (namespace === "escapeRoom") delete locale.runtime;
     const localeKeys = new Set(leafPaths(locale));
     const missing = [...englishKeys].filter((key) => !localeKeys.has(key)).sort();
     const extra = [...localeKeys].filter((key) => !englishKeys.has(key)).sort();

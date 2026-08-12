@@ -20,7 +20,7 @@ function M2Scene({ kind, instruction, children }) {
   const scenes = { prompt:[Layers3,"Prompt-building workbench"], candidates:[Route,"Candidate race"], trials:[Shuffle,"Repeated-trial board"], temperature:[Gauge,"Chance-shaping control"], repeat:[Route,"Token story strip"], summary:[Search,"Mission discovery map"] };
   const [SceneIcon,label]=scenes[kind]||scenes.prompt;
   const robots={prompt:"/assets/img/mission5-robot-training.png",candidates:"/assets/img/missions-robot-target.png",trials:"/assets/img/mission5-robot-training.png",temperature:"/assets/img/mission-robot-pointing.png",repeat:"/assets/img/mission5-robot-training.png",summary:"/assets/img/mission-robot-reading.png"};
-  return <PlayfulWorkbench variant="blue" label={label} instruction={instruction} robotSrc={robots[kind]} robotAlt="AI Explorer robot demonstrating this activity" icon={SceneIcon} className={`m2-scene-shell m2-scene-shell--${kind}`}>{children}</PlayfulWorkbench>;
+  return <PlayfulWorkbench variant="blue" label={label} instruction={instruction} robotSrc={robots[kind]} robotAlt="Guide robot demonstrating this activity" icon={SceneIcon} className={`m2-scene-shell m2-scene-shell--${kind}`}>{children}</PlayfulWorkbench>;
 }
 
 function CandidateBoard({ items, onPick, selected, mode="compact" }) {
@@ -70,7 +70,7 @@ export function Mission2TemperaturePage({ active, language="en" }) {
 }
 
 export function Mission2RepeatPage({ active, onCycle }) {
-  const starts = ["A robot opened the", "After school we"];
+  const starts = ["A student opened the", "After school we"];
   const [start, setStart] = useState(0);
   const [tokens, setTokens] = useState([]);
   const round = Math.min(tokens.length, predictionContinuationSets.length - 1);

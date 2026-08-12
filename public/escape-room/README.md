@@ -2,7 +2,7 @@
 
 This folder is reserved for the Construct 3 HTML5 export for the Final Challenge.
 
-The current `index.html` is only a clean integration placeholder. It is not the final Escape Room game and should not contain room gameplay. In normal mode it should only report that the bridge is connected and that the Construct export has not been installed yet. Debug controls are available only by opening AI Explorer with `?debug=1`.
+The current `index.html` is only a clean integration placeholder. It is not the final Escape Room game and should not contain room gameplay. In normal mode it should only report that the bridge is connected and that the Construct export has not been installed yet. Debug controls are available only by opening LLM Explorer with `?debug=1`.
 
 ## How to replace this folder with Construct 3
 

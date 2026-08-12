@@ -8,7 +8,7 @@
     "next": "Weiter",
     "nextLesson": "Weiter: Lektion 4",
     "incomplete": "Lektionsaktivitäten unvollständig",
-    "robotAlt": "AI-Explorer-Roboter zeigt Token-Verbindungen"
+    "robotAlt": "Roboter-Guide zeigt Token-Verbindungen"
   },
   "labels": {
     "insideContext": "Token im Kontextfenster",
@@ -206,12 +206,12 @@
   "page5": {
     "presets": {
       "A": {
-        "text": "Der Roboter nahm das Buch auf, weil er die Informationen brauchte.",
-        "tokens": "Der|Roboter|nahm|das|Buch|auf|weil|er|die|Informationen|brauchte|."
+        "text": "Der Leser nahm das Buch auf, weil er die Informationen brauchte.",
+        "tokens": "Der|Leser|nahm|das|Buch|auf|weil|er|die|Informationen|brauchte|."
       },
       "B": {
-        "text": "Weil er die Informationen brauchte, nahm der Roboter das Buch auf.",
-        "tokens": "Weil|er|die|Informationen|brauchte|,|nahm|der|Roboter|das|Buch|auf|."
+        "text": "Weil er die Informationen brauchte, nahm der Leser das Buch auf.",
+        "tokens": "Weil|er|die|Informationen|brauchte|,|nahm|der|Leser|das|Buch|auf|."
       }
     },
     "title": "Probier es aus: Verbinde die Token",

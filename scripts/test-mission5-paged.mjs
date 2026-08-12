@@ -112,6 +112,7 @@ assert.match(shell,/navigate\("\/final-challenge"\)/,"the final summary continue
 assert.match(shell,/import Mission1PagedKnowledgeQuiz from "\.\.\/mission1\/Mission1PagedKnowledgeQuiz\.jsx"/);
 assert.match(shell,/import "\.\.\/mission1\/mission1Paged\.css"/,"Page 6 reuses the established Lesson 1 quiz CSS");
 assert.match(shell,/hideNext=\{currentPage===6\}/,"the shell Next button is hidden while the quiz controls progression");
+assert.match(shell,/skipAction=\{currentPage===6\?\{label:t\("mission5\.skipQuiz"\),onClick:\(\)=>changePage\(7\)\}:null\}/,"Lesson 5 matches Lesson 1 with a localized Skip the quiz action");
 assert.match(shell,/onContinue=\{\(\)=>changePage\(7\)\}[\s\S]*pageNumber=\{6\}/,"quiz completion continues directly to Page 7 and displays badge 6");
 assert.match(shell,/quizResult==="correct"/,"Lesson 5 completion includes successful quiz completion");
 assert.match(shell,/currentPage===6\?"mission-1-paged mission-2-paged lesson-quiz-layout"/,"Page 6 opts into the same scoped quiz presentation as the existing lessons");

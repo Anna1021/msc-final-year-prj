@@ -146,7 +146,7 @@
     "newChallenge": "新题目",
     "restartActivity": "重新开始活动",
     "explore": "探索另一个示例",
-    "aiLab": "前往 AI 实验室继续探索",
+    "aiLab": "前往 LLM 实验室继续探索",
     "restartMission": "重新开始课程",
     "previous": "上一步",
     "nextMission": "下一步：第 2 课"
@@ -165,7 +165,7 @@
     "prototypeEndThree": "你已到达三页原型的结尾。",
     "prototypeEndFive": "你已经重组了真实 token 片段。",
     "prototypeSafe": "任务进度和解锁状态均未改变。",
-    "robotAlt": "正在阅读的 AI Explorer 机器人",
+    "robotAlt": "正在阅读的引导机器人",
     "experimentFlowLabel": "输入、拆分并发现",
     "writeStep": "输入",
     "discoverStep": "观察",

@@ -20,5 +20,15 @@
   "completeSaved": "逃脱完成。进度已保存。",
   "completeAlready": "逃脱已完成。最终奖励已保存。",
   "inventory": "水晶",
-  "tips": "沿着六个概念，从 Token 和数字走到预测与训练。"
+  "tips": "沿着五个概念，从 Token 走到预测与训练。",
+  "a11y": { "inventory": "密室逃脱物品栏", "navigation": "密室逃脱导航", "exitFullScreenTitle": "退出全屏（Esc）", "fullScreenTitle": "全屏密室逃脱（F）", "gameFrame": "语言模型密室逃脱游戏" },
+  "notifications": { "finalExitOpened": "最终出口已打开。", "roomOpened": "{{room}} 已打开。", "unknownRoom": "已忽略未知房间消息。", "crystalCollected": "已收集 {{crystal}}，进度已保存。", "crystalRestored": "{{crystal}} 已收集，进度已恢复。", "needsCrystals": "最终出口仍需要全部五枚水晶。" },
+  "rooms": {
+    "token": { "label": "房间 1", "title": "Token 工坊", "crystalName": "Token 水晶" },
+    "numbers": { "label": "房间 2", "title": "上下文密室", "crystalName": "上下文水晶" },
+    "context": { "label": "房间 3", "title": "连接实验室", "crystalName": "连接水晶" },
+    "connections": { "label": "房间 4", "title": "预测机器", "crystalName": "预测水晶" },
+    "prediction": { "label": "房间 5", "title": "模式工坊", "crystalName": "模式水晶" }
+  },
+  "debug": { "statusTitle": "密室逃脱状态", "status": "状态", "screen": "页面", "finalExit": "最终出口", "completedReviewable": "已完成，可复习", "notCompleted": "未完成", "replayable": "可重玩", "storageNote": "密室逃脱在 iframe 中运行；LLM Explorer 在游戏外保存水晶和进度。", "finalDescription": "最终门汇总语言模型学习旅程：放置五枚水晶、形成最终水晶，然后解开最终锁。", "finalStep1": "把水晶放到语言模型周围", "finalStep2": "形成最终水晶", "finalStep3": "解开最终锁", "reload": "重新加载运行环境", "reset": "重置密室逃脱" }
 }

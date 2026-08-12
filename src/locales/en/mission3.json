@@ -8,7 +8,7 @@
     "next": "Next",
     "nextLesson": "Next: Lesson 4",
     "incomplete": "Lesson activities incomplete",
-    "robotAlt": "AI Explorer robot showing Token connections"
+    "robotAlt": "Guide robot showing Token connections"
   },
   "labels": {
     "insideContext": "Tokens inside the Context Window",
@@ -206,12 +206,12 @@
   "page5": {
     "presets": {
       "A": {
-        "text": "The robot picked up the book because it needed the information.",
-        "tokens": "The|robot|picked|up|the|book|because|it|needed|the|information|."
+        "text": "The reader picked up the book because they needed the information.",
+        "tokens": "The|reader|picked|up|the|book|because|they|needed|the|information|."
       },
       "B": {
-        "text": "Because it needed the information, the robot picked up the book.",
-        "tokens": "Because|it|needed|the|information|,|the|robot|picked|up|the|book|."
+        "text": "Because they needed the information, the reader picked up the book.",
+        "tokens": "Because|they|needed|the|information|,|the|reader|picked|up|the|book|."
       }
     },
     "title": "Try it yourself: connect the tokens",

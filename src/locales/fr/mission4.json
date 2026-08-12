@@ -1,4 +1,5 @@
 {
+  "skipQuiz": "Passer le quiz",
   "shell": {
     "backToLearn": "Retour au parcours",
     "lessonCount": "Leçon 4 sur 5",
@@ -8,7 +9,7 @@
     "next": "Suivant",
     "nextLesson": "Suivant : Leçon 5",
     "incomplete": "Activités incomplètes",
-    "robotAlt": "Robot AI Explorer de prédiction"
+    "robotAlt": "Robot-guide près de la leçon de prédiction"
   },
   "labels": {
     "reviewedProbabilities": "Probabilités pédagogiques vérifiées — pas une sortie Qwen en direct",
@@ -160,6 +161,7 @@
       "candidateSubtitle": "Meilleures prédictions du modèle réel",
       "returnLatest": "Revenir à la dernière étape",
       "selected": "sélectionné",
+      "byteFragment": "Fragment d’octet · ID {{id}}",
       "candidateEmpty": "Lance le modèle pour voir cinq probabilités réelles du prochain Token.",
       "topFive": "Les 5 premiers sont affichés. Beaucoup d’autres Tokens peuvent aussi avoir des probabilités plus faibles.",
       "currentContext": "Contexte actuel",
@@ -187,7 +189,7 @@
       "textBeginning": "Début du texte",
       "predictNext": "Prédire le prochain Token",
       "tryExample": "Essaie un exemple :",
-      "defaultPrompt": "Le petit robot a ouvert",
+      "defaultPrompt": "L’élève a ouvert",
       "starters": {
         "cat": "Le chat s’est assis sur",
         "weather": "Aujourd’hui, le temps semble",
@@ -209,14 +211,14 @@
       "modelErrorTitle": "Le modèle ne peut pas répondre pour le moment.",
       "modelErrorBody": "Réessaie la prédiction.",
       "tryAgain": "Réessayer",
-      "temperature": "Température",
+      "temperature": "Température (degré d’aléatoire)",
       "temperatureAria": "Température {{value}}. {{description}}",
       "temperatureFocused": "Les choix les plus forts ressortent davantage.",
       "temperatureSpread": "Davantage de choix obtiennent des chances visibles.",
       "temperatureBalanced": "Répartition équilibrée des probabilités.",
-      "moreFocused": "Plus ciblé",
-      "moreSpread": "Plus varié",
-      "temperatureApplies": "S’applique à la prochaine prédiction réelle."
+      "moreFocused": "Plus basse = plus prévisible.",
+      "moreSpread": "Plus haute = plus variée.",
+      "temperatureApplies": "La température contrôle le degré d’aléatoire dans le choix du prochain Token par le modèle."
     }
   },
   "page5": {

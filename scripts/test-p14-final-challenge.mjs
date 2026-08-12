@@ -43,8 +43,8 @@ for (const visibleIdea of ["Token Workshop", "Context Chamber", "Connection Lab"
 }
 assert.match(runtime, /Inspect console[\s\S]*Activate context scanner[\s\S]*Unlock context door/, "Room 2 uses the Context Chamber's three-step flow");
 assert.match(runtime, /const insideWindow = \["curious", "reader", "opened", "the", "old", "book"\]/, "Room 2 preserves the exact current-context answer group");
-assert.match(runtime, /Only the tokens inside that frame are available in this example/, "Room 2 has specific incorrect-answer feedback");
-assert.match(runtime, /The glowing frame shows the context available to the model right now/, "Room 2 guide updates after the scanner is active");
+assert.match(runtime, /feedback\.contextIncorrect/, "Room 2 has localised incorrect-answer feedback");
+assert.match(runtime, /feedback\.contextScanned/, "Room 2 guide updates after the scanner is active");
 assert.match(runtime, /data\.selectedOption === "inside"[\s\S]*roomComplete\(room\)/, "Room 2 completes only for the current-context answer");
 assert.match(runtime, /\.context-lock-options \{ display: grid; grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/, "Room 2 answers use a compact two-by-two grid");
 assert.match(runtime, /Inspect console[\s\S]*Reveal connections[\s\S]*Decode the pattern/, "Room 3 uses the Connection Lab's three-step flow");
@@ -53,8 +53,7 @@ assert.match(runtime, /Focus token · opened/, "Room 3 explicitly marks opened a
 assert.match(runtime, /\{ token: "reader", strength: 8 \}/, "reader has the strongest shown connection");
 assert.match(runtime, /Which token is shown contributing the most information to[\s\S]*opened/, "Room 3 asks learners to read the shown pattern");
 assert.match(runtime, /data\.selectedOption === "reader"[\s\S]*roomComplete\(room\)/, "Room 3 completes only for reader");
-assert.match(runtime, /Compare the arrow thicknesses in the connection pattern/, "Room 3 incorrect feedback directs learners back to the visual");
-assert.match(runtime, /The pattern is already shown — you only need to read it/, "Room 3 hint avoids asking learners to guess attention");
+assert.match(runtime, /feedback\.connectionIncorrect/, "Room 3 incorrect feedback directs learners back to the visual");
 assert.match(runtime, /"connection-lab": "verification"/, "Room 3 uses the existing red crystal asset");
 assert.match(runtime, /Inspect console[\s\S]*Run prediction[\s\S]*Decode the signal/, "Room 4 uses the Prediction Machine's three-step flow");
 assert.match(runtime, /\{ token: "book", value: 46[\s\S]*\{ token: "door", value: 27[\s\S]*\{ token: "box", value: 15[\s\S]*\{ token: "window", value: 8[\s\S]*\{ token: "other", value: 4/, "Room 4 contains the fixed illustrative prediction totaling 100%");
@@ -62,7 +61,7 @@ assert.match(runtime, /Higher probability means more likely, but it does not gua
 assert.match(runtime, /Which statement best matches the prediction shown by the machine/, "Room 4 asks learners to read the prediction display");
 assert.match(runtime, /data\.selectedOption === 1[\s\S]*roomComplete\(room\)/, "Room 4 completes only for Option B");
 assert.match(runtime, /Does “more likely” mean “certain”/, "Room 4 hint reinforces the key misconception");
-assert.match(runtime, /“book” the most likely option shown, but probability is not a guarantee/, "Room 4 incorrect feedback directs learners to both parts of the clue");
+assert.match(runtime, /feedback\.predictionIncorrect/, "Room 4 incorrect feedback directs learners to both parts of the clue");
 assert.match(runtime, /The little reader opened the book/, "Room 4 completion reinforces that the generated token joins the context");
 assert.match(runtime, /"prediction-machine": "prediction"/, "Room 4 uses the existing blue crystal asset");
 assert.match(runtime, /Inspect console[\s\S]*Read training records[\s\S]*Unlock the pattern/, "Room 5 uses the shared three-stage room flow");
@@ -73,9 +72,8 @@ assert.match(runtime, /token: "cave", value: 48[\s\S]*token: "castle", value: 29
 assert.match(runtime, /These are illustrative teaching values, not real model output/, "Room 5 clearly labels the toy prediction as illustrative");
 assert.match(runtime, /Why can the training examples change the toy model's later prediction/, "Room 5 asks the requested learning-pattern lock question");
 assert.match(runtime, /The model stores every sentence and searches for an exact copy later[\s\S]*Repeated examples can strengthen learned patterns, which can influence later predictions[\s\S]*The model learns one perfect answer after seeing a single example[\s\S]*The examples directly tell the model what to say in every future conversation/, "Room 5 includes the four specified options");
-assert.match(runtime, /data\.selectedOption === 1[\s\S]*Pattern restored\.[\s\S]*return roomComplete\(room\)/, "Room 5 completes only for Option B");
-assert.match(runtime, /The engine stays locked\. One example does not become a stored answer\. Think about what repeated training examples can change over time/, "Room 5 gives explanatory incorrect feedback");
-assert.match(runtime, /Think back to the tiny toy model\. Adding similar examples made one prediction gradually more likely/, "Room 5 hint recalls the Lesson 5 toy model without revealing the option letter");
+assert.match(runtime, /data\.selectedOption === 1[\s\S]*feedback\.patternCorrect[\s\S]*return roomComplete\(room\)/, "Room 5 completes only for Option B");
+assert.match(runtime, /feedback\.patternIncorrect/, "Room 5 gives explanatory incorrect feedback");
 assert.match(runtime, /data-action="reset-room"/, "Room 5 retains the shared reset action");
 assert.match(runtime, /if \(!already\) \{\s*send\("ESCAPE_ROOM_ROOM_COMPLETE"/, "Room 5 uses the shared duplicate-award guard");
 assert.match(runtime, /data-action="replay"/, "Room 5 completion retains shared replay mode");
@@ -107,7 +105,7 @@ assert.match(runtime, /\$\{!fused \? `<div class="crystal-tray"/, "the used crys
 assert.equal((runtime.match(/renderSequence\("final"/g) || []).length, 1, "the Final Exit renders one ordering question");
 assert.doesNotMatch(runtime, /renderSequence\("model"|renderSequence\("review"/, "the old two-question structure is removed");
 assert.match(runtime, /Training happened earlier/, "the Final Lock explicitly separates earlier training from model use");
-assert.match(runtime, /The final lock is still closed\. Check the order and try again\./, "an incorrect order remains in place for another attempt");
+assert.match(runtime, /exit\.incorrectOrder/, "an incorrect order remains in place for another attempt");
 assert.match(runtime, /data-action="hint-final"/, "the single Final Lock retains a hint");
 assert.match(runtime, /exitStage: "placing"[\s\S]*finishFinalFusion[\s\S]*state\.exitStage = "fused"/, "the Final Exit has an explicit placing-to-fused state transition");
 assert.match(runtime, /state\.exitPlaced\.size === rooms\.length && state\.exitStage === "placing"[\s\S]*state\.exitStage = "fusing"/, "only the fifth placed crystal starts fusion");
@@ -115,6 +113,14 @@ assert.match(runtime, /if \(state\.exitStage !== "fusing" \|\| fusionTimer\) ret
 assert.match(runtime, /const puzzleUnlocked = fused[\s\S]*puzzleUnlocked \? `<div class="brain-puzzle">/, "the Final Lock renders only after fusion completes");
 assert.match(runtime, /prefers-reduced-motion: reduce[\s\S]*reducedMotion \? 320 : 1900/, "reduced motion uses a short state-safe fusion transition");
 assert.match(runtime, /final-multicolour-crystal\.svg/, "the fused state retains the local multicolour Final Crystal");
+assert.match(runtime, /id="completionScreen"/, "the completed Final Challenge has a dedicated epilogue screen");
+assert.match(runtime, /const completionConcepts = \[[\s\S]*tokens[\s\S]*context[\s\S]*connections[\s\S]*prediction[\s\S]*patterns/, "the epilogue recaps the five taught concepts using stable IDs");
+assert.match(runtime, /function renderCompletion\(\)[\s\S]*completion-final-crystal[\s\S]*completion-guide[\s\S]*data-completion-action="return"[\s\S]*data-completion-action="replay"/, "the epilogue reuses the final crystal and guide with both requested actions");
+assert.match(runtime, /completionTimer = window\.setTimeout\([\s\S]*openCompletion\(\{ focus: true \}\)[\s\S]*reducedMotion \? 80 : 700/, "success transitions to the epilogue after a short accessible delay");
+assert.match(runtime, /data-completion-action='return'[\s\S]*ESCAPE_ROOM_NAVIGATE[\s\S]*route: "missions"/, "Return to AI Explorer uses the existing navigation bridge");
+assert.match(runtime, /data-completion-action='replay'[\s\S]*ESCAPE_ROOM_REPLAY/, "Replay delegates to the shared Escape Room reset flow");
+assert.match(finalChallenge, /currentScreen: "completion"[\s\S]*finalCompleted: true/, "completion is stored as a persistent Escape Room phase");
+assert.match(finalChallenge, /ESCAPE_ROOM_REPLAY[\s\S]*resetAll\(\)/, "the parent handles replay with the existing full reset function");
 assert.match(runtime, /function finalCrystalColour[\s\S]*token: "#ff5f9e"/, "Tokens use a pink Final Exit glow without changing Room 1 styling");
 assert.equal((runtime.match(/class="fusion-trail-core"/g) || []).length, 1, "fusion renders its five coloured paths from one data-driven SVG template");
 assert.match(runtime, /const fusionPaths = \[[\s\S]*#ff5f9e[\s\S]*#46d49b[\s\S]*#ff7655[\s\S]*#ffd15a[\s\S]*#6da9ff/, "fusion trails use the five existing crystal colours");

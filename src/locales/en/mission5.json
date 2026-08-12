@@ -1,4 +1,5 @@
 {
+  "skipQuiz": "Skip the quiz",
   "shell": {
     "backToLearn": "Back to Learn",
     "lessonCount": "Lesson 5 of 5",
@@ -8,7 +9,7 @@
     "next": "Next",
     "nextChallenge": "Next: Final Challenge",
     "incomplete": "Finish the learning activities",
-    "robotAlt": "Friendly training workshop robot"
+    "robotAlt": "Friendly guide robot in the training workshop"
   },
   "navigation": {
     "page2Title": "Learning patterns, not storing one answer",

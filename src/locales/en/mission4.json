@@ -1,4 +1,5 @@
 {
+  "skipQuiz": "Skip the quiz",
   "shell": {
     "backToLearn": "Back to Learn",
     "lessonCount": "Lesson 4 of 5",
@@ -8,7 +9,7 @@
     "next": "Next",
     "nextLesson": "Next: Lesson 5",
     "incomplete": "Lesson activities incomplete",
-    "robotAlt": "AI Explorer prediction robot"
+    "robotAlt": "Guide robot beside the prediction lesson"
   },
   "labels": {
     "reviewedProbabilities": "Reviewed teaching probabilities — not live model output",
@@ -160,6 +161,7 @@
       "candidateSubtitle": "Top predictions from the real model",
       "returnLatest": "Return to latest",
       "selected": "selected",
+      "byteFragment": "Byte fragment · ID {{id}}",
       "candidateEmpty": "Run the model to see five real next-Token probabilities.",
       "topFive": "Top 5 shown. Many other Tokens may also have smaller probabilities.",
       "currentContext": "Current context",
@@ -187,7 +189,7 @@
       "textBeginning": "Text beginning",
       "predictNext": "Predict next Token",
       "tryExample": "Try an example:",
-      "defaultPrompt": "The little robot opened the",
+      "defaultPrompt": "The student opened the",
       "starters": {
         "cat": "The cat sat on the",
         "weather": "Today the weather feels",
@@ -209,14 +211,14 @@
       "modelErrorTitle": "The model couldn't respond just now.",
       "modelErrorBody": "Please try the prediction again.",
       "tryAgain": "Try again",
-      "temperature": "Temperature",
+      "temperature": "Temperature (randomness)",
       "temperatureAria": "Temperature {{value}}. {{description}}",
       "temperatureFocused": "The strongest choices stand out more.",
       "temperatureSpread": "More choices get noticeable chances.",
       "temperatureBalanced": "Balanced probability spread.",
-      "moreFocused": "More focused",
-      "moreSpread": "More spread out",
-      "temperatureApplies": "Applies to the next real prediction."
+      "moreFocused": "Lower = more predictable.",
+      "moreSpread": "Higher = more varied.",
+      "temperatureApplies": "Temperature controls how random the model's next-token choices are."
     }
   },
   "page5": {

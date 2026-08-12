@@ -20,5 +20,15 @@
   "completeSaved": "Évasion terminée. Progression enregistrée.",
   "completeAlready": "Évasion déjà terminée. Récompense déjà enregistrée.",
   "inventory": "Cristaux",
-  "tips": "Suis les six idées, des tokens et nombres à la prédiction et à l’entraînement."
+  "tips": "Suis les cinq idées, des tokens à la prédiction et à l’entraînement.",
+  "a11y": { "inventory": "Inventaire de l’Escape Room", "navigation": "Navigation de l’Escape Room", "exitFullScreenTitle": "Quitter le plein écran (Échap)", "fullScreenTitle": "Escape Room en plein écran (F)", "gameFrame": "Jeu Escape Room du modèle de langage" },
+  "notifications": { "finalExitOpened": "Sortie finale ouverte.", "roomOpened": "{{room}} ouverte.", "unknownRoom": "Message ignoré : salle inconnue.", "crystalCollected": "{{crystal}} collecté. Progression enregistrée.", "crystalRestored": "{{crystal}} déjà collecté. Progression restaurée.", "needsCrystals": "La sortie finale nécessite encore les cinq cristaux." },
+  "rooms": {
+    "token": { "label": "Salle 1", "title": "Atelier des tokens", "crystalName": "Cristal des tokens" },
+    "numbers": { "label": "Salle 2", "title": "Chambre du contexte", "crystalName": "Cristal du contexte" },
+    "context": { "label": "Salle 3", "title": "Laboratoire des connexions", "crystalName": "Cristal des connexions" },
+    "connections": { "label": "Salle 4", "title": "Machine de prédiction", "crystalName": "Cristal de prédiction" },
+    "prediction": { "label": "Salle 5", "title": "Atelier des motifs", "crystalName": "Cristal des motifs" }
+  },
+  "debug": { "statusTitle": "État de l’Escape Room", "status": "État", "screen": "Écran", "finalExit": "Sortie finale", "completedReviewable": "terminée et révisable", "notCompleted": "non terminée", "replayable": "rejouable", "storageNote": "L’Escape Room s’exécute dans l’iframe ; LLM Explorer conserve les cristaux et la progression hors du jeu.", "finalDescription": "La porte finale rassemble le parcours : placer cinq cristaux, former le cristal final, puis résoudre le verrou final.", "finalStep1": "Placer les cristaux autour du modèle", "finalStep2": "Former le cristal final", "finalStep3": "Résoudre le verrou final", "reload": "Recharger le jeu", "reset": "Réinitialiser l’Escape Room" }
 }
