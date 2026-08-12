@@ -1,4 +1,5 @@
 {
+  "skipQuiz": "Skip the quiz",
   "shell": {
     "backToLearn": "Back to Learn",
     "lessonCount": "Lesson 4 of 5",
@@ -8,7 +9,7 @@
     "next": "Next",
     "nextLesson": "Next: Lesson 5",
     "incomplete": "Lesson activities incomplete",
-    "robotAlt": "AI Explorer prediction robot"
+    "robotAlt": "Guide robot beside the prediction lesson"
   },
   "labels": {
     "reviewedProbabilities": "Reviewed teaching probabilities — not live model output",
@@ -54,6 +55,7 @@
     }
   },
   "page1": {
+    "processedVisualLabel": "Abstract processed-context representation",
     "title": "What happens next?",
     "subtitle": "From processed context to the next-Token prediction.",
     "bridgeLine1": "In Lesson 3, the model combined information from the available token positions to build a richer representation of the current text.",
@@ -72,6 +74,7 @@
     "thinkNext": "Let’s find out on the next page."
   },
   "scorePage": {
+    "promptTokens": "The|little|reader|opened|the",
     "title": "How does the model compare what could come next?",
     "subtitle": "See how possible next Tokens receive different internal scores.",
     "intro1": "The model considers many Tokens that could follow.",
@@ -95,6 +98,14 @@
     "higherMeans": "A higher score means the model currently favours that Token more.",
     "notProbability": "A score is not a probability yet.",
     "illustrative": "Illustrative comparison only — these are not real model values."
+  },
+  "teachingCandidates": {
+    "book": "book",
+    "door": "door",
+    "box": "box",
+    "window": "window",
+    "banana": "banana",
+    "other": "other"
   },
   "page2": {
     "title": "How does the model choose one Token?",
@@ -150,6 +161,7 @@
       "candidateSubtitle": "Top predictions from the real model",
       "returnLatest": "Return to latest",
       "selected": "selected",
+      "byteFragment": "Byte fragment · ID {{id}}",
       "candidateEmpty": "Run the model to see five real next-Token probabilities.",
       "topFive": "Top 5 shown. Many other Tokens may also have smaller probabilities.",
       "currentContext": "Current context",
@@ -177,6 +189,12 @@
       "textBeginning": "Text beginning",
       "predictNext": "Predict next Token",
       "tryExample": "Try an example:",
+      "defaultPrompt": "The student opened the",
+      "starters": {
+        "cat": "The cat sat on the",
+        "weather": "Today the weather feels",
+        "dragon": "A dragon found a"
+      },
       "reset": "Reset",
       "generationMode": "Generation mode",
       "auto": "Auto",
@@ -193,14 +211,14 @@
       "modelErrorTitle": "The model couldn't respond just now.",
       "modelErrorBody": "Please try the prediction again.",
       "tryAgain": "Try again",
-      "temperature": "Temperature",
+      "temperature": "Temperature (randomness)",
       "temperatureAria": "Temperature {{value}}. {{description}}",
       "temperatureFocused": "The strongest choices stand out more.",
       "temperatureSpread": "More choices get noticeable chances.",
       "temperatureBalanced": "Balanced probability spread.",
-      "moreFocused": "More focused",
-      "moreSpread": "More spread out",
-      "temperatureApplies": "Applies to the next real prediction."
+      "moreFocused": "Lower = more predictable.",
+      "moreSpread": "Higher = more varied.",
+      "temperatureApplies": "Temperature controls how random the model's next-token choices are."
     }
   },
   "page5": {

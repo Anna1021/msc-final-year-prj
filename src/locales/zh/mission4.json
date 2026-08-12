@@ -1,4 +1,5 @@
 {
+  "skipQuiz": "跳过测验",
   "shell": {
     "backToLearn": "返回学习路径",
     "lessonCount": "第 4 课，共 5 课",
@@ -8,7 +9,7 @@
     "next": "下一页",
     "nextLesson": "下一课：第 5 课",
     "incomplete": "课程活动尚未完成",
-    "robotAlt": "AI Explorer 预测机器人"
+    "robotAlt": "预测课程旁的引导机器人"
   },
   "labels": {
     "reviewedProbabilities": "经过检查的教学概率——不是真实 Qwen 输出",
@@ -54,6 +55,7 @@
     }
   },
   "page1": {
+    "processedVisualLabel": "抽象的已处理上下文表示",
     "title": "接下来会发生什么？",
     "subtitle": "从处理后的上下文到下一个 Token 预测。",
     "bridgeLine1": "在 Lesson 3 中，模型组合了可用 Token 位置的信息，形成当前文本更丰富的表示。",
@@ -72,6 +74,7 @@
     "thinkNext": "下一页我们来找答案。"
   },
   "scorePage": {
+    "promptTokens": "那位|小|读者|翻开|了",
     "title": "模型怎样比较接下来可能出现的内容？",
     "subtitle": "看看候选 Token 如何得到不同的内部分数。",
     "intro1": "模型会考虑许多可能接在后面的 Token。",
@@ -95,6 +98,14 @@
     "higherMeans": "分数越高，表示模型此刻越偏向这个 Token。",
     "notProbability": "分数目前还不是概率。",
     "illustrative": "仅用于示意比较——这些不是真实模型数值。"
+  },
+  "teachingCandidates": {
+    "book": "书",
+    "door": "门",
+    "box": "盒子",
+    "window": "窗户",
+    "banana": "香蕉",
+    "other": "其他"
   },
   "page2": {
     "title": "模型怎样选择一个 Token？",
@@ -150,6 +161,7 @@
       "candidateSubtitle": "真实模型给出的最高概率预测",
       "returnLatest": "返回最新一步",
       "selected": "已选择",
+      "byteFragment": "字节片段 · ID {{id}}",
       "candidateEmpty": "运行模型，查看五个真实的下一个 Token 概率。",
       "topFive": "这里显示前 5 个。许多其他 Token 也可能具有较小的概率。",
       "currentContext": "当前上下文",
@@ -177,6 +189,12 @@
       "textBeginning": "文本开头",
       "predictNext": "预测下一个 Token",
       "tryExample": "试试示例：",
+      "defaultPrompt": "学生打开了",
+      "starters": {
+        "cat": "小猫坐在",
+        "weather": "今天的天气感觉",
+        "dragon": "一条龙发现了"
+      },
       "reset": "重置",
       "generationMode": "生成模式",
       "auto": "自动",
@@ -193,14 +211,14 @@
       "modelErrorTitle": "模型暂时无法响应。",
       "modelErrorBody": "请再次尝试预测。",
       "tryAgain": "重试",
-      "temperature": "温度",
+      "temperature": "温度（随机程度）",
       "temperatureAria": "温度 {{value}}。{{description}}",
       "temperatureFocused": "最强的选项会更加突出。",
       "temperatureSpread": "更多选项会获得明显的机会。",
       "temperatureBalanced": "概率分布较为均衡。",
-      "moreFocused": "更集中",
-      "moreSpread": "更分散",
-      "temperatureApplies": "应用于下一次真实预测。"
+      "moreFocused": "较低 = 更可预测。",
+      "moreSpread": "较高 = 更多变化。",
+      "temperatureApplies": "温度控制模型选择下一个 Token 时的随机程度。"
     }
   },
   "page5": {

@@ -9,7 +9,7 @@
     "next": "Next",
     "nextLesson": "Next: Lesson 3",
     "endAction": "Lesson activities incomplete",
-    "robotAlt": "AI Explorer robot reading"
+    "robotAlt": "Guide robot reading"
   },
   "labels": {
     "tokens": "tokens",
@@ -34,6 +34,7 @@
     "question": "What is context?",
     "intro": "LLMs do not work with one word in isolation. They can use the words or tokens that came before to help predict what might come next.",
     "sameWord": "Same word, different context",
+    "englishExampleLabel": "English ambiguity example",
     "definition": "Context is information from the earlier text or tokens that the model can use.",
     "contextA": "Context A",
     "contextB": "Context B",
@@ -84,7 +85,10 @@
     "largeWindow": "Large window",
     "smallAmount": "Fewer tokens",
     "mediumAmount": "More tokens",
-    "largeAmount": "Many more tokens"
+    "largeAmount": "Many more tokens",
+    "outsideBeforeTokens": "Once|upon|a|time|there",
+    "windowTokens": "a|curious|little|reader|who|loved|to|learn",
+    "outsideAfterTokens": "new|things|every|day"
   },
   "page3": {
     "title": "Why does context matter?",
@@ -104,6 +108,7 @@
     "predictions": "Top next-token predictions",
     "likelyA": "‘hole’ is much more likely here.",
     "likelyB": "‘kitchen’ is much more likely here.",
+    "candidates": {"hole":"hole","house":"house","room":"room","kitchen":"kitchen","pantry":"pantry","fridge":"fridge"},
     "happeningTitle": "What’s happening?",
     "sameEnding": "The last words are identical. Only the earlier context is different.",
     "differentChances": "Because the context differs, the model assigns different probabilities to possible next tokens.",

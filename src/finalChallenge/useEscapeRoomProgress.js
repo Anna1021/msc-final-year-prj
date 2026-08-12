@@ -1,6 +1,6 @@
 import { ESCAPE_PROGRESS_VERSION, ESCAPE_STORAGE_KEY, rooms } from "./escapeRoomData";
 
-const validScreens = new Set(["room-select", "room", "final-exit"]);
+const validScreens = new Set(["room-select", "room", "final-exit", "completion"]);
 
 function roomById(roomId) {
   return rooms.find((room) => room.id === roomId || room.crystalId === roomId);
@@ -21,6 +21,7 @@ function defaultEscapeProgress() {
     crystalCollected: {},
     inventory: [],
     completedRooms: {},
+    finalCompleted: false,
     roomState: {
       token: {
         inspectedDoor: false,
@@ -93,14 +94,20 @@ export function resolveContinueDestination(progress = readEscapeProgress()) {
   if (!current.finalCompleted) {
     return { screen: "final-exit", roomId: "final-exit", roomNumber: null, replay: false, rewardEligible: true };
   }
-  return { screen: "room-select", roomId: null, roomNumber: null, replay: false, rewardEligible: false };
+  return { screen: "completion", roomId: null, roomNumber: null, replay: false, rewardEligible: false };
 }
 
 export function getStartupProgress(progress = readEscapeProgress()) {
   const current = normaliseProgress(progress);
+  if (current.finalCompleted) {
+    const completed = { ...current, currentScreen: "completion", currentRoom: null, currentStep: "completion" };
+    writeEscapeProgress(completed);
+    return readEscapeProgress();
+  }
   const shouldRestoreRoom = current.currentScreen === "room" && current.currentRoom && roomById(current.currentRoom);
   const shouldRestoreExit = current.currentScreen === "final-exit";
-  const next = shouldRestoreRoom || shouldRestoreExit ? current : {
+  const shouldRestoreCompletion = current.currentScreen === "completion" && current.finalCompleted;
+  const next = shouldRestoreRoom || shouldRestoreExit || shouldRestoreCompletion ? current : {
     ...current,
     currentScreen: "room-select",
     currentRoom: null,

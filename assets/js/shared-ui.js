@@ -78,9 +78,9 @@
     const includeTip = active === "home";
 
     sidebar.innerHTML = `
-      <a class="logo" href="index.html" aria-label="AI Explorer dashboard">
+      <a class="logo" href="index.html" aria-label="LLM Explorer dashboard">
         ${robotLogo()}
-        <span class="logo-copy"><strong>AI Explorer</strong><small>How ChatGPT Thinks</small></span>
+        <span class="logo-copy"><strong>LLM Explorer</strong><small>How ChatGPT Thinks</small></span>
       </a>
 
       <nav class="side-nav">

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { rooms } from "./escapeRoomData";
 import LanguageSelector from "../components/LanguageSelector.jsx";
-import { useI18n } from "../i18n/index.jsx";
+import { getLocaleNamespace, useI18n } from "../i18n/index.jsx";
 import {
   getStartupProgress,
   readEscapeProgress,
@@ -48,12 +48,12 @@ function collectRoomCrystal(roomId) {
 
 function markFinalComplete() {
   const current = readEscapeProgress();
-  writeEscapeProgress({ ...current, currentScreen: "room-select", currentRoom: null, currentStep: "final-complete", finalCompleted: true });
+  writeEscapeProgress({ ...current, currentScreen: "completion", currentRoom: null, currentStep: "completion", finalCompleted: true });
   return readEscapeProgress();
 }
 
 function sendInitToGame(iframe, escapeProgress, mainProgress, language = "en") {
-  sendGameInit(iframe, buildInitPayload(escapeProgress, mainProgress, language));
+  sendGameInit(iframe, buildInitPayload(escapeProgress, mainProgress, language, getLocaleNamespace(language, "escapeRoom")));
 }
 
 function RuntimeOverlay({ status, onRetry, onBack, t }) {
@@ -70,60 +70,61 @@ function RuntimeOverlay({ status, onRetry, onBack, t }) {
   </div>;
 }
 
-function InventoryStrip({ progress }) {
-  return <section className="construct-inventory" aria-label="Escape Room inventory">
-    <header><strong>Crystals</strong><span>{progress.inventory.length} / {rooms.length}</span></header>
+function InventoryStrip({ progress, t }) {
+  return <section className="construct-inventory" aria-label={t("escapeRoom.a11y.inventory")}>
+    <header><strong>{t("escapeRoom.inventory")}</strong><span>{progress.inventory.length} / {rooms.length}</span></header>
     <div>
       {rooms.map((room) => {
         const collected = progress.inventory.includes(room.crystalId);
-        return <span key={room.id} className={collected ? "collected" : ""} style={{ "--room": room.accent }} title={room.crystalName}>
+        return <span key={room.id} className={collected ? "collected" : ""} style={{ "--room": room.accent }} title={t(`escapeRoom.rooms.${room.id}.crystalName`)}>
           <i>{collected ? "◆" : room.label.replace("Room ", "")}</i>
-          <small>{room.title}</small>
+          <small>{t(`escapeRoom.rooms.${room.id}.title`)}</small>
         </span>;
       })}
     </div>
   </section>;
 }
 
-function ProgressPanel({ progress, debug, status, onReset, onReload }) {
+function ProgressPanel({ progress, debug, status, onReset, onReload, t }) {
   return <aside className="construct-progress-panel">
     <section>
-      <h2>Escape Room Status</h2>
-      <p>Status: <strong>{status}</strong></p>
-      <p>Screen: <strong>{progress.currentScreen || "room-select"}</strong></p>
-      <p>Final Exit: <strong>{progress.finalCompleted ? "completed and reviewable" : "not completed"}</strong></p>
-      <p>The escape room runs inside the iframe. LLM Explorer stores crystals and progress outside the game.</p>
+      <h2>{t("escapeRoom.debug.statusTitle")}</h2>
+      <p>{t("escapeRoom.debug.status")}: <strong>{status}</strong></p>
+      <p>{t("escapeRoom.debug.screen")}: <strong>{progress.currentScreen || "room-select"}</strong></p>
+      <p>{t("escapeRoom.debug.finalExit")}: <strong>{progress.finalCompleted ? t("escapeRoom.debug.completedReviewable") : t("escapeRoom.debug.notCompleted")}</strong></p>
+      <p>{t("escapeRoom.debug.storageNote")}</p>
     </section>
     <section>
-      <h3>Crystals</h3>
+      <h3>{t("escapeRoom.inventory")}</h3>
       <div className="construct-room-list">
         {rooms.map((room) => {
           const done = progress.completedRooms[room.id] && progress.crystalCollected[room.id] && progress.inventory.includes(room.crystalId);
           return <span key={room.id} className={done ? "done" : ""} style={{ "--room": room.accent }}>
             <b>{done ? "✓" : room.label.replace("Room ", "")}</b>
-            <em>{room.crystalName}{done ? " · replayable" : ""}</em>
+            <em>{t(`escapeRoom.rooms.${room.id}.crystalName`)}{done ? ` · ${t("escapeRoom.debug.replayable")}` : ""}</em>
           </span>;
         })}
       </div>
     </section>
     <section>
-      <h3>Final Exit</h3>
-      <p>The final door brings together the language-model journey. Learners place five crystals, build the generation path, then build the separate training loop.</p>
+      <h3>{t("escapeRoom.runtime.finalExit")}</h3>
+      <p>{t("escapeRoom.debug.finalDescription")}</p>
       <div className="construct-room-list compact">
-        <span><b>1</b><em>Place crystals around the language model</em></span>
-        <span><b>2</b><em>Build the generation chain</em></span>
-        <span><b>3</b><em>Build the separate training loop</em></span>
+        <span><b>1</b><em>{t("escapeRoom.debug.finalStep1")}</em></span>
+        <span><b>2</b><em>{t("escapeRoom.debug.finalStep2")}</em></span>
+        <span><b>3</b><em>{t("escapeRoom.debug.finalStep3")}</em></span>
       </div>
     </section>
     {debug && <div className="construct-panel-actions">
-      <button className="outline" type="button" onClick={onReload}>Reload Runtime</button>
-      <button className="outline danger" type="button" onClick={onReset}>Reset Escape</button>
+      <button className="outline" type="button" onClick={onReload}>{t("escapeRoom.debug.reload")}</button>
+      <button className="outline danger" type="button" onClick={onReset}>{t("escapeRoom.debug.reset")}</button>
     </div>}
   </aside>;
 }
 
 export default function FinalChallenge({ progress: mainProgress, navigate, notify }) {
   const { t, language } = useI18n();
+  const localeContent = useMemo(() => getLocaleNamespace(language, "escapeRoom"), [language]);
   const iframeRef = useRef(null);
   const readyTimerRef = useRef(null);
   const debug = isDebugMode();
@@ -144,7 +145,7 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
 
   function syncNavigation(next, commandType, payload = {}) {
     setEscapeProgress(next);
-    sendGameCommand(iframeRef.current, commandType, { ...payload, progress: buildInitPayload(next, mainProgress, document.documentElement.lang || "en") });
+    sendGameCommand(iframeRef.current, commandType, { ...payload, progress: buildInitPayload(next, mainProgress, language, localeContent) });
   }
 
   function openHub() {
@@ -155,6 +156,11 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
 
   function continueAdventure() {
     const destination = resolveContinueDestination();
+    if (destination.screen === "completion") {
+      const next = updateEscapeNavigation({ currentScreen: "completion", currentRoom: null, currentStep: "completion" });
+      syncNavigation(next, "ESCAPE_ROOM_OPEN_FINAL_EXIT", { destination });
+      return;
+    }
     if (destination.screen === "room-select") {
       const next = updateEscapeNavigation({ currentScreen: "room-select", currentRoom: null, currentStep: "hub" });
       syncNavigation(next, "ESCAPE_ROOM_CONTINUE", { destination });
@@ -164,21 +170,21 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
     if (destination.screen === "final-exit") {
       const next = updateEscapeNavigation({ currentScreen: "final-exit", currentRoom: null, currentStep: "final-exit" });
       syncNavigation(next, "ESCAPE_ROOM_OPEN_FINAL_EXIT", { destination });
-      notify?.("Final Exit opened.");
+      notify?.(t("escapeRoom.notifications.finalExitOpened"));
       return;
     }
 
     const room = roomById(destination.roomId);
     const next = updateEscapeNavigation({ currentScreen: "room", currentRoom: room.id, currentStep: "playing", lastPlayedRoom: room.id });
     syncNavigation(next, "ESCAPE_ROOM_CONTINUE", { destination, roomId: room.id, roomNumber: destination.roomNumber, replay: false, rewardEligible: true });
-    notify?.(`${room.label} opened.`);
+    notify?.(t("escapeRoom.notifications.roomOpened", { room: t(`escapeRoom.rooms.${room.id}.label`) }));
   }
 
   function handleRoomComplete(payload) {
     const roomId = normaliseRoomId(payload.roomId || payload.crystal);
     const room = roomById(roomId);
     if (!room) {
-      notify?.("Escape Room message ignored: unknown room.");
+      notify?.(t("escapeRoom.notifications.unknownRoom"));
       return;
     }
 
@@ -187,21 +193,21 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
     collectRoomCrystal(room.id);
     refreshProgress(false);
 
-    if (!alreadyCompleted) notify?.(`${room.crystalName} collected. Progress saved.`);
-    else notify?.(`${room.crystalName} already collected. Progress restored.`);
+    if (!alreadyCompleted) notify?.(t("escapeRoom.notifications.crystalCollected", { crystal: t(`escapeRoom.rooms.${room.id}.crystalName`) }));
+    else notify?.(t("escapeRoom.notifications.crystalRestored", { crystal: t(`escapeRoom.rooms.${room.id}.crystalName`) }));
   }
 
   function handleFinalComplete(payload) {
     const current = readEscapeProgress();
     const allRoomsDone = rooms.every((room) => current.completedRooms[room.id] && current.crystalCollected[room.id] && current.inventory.includes(room.crystalId));
     if (!allRoomsDone) {
-      notify?.("The final exit still needs all five crystals.");
+      notify?.(t("escapeRoom.notifications.needsCrystals"));
       sendInitToGame(iframeRef.current, current, mainProgress, language);
       return;
     }
 
     markFinalComplete();
-    refreshProgress();
+    refreshProgress(false);
     notify?.(t("escapeRoom.completeSaved"));
   }
 
@@ -216,11 +222,11 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
     if (runtimeStatus !== "loading") return undefined;
     const timer = window.setInterval(() => {
       sendGameCommand(iframeRef.current, "ESCAPE_ROOM_REQUEST_STATE", {
-        progress: buildInitPayload(readEscapeProgress(), mainProgress, document.documentElement.lang || "en")
+        progress: buildInitPayload(readEscapeProgress(), mainProgress, language, localeContent)
       });
     }, 800);
     return () => window.clearInterval(timer);
-  }, [runtimeStatus, mainProgress]);
+  }, [runtimeStatus, mainProgress, language, localeContent]);
 
   useEffect(() => {
     function onMessage(event) {
@@ -245,7 +251,7 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
       }
 
       if (message.type === "ESCAPE_ROOM_SCREEN_CHANGED") {
-        const screen = message.payload.currentScreen === "completion" ? "room" : message.payload.currentScreen;
+        const screen = message.payload.currentScreen;
         const next = updateEscapeNavigation({
           currentScreen: screen,
           currentRoom: screen === "room" ? message.payload.roomId : null,
@@ -268,6 +274,7 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
 
       if (message.type === "ESCAPE_ROOM_ROOM_COMPLETE") handleRoomComplete(message.payload);
       if (message.type === "ESCAPE_ROOM_COMPLETE") handleFinalComplete(message.payload);
+      if (message.type === "ESCAPE_ROOM_REPLAY") resetAll();
       if (message.type === "ESCAPE_ROOM_NAVIGATE") navigate(message.payload.route);
     }
 
@@ -315,7 +322,7 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
       const progress = readEscapeProgress();
       sendInitToGame(iframeRef.current, progress, mainProgress, language);
       sendGameCommand(iframeRef.current, "ESCAPE_ROOM_REQUEST_STATE", {
-        progress: buildInitPayload(progress, mainProgress, document.documentElement.lang || "en")
+        progress: buildInitPayload(progress, mainProgress, language, localeContent)
       });
     }, 0);
   }
@@ -328,7 +335,7 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
             {!isExpanded && <button className="outline construct-back-button" onClick={() => navigate("/missions")}>‹ {t("escapeRoom.backToMissions")}</button>}
             <div><span>{t("escapeRoom.eyebrow")}</span><h1>{t("escapeRoom.runtimeTitle")}</h1></div>
           </div>
-          <div className="construct-top-actions" aria-label="Escape Room navigation">
+          <div className="construct-top-actions" aria-label={t("escapeRoom.a11y.navigation")}>
             <button type="button" className="outline" onClick={openHub}>{t("escapeRoom.roomMap")}</button>
             <button type="button" className="primary" onClick={continueAdventure}>{t("escapeRoom.continue")}</button>
             <button
@@ -336,7 +343,7 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
               className="outline fullscreen-toggle"
               onClick={() => setIsExpanded((value) => !value)}
               aria-pressed={isExpanded}
-              title={isExpanded ? "Exit full screen (Esc)" : "Full screen Escape Room (F)"}
+              title={isExpanded ? t("escapeRoom.a11y.exitFullScreenTitle") : t("escapeRoom.a11y.fullScreenTitle")}
             >
               {isExpanded ? t("escapeRoom.exitFullScreen") : t("escapeRoom.fullScreen")}
             </button>
@@ -350,15 +357,15 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
             key={frameKey}
             ref={iframeRef}
             src={gameSrc}
-            title={`${t("escapeRoom.runtimeTitle")} game`}
+            title={t("escapeRoom.a11y.gameFrame")}
             allowFullScreen
             onLoad={handleGameLoad}
           />
           <RuntimeOverlay status={runtimeStatus} onRetry={retryRuntime} onBack={() => navigate("/missions")} t={t} />
         </div>
-        {debug && !isExpanded && <InventoryStrip progress={escapeProgress} />}
+        {debug && !isExpanded && <InventoryStrip progress={escapeProgress} t={t} />}
       </section>
-      {debug && <ProgressPanel progress={escapeProgress} debug={debug} status={runtimeStatus} onReset={resetAll} onReload={retryRuntime} />}
+      {debug && <ProgressPanel progress={escapeProgress} debug={debug} status={runtimeStatus} onReset={resetAll} onReload={retryRuntime} t={t} />}
     </main>
   </div>;
 }

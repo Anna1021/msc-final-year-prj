@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { getLesson1JourneyCopy } from "../src/mission1/lesson1JourneyCopy.js";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 const [prototype, idPages, playgroundPage, playground, client, quiz, quizCopy, finalPages, shell, css, quizTheme, app] = await Promise.all([
@@ -68,5 +69,18 @@ assert.doesNotMatch(quizTheme,/--quiz-glow-blue|--quiz-glow-violet|0 0 52px rgba
 assert.match(quizTheme,/mission-checkpoint-clipboard\{[\s\S]*box-shadow:0 10px 18px rgba\(48,62,105,\.15\)/,"the decorative clipboard keeps a subtle cool shadow");
 assert.doesNotMatch(quizTheme,/linear-gradient\([^\n]*#f9e7f7|rgba\(255,220,242/,"the shared outer and intro theme has no large pink wash");
 assert.doesNotMatch(css,/(^|[},]\s*)\.(card|button|token|robot|main-column|right-column)(?=[\s,{:.#])/m);
+
+const quizCopies = ["en", "zh", "fr", "de"].map(getLesson1JourneyCopy);
+for (const [index, copy] of quizCopies.entries()) {
+  const language = ["en", "zh", "fr", "de"][index];
+  assert.equal(copy.checkpointQuestions.length, 3, `${language} keeps all three quiz questions`);
+  assert.deepEqual(copy.checkpointQuestions.map((question) => question.options.length), [4, 4, 4], `${language} localizes all quiz options`);
+  assert.deepEqual(copy.checkpointQuestions.map((question) => question.correct), [1, 1, 2], `${language} preserves answer identity`);
+  assert.ok(copy.checkpointQuestions.every((question) => question.correctFeedback && question.incorrectFeedback), `${language} localizes quiz feedback`);
+}
+assert.notEqual(quizCopies[0].checkpointQuestions[0].prompt, quizCopies[1].checkpointQuestions[0].prompt, "Chinese quiz copy does not inherit English prompts");
+assert.notEqual(quizCopies[0].checkpointQuestions[0].prompt, quizCopies[2].checkpointQuestions[0].prompt, "French quiz copy does not inherit English prompts");
+assert.notEqual(quizCopies[0].checkpointQuestions[0].prompt, quizCopies[3].checkpointQuestions[0].prompt, "German quiz copy does not inherit English prompts");
+assert.doesNotMatch(quiz, /key=\{language\}|key=\{locale\}/, "locale changes do not remount or reset the quiz");
 
 process.stdout.write("Mission 1 paged journey tests passed.\n");

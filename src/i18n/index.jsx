@@ -64,6 +64,12 @@ import deNumbersStage from "../locales/de/numbersStage.json";
 import deContextStage from "../locales/de/contextStage.json";
 import dePredictionStage from "../locales/de/predictionStage.json";
 import deCompareStage from "../locales/de/compareStage.json";
+import { escapeRoomRuntimeLocales } from "../finalChallenge/escapeRoomRuntimeLocales.js";
+
+for (const [language, runtime] of Object.entries(escapeRoomRuntimeLocales)) {
+  const locale = { zh: zhEscapeRoom, fr: frEscapeRoom, de: deEscapeRoom }[language];
+  if (locale) locale.runtime = runtime;
+}
 
 const resources = {
   en: { common: enCommon, navigation: enNavigation, missions: enMissions, escapeRoom: enEscapeRoom, mission1: enMission1, mission1Learning: enMission1Learning, learningMode: enLearningMode, mission2: enMission2, mission3: enMission3, mission4: enMission4, mission5: enMission5, tokenLab: enTokenLab, numbersStage: enNumbersStage, contextStage: enContextStage, predictionStage: enPredictionStage, compareStage: enCompareStage },
@@ -71,6 +77,11 @@ const resources = {
   fr: { common: frCommon, navigation: frNavigation, missions: frMissions, escapeRoom: frEscapeRoom, mission1: frMission1, mission1Learning: frMission1Learning, learningMode: frLearningMode, mission2: frMission2, mission3: frMission3, mission4: frMission4, mission5: frMission5, tokenLab: frTokenLab, numbersStage: frNumbersStage, contextStage: frContextStage, predictionStage: frPredictionStage, compareStage: frCompareStage },
   de: { common: deCommon, navigation: deNavigation, missions: deMissions, escapeRoom: deEscapeRoom, mission1: deMission1, mission1Learning: deMission1Learning, learningMode: deLearningMode, mission2: deMission2, mission3: deMission3, mission4: deMission4, mission5: deMission5, tokenLab: deTokenLab, numbersStage: deNumbersStage, contextStage: deContextStage, predictionStage: dePredictionStage, compareStage: deCompareStage }
 };
+
+export function getLocaleNamespace(language, namespace) {
+  const normalisedLanguage = normaliseLanguage(language);
+  return resources[normalisedLanguage]?.[namespace] ?? resources[DEFAULT_LANGUAGE]?.[namespace] ?? {};
+}
 
 const I18nContext = createContext(null);
 const warnedMissingKeys = new Set();

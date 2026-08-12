@@ -1,5 +1,5 @@
 /*
- * Construct 3 bridge helper for AI Explorer.
+ * Construct 3 bridge helper for LLM Explorer.
  *
  * Include this file in the Construct 3 HTML5 export or copy the functions
  * into a Construct script file. The React page validates these messages and

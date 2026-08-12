@@ -128,6 +128,15 @@ for (const [index, locale] of locales.entries()) assert.deepEqual(leafPaths(loca
 assert.equal(Object.keys(locales[0].page6).filter((key) => /^q\dPrompt$/.test(key)).length, 4, "Lesson 2 checkpoint has four translated questions");
 assert.equal(locales[0].page1.title, "What is context?", "Page 1 is titled around context itself");
 assert.doesNotMatch(JSON.stringify(locales.map((locale) => locale.page1)), /flashlight|Taschenlampe|lampe|手电筒/i, "the removed flashlight metaphor does not remain in Page 1 copy");
+for (const [index, locale] of locales.entries()) {
+  const language = ["en", "zh", "fr", "de"][index];
+  assert.ok(locale.page1.englishExampleLabel, `${language} labels the intentional English ambiguity fixture`);
+  assert.ok(locale.page2.windowTokens.split("|").length >= 6, `${language} Page 2 provides a complete locale-specific context sequence`);
+  assert.ok(locale.page4.sequenceTokens.trim().split(/\s+/).length >= 18, `${language} Page 4 provides a complete localized long sequence`);
+  assert.ok(Object.values(locale.page3.candidates).every(Boolean), `${language} Page 3 candidate labels are localized`);
+}
+assert.equal(new Set(locales.map((locale) => locale.page2.windowTokens)).size, 4, "Lesson 2 context examples differ by locale");
+assert.ok(locales.every((locale) => locale.page1.sentenceABefore === locales[0].page1.sentenceABefore), "the ambiguity-preserving English fixture remains original in every locale");
 
 const playgroundTokens = "Once upon a time there was a curious little reader who loved to learn new things every day in a far away land".split(" ");
 assert.equal(moveContextWindow(7, 7, playgroundTokens.length, -1), 6, "Move left shifts the context start by one token");

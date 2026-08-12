@@ -42,7 +42,7 @@ assert.match(shell,/Rebuilt Lesson 5 pages use the shared Hero/,"rebuilt Lesson 
 
 assert.doesNotMatch(`${pages}\n${data}`,/PUPPY_CHOICES|Choose the token you think came next|copying|generalising/i,"English guessing and copying quizzes are no longer official");
 assert.match(pages,/l5-page-one-short-answer[\s\S]*l5-page-one-flow[\s\S]*l5-page-one-think/,"Page 1 introduces Training with a short answer, four-step visual and examples");
-assert.match(pages,/Many examples lead to learned patterns and later predictions/);
+assert.match(pages,/mission5\.page1\.flowAria/,"Page 1 flow accessibility copy is locale-driven");
 assert.match(pages,/ExampleStackVisual[\s\S]*PatternNetworkVisual[\s\S]*PatternOrbVisual[\s\S]*PredictionBarsVisual/,"Page 1 uses four substantial original teaching illustrations");
 for(const visual of["l5-page-one-document-stack","l5-page-one-pattern-network","l5-page-one-pattern-orb","l5-page-one-prediction-bars"])assert.match(pages,new RegExp(visual));
 assert.match(pages,/l5-page-number-badge">1[\s\S]*mission5\.page1\.badge/,"Page 1 keeps The short answer and adds its in-card number badge");
@@ -96,7 +96,7 @@ assert.match(css,/l5-page-four-keyword\{position:sticky[\s\S]*min-height:560px/,
 const page5Source=pages.match(/function ToyLocationVisual[\s\S]*?export function Lesson5NewPage7/)?.[0]||"";
 assert.match(page5Source,/l5-page-number-badge">5[\s\S]*mission5\.page5\.kicker/,"Page 5 uses the shared numbered in-card lead-in without repeating the full title");
 assert.doesNotMatch(page5Source,/<h1|PageHeading/,"Page 5 leaves its only full title to the shared LessonPageHero");
-assert.match(page5Source,/The dragon returned to the <strong>___<\/strong>/,"Page 5 keeps one fixed test sentence");
+assert.match(page5Source,/mission5\.page5\.testPrompt[\s\S]*<strong>___<\/strong>/,"Page 5 keeps one localized fixed test sentence");
 assert.match(page5Source,/STARTER_TRAINING_EXAMPLES/,"Page 5 renders the locked starter set");
 assert.match(page5Source,/AVAILABLE_TRAINING_EXAMPLES/,"Page 5 renders the bounded preset pool");
 assert.match(page5Source,/function addExample[\s\S]*function removeExample[\s\S]*function resetSimulation/,"Page 5 supports adding, removing and resetting examples");
@@ -112,6 +112,7 @@ assert.match(shell,/navigate\("\/final-challenge"\)/,"the final summary continue
 assert.match(shell,/import Mission1PagedKnowledgeQuiz from "\.\.\/mission1\/Mission1PagedKnowledgeQuiz\.jsx"/);
 assert.match(shell,/import "\.\.\/mission1\/mission1Paged\.css"/,"Page 6 reuses the established Lesson 1 quiz CSS");
 assert.match(shell,/hideNext=\{currentPage===6\}/,"the shell Next button is hidden while the quiz controls progression");
+assert.match(shell,/skipAction=\{currentPage===6\?\{label:t\("mission5\.skipQuiz"\),onClick:\(\)=>changePage\(7\)\}:null\}/,"Lesson 5 matches Lesson 1 with a localized Skip the quiz action");
 assert.match(shell,/onContinue=\{\(\)=>changePage\(7\)\}[\s\S]*pageNumber=\{6\}/,"quiz completion continues directly to Page 7 and displays badge 6");
 assert.match(shell,/quizResult==="correct"/,"Lesson 5 completion includes successful quiz completion");
 assert.match(shell,/currentPage===6\?"mission-1-paged mission-2-paged lesson-quiz-layout"/,"Page 6 opts into the same scoped quiz presentation as the existing lessons");
@@ -156,11 +157,12 @@ assert.deepEqual(createTrainingState(),initial,"Reset is deterministic");
 assert.notDeepEqual(controlPositions(oneStep),controlPositions(initial),"parameter controls respond to the calculated update");
 assert.match(pages,/Lesson5NewPage2[\s\S]*useEffect\(\(\)=>\{if\(active\)onComplete/,'Page 2 is marked read without adding an interaction');
 
-assert.deepEqual(STARTER_TRAINING_EXAMPLES.map(example=>example.text),[
-  "The dragon sleeps in the cave.",
-  "The dragon hides in the cave.",
-  "The dragon waits in the cave."
-]);
+assert.deepEqual(STARTER_TRAINING_EXAMPLES.map(example=>({id:example.id,location:example.location,starter:example.starter})),[
+  {id:"starter-sleeps",location:"cave",starter:true},
+  {id:"starter-hides",location:"cave",starter:true},
+  {id:"starter-waits",location:"cave",starter:true}
+],"starter state stores semantic IDs rather than translated sentences");
+assert.ok([...STARTER_TRAINING_EXAMPLES,...AVAILABLE_TRAINING_EXAMPLES].every(example=>!("text" in example)),"toy-model state never persists translated display text");
 assert.equal(AVAILABLE_TRAINING_EXAMPLES.length,5,"the add-example control is deliberately bounded to five presets");
 assert.deepEqual(calculateToyPrediction([]),{cave:34,forest:33,castle:33},"the initial toy prediction is exactly 34/33/33");
 const afterOneCave=calculateToyPrediction(["rests-cave"]);
@@ -185,6 +187,11 @@ function leafPaths(value,prefix=""){return Object.entries(value).flatMap(([key,c
 const locales=await Promise.all(["en","zh","fr","de"].map(async language=>JSON.parse(await read(`../src/locales/${language}/mission5.json`))));
 const expected=leafPaths(locales[0]).sort();
 for(const[index,locale]of locales.entries())assert.deepEqual(leafPaths(locale).sort(),expected,`${["en","zh","fr","de"][index]} Lesson 5 keys match`);
+for(const[index,locale]of locales.entries()){
+  const language=["en","zh","fr","de"][index];
+  assert.ok(locale.page5.testPrompt,`${language} test prompt is localized`);
+  for(const example of [...STARTER_TRAINING_EXAMPLES,...AVAILABLE_TRAINING_EXAMPLES]) assert.ok(locale.page5.examples[example.id],`${language} localizes toy example ${example.id}`);
+}
 assert.equal(locales[0].shell.nextChallenge,"Next: Final Challenge");
 assert.match(locales[0].page1.title,/Where do the patterns come from/);
 assert.match(locales[0].page1.subtitle,/After predicting the next token/);

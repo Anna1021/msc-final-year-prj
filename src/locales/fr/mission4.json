@@ -1,4 +1,5 @@
 {
+  "skipQuiz": "Passer le quiz",
   "shell": {
     "backToLearn": "Retour au parcours",
     "lessonCount": "Leçon 4 sur 5",
@@ -8,7 +9,7 @@
     "next": "Suivant",
     "nextLesson": "Suivant : Leçon 5",
     "incomplete": "Activités incomplètes",
-    "robotAlt": "Robot AI Explorer de prédiction"
+    "robotAlt": "Robot-guide près de la leçon de prédiction"
   },
   "labels": {
     "reviewedProbabilities": "Probabilités pédagogiques vérifiées — pas une sortie Qwen en direct",
@@ -54,6 +55,7 @@
     }
   },
   "page1": {
+    "processedVisualLabel": "Représentation abstraite du contexte traité",
     "title": "Que se passe-t-il ensuite ?",
     "subtitle": "Du contexte traité à la prédiction du prochain jeton.",
     "bridgeLine1": "Dans la leçon 3, le modèle a combiné les informations des positions de jetons disponibles pour construire une représentation plus riche du texte actuel.",
@@ -72,6 +74,7 @@
     "thinkNext": "Découvrons-le à la page suivante."
   },
   "scorePage": {
+    "promptTokens": "La|jeune|lectrice|a ouvert|le",
     "title": "Comment le modèle compare-t-il ce qui pourrait suivre ?",
     "subtitle": "Observe comment les prochains Tokens possibles reçoivent des scores internes différents.",
     "intro1": "Le modèle envisage de nombreux Tokens qui pourraient suivre.",
@@ -95,6 +98,14 @@
     "higherMeans": "Un score plus élevé signifie que le modèle favorise davantage ce Token pour l’instant.",
     "notProbability": "Un score n’est pas encore une probabilité.",
     "illustrative": "Comparaison illustrative uniquement — ce ne sont pas des valeurs réelles du modèle."
+  },
+  "teachingCandidates": {
+    "book": "livre",
+    "door": "porte",
+    "box": "boîte",
+    "window": "fenêtre",
+    "banana": "banane",
+    "other": "autre"
   },
   "page2": {
     "title": "Comment le modèle choisit-il un jeton ?",
@@ -150,6 +161,7 @@
       "candidateSubtitle": "Meilleures prédictions du modèle réel",
       "returnLatest": "Revenir à la dernière étape",
       "selected": "sélectionné",
+      "byteFragment": "Fragment d’octet · ID {{id}}",
       "candidateEmpty": "Lance le modèle pour voir cinq probabilités réelles du prochain Token.",
       "topFive": "Les 5 premiers sont affichés. Beaucoup d’autres Tokens peuvent aussi avoir des probabilités plus faibles.",
       "currentContext": "Contexte actuel",
@@ -177,6 +189,12 @@
       "textBeginning": "Début du texte",
       "predictNext": "Prédire le prochain Token",
       "tryExample": "Essaie un exemple :",
+      "defaultPrompt": "L’élève a ouvert",
+      "starters": {
+        "cat": "Le chat s’est assis sur",
+        "weather": "Aujourd’hui, le temps semble",
+        "dragon": "Un dragon a trouvé"
+      },
       "reset": "Réinitialiser",
       "generationMode": "Mode de génération",
       "auto": "Auto",
@@ -193,14 +211,14 @@
       "modelErrorTitle": "Le modèle ne peut pas répondre pour le moment.",
       "modelErrorBody": "Réessaie la prédiction.",
       "tryAgain": "Réessayer",
-      "temperature": "Température",
+      "temperature": "Température (degré d’aléatoire)",
       "temperatureAria": "Température {{value}}. {{description}}",
       "temperatureFocused": "Les choix les plus forts ressortent davantage.",
       "temperatureSpread": "Davantage de choix obtiennent des chances visibles.",
       "temperatureBalanced": "Répartition équilibrée des probabilités.",
-      "moreFocused": "Plus ciblé",
-      "moreSpread": "Plus varié",
-      "temperatureApplies": "S’applique à la prochaine prédiction réelle."
+      "moreFocused": "Plus basse = plus prévisible.",
+      "moreSpread": "Plus haute = plus variée.",
+      "temperatureApplies": "La température contrôle le degré d’aléatoire dans le choix du prochain Token par le modèle."
     }
   },
   "page5": {

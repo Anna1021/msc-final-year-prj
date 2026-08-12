@@ -72,7 +72,7 @@ export function Mission2OpeningPage({ active, t, onComplete }) {
     <div className="m2-context-meaning-board">
       <div className="m2-context-principle">
         <span><Lightbulb aria-hidden="true" />{t("mission2.page1.sameWord")}</span>
-        <p>{t("mission2.page1.definition")}</p>
+        <p>{t("mission2.page1.definition")}</p><small>{t("mission2.page1.englishExampleLabel")}</small>
       </div>
       <div className="m2-context-cases">
         {examples.map(({ id, icon: Icon, sentenceKey, meaningKey }) => <article className={`m2-context-case is-${id}`} key={id}>
@@ -107,9 +107,9 @@ export function Mission2OpeningPage({ active, t, onComplete }) {
 
 export function Mission2WindowPage({ active, t, onComplete }) {
   const [technicalOpen, setTechnicalOpen] = useState(true);
-  const windowTokens = ["a", "curious", "little", "reader", "who", "loved", "to", "learn"];
-  const outsideBefore = ["Once", "upon", "a", "time", "there"];
-  const outsideAfter = ["new", "things", "every", "day"];
+  const windowTokens = t("mission2.page2.windowTokens").split("|");
+  const outsideBefore = t("mission2.page2.outsideBeforeTokens").split("|");
+  const outsideAfter = t("mission2.page2.outsideAfterTokens").split("|");
 
   function toggleKeyword(event) {
     setTechnicalOpen(event.currentTarget.open);
@@ -195,7 +195,7 @@ export function Mission2GrowingTextPage({ active, t, onComplete }) {
           <p>{t(`mission2.page3.${context.lead}`)}</p><strong className="m2-context-shared-ending">{t(`mission2.page3.${context.sentence}`)}</strong>
           <ArrowRight aria-hidden="true" />
           <h3>{t("mission2.page3.predictions")}</h3>
-          <div className="m2-prediction-bars">{context.candidates.map(([token, probability]) => <div key={token}><b>{token}</b><span aria-hidden="true"><i style={{ width: `${probability}%` }} /></span><strong>{probability}%</strong></div>)}</div>
+          <div className="m2-prediction-bars">{context.candidates.map(([token, probability]) => <div key={token}><b>{t(`mission2.page3.candidates.${token}`)}</b><span aria-hidden="true"><i style={{ width: `${probability}%` }} /></span><strong>{probability}%</strong></div>)}</div>
           <p className="m2-context-likely"><Check aria-hidden="true" />{t(`mission2.page3.${context.id === "a" ? "likelyA" : "likelyB"}`)}</p>
         </article>)}
         <aside className="m2-context-explanation-sidebar">

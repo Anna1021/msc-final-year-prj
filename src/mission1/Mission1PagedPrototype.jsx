@@ -22,6 +22,7 @@ function PlayfulSceneBannerIntro({ t }) {
   return <div className="playful-scene-banner mission-1-paged__intro-scene" data-tour-id="m1-intro-sentence">
     <div className="playful-scene-copy">
       <span className="playful-scene-badge"><Blocks size={17} strokeWidth={1.9} />{t("mission1.intro.buildingLabel")}</span>
+      <small className="mission-1-paged__fixture-language">{t("mission1.intro.englishTokenizerExample")}</small>
       <div className="mission-1-paged__intro-grid">
         <section className="mission-1-paged__why-tokens" aria-labelledby="m1-why-tokens-title">
           <h3 id="m1-why-tokens-title">{t("mission1.intro.whyTitle")}</h3>
@@ -184,7 +185,7 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
     </section> : currentPage === 2 ? <section id="m1-demo" className="course-section mission-1-paged__lesson" data-lesson-page="2">
       <div className="course-section-head"><h2><span>2</span>{t("mission1.demo.realPieces")}</h2><button type="button" className="outline tiny-top" aria-live="polite" onClick={replayExample}><RefreshCcw className={replaying ? "m1-spinner" : ""} size={16} strokeWidth={1.8} />{replaying || replayNotice ? t("mission1.demo.replaying") : t("mission1.demo.replay")}</button></div>
       <p>{t("mission1.demo.body")}</p>
-      <div className="playful-real-token-lab" data-tour-id="m1-demo-result"><div className="playful-real-token-head"><span><ShieldCheck size={16} strokeWidth={2} />{t("mission1.demo.realPieces")}</span><small>{t("mission1.demo.verifiedCount")}</small></div><TokenPieces groups={introGroups.slice(0, revealCount)} visualVariant="verified" t={t} /><p className="m1-space-legend"><span>␠</span>{t("mission1.tokens.spaceLegend")}</p></div>
+      <div className="playful-real-token-lab" data-tour-id="m1-demo-result"><div className="playful-real-token-head"><span><ShieldCheck size={16} strokeWidth={2} />{t("mission1.demo.realPieces")}</span><small>{t("mission1.demo.verifiedCount")}</small></div><small className="mission-1-paged__fixture-language">{t("mission1.intro.englishTokenizerExample")}</small><TokenPieces groups={introGroups.slice(0, revealCount)} visualVariant="verified" t={t} /><p className="m1-space-legend"><span>␠</span>{t("mission1.tokens.spaceLegend")}</p></div>
       <RobotGuideBubble label={t("mission1.demo.lookCloser")} title={t("mission1.demo.whyTitle")} illustration={<MiniSceneIllustration imageSrc="/assets/img/mission-robot-pointing.png" />}>
         <p>{t("mission1.demo.whyVocabulary")}</p><p>{t("mission1.demo.whyCommon")}</p>
         <div className={`playful-split-focus ${revealCount >= 4 && replaying ? "is-emphasised" : ""}`}><strong>uncharacteristically</strong><ArrowRight size={20} strokeWidth={1.8} /><span className="playful-split-pieces">{["un", "character", "istically"].map((piece, index) => <TokenBuildingBlock variant="verified" index={index} verifiedLabel={t("mission1.tokens.verifiedLabel")} key={piece}>{piece}</TokenBuildingBlock>)}</span></div>

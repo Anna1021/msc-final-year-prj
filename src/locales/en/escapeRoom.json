@@ -20,5 +20,115 @@
   "completeSaved": "Escape complete. Progress saved.",
   "completeAlready": "Escape complete. Final reward already saved.",
   "inventory": "Crystals",
-  "tips": "Follow the six ideas from tokens and numbers to prediction and training."
+  "tips": "Follow the five ideas from tokens to prediction and training.",
+  "a11y": {
+    "inventory": "Escape Room inventory",
+    "navigation": "Escape Room navigation",
+    "exitFullScreenTitle": "Exit full screen (Esc)",
+    "fullScreenTitle": "Full screen Escape Room (F)",
+    "gameFrame": "Language Model Escape Room game"
+  },
+  "notifications": {
+    "finalExitOpened": "Final Exit opened.",
+    "roomOpened": "{{room}} opened.",
+    "unknownRoom": "Escape Room message ignored: unknown room.",
+    "crystalCollected": "{{crystal}} collected. Progress saved.",
+    "crystalRestored": "{{crystal}} already collected. Progress restored.",
+    "needsCrystals": "The final exit still needs all five crystals."
+  },
+  "rooms": {
+    "token": { "label": "Room 1", "title": "Token Workshop", "crystalName": "Token Crystal" },
+    "numbers": { "label": "Room 2", "title": "Context Chamber", "crystalName": "Context Crystal" },
+    "context": { "label": "Room 3", "title": "Connection Lab", "crystalName": "Connections Crystal" },
+    "connections": { "label": "Room 4", "title": "Prediction Machine", "crystalName": "Prediction Crystal" },
+    "prediction": { "label": "Room 5", "title": "Pattern Workshop", "crystalName": "Pattern Crystal" }
+  },
+  "debug": {
+    "statusTitle": "Escape Room Status", "status": "Status", "screen": "Screen", "finalExit": "Final Exit",
+    "completedReviewable": "completed and reviewable", "notCompleted": "not completed", "replayable": "replayable",
+    "storageNote": "The escape room runs inside the iframe. LLM Explorer stores crystals and progress outside the game.",
+    "finalDescription": "The final door brings together the language-model journey. Learners place five crystals, form the final crystal, then solve the final lock.",
+    "finalStep1": "Place crystals around the language model", "finalStep2": "Form the final crystal", "finalStep3": "Solve the final lock",
+    "reload": "Reload Runtime", "reset": "Reset Escape"
+  },
+  "runtime": {
+    "finalExit": "Final Exit",
+    "messages": {
+      "top": { "eyebrow": "Final learning challenge", "title": "Language Model Escape Room", "progress": "{{count}} / {{total}} crystals" },
+      "common": { "roomMap": "Room Map", "continue": "Continue" },
+      "feedback": {
+        "tokenDefault": "A Token can be a whole word, part of a word, punctuation, or another text piece.",
+        "tokenInspected": "Good. The tokenizer must split text into Token pieces before the lock can use it.",
+        "tokenised": "This verified example came from the Qwen2.5 tokenizer. Now transfer the idea to a different word.",
+        "tokenSelection": "Selection ready. Activate the lock to compare it with the tokenizer.",
+        "tokenChoose": "Choose one Token split before activating the lock.",
+        "tokenIncorrect": "Not quite. There is no single split that every tokenizer must use. Different tokenizers can split the same text in different ways.",
+        "numbersDefault": "Choose the job performed by the ID.",
+        "contextDefault": "The door scanner is offline. Inspect the console to find out what it needs.",
+        "contextInspected": "Console inspected. Activate the context scanner to reveal the tokens the lock can read.",
+        "contextScanned": "Scanner active. The glowing frame is the current context window.",
+        "contextSelection": "Selection ready. Check the glowing window boundary, then unlock the door.",
+        "contextNeedScanner": "Inspect the console and activate the context scanner before opening the door.",
+        "contextChoose": "Choose the group of tokens inside the glowing context window.",
+        "contextIncorrect": "Not quite. Look at the edges of the glowing context window. Only the tokens inside that frame are available in this example.",
+        "connectionDefault": "The connection console is offline. Inspect it to find out what the door needs.",
+        "connectionInspected": "The lock combines information from several token positions. But the connections are not all equally strong.",
+        "connectionScanned": "Scanner active. Follow each arrow toward the focus token, then compare their thicknesses.",
+        "connectionSelection": "Selection ready. Compare the shown arrow thicknesses, then unlock the door.",
+        "connectionNeedScanner": "Inspect the console and activate the connection scanner before opening the door.",
+        "connectionChoose": "Choose the token with the thickest arrow pointing toward opened.",
+        "connectionIncorrect": "Not quite. You do not need to guess which word seems most important. Compare the arrow thicknesses in the connection pattern.",
+        "predictionDefault": "The prediction console is offline. Inspect it to find out what signal the door needs.",
+        "predictionInspected": "The machine compares several possible next tokens before the door can respond.",
+        "predictionRan": "Prediction signal ready. Higher probability means more likely right now, not guaranteed.",
+        "predictionSelection": "Selection ready. Read both the largest probability and the machine note, then unlock the door.",
+        "predictionNeedMachine": "Inspect the console and run the prediction machine before opening the door.",
+        "predictionChoose": "Choose the statement that best matches the displayed prediction signal.",
+        "predictionCorrect": "Correct! “book” has the highest probability shown, so it is currently the most likely option. But a higher probability does not guarantee that it will be chosen.",
+        "predictionIncorrect": "Not quite. Look at both parts of the clue: 46% makes “book” the most likely option shown, but probability is not a guarantee.",
+        "patternDefault": "The training console is offline. Inspect its records to see how the model learned.",
+        "patternInspected": "Good. The console contains records from earlier training examples.",
+        "patternRevealed": "The examples affected what became more likely later. Now explain why.",
+        "patternSelection": "Selection ready. Use the records and later prediction to activate the lock.",
+        "patternNeedPrediction": "Inspect the training console and reveal the later prediction before opening the lock.",
+        "patternChoose": "Choose the explanation that connects repeated examples, learned patterns and later predictions.",
+        "patternCorrect": "Pattern restored. Repeated training examples can contribute to learned patterns that influence later predictions.",
+        "patternIncorrect": "The engine stays locked. One example does not become a stored answer. Think about what repeated training examples can change over time."
+      },
+      "exit": {
+        "fusionComplete": "Final crystal formed. The Final Lock is now active.",
+        "complete": "Final lock solved. Training happened earlier; during use, tokens, context and connections lead to one next-token prediction.",
+        "ready": "The order is correct. Solve the Final Lock.", "forming": "Final crystal is forming...",
+        "orderPrompt": "Put the five ideas in order to solve the Final Lock.", "placePrompt": "Place all five crystals around the model door.",
+        "needsCrystals": "The final room needs every room crystal.", "reset": "Final lock reset. Place the five crystals, then rebuild the path.",
+        "cardsCleared": "Cards cleared. Rebuild the learning-to-prediction path.", "fusionStarted": "Five crystals placed. Fusion sequence started.",
+        "placedProgress": "{{count}} / {{total}} crystals placed. Keep powering the Language Model Door.",
+        "slotOccupied": "That slot already has a card. Drag the card to swap, or choose an empty slot.",
+        "slotsFull": "All five slots are filled. Check the order, then solve the Final Lock.", "cardPlaced": "Card added to a slot. Keep filling the empty slots.",
+        "unreadableCard": "I could not read that card. Try dragging it again, or click it instead.", "wrongDropArea": "Drop that card inside the Final Lock slots.",
+        "cardRemoved": "Card removed. Try the order again.", "dropOnSlot": "Drop the card onto a slot or inside the matching console.",
+        "waitFusion": "Wait for the final crystal to form.", "placeAllFirst": "Place every crystal around the Language Model Door first.",
+        "fillSlots": "Fill every empty slot before solving the Final Lock.", "incorrectOrder": "The final lock is still closed. Check the order and try again."
+      },
+      "completion": {
+        "eyebrow": "Final Challenge complete",
+        "title": "Congratulations — the Language Model Door is open!",
+        "intro": "You restored all five crystals and rebuilt the path from learning to prediction.",
+        "summary": "Language models process text as Tokens, use available Context, combine information through Connections, make a next-token Prediction, and rely on Patterns learned earlier during training.",
+        "guide": "Guide note: you solved the final lock by connecting the ideas — not by treating the model like a person.",
+        "recapTitle": "Five ideas you unlocked",
+        "concepts": {
+          "tokens": { "title": "Tokens", "body": "Text is split into smaller pieces the model can process." },
+          "context": { "title": "Context", "body": "Earlier available Tokens help shape what may come next." },
+          "connections": { "title": "Connections", "body": "Information from different Token positions can be combined." },
+          "prediction": { "title": "Prediction", "body": "The model compares possibilities and selects a next Token." },
+          "patterns": { "title": "Learned patterns", "body": "Training happened earlier and shaped the model's later predictions." }
+        },
+        "return": "Return to LLM Explorer",
+        "replay": "Replay Final Challenge"
+      }
+    },
+    "fallbackMessages": {},
+    "replacements": {}
+  }
 }

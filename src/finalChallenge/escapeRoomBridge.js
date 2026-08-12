@@ -11,6 +11,7 @@ const inboundTypes = new Set([
   "ESCAPE_ROOM_RETURNED_TO_HUB",
   "ESCAPE_ROOM_ROOM_COMPLETE",
   "ESCAPE_ROOM_COMPLETE",
+  "ESCAPE_ROOM_REPLAY",
   "ESCAPE_ROOM_NAVIGATE",
   "ESCAPE_ROOM_REQUEST_STATE"
 ]);
@@ -55,7 +56,7 @@ export function isDebugMode() {
   return new URLSearchParams(window.location.search).get("debug") === "1";
 }
 
-export function buildInitPayload(escapeProgress, mainProgress, preferredLanguage = "en") {
+export function buildInitPayload(escapeProgress, mainProgress, preferredLanguage = "en", localeContent = {}) {
   const completedRooms = rooms
     .filter((room) => escapeProgress.completedRooms?.[room.id] && escapeProgress.crystalCollected?.[room.id])
     .map((room) => room.id);
@@ -66,6 +67,7 @@ export function buildInitPayload(escapeProgress, mainProgress, preferredLanguage
     crystals: Array.isArray(escapeProgress.inventory) ? escapeProgress.inventory : [],
     finalExitCompleted: Boolean(escapeProgress.finalCompleted),
     preferredLanguage,
+    localeContent,
     currentRoom: escapeProgress.currentRoom || null,
     currentStep: escapeProgress.currentStep || "hub",
     lastPlayedRoom: escapeProgress.lastPlayedRoom || null,
@@ -119,6 +121,9 @@ function normaliseIncoming(data) {
     return { currentScreen: "room-select" };
   }
   if (data?.type === "ESCAPE_ROOM_COMPLETE") {
+    return {};
+  }
+  if (data?.type === "ESCAPE_ROOM_REPLAY") {
     return {};
   }
   if (data?.type === "ESCAPE_ROOM_NAVIGATE") {

@@ -3,7 +3,7 @@ import { ArrowRight, BrainCircuit, Braces, CheckCircle2, Database, RotateCcw, Sp
 
 export function Mission1PagedSummaryPage({ active, complete, t, onTryAnother, onRestart, onMissions, onNextMission }) {
   const summarySteps = [
-    { key:"textTokens", Icon:Braces, visual:<span className="mission-summary-mini-transform"><i>Text</i><ArrowRight/><b>token</b></span> },
+    { key:"textTokens", Icon:Braces, visual:<span className="mission-summary-mini-transform"><i>{t("mission1.intro.flowText")}</i><ArrowRight/><b>{t("mission1.intro.flowTokens")}</b></span> },
     { key:"lookup", Icon:Tag, visual:<b className="mission-summary-mini-id">ID 305</b> },
     { key:"numbers", Icon:Database, visual:<span className="mission-summary-mini-values">+0.24 · −0.61 · …</span> },
     { key:"processing", Icon:BrainCircuit, visual:null }

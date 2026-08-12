@@ -44,7 +44,7 @@ assert.match(shell, /REQUIRED\.every[\s\S]*visited\.has\(pageCount\)/, "direct f
 assert.match(pages, /l3-context-connections-page[\s\S]*bridgeFromLesson2[\s\S]*bridgeForward/, "Page 1 bridges directly from Lesson 2 context to connections");
 assert.doesNotMatch(pages.match(/export function Lesson3Page1[\s\S]*?export function Lesson3Page2/)?.[0] || "", /term="Transformer"|runTransformer|l3-transformer-stage/, "Page 1 no longer introduces the Transformer or its old activity");
 assert.doesNotMatch(pages, /Page1[\s\S]{0,3000}(?:check answer|tryAgain|correct answer)/i, "Page 1 is not a mandatory clue quiz");
-assert.match(pages, /\["The", "little", "reader", "opened", "the", "book"\][\s\S]*l3-p1-token-row/, "Page 1 presents the requested six-token sentence");
+assert.match(pages, /localizedTokens\(t, "mission3\.page1\.exampleTokens"\)[\s\S]*l3-p1-token-row/, "Page 1 presents the locale-specific six-token sentence");
 assert.match(pages, /l3-p1-context-bracket[\s\S]*availableContext/, "Page 1 visually reconnects the tokens to the available context");
 assert.match(pages, /l3-p1-connection-map[\s\S]*marker id="l3-p1-arrow"[\s\S]*l3-p1-target/, "Page 1 uses SVG arrows into the target token");
 assert.match(pages, /keywordTerm[\s\S]*keywordNote[\s\S]*keywordDefinition/, "Page 1 has one expandable Connection keyword card");
@@ -74,7 +74,7 @@ assert.match(page2Source, /l3-p2-number">2<[\s\S]*l3-section-kicker/);
 assert.ok(page2Source.indexOf("l3-p2-teaching-surface") < page2Source.indexOf("l3-p2-hero"), "Page 2 section header is inside the main teaching card");
 assert.doesNotMatch(page2Source, /<h1/, "Page 2 leaves the only full page title to LessonPageHero");
 assert.match(page2Source, /l3-share-information-page[\s\S]*simpleTitle[\s\S]*l3-p2-token-visual/, "Page 2 uses the requested teaching-first composition");
-assert.match(page2Source, /\["The", "little", "reader", "opened", "the", "book"\][\s\S]*index === 3 \? "is-target"/, "Page 2 highlights opened at position 4 as the target token");
+assert.match(page2Source, /localizedTokens\(t, "mission3\.page1\.exampleTokens"\)[\s\S]*index === 3 \? "is-target"/, "Page 2 highlights the locale-specific token at position 4 as the target");
 assert.match(page2Source, /marker id="l3-p2-arrow"[\s\S]*is-strong[\s\S]*is-medium[\s\S]*is-weak/, "Page 2 distinguishes stronger, medium and weaker illustrative contributions");
 assert.equal((page2Source.match(/420 2[67]/g) || []).length, 5, "all five contribution arrows terminate at the opened target");
 assert.match(page2Source, /legendTitle[\s\S]*legendStrong[\s\S]*legendMedium[\s\S]*legendWeak[\s\S]*callout/, "Page 2 explains the connection styles without numeric scores");
@@ -86,10 +86,10 @@ const page3Source = pages.match(/export function Lesson3Page3[\s\S]*?function Po
 assert.match(page3Source, /l3-p3-number">3<[\s\S]*l3-section-kicker/);
 assert.ok(page3Source.indexOf("l3-p3-teaching-surface") < page3Source.indexOf("l3-p3-hero"), "Page 3 section header is inside the main teaching card");
 assert.doesNotMatch(page3Source, /<h1/, "Page 3 leaves the only full page title to LessonPageHero");
-assert.match(page3Source, /\["The", "dog", "chased", "the", "ball", "because", "it", "was", "tired", "\."\]/, "Page 3 uses the requested ten-token sentence");
+assert.match(page3Source, /localizedTokens\(t, "mission3\.page3\.exampleTokens"\)/, "Page 3 uses the locale-specific ten-token sentence");
 assert.match(page3Source, /index === 6 \? "is-focus"[\s\S]*index > 6 \? "is-unavailable"/, "Page 3 marks it at position 7 and prevents future positions from appearing available");
 assert.match(page3Source, /l3-p3-context-status[\s\S]*availableContext[\s\S]*notAvailable/, "Page 3 distinguishes available positions 1–7 from unavailable positions 8–10");
-assert.match(page3Source, /const sources = \["The", "dog", "chased", "the", "ball", "because"\]/, "the contribution diagram only uses earlier positions");
+assert.match(page3Source, /const sources = tokens\.slice\(0, 6\)/, "the contribution diagram only uses earlier positions, independent of language");
 assert.equal((page3Source.match(/<path className="is-(?:strong|medium|weak|veryweak)"/g) || []).length, 6, "Page 3 draws six contribution arrows");
 assert.equal((page3Source.match(/[C ]3(?:65|67|70|90|93|95) 118"/g) || []).length, 6, "all six paths stop at the edge of the it target instead of disappearing beneath it");
 assert.match(css, /l3-p3-arrow-map>svg \.is-strong\{[^}]*marker-end:url\(#l3-p3-arrow-strong\)/, "strong contribution paths carry inward arrowheads");
@@ -103,8 +103,8 @@ const page4Source = pages.match(/function PositionComparison[\s\S]*?function Pla
 assert.match(page4Source, /l3-p4-number">4<[\s\S]*l3-section-kicker/);
 assert.ok(page4Source.indexOf("l3-p4-teaching-surface") < page4Source.indexOf("l3-p4-hero"), "Page 4 section header is inside the main teaching card");
 assert.doesNotMatch(page4Source, /<h1/, "Page 4 leaves the only full page title to LessonPageHero");
-assert.match(data, /\["The", "dog", "chased", "the", "ball", "\."\][\s\S]*\["The", "ball", "chased", "the", "dog", "\."\]/, "Page 4 compares the same six tokens in two orders");
-assert.match(page4Source, /dogPosition = variant === "a" \? 2 : 5/, "Page 4 identifies dog at positions 2 and 5");
+assert.match(page4Source, /mission3\.page4\.example\$\{variant\.toUpperCase\(\)\}Tokens/, "Page 4 compares two locale-specific six-token orders");
+assert.match(page4Source, /dogPosition = variant === "a" \? 2 : 5[\s\S]*target = tokens\[dogPosition - 1\]/, "Page 4 identifies the comparison target by stable position rather than translated text");
 assert.equal((page4Source.match(/<PositionComparison variant=/g) || []).length, 2, "Page 4 presents two equal comparison panels");
 assert.match(page4Source, /l3-p4-token-row[\s\S]*l3-p4-connection-map[\s\S]*markerEnd/, "Page 4 shows token positions and inward relationship arrows");
 assert.equal((page4Source.match(/ 78"/g) || []).length, 10, "both Page 4 diagrams stop all arrowheads above the focus-token card");
@@ -112,7 +112,7 @@ assert.match(page4Source, /\["Strong", "Medium", "Weak", "VeryWeak"\][\s\S]*miss
 assert.match(page4Source, /positionTerm[\s\S]*positionDefinition[\s\S]*positionalTerm[\s\S]*positionalDefinition/, "Page 4 includes Position and Positional information keyword cards");
 assert.match(page4Source, /sameOrder[\s\S]*differentConnections[\s\S]*differentRepresentation/, "Page 4 closes with the requested order-to-representation chain");
 assert.doesNotMatch(page4Source, /onClick|aria-pressed|chooseActor|who-choices|tryAgain/, "Page 4 remains a static teaching comparison");
-assert.match(pages, /selectedSentence[\s\S]*LESSON_3_PLAYGROUND_SENTENCES[\s\S]*customSentence/, "Page 5 switches between two examples and a custom sentence using real state");
+assert.match(pages, /localizedPlaygroundSentences[\s\S]*selectedSentence[\s\S]*customText/, "Page 5 switches between localized presets and a custom sentence using real state");
 assert.match(pages, /PageSectionHeading number="5" label=\{t\("mission3\.page5\.tryTitle"\)\}/, "Page 5 keeps a compact numbered activity lead-in below the shared hero");
 const page5Source = pages.match(/export function Lesson3Page5[\s\S]*?export function Lesson3Page7/)?.[0] || "";
 assert.ok(page5Source.indexOf("l3-p5-main") < page5Source.indexOf("PageSectionHeading"), "Page 5 section header is inside the interaction card");
@@ -193,5 +193,13 @@ function leafPaths(value, prefix = "") {
 const locales = await Promise.all(["en", "zh", "fr", "de"].map(async (language) => JSON.parse(await read(`../src/locales/${language}/mission3.json`))));
 const expected = leafPaths(locales[0]).sort();
 for (const [index, locale] of locales.entries()) assert.deepEqual(leafPaths(locale).sort(), expected, `${["en", "zh", "fr", "de"][index]} Lesson 3 locale keys match`);
+for (const [index, locale] of locales.entries()) {
+  const language = ["en", "zh", "fr", "de"][index];
+  assert.equal(locale.page1.exampleTokens.split("|").length, 6, `${language} Page 1 keeps six semantic token positions`);
+  assert.equal(locale.page3.exampleTokens.split("|").length, 10, `${language} Page 3 keeps ten semantic token positions`);
+  assert.equal(locale.page4.exampleATokens.split("|").length, 6, `${language} Page 4 example A keeps six positions`);
+  assert.equal(locale.page4.exampleBTokens.split("|").length, 6, `${language} Page 4 example B keeps six positions`);
+  assert.ok(locale.page5.presets.A.text && locale.page5.presets.B.text, `${language} Page 5 presets are localized`);
+}
 
 process.stdout.write("Lesson 3 Connecting the Tokens tests passed.\n");

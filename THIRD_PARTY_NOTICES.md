@@ -8,7 +8,7 @@
 - Included files: `tokenizer.json`, `tokenizer_config.json`, and `LICENSE`
 - License: Apache License 2.0
 
-Only tokenizer metadata is included. AI Explorer does not include or load the Qwen model weights.
+Only tokenizer metadata is included. LLM Explorer does not include or load the Qwen model weights.
 The original license is reproduced at
 `public/tokenizers/qwen2.5-0.5b-instruct/LICENSE`, and file checksums and provenance are
 recorded in `public/tokenizers/qwen2.5-0.5b-instruct/source.json`.

@@ -1,17 +1,205 @@
 {
-  "title": "Wie verarbeitet ein Sprachmodell Text?", "subtitle": "Sprachmodelle zerlegen Text zuerst in kleine Teile, sogenannte Tokens, und verarbeiten sie dann mathematisch.",
+  "title": "Wie verarbeitet ein Sprachmodell Text?",
+  "subtitle": "Sprachmodelle zerlegen Text zuerst in kleine Teile, sogenannte Tokens, und verarbeiten sie dann mathematisch.",
   "liveTokenizerIntro": "Experimentiere mit dem echten Tokenizer des Live-Sprachmodells. Dein Text wird nur für diese Aktivität verarbeitet und nicht gespeichert.",
-  "sections": { "intro": "Was ist ein Token?", "demo": "Echte Tokenisierung ansehen", "playground": "Probiere einen eigenen Satz", "quickCheck": "Kurztest", "numbers": "Tokens werden zu Zahlen", "summary": "Zusammenfassung" },
-  "intro": { "body": "Ein Token ist ein kleines Textstück, mit dem ein LLM arbeitet. Es kann ein ganzes Wort, ein Wortteil oder ein Satzzeichen sein.", "sentenceLabel": "Beispielsatz", "buildingLabel": "Baustein-Idee", "metaphorLabel": "Eine Wortbaustein-Metapher, keine echten Tokenizer-Grenzen", "metaphorNote": "Tokens können auf unterschiedliche Arten gebildet werden. Verschiedene Tokenizer können denselben Text unterschiedlich aufteilen. Das ist in Ordnung — jedes LLM verwendet das Token-System, mit dem es gebaut wurde.", "whyTitle": "Warum braucht ein LLM Tokens?", "whyText": "LLMs arbeiten nicht genau so mit Text, wie wir ihn sehen.", "whyBreaks": "Ein Tokenizer zerlegt Text in kleinere Teile, die Tokens heißen.", "whyNumbers": "Jedes Token kann dann durch eine Zahl dargestellt werden, mit der das Modell arbeiten kann.", "flowLabel": "Text wird zu Tokens und dann zu Beispiel-Token-IDs", "flowText": "Text", "flowTokens": "Tokens", "flowIds": "Token-IDs", "exampleIds": "Diese Token-ID-Nummern sind nur Beispiele.", "exampleSentence": "The uncharacteristically quiet reader smiled.", "compareText": "Gleicher Text", "tokenizerA": "Tokenizer A", "tokenizerB": "Tokenizer B", "compareNote": "Nur eine Illustration, kein echtes Tokenizer-Ergebnis.", "differentNotWrong": "Anders bedeutet nicht falsch." },
-  "demo": { "body": "Sieh zu, wie der geprüfte Qwen2.5-Tokenizer den Satz in acht echte Tokens zerlegt.", "model": "Dieses Beispiel verwendet den Qwen2.5-Tokenizer.", "different": "Verschiedene Modelle können denselben Text unterschiedlich zerlegen.", "replay": "Beispiel wiederholen", "replaying": "Wiedergabe…", "realPieces": "Echte Qwen-Token-Teile", "verifiedCount": "8 geprüfte Tokens", "lookCloser": "Genauer hinsehen", "whyTitle": "Warum wurde es so zerlegt?", "whyVocabulary": "Der Tokenizer verwendet eine feste Sammlung von Textteilen.", "whyCommon": "Ein vertrauter Textteil kann zusammenbleiben. Ein längeres oder weniger vertrautes Wort kann in kleinere Teile zerlegt werden." },
-  "tokens": { "leadingSpace": "Leerzeichen davor", "spaceLegend": "bedeutet, dass dieses Token mit einem Leerzeichen beginnt.", "verifiedLabel": "Geprüftes Qwen-Token", "groupCount": "{{count}} Tokens" },
-  "playground": { "intro": "Experimentiere im Browser mit einem echten Tokenizer. Dein Text bleibt auf diesem Gerät und wird nicht gespeichert.", "modelLabel": "Tokenizer", "presetsLabel": "Beispiele", "preset": "Beispiel {{number}}", "inputLabel": "Dein Text", "placeholder": "Gib bis zu 200 Zeichen ein…", "emptyError": "Gib zuerst etwas Text ein.", "lengthError": "Beschränke den Text auf 200 Zeichen.", "loadError": "Der Tokenizer konnte nicht geladen werden. Prüfe die Verbindung und versuche es erneut.", "loading": "Tokenizer wird geladen…", "tokenizing": "Tokenisierung…", "tokenize": "Tokenisieren", "originalText": "Originaltext", "totalTokens": "Tokens insgesamt", "showTechnical": "Technische Details anzeigen", "hideTechnical": "Technische Details ausblenden", "technicalOptional": "Optionale technische Details — du musst dir Token-IDs nicht merken." },
-  "check": { "intro": "Bearbeite beide Teile. Du kannst beliebig oft erneut versuchen.", "partA": "Teil A · Die Idee", "partB": "Teil B · Echte Tokens zusammensetzen" },
-  "checkA": { "question": "Was ist ein Token?", "options": { "paragraph": "Ein ganzer Absatz", "piece": "Ein Textteil, den das Modell verarbeitet", "word": "Immer genau ein vollständiges Wort", "picture": "Ein vom Modell gespeichertes Bild" }, "feedback": { "correct": { "piece": "Richtig. Ein Token ist ein Textteil, den das Modell verarbeitet: ein Wort, Wortteil, Satzzeichen oder anderer Textteil." }, "incorrect": { "paragraph": "Ein Absatz enthält meist viele Tokens. Ein Token ist ein kleinerer Textteil.", "word": "Tokens sind nicht immer ganze Wörter. Ein Wort kann in mehrere Tokens zerlegt werden.", "picture": "Hier steht ein Token für einen Textteil, nicht für ein gespeichertes Bild." } } },
-  "checkB": { "originalSentence": "Originalsatz", "tokenCount": "{{count}} geprüfte Qwen-Tokens", "instructions": "Bringe die echten Qwen-Tokens wieder in ihre ursprüngliche Reihenfolge.", "availablePieces": "Verfügbare Tokens", "answerZone": "Deine Reihenfolge", "answerPlaceholder": "Tokens auswählen oder hierher ziehen", "removePiece": "Dieses Token zurücklegen", "moveLeft": "Token nach links", "moveRight": "Token nach rechts", "keyboardHelp": "Wähle ein Token zum Hinzufügen oder Zurücklegen. Nutze die Pfeiltasten-Schaltflächen mit Tastatur oder Touchscreen.", "feedback": { "correct": "Richtig. Der Satz wurde aus den Tokens in der ursprünglichen Reihenfolge zusammengesetzt.", "incorrect": "Dies sind echte Qwen-Tokens, aber ihre Reihenfolge entspricht noch nicht dem Satz." } },
-  "numbers": { "intro": "Dies ist eine vereinfachte Darstellung des nächsten Schritts.", "text": "Text", "pieces": "Token-Teile", "representations": "Numerische Darstellungen", "patterns": "Mathematische Muster", "prediction": "Vorhersage des nächsten Tokens", "numberNote": "Diese Beispielzahlen zeigen nur, dass Tokens mathematisch verarbeitet werden; Token-IDs musst du nicht lernen.", "next": "Als Nächstes untersuchst du, wie ein Modell mithilfe von Mustern vorhersagt, was folgen könnte." },
-  "summary": { "intro": "Du kennst nun den ersten Schritt der Vorhersage des nächsten Tokens.", "cards": { "piece": "Text wird zu Tokens", "subword": "Tokens können Wortteile sein", "math": "Tokens werden zu Zahlen für das Modell" }, "items": { "piece": "Ein Token ist ein Textteil.", "subword": "Ein Token ist nicht immer ein ganzes Wort.", "real": "Qwen kann deinen eingegebenen Text tokenisieren.", "different": "Modelle können Text unterschiedlich zerlegen.", "math": "Tokens werden anschließend mathematisch verarbeitet." }, "encouragement": "Du kannst jederzeit zum Playground zurückkehren und einen anderen Satz testen.", "complete": "Mission 1 abgeschlossen. Mission 2 ist bereit.", "incomplete": "Bearbeite den Playground und beide Kurztests und lies dann diese Zusammenfassung." },
-  "actions": { "check": "Antwort prüfen", "retry": "Erneut versuchen", "reset": "Zurücksetzen", "newChallenge": "Neue Aufgabe", "restartActivity": "Aktivität neu starten", "explore": "Anderes Beispiel ausprobieren", "aiLab": "Im KI-Labor weiterforschen", "restartMission": "Mission neu starten", "previous": "Zurück", "nextMission": "Weiter: Mission 2" },
+  "sections": {
+    "intro": "Was ist ein Token?",
+    "demo": "Echte Tokenisierung ansehen",
+    "playground": "Probiere einen eigenen Satz",
+    "quickCheck": "Kurztest",
+    "numbers": "Tokens werden zu Zahlen",
+    "summary": "Zusammenfassung"
+  },
+  "intro": {
+    "englishTokenizerExample": "Echtes englisches Tokenizer-Beispiel",
+    "body": "Ein Token ist ein kleines Textstück, mit dem ein LLM arbeitet. Es kann ein ganzes Wort, ein Wortteil oder ein Satzzeichen sein.",
+    "sentenceLabel": "Beispielsatz",
+    "buildingLabel": "Baustein-Idee",
+    "metaphorLabel": "Eine Wortbaustein-Metapher, keine echten Tokenizer-Grenzen",
+    "metaphorNote": "Tokens können auf unterschiedliche Arten gebildet werden. Verschiedene Tokenizer können denselben Text unterschiedlich aufteilen. Das ist in Ordnung — jedes LLM verwendet das Token-System, mit dem es gebaut wurde.",
+    "whyTitle": "Warum braucht ein LLM Tokens?",
+    "whyText": "LLMs arbeiten nicht genau so mit Text, wie wir ihn sehen.",
+    "whyBreaks": "Ein Tokenizer zerlegt Text in kleinere Teile, die Tokens heißen.",
+    "whyNumbers": "Jedes Token kann dann durch eine Zahl dargestellt werden, mit der das Modell arbeiten kann.",
+    "flowLabel": "Text wird zu Tokens und dann zu Beispiel-Token-IDs",
+    "flowText": "Text",
+    "flowTokens": "Tokens",
+    "flowIds": "Token-IDs",
+    "exampleIds": "Diese Token-ID-Nummern sind nur Beispiele.",
+    "exampleSentence": "The uncharacteristically quiet reader smiled.",
+    "compareText": "Gleicher Text",
+    "tokenizerA": "Tokenizer A",
+    "tokenizerB": "Tokenizer B",
+    "compareNote": "Nur eine Illustration, kein echtes Tokenizer-Ergebnis.",
+    "differentNotWrong": "Anders bedeutet nicht falsch."
+  },
+  "demo": {
+    "body": "Sieh zu, wie der geprüfte Qwen2.5-Tokenizer den Satz in acht echte Tokens zerlegt.",
+    "model": "Dieses Beispiel verwendet den Qwen2.5-Tokenizer.",
+    "different": "Verschiedene Modelle können denselben Text unterschiedlich zerlegen.",
+    "replay": "Beispiel wiederholen",
+    "replaying": "Wiedergabe…",
+    "realPieces": "Echte Qwen-Token-Teile",
+    "verifiedCount": "8 geprüfte Tokens",
+    "lookCloser": "Genauer hinsehen",
+    "whyTitle": "Warum wurde es so zerlegt?",
+    "whyVocabulary": "Der Tokenizer verwendet eine feste Sammlung von Textteilen.",
+    "whyCommon": "Ein vertrauter Textteil kann zusammenbleiben. Ein längeres oder weniger vertrautes Wort kann in kleinere Teile zerlegt werden."
+  },
+  "tokens": {
+    "leadingSpace": "Leerzeichen davor",
+    "spaceLegend": "bedeutet, dass dieses Token mit einem Leerzeichen beginnt.",
+    "verifiedLabel": "Geprüftes Qwen-Token",
+    "groupCount": "{{count}} Tokens"
+  },
+  "playground": {
+    "intro": "Experimentiere im Browser mit einem echten Tokenizer. Dein Text bleibt auf diesem Gerät und wird nicht gespeichert.",
+    "modelLabel": "Tokenizer",
+    "presetsLabel": "Beispiele",
+    "preset": "Beispiel {{number}}",
+    "inputLabel": "Dein Text",
+    "placeholder": "Gib bis zu 200 Zeichen ein…",
+    "emptyError": "Gib zuerst etwas Text ein.",
+    "lengthError": "Beschränke den Text auf 200 Zeichen.",
+    "loadError": "Der Tokenizer konnte nicht geladen werden. Prüfe die Verbindung und versuche es erneut.",
+    "loading": "Tokenizer wird geladen…",
+    "tokenizing": "Tokenisierung…",
+    "tokenize": "Tokenisieren",
+    "originalText": "Originaltext",
+    "totalTokens": "Tokens insgesamt",
+    "showTechnical": "Technische Details anzeigen",
+    "hideTechnical": "Technische Details ausblenden",
+    "technicalOptional": "Optionale technische Details — du musst dir Token-IDs nicht merken."
+  },
+  "check": {
+    "intro": "Bearbeite beide Teile. Du kannst beliebig oft erneut versuchen.",
+    "partA": "Teil A · Die Idee",
+    "partB": "Teil B · Echte Tokens zusammensetzen"
+  },
+  "checkA": {
+    "question": "Was ist ein Token?",
+    "options": {
+      "paragraph": "Ein ganzer Absatz",
+      "piece": "Ein Textteil, den das Modell verarbeitet",
+      "word": "Immer genau ein vollständiges Wort",
+      "picture": "Ein vom Modell gespeichertes Bild"
+    },
+    "feedback": {
+      "correct": {
+        "piece": "Richtig. Ein Token ist ein Textteil, den das Modell verarbeitet: ein Wort, Wortteil, Satzzeichen oder anderer Textteil."
+      },
+      "incorrect": {
+        "paragraph": "Ein Absatz enthält meist viele Tokens. Ein Token ist ein kleinerer Textteil.",
+        "word": "Tokens sind nicht immer ganze Wörter. Ein Wort kann in mehrere Tokens zerlegt werden.",
+        "picture": "Hier steht ein Token für einen Textteil, nicht für ein gespeichertes Bild."
+      }
+    }
+  },
+  "checkB": {
+    "originalSentence": "Originalsatz",
+    "tokenCount": "{{count}} geprüfte Qwen-Tokens",
+    "instructions": "Bringe die echten Qwen-Tokens wieder in ihre ursprüngliche Reihenfolge.",
+    "availablePieces": "Verfügbare Tokens",
+    "answerZone": "Deine Reihenfolge",
+    "answerPlaceholder": "Tokens auswählen oder hierher ziehen",
+    "removePiece": "Dieses Token zurücklegen",
+    "moveLeft": "Token nach links",
+    "moveRight": "Token nach rechts",
+    "keyboardHelp": "Wähle ein Token zum Hinzufügen oder Zurücklegen. Nutze die Pfeiltasten-Schaltflächen mit Tastatur oder Touchscreen.",
+    "feedback": {
+      "correct": "Richtig. Der Satz wurde aus den Tokens in der ursprünglichen Reihenfolge zusammengesetzt.",
+      "incorrect": "Dies sind echte Qwen-Tokens, aber ihre Reihenfolge entspricht noch nicht dem Satz."
+    }
+  },
+  "numbers": {
+    "intro": "Dies ist eine vereinfachte Darstellung des nächsten Schritts.",
+    "text": "Text",
+    "pieces": "Token-Teile",
+    "representations": "Numerische Darstellungen",
+    "patterns": "Mathematische Muster",
+    "prediction": "Vorhersage des nächsten Tokens",
+    "numberNote": "Diese Beispielzahlen zeigen nur, dass Tokens mathematisch verarbeitet werden; Token-IDs musst du nicht lernen.",
+    "next": "Als Nächstes untersuchst du, wie ein Modell mithilfe von Mustern vorhersagt, was folgen könnte."
+  },
+  "summary": {
+    "intro": "Du kennst nun den ersten Schritt der Vorhersage des nächsten Tokens.",
+    "cards": {
+      "piece": "Text wird zu Tokens",
+      "subword": "Tokens können Wortteile sein",
+      "math": "Tokens werden zu Zahlen für das Modell"
+    },
+    "items": {
+      "piece": "Ein Token ist ein Textteil.",
+      "subword": "Ein Token ist nicht immer ein ganzes Wort.",
+      "real": "Qwen kann deinen eingegebenen Text tokenisieren.",
+      "different": "Modelle können Text unterschiedlich zerlegen.",
+      "math": "Tokens werden anschließend mathematisch verarbeitet."
+    },
+    "encouragement": "Du kannst jederzeit zum Playground zurückkehren und einen anderen Satz testen.",
+    "complete": "Mission 1 abgeschlossen. Mission 2 ist bereit.",
+    "incomplete": "Bearbeite den Playground und beide Kurztests und lies dann diese Zusammenfassung."
+  },
+  "actions": {
+    "check": "Antwort prüfen",
+    "retry": "Erneut versuchen",
+    "reset": "Zurücksetzen",
+    "newChallenge": "Neue Aufgabe",
+    "restartActivity": "Aktivität neu starten",
+    "explore": "Anderes Beispiel ausprobieren",
+    "aiLab": "Im LLM-Labor weiterforschen",
+    "restartMission": "Mission neu starten",
+    "previous": "Zurück",
+    "nextMission": "Weiter: Mission 2"
+  },
   "skipQuiz": "Quiz überspringen",
-  "paged": { "backToMissions": "Zurück zu den Missionen", "missionCount": "Mission 1 von 5", "tokenisation": "Tokenisierung", "pageCount": "Seite {{current}} von {{total}}", "back": "Zurück", "next": "Weiter", "prototypeEndAction": "Zusammenfassung", "prototypeLabel": "Mission 1", "prototypeEnd": "Du hast das Ende dieses zweiseitigen Prototyps erreicht.", "prototypeEndThree": "Du hast das Ende dieses dreiseitigen Prototyps erreicht.", "prototypeEndFive": "Du hast echte Token-Teile zusammengesetzt.", "prototypeSafe": "Missionsfortschritt und Freischaltungen wurden nicht verändert.", "robotAlt": "Lesender AI-Explorer-Roboter", "experimentFlowLabel": "Schreiben, tokenisieren und entdecken", "writeStep": "Schreiben", "discoverStep": "Entdecken", "discoveryCount": "Dein Satz wurde zu {{count}} Token-Teilen.", "discoveryNotice": "Mancher Text blieb zusammen. Anderer wurde in kleinere Teile zerlegt.", "checkIdea": "Prüfe die Idee", "conceptCheckpoint": "Konzeptprüfung", "conceptInstruction": "Wähle die beste Beschreibung eines Tokens.", "rebuildTokens": "Echte Tokens zusammensetzen", "realPiecesLabel": "Echte Qwen-Token-Teile", "rebuildSuccess": "Du hast die echten Token-Teile zusammengesetzt.", "orderMatters": "Die Reihenfolge der Tokens ist wichtig.", "numbersTitle": "Tokens werden zu Zahlen", "numbersIntro": "Der Tokenizer zerlegt Text in Tokens. Das Modell stellt jedes Token anschließend als Zahlengruppe dar, damit es Berechnungen ausführen kann.", "writtenText": "Geschriebener Text", "tokenPieces": "Token-Teile", "numberGroups": "Zahlengruppen", "simplifiedPicture": "Vereinfachtes Lernbild", "numberPatternLabel": "Vereinfachtes Zahlenmuster {{number}}", "laterCalculations": "Für spätere Berechnungen", "numericalRepresentation": "Eine Zahlengruppe arbeitet gemeinsam als numerische Darstellung.", "embeddingSecondary": "Fachbegriff: Embedding-Vektor", "numbersAccuracy": "Das echte Modell nutzt viel größere, gelernte Zahlengruppen. Diese Muster zeigen nur die Idee; sie sind keine echten Qwen-Werte oder Token-IDs.", "summaryTitle": "Missionsübersicht", "summary": { "text": "Der Prozess beginnt mit Text", "tokens": "Text wird zu Tokens", "boundaries": "Der echte Tokenizer wählt Grenzen", "numbers": "Tokens erhalten numerische Darstellungen" }, "summaryComplete": "Mission 1 abgeschlossen. Mission 2 ist bereit.", "summaryIncomplete": "Beende die Experimente, bevor du Mission 1 abschließt.", "summaryDiscovery": "Ein Sprachmodell verarbeitet Token-Teile und numerische Darstellungen; es liest geschriebenen Text nicht wie ein Mensch.", "tryAnother": "Anderes Beispiel ausprobieren", "returnMissions": "Zurück zu den Missionen" }
+  "paged": {
+    "backToMissions": "Zurück zu den Missionen",
+    "missionCount": "Mission 1 von 5",
+    "tokenisation": "Tokenisierung",
+    "pageCount": "Seite {{current}} von {{total}}",
+    "back": "Zurück",
+    "next": "Weiter",
+    "prototypeEndAction": "Zusammenfassung",
+    "prototypeLabel": "Mission 1",
+    "prototypeEnd": "Du hast das Ende dieses zweiseitigen Prototyps erreicht.",
+    "prototypeEndThree": "Du hast das Ende dieses dreiseitigen Prototyps erreicht.",
+    "prototypeEndFive": "Du hast echte Token-Teile zusammengesetzt.",
+    "prototypeSafe": "Missionsfortschritt und Freischaltungen wurden nicht verändert.",
+    "robotAlt": "Lesender Roboter-Guide",
+    "experimentFlowLabel": "Schreiben, tokenisieren und entdecken",
+    "writeStep": "Schreiben",
+    "discoverStep": "Entdecken",
+    "discoveryCount": "Dein Satz wurde zu {{count}} Token-Teilen.",
+    "discoveryNotice": "Mancher Text blieb zusammen. Anderer wurde in kleinere Teile zerlegt.",
+    "checkIdea": "Prüfe die Idee",
+    "conceptCheckpoint": "Konzeptprüfung",
+    "conceptInstruction": "Wähle die beste Beschreibung eines Tokens.",
+    "rebuildTokens": "Echte Tokens zusammensetzen",
+    "realPiecesLabel": "Echte Qwen-Token-Teile",
+    "rebuildSuccess": "Du hast die echten Token-Teile zusammengesetzt.",
+    "orderMatters": "Die Reihenfolge der Tokens ist wichtig.",
+    "numbersTitle": "Tokens werden zu Zahlen",
+    "numbersIntro": "Der Tokenizer zerlegt Text in Tokens. Das Modell stellt jedes Token anschließend als Zahlengruppe dar, damit es Berechnungen ausführen kann.",
+    "writtenText": "Geschriebener Text",
+    "tokenPieces": "Token-Teile",
+    "numberGroups": "Zahlengruppen",
+    "simplifiedPicture": "Vereinfachtes Lernbild",
+    "numberPatternLabel": "Vereinfachtes Zahlenmuster {{number}}",
+    "laterCalculations": "Für spätere Berechnungen",
+    "numericalRepresentation": "Eine Zahlengruppe arbeitet gemeinsam als numerische Darstellung.",
+    "embeddingSecondary": "Fachbegriff: Embedding-Vektor",
+    "numbersAccuracy": "Das echte Modell nutzt viel größere, gelernte Zahlengruppen. Diese Muster zeigen nur die Idee; sie sind keine echten Qwen-Werte oder Token-IDs.",
+    "summaryTitle": "Missionsübersicht",
+    "summary": {
+      "text": "Der Prozess beginnt mit Text",
+      "tokens": "Text wird zu Tokens",
+      "boundaries": "Der echte Tokenizer wählt Grenzen",
+      "numbers": "Tokens erhalten numerische Darstellungen"
+    },
+    "summaryComplete": "Mission 1 abgeschlossen. Mission 2 ist bereit.",
+    "summaryIncomplete": "Beende die Experimente, bevor du Mission 1 abschließt.",
+    "summaryDiscovery": "Ein Sprachmodell verarbeitet Token-Teile und numerische Darstellungen; es liest geschriebenen Text nicht wie ein Mensch.",
+    "tryAnother": "Anderes Beispiel ausprobieren",
+    "returnMissions": "Zurück zu den Missionen"
+  }
 }

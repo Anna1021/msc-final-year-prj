@@ -440,3 +440,11 @@
 @media(max-width:980px){.mission-lesson-paged.mission-1-paged .mission-id-journey-header{grid-template-columns:1fr 300px}.mission-lesson-paged.mission-1-paged .mission-id-book-art>span:nth-child(1){left:0}.mission-lesson-paged.mission-1-paged .mission-id-book-art>span:nth-child(2){left:52px}.mission-lesson-paged.mission-1-paged .mission-id-book-art>span:nth-child(3){left:105px}.mission-lesson-paged.mission-1-paged .mission-id-book-art>span:nth-child(4){left:150px}}
 @media(max-width:620px){.mission-lesson-paged:is(.mission-1-paged,.mission-2-paged) .mission-checkpoint-banner{padding:17px}.mission-lesson-paged:is(.mission-1-paged,.mission-2-paged) .mission-checkpoint-decoration{display:none}.mission-lesson-paged:is(.mission-1-paged,.mission-2-paged) .mission-checkpoint-panel{padding:18px}.mission-lesson-paged:is(.mission-1-paged,.mission-2-paged) .mission-checkpoint-options{grid-template-columns:1fr}.mission-lesson-paged:is(.mission-1-paged,.mission-2-paged) .mission-checkpoint-token-visual>div{grid-template-columns:1fr}.mission-lesson-paged:is(.mission-1-paged,.mission-2-paged) .mission-checkpoint-token-visual>div>span{flex-wrap:wrap}.mission-lesson-paged:is(.mission-1-paged,.mission-2-paged) .mission-checkpoint-position{justify-content:space-between}.mission-lesson-paged:is(.mission-1-paged,.mission-2-paged) .mission-checkpoint-actions .primary{width:100%}}
 @media(max-width:700px){.mission-lesson-paged.mission-1-paged .mission-id-journey-header{grid-template-columns:1fr}.mission-lesson-paged.mission-1-paged .mission-id-book-art{min-height:105px}.mission-lesson-paged.mission-1-paged .mission-id-book-art img{width:150px;height:100px}.mission-lesson-paged.mission-1-paged .mission-id-book-art>span:nth-child(1){left:8px}.mission-lesson-paged.mission-1-paged .mission-id-book-art>span:nth-child(2){left:68px}.mission-lesson-paged.mission-1-paged .mission-id-book-art>span:nth-child(3){left:128px}.mission-lesson-paged.mission-1-paged .mission-id-book-art>span:nth-child(4){left:178px}}
+.mission-1-paged__fixture-language {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  color: #52627f;
+  font-size: 0.72rem;
+  font-weight: 800;
+}

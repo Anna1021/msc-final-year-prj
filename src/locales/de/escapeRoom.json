@@ -20,5 +20,15 @@
   "completeSaved": "Escape abgeschlossen. Fortschritt gespeichert.",
   "completeAlready": "Escape bereits abgeschlossen. Abschlussbelohnung ist gespeichert.",
   "inventory": "Kristalle",
-  "tips": "Folge sechs Ideen – von Tokens und Zahlen bis zu Vorhersage und Training."
+  "tips": "Folge fünf Ideen – von Tokens bis zu Vorhersage und Training.",
+  "a11y": { "inventory": "Escape-Room-Inventar", "navigation": "Escape-Room-Navigation", "exitFullScreenTitle": "Vollbild verlassen (Esc)", "fullScreenTitle": "Escape-Room im Vollbild (F)", "gameFrame": "Sprachmodell-Escape-Room-Spiel" },
+  "notifications": { "finalExitOpened": "Finalausgang geöffnet.", "roomOpened": "{{room}} geöffnet.", "unknownRoom": "Nachricht ignoriert: unbekannter Raum.", "crystalCollected": "{{crystal}} gesammelt. Fortschritt gespeichert.", "crystalRestored": "{{crystal}} bereits gesammelt. Fortschritt wiederhergestellt.", "needsCrystals": "Der Finalausgang benötigt noch alle fünf Kristalle." },
+  "rooms": {
+    "token": { "label": "Raum 1", "title": "Token-Werkstatt", "crystalName": "Token-Kristall" },
+    "numbers": { "label": "Raum 2", "title": "Kontextkammer", "crystalName": "Kontextkristall" },
+    "context": { "label": "Raum 3", "title": "Verbindungslabor", "crystalName": "Verbindungskristall" },
+    "connections": { "label": "Raum 4", "title": "Vorhersagemaschine", "crystalName": "Vorhersagekristall" },
+    "prediction": { "label": "Raum 5", "title": "Musterwerkstatt", "crystalName": "Musterkristall" }
+  },
+  "debug": { "statusTitle": "Escape-Room-Status", "status": "Status", "screen": "Ansicht", "finalExit": "Finalausgang", "completedReviewable": "abgeschlossen und wiederholbar", "notCompleted": "nicht abgeschlossen", "replayable": "wiederholbar", "storageNote": "Der Escape-Room läuft im iframe; LLM Explorer speichert Kristalle und Fortschritt außerhalb des Spiels.", "finalDescription": "Die letzte Tür bündelt den Lernweg: fünf Kristalle platzieren, den finalen Kristall formen und das finale Schloss lösen.", "finalStep1": "Kristalle um das Modell platzieren", "finalStep2": "Finalen Kristall formen", "finalStep3": "Finales Schloss lösen", "reload": "Spiel neu laden", "reset": "Escape-Room zurücksetzen" }
 }
