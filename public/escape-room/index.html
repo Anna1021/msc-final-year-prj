@@ -2214,6 +2214,7 @@
         ])
       }),
       copy: Object.freeze({
+        optionLabel: "Option",
         question: "Which statement about tokenising &ldquo;unhelpful&rdquo; is the most accurate?",
         instruction: "Choose the most accurate statement. You do not need to reorder the sentence.",
         hint: "Hint: Think back to the verified example. Do all tokenizers have to split the same text in exactly the same way?",
@@ -2244,6 +2245,7 @@
           ])
         }),
         copy: Object.freeze({
+          optionLabel: "选项",
           question: "关于“今天去公园”的分词，哪种说法最准确？",
           instruction: "选择关于分词最准确的说法。",
           hint: "提示：不同分词器是否必须用完全相同的方式拆分同一段文字？",
@@ -2253,6 +2255,213 @@
       })
     });
     const tokenRoomTeachingData = () => tokenRoomPuzzles[state.language] || tokenRoomPuzzles.en;
+    const localeActivityData = Object.freeze({
+      en: Object.freeze({
+        optionLabel: "Option",
+        contextChamber: Object.freeze({
+          beforeWindow: Object.freeze(["Once", "upon", "a", "time", "a"]),
+          insideWindow: Object.freeze(["curious", "reader", "opened", "the", "old", "book"]),
+          afterWindow: Object.freeze(["quietly", "."]),
+          almostWindow: Object.freeze(["reader", "opened", "the", "old", "book", "quietly"]),
+          entireSentenceLabel: "The entire sentence",
+          correctOptionId: "inside",
+          windowAria: "Token sequence with the current context window highlighted",
+          windowLabel: "Current context window",
+          legendAria: "Context window key",
+          insideLegend: "Inside the window = available context",
+          outsideLegend: "Outside the window = may not be available right now",
+          question: "Which tokens are available to the model right now?",
+          instruction: "Choose the group that matches the tokens inside the glowing context window.",
+          optionsAria: "Choose the tokens available inside the current context window",
+          hint: "Hint: Don't choose the words that seem most important. Look only at the glowing window boundary. Which token is the first one inside it? Which token is the last?",
+          completion: "Correct! Those tokens are inside the current context window, so they are available to the model right now. Tokens outside the window may not be available for this prediction."
+        }),
+        connectionLab: Object.freeze({
+          sentence: Object.freeze([
+            Object.freeze({ id: "the", label: "The" }), Object.freeze({ id: "little", label: "little" }),
+            Object.freeze({ id: "reader", label: "reader" }), Object.freeze({ id: "opened", label: "opened" }),
+            Object.freeze({ id: "article", label: "the" }), Object.freeze({ id: "old", label: "old" }),
+            Object.freeze({ id: "book", label: "book" })
+          ]),
+          connections: Object.freeze([
+            Object.freeze({ id: "reader", strength: 8 }), Object.freeze({ id: "book", strength: 6 }),
+            Object.freeze({ id: "little", strength: 4 }), Object.freeze({ id: "old", strength: 3 }),
+            Object.freeze({ id: "the", strength: 2 }), Object.freeze({ id: "article", strength: 1 })
+          ]),
+          optionIds: Object.freeze(["reader", "book", "little", "article"]),
+          focusId: "opened",
+          correctOptionId: "reader",
+          question: "Which token is shown contributing the most information to &ldquo;opened&rdquo;?",
+          instruction: "Use the connection pattern above. You do not need to guess.",
+          teachingNote: "Different token positions can contribute different amounts of information. The thicker the arrow, the stronger the contribution shown here.",
+          simplifiedNote: "Simplified connection pattern for this challenge.",
+          legendAria: "Connection strength legend",
+          legendLabels: Object.freeze(["Strong contribution", "Medium contribution", "Weak contribution"]),
+          hint: "Hint: Look at the arrows pointing toward &ldquo;opened&rdquo;. Which one is the thickest? The pattern is already shown — you only need to read it.",
+          completion: "Correct! In this simplified connection pattern, reader has the strongest connection to opened. A thicker arrow shows a stronger contribution."
+        }),
+        predictionMachine: Object.freeze({
+          prompt: "The little reader opened the",
+          updatedContext: "The little reader opened the book",
+          candidates: Object.freeze([
+            Object.freeze({ id: "book", label: "book", value: 46, colour: "#79adff" }),
+            Object.freeze({ id: "door", label: "door", value: 27, colour: "#b79aff" }),
+            Object.freeze({ id: "box", label: "box", value: 15, colour: "#72ddb2" }),
+            Object.freeze({ id: "window", label: "window", value: 8, colour: "#ffb26b" }),
+            Object.freeze({ id: "other", label: "other", value: 4, colour: "#aeb9d0" })
+          ]),
+          options: Object.freeze([
+            Object.freeze({ id: "certain", text: "“book” will definitely be chosen next." }),
+            Object.freeze({ id: "most-likely", text: "“book” is the most likely option shown, but it is not guaranteed to be chosen." }),
+            Object.freeze({ id: "equal", text: "Every possible next token has the same chance." }),
+            Object.freeze({ id: "complete", text: "The model has already generated the whole sentence." })
+          ]),
+          correctOptionId: "most-likely",
+          signalAria: "Illustrative next-token probability signal",
+          signalLabel: "Next-token signal",
+          signalSummary: "Higher probability = more likely right now.",
+          probabilityNote: "Higher probability means more likely, but it does not guarantee which token will be chosen. Models can use different ways to choose from the possible next tokens.",
+          payoff: "Prediction complete. The little reader opened the book. One token has been added; to continue generating, the model would use this updated context and predict again.",
+          question: "Which statement best matches the prediction shown by the machine?",
+          instruction: "Read both the probabilities and the machine note.",
+          optionsAria: "Choose the statement that matches the prediction signal",
+          updatedContextLabel: "Updated context",
+          completionContinuation: "One token has been added. To continue generating, the model would use this updated context and predict again.",
+          hint: "Hint: The largest probability tells you which option is more likely. Does “more likely” mean “certain”?",
+          completion: "Correct! Book had the highest probability shown, so it was the most likely option. A higher probability does not guarantee which token will be chosen."
+        }),
+        patternWorkshop: Object.freeze({
+          examples: Object.freeze([
+            "The dragon sleeps in the <mark>cave</mark>.", "The dragon hides in the <mark>cave</mark>.",
+            "The dragon waits in the <mark>cave</mark>.", "The dragon flew over the <mark>castle</mark>."
+          ]),
+          prompt: "The dragon returned to the ___",
+          candidates: Object.freeze([
+            Object.freeze({ id: "cave", label: "cave", value: 48, colour: "#ff79b6" }),
+            Object.freeze({ id: "castle", label: "castle", value: 29, colour: "#ffd16e" }),
+            Object.freeze({ id: "forest", label: "forest", value: 23, colour: "#72d9ad" })
+          ]),
+          options: Object.freeze([
+            Object.freeze({ id: "memorise", text: "The model stores every sentence and searches for an exact copy later." }),
+            Object.freeze({ id: "patterns", text: "Repeated examples can strengthen learned patterns, which can influence later predictions." }),
+            Object.freeze({ id: "one-example", text: "The model learns one perfect answer after seeing a single example." }),
+            Object.freeze({ id: "instructions", text: "The examples directly tell the model what to say in every future conversation." })
+          ]),
+          correctOptionId: "patterns",
+          promptAria: "Simplified illustrative toy prediction",
+          recordLabel: "TEST RECORD",
+          simplifiedLabel: "Simplified · illustrative",
+          accuracyNote: "These are illustrative teaching values, not real model output. These examples helped shape the toy model's learned pattern; a count is not automatically a probability.",
+          question: "Why can the training examples change the toy model's later prediction?",
+          optionsAria: "Choose why training examples can change a later prediction",
+          hint: "Hint: Think back to the tiny toy model. Adding similar examples made one prediction gradually more likely.",
+          completion: "Pattern restored. Repeated training examples can contribute to learned patterns that influence later predictions."
+        })
+      }),
+      zh: Object.freeze({
+        optionLabel: "选项",
+        contextChamber: Object.freeze({
+          beforeWindow: Object.freeze(["放学后", "一位", "好奇的", "小读者", "走进图书馆"]),
+          insideWindow: Object.freeze(["他", "打开了", "一本", "封面陈旧的", "故事书", "慢慢阅读"]),
+          afterWindow: Object.freeze(["直到天黑", "。"]),
+          almostWindow: Object.freeze(["打开了", "一本", "封面陈旧的", "故事书", "慢慢阅读", "直到天黑"]),
+          entireSentenceLabel: "整个句子",
+          correctOptionId: "inside",
+          windowAria: "词元序列，其中当前上下文窗口已高亮显示",
+          windowLabel: "当前上下文窗口",
+          legendAria: "上下文窗口图例",
+          insideLegend: "窗口内 = 当前可用的上下文",
+          outsideLegend: "窗口外 = 当前预测可能无法使用",
+          question: "模型现在可以使用哪些词元？",
+          instruction: "选择与发光上下文窗口内词元完全一致的一组。",
+          optionsAria: "选择当前上下文窗口内可用的词元",
+          hint: "提示：不要选择看起来最重要的词。只看发光窗口的边界：窗口里的第一个词元和最后一个词元分别是什么？",
+          completion: "正确！这些词元位于当前上下文窗口内，因此模型现在可以使用它们。窗口外的词元可能无法用于这次预测。"
+        }),
+        connectionLab: Object.freeze({
+          sentence: Object.freeze([
+            Object.freeze({ id: "the", label: "那位" }), Object.freeze({ id: "little", label: "年幼的" }),
+            Object.freeze({ id: "reader", label: "读者" }), Object.freeze({ id: "opened", label: "打开了" }),
+            Object.freeze({ id: "article", label: "一本" }), Object.freeze({ id: "old", label: "旧" }),
+            Object.freeze({ id: "book", label: "书" })
+          ]),
+          connections: Object.freeze([
+            Object.freeze({ id: "reader", strength: 8 }), Object.freeze({ id: "book", strength: 6 }),
+            Object.freeze({ id: "little", strength: 4 }), Object.freeze({ id: "old", strength: 3 }),
+            Object.freeze({ id: "the", strength: 2 }), Object.freeze({ id: "article", strength: 1 })
+          ]),
+          optionIds: Object.freeze(["reader", "book", "little", "article"]),
+          focusId: "opened",
+          correctOptionId: "reader",
+          question: "图中哪个词元向“打开了”贡献的信息最多？",
+          instruction: "根据上方已经显示的连接图作答，不需要猜测。",
+          teachingNote: "不同位置的词元可以贡献不同数量的信息。箭头越粗，表示这里显示的贡献越强。",
+          simplifiedNote: "本挑战使用简化的连接图。",
+          legendAria: "连接强度图例",
+          legendLabels: Object.freeze(["强贡献", "中等贡献", "弱贡献"]),
+          hint: "提示：观察所有指向“打开了”的箭头。哪一条最粗？连接图已经给出了答案，你只需读图。",
+          completion: "正确！在这个简化连接图中，“读者”与“打开了”的连接最强。箭头越粗，表示这里显示的贡献越强。"
+        }),
+        predictionMachine: Object.freeze({
+          prompt: "小读者打开了",
+          updatedContext: "小读者打开了书",
+          candidates: Object.freeze([
+            Object.freeze({ id: "book", label: "书", value: 46, colour: "#79adff" }),
+            Object.freeze({ id: "door", label: "门", value: 27, colour: "#b79aff" }),
+            Object.freeze({ id: "box", label: "盒子", value: 15, colour: "#72ddb2" }),
+            Object.freeze({ id: "window", label: "窗户", value: 8, colour: "#ffb26b" }),
+            Object.freeze({ id: "other", label: "其他", value: 4, colour: "#aeb9d0" })
+          ]),
+          options: Object.freeze([
+            Object.freeze({ id: "certain", text: "接下来一定会选择“书”。" }),
+            Object.freeze({ id: "most-likely", text: "在图中，“书”最有可能被选择，但并不保证一定选中。" }),
+            Object.freeze({ id: "equal", text: "所有可能的下一个词元概率都相同。" }),
+            Object.freeze({ id: "complete", text: "模型已经一次生成了整个句子。" })
+          ]),
+          correctOptionId: "most-likely",
+          signalAria: "下一个词元概率的教学示意图",
+          signalLabel: "下一个词元信号",
+          signalSummary: "概率越高 = 当前越有可能。",
+          probabilityNote: "概率更高表示当前更有可能，但不能保证一定会选中该词元。模型可以用不同方法从可能的下一个词元中进行选择。",
+          payoff: "预测完成。小读者打开了书。一个词元已加入文本；如果继续生成，模型会使用更新后的上下文再次预测。",
+          question: "哪种说法最符合机器显示的预测？",
+          instruction: "请同时阅读概率和机器旁的说明。",
+          optionsAria: "选择与预测信号相符的说法",
+          updatedContextLabel: "更新后的上下文",
+          completionContinuation: "一个词元已经加入文本。若继续生成，模型会使用更新后的上下文再次预测。",
+          hint: "提示：最大的概率表示哪个选项当前更有可能。“更有可能”是否等于“一定会发生”？",
+          completion: "正确！图中“书”的概率最高，所以它是最有可能的选项，但较高的概率并不保证一定会选中它。"
+        }),
+        patternWorkshop: Object.freeze({
+          examples: Object.freeze([
+            "小龙在<mark>山洞</mark>里睡觉。", "小龙躲进了<mark>山洞</mark>。",
+            "小龙在<mark>山洞</mark>里等待。", "小龙飞过了<mark>城堡</mark>。"
+          ]),
+          prompt: "小龙回到了 ___",
+          candidates: Object.freeze([
+            Object.freeze({ id: "cave", label: "山洞", value: 48, colour: "#ff79b6" }),
+            Object.freeze({ id: "castle", label: "城堡", value: 29, colour: "#ffd16e" }),
+            Object.freeze({ id: "forest", label: "森林", value: 23, colour: "#72d9ad" })
+          ]),
+          options: Object.freeze([
+            Object.freeze({ id: "memorise", text: "模型会保存每个句子，之后再搜索完全相同的句子。" }),
+            Object.freeze({ id: "patterns", text: "重复出现的例子可以强化学到的模式，并影响之后的预测。" }),
+            Object.freeze({ id: "one-example", text: "模型看过一个例子后，就会学到唯一的完美答案。" }),
+            Object.freeze({ id: "instructions", text: "这些例子直接规定了模型以后每次都要说什么。" })
+          ]),
+          correctOptionId: "patterns",
+          promptAria: "简化的教学预测示意图",
+          recordLabel: "测试记录",
+          simplifiedLabel: "简化教学示意",
+          accuracyNote: "这些是教学示意数值，不是真实模型输出。这些例子帮助形成玩具模型学到的模式；出现次数不会自动等于概率。",
+          question: "为什么训练示例能改变玩具模型之后的预测？",
+          optionsAria: "选择训练示例为何能改变之后的预测",
+          hint: "提示：回想简化的小模型。加入相似例子后，其中一种预测怎样逐渐变得更有可能？",
+          completion: "模式已恢复。重复的训练示例可以帮助形成学到的模式，并影响之后的预测。"
+        })
+      })
+    });
+    const activeActivityData = () => localeActivityData[state.language] || localeActivityData.en;
     const numbersRoomTeachingData = Object.freeze({
       token: "reader",
       tokenId: 305,
@@ -2665,21 +2874,23 @@
 
     function completionMarkup(room) {
       const activeTokenPuzzle = tokenRoomTeachingData();
+      const activity = activeActivityData();
       const next = rooms[room.number];
-      const crystalName = `${room.power} Crystal`;
+      const powerLabel = state.language === "zh" ? ({ Tokens: "词元", Context: "上下文", Connections: "连接", Prediction: "预测", Patterns: "模式" }[room.power] || room.power) : room.power;
+      const crystalName = state.language === "zh" ? `${powerLabel}水晶` : `${room.power} Crystal`;
       const crystalSrc = crystalAsset(room);
       const completionNote = room.id === "token"
         ? state.language === "zh"
           ? "正确！词元边界取决于分词器。不同分词器可能会用不同方式拆分同一段文字。"
           : "Correct! Token boundaries depend on the tokenizer. Different tokenizers may split the same text differently."
         : room.id === "numbers"
-          ? "Correct! Those tokens are inside the current context window, so they are available to the model right now. Tokens outside the window may not be available for this prediction."
+          ? activity.contextChamber.completion
         : room.id === "context"
-          ? "Correct! In this simplified connection pattern, reader has the strongest connection to opened. A thicker arrow shows a stronger contribution."
+          ? activity.connectionLab.completion
         : room.id === "connections"
-          ? "Correct! Book had the highest probability shown, so it was the most likely option. A higher probability does not guarantee which token will be chosen."
+          ? activity.predictionMachine.completion
         : room.id === "prediction"
-          ? "Pattern restored. Repeated training examples can contribute to learned patterns that influence later predictions."
+          ? activity.patternWorkshop.completion
         : next
           ? `Door opened. Room ${next.number} is ready.`
           : "All rooms cleared. The final exit is ready.";
@@ -2691,11 +2902,11 @@
         <span class="token-success-pieces"><small>Token pieces</small><b>${activeTokenPuzzle.challenge.targetPieces.map((piece) => `[${piece}]`).join(" ")}</b></span>
       </div>` : "";
       const numbersMechanism = room.id === "numbers" ? `<div class="token-success-chain context-success-chain" aria-label="Tokens inside the current context window are available">
-        <span><small>Current context window</small><b>curious · reader · opened · the · old · book</b></span>
+        <span><small>${activity.contextChamber.windowLabel}</small><b>${activity.contextChamber.insideWindow.join(" · ")}</b></span>
       </div>` : "";
-      const predictionMechanism = room.id === "connections" ? `<div class="token-success-chain context-success-chain prediction-context-payoff" aria-label="The new token book has joined the context">
-        <span><small>Updated context</small><b>The little reader opened the book</b></span>
-      </div><p>One token has been added. To continue generating, the model would use this updated context and predict again.</p>` : "";
+      const predictionMechanism = room.id === "connections" ? `<div class="token-success-chain context-success-chain prediction-context-payoff" aria-label="${activity.predictionMachine.updatedContextLabel}">
+        <span><small>${activity.predictionMachine.updatedContextLabel}</small><b>${activity.predictionMachine.updatedContext}</b></span>
+      </div><p>${activity.predictionMachine.completionContinuation}</p>` : "";
       const patternMechanism = room.id === "prediction" ? `<div class="pattern-success-nodes" aria-label="Training examples lead through repeated small adjustments to learned patterns and later predictions">
         <span>Training examples</span><i>→</i><span>Small adjustments</span><i>→</i><span>Learned patterns</span><i>→</i><span>Later predictions</span>
       </div>` : "";
@@ -2703,8 +2914,8 @@
         <div class="crystal-stage" aria-hidden="true">
           <img class="completion-crystal" src="${crystalSrc}" alt="">
         </div>
-        <span class="clue">${crystalName} collected</span>
-        <h2>${room.power} restored</h2>
+        <span class="clue">${state.language === "zh" ? `${crystalName}已收集` : `${crystalName} collected`}</span>
+        <h2>${state.language === "zh" ? `${powerLabel}已恢复` : `${room.power} restored`}</h2>
         ${tokenMechanism}
         ${numbersMechanism}
         ${predictionMechanism}
@@ -2744,6 +2955,11 @@
 
     function finalCrystalLabel(room) {
       return room.crystal === "prediction" ? "Training" : room.power;
+    }
+
+    function localisedConceptLabel(label) {
+      if (state.language !== "zh") return label;
+      return ({ Training: "训练", Tokens: "词元", Context: "上下文", Connections: "连接", Prediction: "预测", Patterns: "模式", Repeat: "重复" }[label] || label);
     }
 
     function puzzleMarkup(room, data) {
@@ -2824,7 +3040,7 @@
                 <h2>${puzzle.copy.question}</h2>
                 <p class="token-target-sentence">${state.language === "zh" ? `<mark>${challenge.sentence}</mark>` : `The reader found an <mark>${challenge.targetWord}</mark> clue.`}</p>
                 <p>${puzzle.copy.instruction}</p>
-                <div class="token-split-options" role="group" aria-label="${puzzle.copy.optionAriaLabel}">${challenge.options.map((option, index) => `<button type="button" class="token-split-option ${data.selectedOption === option.id ? "selected" : ""}" data-token-option="${option.id}" aria-pressed="${data.selectedOption === option.id}"><small>Option ${String.fromCharCode(65 + index)}</small><span>${option.statement ? `<strong>${option.statement}</strong>` : option.pieces.map((piece) => `<b>${piece}</b>`).join("")}</span></button>`).join("")}</div>
+                <div class="token-split-options" role="group" aria-label="${puzzle.copy.optionAriaLabel}">${challenge.options.map((option, index) => `<button type="button" class="token-split-option ${data.selectedOption === option.id ? "selected" : ""}" data-token-option="${option.id}" aria-pressed="${data.selectedOption === option.id}"><small>${puzzle.copy.optionLabel} ${String.fromCharCode(65 + index)}</small><span>${option.statement ? `<strong>${option.statement}</strong>` : option.pieces.map((piece) => `<b>${piece}</b>`).join("")}</span></button>`).join("")}</div>
                 ${comparison}
                 ${data.showHint ? `<p class="token-hint" role="status">${puzzle.copy.hint}</p>` : ""}
                 <div class="token-room-actions"><button type="button" data-action="check" ${data.selectedOption ? "" : "disabled"}>Activate lock</button><button type="button" class="secondary" data-action="token-hint">${data.showHint ? "Hide hint" : "Show hint"}</button><button type="button" class="secondary" data-action="reset-room">Reset room</button></div>
@@ -2916,45 +3132,47 @@
 
     function contextChamberPuzzle(data) {
       const step = !data.inspected ? 0 : !data.scannerActive ? 1 : 2;
-      const beforeWindow = ["Once", "upon", "a", "time", "a"];
-      const insideWindow = ["curious", "reader", "opened", "the", "old", "book"];
-      const afterWindow = ["quietly", "."];
+      const activity = activeActivityData();
+      const teaching = activity.contextChamber;
+      const beforeWindow = teaching.beforeWindow;
+      const insideWindow = teaching.insideWindow;
+      const afterWindow = teaching.afterWindow;
       const options = [
         { id: "inside", tokens: insideWindow },
         { id: "before", tokens: beforeWindow },
-        { id: "almost", tokens: ["reader", "opened", "the", "old", "book", "quietly"] },
-        { id: "all", tokens: [...beforeWindow, ...insideWindow, ...afterWindow], label: "The entire sentence" }
+        { id: "almost", tokens: teaching.almostWindow },
+        { id: "all", tokens: [...beforeWindow, ...insideWindow, ...afterWindow], label: teaching.entireSentenceLabel }
       ];
       const feedbackClass = data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : "";
       const token = (value, extra = "") => `<span class="context-chamber-token ${extra}">${value}</span>`;
       const optionMarkup = options.map((option, index) => {
         const selected = data.selectedOption === option.id;
-        const submittedState = data.submitted && selected ? (option.id === "inside" ? "correct" : "wrong") : "";
+        const submittedState = data.submitted && selected ? (option.id === teaching.correctOptionId ? "correct" : "wrong") : "";
         return `<button type="button" class="context-lock-option ${selected ? "selected" : ""} ${submittedState}" data-context-option="${option.id}" aria-pressed="${selected}">
-          <small>Option ${String.fromCharCode(65 + index)}</small>
+          <small>${activity.optionLabel} ${String.fromCharCode(65 + index)}</small>
           <span class="context-lock-option-chips">${option.label ? `<b>${option.label}</b>` : option.tokens.map((item) => `<b>${item}</b>`).join("")}</span>
         </button>`;
       }).join("");
-      const scanner = data.scannerActive ? `<div class="context-chamber-scanner" aria-label="Token sequence with the current context window highlighted">
+      const scanner = data.scannerActive ? `<div class="context-chamber-scanner" aria-label="${teaching.windowAria}">
         <div class="context-chamber-sequence">
           <div class="context-chamber-outside">${beforeWindow.map((item) => token(item, "outside")).join("")}</div>
           <div class="context-chamber-window">
-            <span class="context-chamber-window-label">Current context window</span>
+            <span class="context-chamber-window-label">${teaching.windowLabel}</span>
             <div>${insideWindow.map((item) => token(item, "inside")).join("")}</div>
           </div>
           <div class="context-chamber-outside">${afterWindow.map((item) => token(item, "outside")).join("")}</div>
         </div>
-        <div class="context-chamber-legend" aria-label="Context window key">
-          <span>Inside the window = available context</span>
-          <span>Outside the window = may not be available right now</span>
+        <div class="context-chamber-legend" aria-label="${teaching.legendAria}">
+          <span>${teaching.insideLegend}</span>
+          <span>${teaching.outsideLegend}</span>
         </div>
       </div>` : "";
       const lock = data.scannerActive ? `<section class="context-lock-question">
         <span class="token-question-badge">Lock question</span>
-        <h2>Which tokens are available to the model right now?</h2>
-        <p>Choose the group that matches the tokens inside the glowing context window.</p>
-        <div class="context-lock-options" role="group" aria-label="Choose the tokens available inside the current context window">${optionMarkup}</div>
-        ${data.showHint ? `<p class="context-lock-hint" role="status">Hint: Don't choose the words that seem most important. Look only at the glowing window boundary. Which token is the first one inside it? Which token is the last?</p>` : ""}
+        <h2>${teaching.question}</h2>
+        <p>${teaching.instruction}</p>
+        <div class="context-lock-options" role="group" aria-label="${teaching.optionsAria}">${optionMarkup}</div>
+        ${data.showHint ? `<p class="context-lock-hint" role="status">${teaching.hint}</p>` : ""}
         <div class="token-room-actions"><button type="button" data-action="check" ${data.selectedOption ? "" : "disabled"}>Unlock context door</button><button type="button" class="secondary" data-action="context-hint">${data.showHint ? "Hide hint" : "Show hint"}</button><button type="button" class="secondary" data-action="reset-room">Reset room</button></div>
       </section>` : "";
       const consoleState = !data.inspected
@@ -2979,30 +3197,28 @@
 
     function contextWindowPuzzle(data) {
       const step = !data.inspected ? 0 : !data.scannerActive ? 1 : 2;
-      const sentence = ["The", "little", "reader", "opened", "the", "old", "book"];
-      const connections = [
-        { token: "reader", strength: 8 }, { token: "book", strength: 6 }, { token: "little", strength: 4 },
-        { token: "old", strength: 3 }, { token: "The", strength: 2 }, { token: "the", strength: 1 }
-      ];
-      const options = ["reader", "book", "little", "the"];
+      const activity = activeActivityData();
+      const teaching = activity.connectionLab;
+      const tokenById = (id) => teaching.sentence.find((token) => token.id === id)?.label || id;
+      const focusLabel = tokenById(teaching.focusId);
       const feedbackClass = data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : "";
-      const scanner = data.scannerActive ? `<section class="connection-scanner" aria-label="Simplified connection pattern showing arrows toward the focus token opened">
-        <div class="connection-sentence">${sentence.map((token) => `<span class="connection-token ${token === "opened" ? "connection-focus" : ""}">${token}</span>`).join("")}</div>
-        <span class="connection-focus-label">Focus token · opened</span>
-        <div class="connection-pattern">${connections.map(({ token, strength }) => `<div class="connection-row"><span class="connection-source">${token}</span><i class="connection-arrow" style="--strength:${strength}px" aria-label="${token} contributes to opened"></i><span class="connection-focus">opened</span></div>`).join("")}</div>
-        <p class="connection-teaching-note">Different token positions can contribute different amounts of information. The thicker the arrow, the stronger the contribution shown here.<br><small>Simplified connection pattern for this challenge.</small></p>
-        <div class="connection-legend" aria-label="Connection strength legend"><span><i style="--legend-strength:7px"></i>Strong contribution</span><span><i style="--legend-strength:4px"></i>Medium contribution</span><span><i style="--legend-strength:2px"></i>Weak contribution</span></div>
+      const scanner = data.scannerActive ? `<section class="connection-scanner" aria-label="${state.language === "zh" ? `显示多个词元指向焦点词元“${focusLabel}”的简化连接图` : `Simplified connection pattern showing arrows toward the focus token ${focusLabel}`}">
+        <div class="connection-sentence">${teaching.sentence.map((token) => `<span class="connection-token ${token.id === teaching.focusId ? "connection-focus" : ""}">${token.label}</span>`).join("")}</div>
+        <span class="connection-focus-label">${state.language === "zh" ? "焦点词元" : "Focus token"} · ${focusLabel}</span>
+        <div class="connection-pattern">${teaching.connections.map(({ id, strength }) => `<div class="connection-row"><span class="connection-source">${tokenById(id)}</span><i class="connection-arrow" style="--strength:${strength}px" aria-label="${state.language === "zh" ? `${tokenById(id)} 向 ${focusLabel} 贡献信息` : `${tokenById(id)} contributes to ${focusLabel}`}"></i><span class="connection-focus">${focusLabel}</span></div>`).join("")}</div>
+        <p class="connection-teaching-note">${teaching.teachingNote}<br><small>${teaching.simplifiedNote}</small></p>
+        <div class="connection-legend" aria-label="${teaching.legendAria}"><span><i style="--legend-strength:7px"></i>${teaching.legendLabels[0]}</span><span><i style="--legend-strength:4px"></i>${teaching.legendLabels[1]}</span><span><i style="--legend-strength:2px"></i>${teaching.legendLabels[2]}</span></div>
       </section>` : "";
       const lock = data.scannerActive ? `<section class="connection-lock-question">
         <span class="token-question-badge">Lock question</span>
-        <h2>Which token is shown contributing the most information to &ldquo;opened&rdquo;?</h2>
-        <p>Use the connection pattern above. You do not need to guess.</p>
-        <div class="connection-lock-options" role="group" aria-label="Choose the token with the strongest shown connection to opened">${options.map((option, index) => {
-          const selected = data.selectedOption === option;
-          const submittedState = data.submitted && selected ? (option === "reader" ? "correct" : "wrong") : "";
-          return `<button type="button" class="connection-lock-option ${selected ? "selected" : ""} ${submittedState}" data-connection-option="${option}" aria-pressed="${selected}"><small>Option ${String.fromCharCode(65 + index)}</small><b>${option}</b></button>`;
+        <h2>${teaching.question}</h2>
+        <p>${teaching.instruction}</p>
+        <div class="connection-lock-options" role="group" aria-label="${state.language === "zh" ? `选择图中与“${focusLabel}”连接最强的词元` : `Choose the token with the strongest shown connection to ${focusLabel}`}">${teaching.optionIds.map((optionId, index) => {
+          const selected = data.selectedOption === optionId;
+          const submittedState = data.submitted && selected ? (optionId === teaching.correctOptionId ? "correct" : "wrong") : "";
+          return `<button type="button" class="connection-lock-option ${selected ? "selected" : ""} ${submittedState}" data-connection-option="${optionId}" aria-pressed="${selected}"><small>${activity.optionLabel} ${String.fromCharCode(65 + index)}</small><b>${tokenById(optionId)}</b></button>`;
         }).join("")}</div>
-        ${data.showHint ? `<p class="connection-lock-hint" role="status">Hint: Look at the arrows pointing toward &ldquo;opened&rdquo;. Which one is the thickest? The pattern is already shown — you only need to read it.</p>` : ""}
+        ${data.showHint ? `<p class="connection-lock-hint" role="status">${teaching.hint}</p>` : ""}
         <div class="token-room-actions"><button type="button" data-action="check" ${data.selectedOption ? "" : "disabled"}>Unlock connection door</button><button type="button" class="secondary" data-action="connection-hint">${data.showHint ? "Hide hint" : "Show hint"}</button><button type="button" class="secondary" data-action="reset-room">Reset room</button></div>
       </section>` : "";
       const consoleState = !data.inspected
@@ -3020,34 +3236,26 @@
 
     function connectionsPuzzle(data) {
       const step = !data.inspected ? 0 : !data.machineRan ? 1 : 2;
-      const probabilities = [
-        { token: "book", value: 46, colour: "#79adff" }, { token: "door", value: 27, colour: "#b79aff" },
-        { token: "box", value: 15, colour: "#72ddb2" }, { token: "window", value: 8, colour: "#ffb26b" }, { token: "other", value: 4, colour: "#aeb9d0" }
-      ];
-      const options = [
-        "“book” will definitely be chosen next.",
-        "“book” is the most likely option shown, but it is not guaranteed to be chosen.",
-        "Every possible next token has the same chance.",
-        "The model has already generated the whole sentence."
-      ];
+      const activity = activeActivityData();
+      const teaching = activity.predictionMachine;
       const feedbackClass = data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : "";
-      const signal = data.machineRan ? `<section class="prediction-signal" aria-label="Illustrative next-token probability signal">
-        <div class="prediction-prompt">The little reader opened the <b>___</b></div>
-        <span class="prediction-signal-label">Next-token signal</span><small>Higher probability = more likely right now.</small>
-        <div class="prediction-bars">${probabilities.map(({ token, value, colour }) => `<div class="prediction-signal-row" style="--chip:${colour}; --value:${value}%"><b>${token}</b><span class="prediction-signal-track"><i></i></span><em>${value}%</em></div>`).join("")}</div>
-        <p class="prediction-not-guaranteed">Higher probability means more likely, but it does not guarantee which token will be chosen. Models can use different ways to choose from the possible next tokens.</p>
-        ${data.correctSolved ? `<p class="prediction-context-payoff" role="status"><strong>Prediction complete.</strong> The little reader opened the <b>book</b>. One token has been added; to continue generating, the model would use the updated context and predict again.</p>` : ""}
+      const signal = data.machineRan ? `<section class="prediction-signal" aria-label="${teaching.signalAria}">
+        <div class="prediction-prompt">${teaching.prompt} <b>___</b></div>
+        <span class="prediction-signal-label">${teaching.signalLabel}</span><small>${teaching.signalSummary}</small>
+        <div class="prediction-bars">${teaching.candidates.map(({ label, value, colour }) => `<div class="prediction-signal-row" style="--chip:${colour}; --value:${value}%"><b>${label}</b><span class="prediction-signal-track"><i></i></span><em>${value}%</em></div>`).join("")}</div>
+        <p class="prediction-not-guaranteed">${teaching.probabilityNote}</p>
+        ${data.correctSolved ? `<p class="prediction-context-payoff" role="status"><strong>${teaching.payoff}</strong></p>` : ""}
       </section>` : "";
       const lock = data.machineRan ? `<section class="prediction-lock-question">
         <span class="token-question-badge">Lock question</span>
-        <h2>Which statement best matches the prediction shown by the machine?</h2>
-        <p>Read both the probabilities and the machine note.</p>
-        <div class="prediction-lock-options" role="group" aria-label="Choose the statement that matches the prediction signal">${options.map((option, index) => {
-          const selected = data.selectedOption === index;
-          const submittedState = data.submitted && selected ? (index === 1 ? "correct" : "wrong") : "";
-          return `<button type="button" class="prediction-lock-option ${selected ? "selected" : ""} ${submittedState}" data-prediction-option="${index}" aria-pressed="${selected}"><small>Option ${String.fromCharCode(65 + index)}</small><span>${option}</span></button>`;
+        <h2>${teaching.question}</h2>
+        <p>${teaching.instruction}</p>
+        <div class="prediction-lock-options" role="group" aria-label="${teaching.optionsAria}">${teaching.options.map((option, index) => {
+          const selected = data.selectedOption === option.id;
+          const submittedState = data.submitted && selected ? (option.id === teaching.correctOptionId ? "correct" : "wrong") : "";
+          return `<button type="button" class="prediction-lock-option ${selected ? "selected" : ""} ${submittedState}" data-prediction-option="${option.id}" aria-pressed="${selected}"><small>${activity.optionLabel} ${String.fromCharCode(65 + index)}</small><span>${option.text}</span></button>`;
         }).join("")}</div>
-        ${data.showHint ? `<p class="prediction-lock-hint" role="status">Hint: The largest probability tells you which option is more likely. Does “more likely” mean “certain”?</p>` : ""}
+        ${data.showHint ? `<p class="prediction-lock-hint" role="status">${teaching.hint}</p>` : ""}
         <div class="token-room-actions"><button type="button" data-action="check" ${data.selectedOption === "" ? "disabled" : ""}>Unlock prediction door</button><button type="button" class="secondary" data-action="prediction-hint">${data.showHint ? "Hide hint" : "Show hint"}</button><button type="button" class="secondary" data-action="reset-room">Reset room</button></div>
       </section>` : "";
       const consoleState = !data.inspected
@@ -3065,23 +3273,8 @@
 
     function patternWorkshopPuzzle(data) {
       const step = !data.inspected ? 0 : !data.predictionRevealed ? 1 : 2;
-      const examples = [
-        "The dragon sleeps in the <mark>cave</mark>.",
-        "The dragon hides in the <mark>cave</mark>.",
-        "The dragon waits in the <mark>cave</mark>.",
-        "The dragon flew over the <mark>castle</mark>."
-      ];
-      const prediction = [
-        { token: "cave", value: 48, colour: "#ff79b6" },
-        { token: "castle", value: 29, colour: "#ffd16e" },
-        { token: "forest", value: 23, colour: "#72d9ad" }
-      ];
-      const options = [
-        "The model stores every sentence and searches for an exact copy later.",
-        "Repeated examples can strengthen learned patterns, which can influence later predictions.",
-        "The model learns one perfect answer after seeing a single example.",
-        "The examples directly tell the model what to say in every future conversation."
-      ];
+      const activity = activeActivityData();
+      const teaching = activity.patternWorkshop;
       const feedbackClass = data.feedbackKind === "good" ? "good" : data.feedbackKind === "bad" ? "bad" : "";
       const consoleState = !data.inspected
         ? `<div class="pattern-console-state"><span class="pattern-console-orb" aria-hidden="true"></span><strong>Training console offline</strong><p>Its archive contains the evidence needed to restore the model's pattern.</p><button type="button" class="gold" data-action="inspect-training-console">Inspect training console</button></div>`
@@ -3092,23 +3285,23 @@
         <span class="clue">Training records</span>
         <h2>Training records</h2>
         <p>These simplified examples were used by the toy training system earlier.</p>
-        <div class="pattern-example-grid">${examples.map((example) => `<div class="pattern-example">${example}</div>`).join("")}</div>
-        ${data.predictionRevealed ? `<section class="pattern-prediction" aria-label="Simplified illustrative toy prediction">
-          <header><strong>TEST RECORD</strong><small>Simplified · illustrative</small></header>
-          <div class="pattern-test-prompt">The dragon returned to the ___</div>
-          <div class="pattern-bars">${prediction.map(({ token, value, colour }) => `<div class="pattern-bar" style="--value:${value}%;--bar:${colour}"><b>${token}</b><span><i></i></span><em>${value}%</em></div>`).join("")}</div>
-          <p class="pattern-accuracy-note">These are illustrative teaching values, not real model output. These examples helped shape the toy model's learned pattern; a count is not automatically a probability.</p>
+        <div class="pattern-example-grid">${teaching.examples.map((example) => `<div class="pattern-example">${example}</div>`).join("")}</div>
+        ${data.predictionRevealed ? `<section class="pattern-prediction" aria-label="${teaching.promptAria}">
+          <header><strong>${teaching.recordLabel}</strong><small>${teaching.simplifiedLabel}</small></header>
+          <div class="pattern-test-prompt">${teaching.prompt}</div>
+          <div class="pattern-bars">${teaching.candidates.map(({ label, value, colour }) => `<div class="pattern-bar" style="--value:${value}%;--bar:${colour}"><b>${label}</b><span><i></i></span><em>${value}%</em></div>`).join("")}</div>
+          <p class="pattern-accuracy-note">${teaching.accuracyNote}</p>
         </section>` : `<button type="button" data-action="reveal-pattern-prediction">Reveal prediction</button>`}
       </section>` : "";
       const lock = data.predictionRevealed ? `<section class="pattern-lock-question">
         <span class="token-question-badge">Lock question</span>
-        <h2>Why can the training examples change the toy model's later prediction?</h2>
-        <div class="pattern-lock-options" role="group" aria-label="Choose why training examples can change a later prediction">${options.map((option, index) => {
-          const selected = data.selectedOption === index;
-          const submittedState = data.submitted && selected ? (index === 1 ? "correct" : "wrong") : "";
-          return `<button type="button" class="pattern-lock-option ${selected ? "selected" : ""} ${submittedState}" data-pattern-option="${index}" aria-pressed="${selected}"><small>Option ${String.fromCharCode(65 + index)}</small><span>${option}</span></button>`;
+        <h2>${teaching.question}</h2>
+        <div class="pattern-lock-options" role="group" aria-label="${teaching.optionsAria}">${teaching.options.map((option, index) => {
+          const selected = data.selectedOption === option.id;
+          const submittedState = data.submitted && selected ? (option.id === teaching.correctOptionId ? "correct" : "wrong") : "";
+          return `<button type="button" class="pattern-lock-option ${selected ? "selected" : ""} ${submittedState}" data-pattern-option="${option.id}" aria-pressed="${selected}"><small>${activity.optionLabel} ${String.fromCharCode(65 + index)}</small><span>${option.text}</span></button>`;
         }).join("")}</div>
-        ${data.showHint ? `<p class="pattern-lock-hint" role="status">Hint: Think back to the tiny toy model. Adding similar examples made one prediction gradually more likely.</p>` : ""}
+        ${data.showHint ? `<p class="pattern-lock-hint" role="status">${teaching.hint}</p>` : ""}
         <div class="token-room-actions"><button type="button" data-action="check" ${data.selectedOption === "" ? "disabled" : ""}>Activate lock</button><button type="button" class="secondary" data-action="pattern-hint">${data.showHint ? "Hide hint" : "Show hint"}</button><button type="button" class="secondary" data-action="reset-room">Reset room</button></div>
       </section>` : "";
       return `<div class="room-body pattern-workshop-body"><section class="puzzle-board pattern-workshop-board">
@@ -3421,7 +3614,7 @@
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "prediction-machine-ran" });
       });
       roomScreen.querySelectorAll("[data-prediction-option]").forEach((button) => button.addEventListener("click", () => {
-        data.selectedOption = Number(button.dataset.predictionOption);
+        data.selectedOption = button.dataset.predictionOption;
         data.submitted = false;
         setRoomFeedback(data, "feedback.predictionSelection", "");
         renderRoom(room);
@@ -3553,7 +3746,7 @@
         send("ESCAPE_ROOM_PROGRESS", { roomId: room.id, step: "training-records-revealed" });
       });
       roomScreen.querySelectorAll("[data-pattern-option]").forEach((button) => button.addEventListener("click", () => {
-        data.selectedOption = Number(button.dataset.patternOption);
+        data.selectedOption = button.dataset.patternOption;
         data.submitted = false;
         setRoomFeedback(data, "feedback.patternSelection", "");
         renderRoom(room);
@@ -3594,11 +3787,12 @@
         }
       }
       if (room.id === "numbers") {
+        const teaching = activeActivityData().contextChamber;
         if (!data.scannerActive) {
           setRoomFeedback(data, "feedback.contextNeedScanner", "bad");
         } else if (!data.selectedOption) {
           setRoomFeedback(data, "feedback.contextChoose", "bad");
-        } else if (data.selectedOption === "inside") {
+        } else if (data.selectedOption === teaching.correctOptionId) {
           return roomComplete(room);
         } else {
           data.submitted = true;
@@ -3607,11 +3801,12 @@
         }
       }
       if (room.id === "context") {
+        const teaching = activeActivityData().connectionLab;
         if (!data.scannerActive) {
           setRoomFeedback(data, "feedback.connectionNeedScanner", "bad");
         } else if (!data.selectedOption) {
           setRoomFeedback(data, "feedback.connectionChoose", "bad");
-        } else if (data.selectedOption === "reader") {
+        } else if (data.selectedOption === teaching.correctOptionId) {
           return roomComplete(room);
         } else {
           data.submitted = true;
@@ -3620,11 +3815,12 @@
         }
       }
       if (room.id === "connections") {
+        const teaching = activeActivityData().predictionMachine;
         if (!data.machineRan) {
           setRoomFeedback(data, "feedback.predictionNeedMachine", "bad");
         } else if (data.selectedOption === "") {
           setRoomFeedback(data, "feedback.predictionChoose", "bad");
-        } else if (data.selectedOption === 1) {
+        } else if (data.selectedOption === teaching.correctOptionId) {
           data.correctSolved = true;
           setRoomFeedback(data, "feedback.predictionCorrect", "good");
           renderRoom(room);
@@ -3636,11 +3832,12 @@
         }
       }
       if (room.id === "prediction") {
+        const teaching = activeActivityData().patternWorkshop;
         if (!data.predictionRevealed) {
           setRoomFeedback(data, "feedback.patternNeedPrediction", "bad");
         } else if (data.selectedOption === "") {
           setRoomFeedback(data, "feedback.patternChoose", "bad");
-        } else if (data.selectedOption === 1) {
+        } else if (data.selectedOption === teaching.correctOptionId) {
           setRoomFeedback(data, "feedback.patternCorrect", "good");
           return roomComplete(room);
         } else {
@@ -3739,7 +3936,7 @@
         <div class="fusion-particles">${Array.from({ length: 20 }, (_, index) => `<i style="--particle:${fusionPaths[index % fusionPaths.length].colour};--angle:${index * 18}deg;--radius:${82 + (index % 4) * 22}px;--particle-delay:${(index % 5) * 80}ms"></i>`).join("")}</div>
         <div class="fusion-flash"></div>
       </div>` : "";
-      const pieceLabel = (collection, id) => collection.find((piece) => piece.id === id)?.label || "";
+      const pieceLabel = (collection, id) => localisedConceptLabel(collection.find((piece) => piece.id === id)?.label || "");
       const renderSequence = (kind, pieces, order, placed, title, hint) => `
         <section class="sequence-board">
           <h3>${title}</h3>
@@ -3758,7 +3955,7 @@
               const used = placed.includes(piece.id);
               return `<button type="button" class="sequence-piece" data-exit-piece="${kind}" data-piece="${piece.id}" draggable="${used || state.finalComplete ? "false" : "true"}" ${used || state.finalComplete ? "disabled" : ""}>
                 <small>+</small>
-                <span>${piece.label}</span>
+                <span>${localisedConceptLabel(piece.label)}</span>
               </button>`;
             }).join("")}
           </div>
@@ -3781,8 +3978,9 @@
             </div>
             ${rooms.map((room) => {
               const placed = placedCrystals.has(room.crystal);
-              return `<div class="brain-slot ${placed ? "filled" : ""}" style="--room:${finalCrystalColour(room)}" data-exit-crystal-slot aria-label="${finalCrystalLabel(room)} slot">
-                ${placed ? `<img src="${crystalAsset(room)}" alt="${finalCrystalLabel(room)} crystal">` : `<span>${room.number}</span>`}
+              const crystalLabel = localisedConceptLabel(finalCrystalLabel(room));
+              return `<div class="brain-slot ${placed ? "filled" : ""}" style="--room:${finalCrystalColour(room)}" data-exit-crystal-slot aria-label="${state.language === "zh" ? `${crystalLabel}槽位` : `${crystalLabel} slot`}">
+                ${placed ? `<img src="${crystalAsset(room)}" alt="${state.language === "zh" ? `${crystalLabel}水晶` : `${crystalLabel} crystal`}">` : `<span>${room.number}</span>`}
               </div>`;
             }).join("")}
             ${fusionOverlay}
@@ -3795,9 +3993,10 @@
               ${rooms.map((room) => {
                 const collected = state.crystals.has(room.crystal);
                 const placed = placedCrystals.has(room.crystal);
+                const crystalLabel = localisedConceptLabel(finalCrystalLabel(room));
                 return `<button type="button" class="crystal-token ${placed ? "placed" : ""}" style="--room:${finalCrystalColour(room)}" data-exit-crystal="${room.crystal}" draggable="${collected && !placed && state.exitStage === "placing" ? "true" : "false"}" ${collected && !state.finalComplete && state.exitStage === "placing" ? "" : "disabled"}>
                   ${collected ? `<img src="${crystalAsset(room)}" alt="">` : `<span>${room.number}</span>`}
-                  <span>${finalCrystalLabel(room)}</span>
+                  <span>${crystalLabel}</span>
                 </button>`;
               }).join("")}
             </div>` : ""}
