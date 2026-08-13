@@ -14,7 +14,7 @@ export const LESSON_3_PLAYGROUND_SENTENCES = Object.freeze({
 const LEVELS = ["veryWeak", "weak", "medium", "strong"];
 
 export function teachingTokenize(text) {
-  return text.match(/[\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)*|[^\s\p{L}\p{N}]/gu) || [];
+  return text.match(/\p{Script=Han}|[\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)*|[^\s\p{L}\p{N}]/gu) || [];
 }
 
 export function getIllustrativeConnectionPattern({ text, tokens, focusIndex }) {

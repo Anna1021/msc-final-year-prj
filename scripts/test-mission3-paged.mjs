@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { PAGED_MISSIONS } from "../src/pagedMissions/missionCurriculumData.js";
+import { analyseConnections, teachingTokenize } from "../src/mission3/lesson3ConnectionAnalysis.js";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 const [shell, pages, data, css, app, course, mission2, mission4, mission5, quizCopy, sharedQuiz, sharedQuizTheme] = await Promise.all([
@@ -129,6 +130,18 @@ assert.match(pages, /visualStart=\{t\("mission3\.activeUi\.visualTokens"\)\}[\s\
 assert.match(pages, /setErrorType\("emptyError"\)[\s\S]*setErrorType\("longError"\)[\s\S]*t\(`mission3\.page5\.\$\{errorType\}`\)/, "Page 5 stores stable validation types and translates them at render time");
 assert.doesNotMatch(pages, /setError\(t\(/, "Page 5 does not store translated validation text in state");
 assert.match(pages, /simplifiedLabel[\s\S]*page5\.accuracy/, "Page 5 carries an accuracy boundary");
+
+for (const text of ["今天我们去公园散步", "你好你吃了吗"]) {
+  const tokens = teachingTokenize(text);
+  const focusIndex = tokens.length - 1;
+  const positions = tokens.map((_, index) => index + 1);
+  const analysis = analyseConnections({ text, tokens, focusIndex });
+  assert.ok(tokens.length > 1, `Chinese custom input creates multiple display units: ${text}`);
+  assert.ok(tokens.every((token) => token.length > 0), `Chinese custom input has no empty labels: ${text}`);
+  assert.deepEqual(positions, Array.from({ length: tokens.length }, (_, index) => index + 1), `Chinese custom input keeps stable positions: ${text}`);
+  assert.equal(analysis.connectionPattern.length, focusIndex, `Chinese custom input creates connections to the selectable final focus item: ${text}`);
+}
+
 assert.match(pages, /export function Lesson3Page7[\s\S]*LessonSummaryPage[\s\S]*pageNumber="7"[\s\S]*mission3\.page7\.recap/, "Page 7 uses the shared summary scaffold and preserves the prediction-readiness recap");
 for (const number of [1, 2, 3, 4]) assert.match(pages, new RegExp(`mission3\\.page7\\.idea${number}Title`), `Page 7 includes summary idea ${number}`);
 assert.doesNotMatch(pages, /Lesson3Page7[\s\S]*SummarySidebar/, "Page 7 no longer places recap content in a competing white sidebar");
