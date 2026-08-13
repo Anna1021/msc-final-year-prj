@@ -35,7 +35,7 @@ export default function Lesson5Paged({setProgress,navigate,notify}){
   const quizCopy=createMission5QuizCopy(t);
 
   useEffect(()=>{const pop=()=>{const page=parseLessonPage(window.location.search,pageCount);setCurrentPage(page);setVisited(current=>new Set(current).add(page))};window.addEventListener("popstate",pop);return()=>window.removeEventListener("popstate",pop)},[pageCount]);
-  function changePage(next){const safe=Math.min(pageCount,Math.max(1,next));const url=new URL(window.location.href);url.searchParams.set("page",String(safe));window.history.pushState({},"",`${url.pathname}${url.search}`);setCurrentPage(safe);setVisited(current=>new Set(current).add(safe));window.scrollTo({top:0,behavior:"smooth"})}
+  function changePage(next){const safe=Math.min(pageCount,Math.max(1,next));const url=new URL(window.location.href);url.searchParams.set("page",String(safe));window.history.pushState({},"",`${url.pathname}${url.search}`);setCurrentPage(safe);setVisited(current=>new Set(current).add(safe))}
 
   const recommended=LESSON_5_PAGES.findIndex((_,index)=>!visited.has(index+1))+1;
   const recommendation={visible:recommended>0&&currentPage>recommended&&!continued.has(currentPage),message:t("learningMode.notice"),goLabel:t("learningMode.goRecommended"),continueLabel:t("learningMode.continueHere"),onGoRecommended:()=>changePage(recommended),onContinue:()=>setContinued(current=>new Set(current).add(currentPage))};

@@ -11,7 +11,7 @@ export default function MissionLessonShell({ currentPage, pageCount, progressPag
   const headingRef = useRef(null);
 
   useEffect(() => {
-    document.querySelector(".mission-lesson-paged")?.scrollTo({ top: 0, behavior: "auto" });
+    headingRef.current?.closest(".paged-mission-page")?.scrollTo({ top: 0, behavior: "auto" });
     window.scrollTo({ top: 0, behavior: "auto" });
     headingRef.current?.focus({ preventScroll: true });
   }, [currentPage]);

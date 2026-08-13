@@ -12,6 +12,8 @@ assert.match(shell, /disabled=\{currentPage === pageCount && !onEnd\}[\s\S]*onPa
 assert.match(shell, /currentPage === pageCount \? onEnd\?\.\(\)/, "the final page delegates to its non-blocking onward action");
 assert.match(shell, /currentPage === pageCount \? labels\.prototypeEndAction : labels\.next/, "final page has a distinct final-page label");
 assert.doesNotMatch(shell, /canAdvance|activityComplete.*mission-lesson-paged__nav/, "activity state cannot remove or lock page navigation");
+assert.match(shell, /useEffect\(\(\) => \{[\s\S]*?closest\("\.paged-mission-page"\)\?\.scrollTo\(\{ top: 0, behavior: "auto" \}\)[\s\S]*?\}, \[currentPage\]\)/, "the shared shell resets the actual lesson scroll container after every page change");
+assert.doesNotMatch(shell, /behavior: "smooth"/, "page navigation resets immediately without smooth scrolling");
 
 for (const [name, css] of [["Mission 1", mission1Css], ["Mission 2", mission2Css], ["Missions 3–5", curriculumCss]]) {
   assert.match(css, /mission-lesson-paged__nav\s*\{[^}]*position:fixed/, `${name} footer stays visible in the viewport`);

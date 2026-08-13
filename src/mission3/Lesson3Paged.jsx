@@ -48,7 +48,6 @@ export default function Lesson3Paged({ setProgress, navigate, notify }) {
     const url=new URL(window.location.href);url.searchParams.set("page",String(safe));
     window.history.pushState({},"",`${url.pathname}${url.search}`);
     setCurrentPage(safe);setVisited((current)=>new Set(current).add(safe));
-    window.scrollTo({top:0,behavior:"smooth"});
   }
 
   const recommended=LESSON_3_PAGES.findIndex((_,index)=>!visited.has(index+1))+1;
