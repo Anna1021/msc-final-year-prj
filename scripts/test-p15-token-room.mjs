@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { createQwenTokenizer, encodeWithTokenizer, QWEN_TOKENIZER } from "../src/mission1/qwenTokenizer.js";
 import { rooms, tokenRoom } from "../src/finalChallenge/escapeRoomData.js";
-import { TOKEN_ROOM_CHALLENGE, TOKEN_ROOM_EXAMPLE, TOKEN_ROOM_TOKENIZER } from "../src/finalChallenge/tokenRoomTeachingData.js";
+import { TOKEN_ROOM_CHALLENGE, TOKEN_ROOM_EXAMPLE, TOKEN_ROOM_PUZZLES, TOKEN_ROOM_TOKENIZER } from "../src/finalChallenge/tokenRoomTeachingData.js";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 const runtime = await read("../public/escape-room/index.html");
@@ -37,13 +37,25 @@ const targetStart = challengeResult.rawPieces.indexOf(TOKEN_ROOM_CHALLENGE.targe
 assert.ok(targetStart >= 0, "target token sequence exists in the full sentence");
 assert.deepEqual(challengeResult.ids.slice(targetStart, targetStart + TOKEN_ROOM_CHALLENGE.targetIds.length), [...TOKEN_ROOM_CHALLENGE.targetIds]);
 assert.deepEqual(challengeResult.rawPieces.slice(targetStart, targetStart + TOKEN_ROOM_CHALLENGE.targetRawPieces.length), [...TOKEN_ROOM_CHALLENGE.targetRawPieces]);
-assert.equal(TOKEN_ROOM_CHALLENGE.correctOptionId, "tokenizer-depends");
+assert.equal(TOKEN_ROOM_CHALLENGE.correctOptionId, "option-d");
 assert.equal(TOKEN_ROOM_CHALLENGE.options.length, 4);
-assert.deepEqual(TOKEN_ROOM_CHALLENGE.options.find((option) => option.id === "qwen").pieces, ["un", "help", "ful"]);
+assert.deepEqual(TOKEN_ROOM_CHALLENGE.options.find((option) => option.id === "option-c").pieces, ["un", "help", "ful"]);
 assert.equal(
   TOKEN_ROOM_CHALLENGE.options.find((option) => option.id === TOKEN_ROOM_CHALLENGE.correctOptionId).statement,
   "It depends on the tokenizer. Different tokenizers may split \"unhelpful\" differently."
 );
+
+const chinesePuzzle = TOKEN_ROOM_PUZZLES.zh;
+const chineseExampleResult = encodeWithTokenizer(tokenizer, chinesePuzzle.example.text);
+assert.deepEqual(chineseExampleResult.ids, [...chinesePuzzle.example.ids]);
+assert.deepEqual(chineseExampleResult.pieces.map((piece) => piece.decodedPiece), [...chinesePuzzle.example.decodedPieces]);
+const chineseChallengeResult = encodeWithTokenizer(tokenizer, chinesePuzzle.challenge.sentence);
+assert.deepEqual(chineseChallengeResult.ids, [...chinesePuzzle.challenge.sentenceIds]);
+assert.deepEqual(chineseChallengeResult.pieces.map((piece) => piece.decodedPiece), [...chinesePuzzle.challenge.targetDecodedPieces]);
+assert.equal(chinesePuzzle.challenge.correctOptionId, "option-d");
+assert.deepEqual(chinesePuzzle.challenge.options.find((option) => option.id === "option-c").pieces, ["今天", "去", "公园"]);
+assert.match(chinesePuzzle.challenge.options.find((option) => option.id === "option-d").statement, /取决于分词器/);
+assert.ok(chinesePuzzle.challenge.options.every((option) => option.id.startsWith("option-")), "puzzle logic uses stable locale-independent option IDs");
 for (const piece of [...TOKEN_ROOM_EXAMPLE.rawPieces, ...TOKEN_ROOM_CHALLENGE.targetRawPieces]) assert.ok(runtime.includes(JSON.stringify(piece)) || runtime.includes(`>${piece.replace(/^Ġ/, "")}<`));
 
 // 7–8. A wrong split teaches tokenizer dependence; only the accurate statement can complete the room.
@@ -56,7 +68,7 @@ assert.match(runtime, /Hint: Think back to the verified example\. Do all tokeniz
 assert.match(runtime, /return roomComplete\(room\)/);
 assert.match(runtime, /data-action="token-hint"/);
 assert.match(runtime, /data\.submitted = true;[\s\S]*?data\.attempts \+= 1;[\s\S]*?renderRoom\(room\)/);
-assert.match(runtime, /if \(!data\.selectedOption\)[\s\S]*?else if \(data\.selectedOption === tokenRoomTeachingData\.challenge\.correctOptionId\) \{\s*return roomComplete\(room\)/);
+assert.match(runtime, /if \(!data\.selectedOption\)[\s\S]*?else if \(data\.selectedOption === activeTokenPuzzle\.challenge\.correctOptionId\) \{\s*return roomComplete\(room\)/);
 
 // 9. The Token Crystal completion event is emitted only for the first collection.
 assert.match(runtime, /const already = state\.completed\.has\(room\.id\) && state\.crystals\.has\(room\.crystal\)/);

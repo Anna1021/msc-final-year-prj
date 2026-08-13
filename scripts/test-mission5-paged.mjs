@@ -41,11 +41,12 @@ assert.match(shell,/pageHero=\{pageHero\}/);
 assert.match(shell,/Rebuilt Lesson 5 pages use the shared Hero/,"rebuilt Lesson 5 pages carry the shared Hero and non-duplicated-title rule beside the renderer");
 
 assert.doesNotMatch(`${pages}\n${data}`,/PUPPY_CHOICES|Choose the token you think came next|copying|generalising/i,"English guessing and copying quizzes are no longer official");
-assert.match(pages,/l5-page-one-short-answer[\s\S]*l5-page-one-flow[\s\S]*l5-page-one-think/,"Page 1 introduces Training with a short answer, four-step visual and examples");
+assert.match(pages,/l5-page-one-short-answer[\s\S]*l5-page-one-flow[\s\S]*l5-page-one-think/,"Page 1 introduces Training with a clear timeline and examples");
 assert.match(pages,/mission5\.page1\.flowAria/,"Page 1 flow accessibility copy is locale-driven");
-assert.match(pages,/ExampleStackVisual[\s\S]*PatternNetworkVisual[\s\S]*PatternOrbVisual[\s\S]*PredictionBarsVisual/,"Page 1 uses four substantial original teaching illustrations");
-for(const visual of["l5-page-one-document-stack","l5-page-one-pattern-network","l5-page-one-pattern-orb","l5-page-one-prediction-bars"])assert.match(pages,new RegExp(visual));
-assert.match(pages,/l5-page-number-badge">1[\s\S]*mission5\.page1\.badge/,"Page 1 keeps The short answer and adds its in-card number badge");
+assert.match(pages,/trainingFlow=[\s\S]*ExampleStackVisual[\s\S]*PatternNetworkVisual[\s\S]*useFlow=[\s\S]*UserRound[\s\S]*PredictionBarsVisual[\s\S]*RefreshCcw/,"Page 1 separates the earlier training phase from later model use");
+for(const visual of["l5-page-one-document-stack","l5-page-one-pattern-network","l5-page-one-prediction-bars"])assert.match(pages,new RegExp(visual));
+assert.match(pages,/l5-page-one-flow-phase is-training[\s\S]*l5-page-one-time-transition[\s\S]*l5-page-one-flow-phase is-use/,"Page 1 renders an explicit training-finished-to-later-use transition");
+assert.match(pages,/l5-page-number-badge">1[\s\S]*mission5\.page1\.badge/,"Page 1 keeps its in-card number badge and localized chronology heading");
 assert.equal((shell.match(/^\s*\["/gm)||[]).length,8,"the real Lesson 5 registry has eight pages");
 assert.match(shell,/pageCount=\{pageCount\}/,"navigation and progress use the same eight-page count");
 assert.match(shell,/total:pageCount/);

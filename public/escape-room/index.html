@@ -1544,7 +1544,7 @@
       backdrop-filter: blur(12px);
     }
     .completion-recap h2 { margin: 0 0 16px; font-size: clamp(1.2rem, 2vw, 1.55rem); }
-    .completion-concepts { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+    .completion-concepts { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
     .completion-concept {
       min-width: 0;
       border: 1px solid color-mix(in srgb, var(--room) 42%, rgba(230,220,255,.16));
@@ -1847,7 +1847,7 @@
     }
     .sequence-slots, .sequence-tray {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 8px;
     }
     .sequence-slots {
@@ -2190,7 +2190,8 @@
       { id: "connections", number: 4, title: "Prediction Machine", power: "Prediction", crystal: "prediction-machine", colour: "#6da9ff", aim: "Power the prediction console and decode the next-token signal." },
       { id: "prediction", number: 5, title: "Pattern Workshop", power: "Patterns", crystal: "prediction", colour: "#ff5f9e", aim: "Restore the model's training pattern to unlock the final crystal." }
     ];
-    const tokenRoomTeachingData = Object.freeze({
+    const tokenRoomPuzzles = Object.freeze({
+      en: Object.freeze({
       checkpoint: "Qwen/Qwen2.5-0.5B-Instruct",
       revision: "7ae557604adf67be50417f59c2c2f167def9a775",
       example: Object.freeze({
@@ -2204,15 +2205,54 @@
         targetIds: Object.freeze([650, 8653, 1262]),
         targetRawPieces: Object.freeze(["Ġun", "help", "ful"]),
         targetPieces: Object.freeze(["un", "help", "ful"]),
-        correctOptionId: "tokenizer-depends",
+        correctOptionId: "option-d",
         options: Object.freeze([
-          Object.freeze({ id: "whole", pieces: Object.freeze(["unhelpful"]) }),
-          Object.freeze({ id: "human", pieces: Object.freeze(["un", "helpful"]) }),
-          Object.freeze({ id: "qwen", pieces: Object.freeze(["un", "help", "ful"]) }),
-          Object.freeze({ id: "tokenizer-depends", statement: "It depends on the tokenizer. Different tokenizers may split &ldquo;unhelpful&rdquo; differently." })
+          Object.freeze({ id: "option-a", pieces: Object.freeze(["unhelpful"]) }),
+          Object.freeze({ id: "option-b", pieces: Object.freeze(["un", "helpful"]) }),
+          Object.freeze({ id: "option-c", pieces: Object.freeze(["un", "help", "ful"]) }),
+          Object.freeze({ id: "option-d", statement: "It depends on the tokenizer. Different tokenizers may split &ldquo;unhelpful&rdquo; differently." })
         ])
+      }),
+      copy: Object.freeze({
+        question: "Which statement about tokenising &ldquo;unhelpful&rdquo; is the most accurate?",
+        instruction: "Choose the most accurate statement. You do not need to reorder the sentence.",
+        hint: "Hint: Think back to the verified example. Do all tokenizers have to split the same text in exactly the same way?",
+        comparisonNote: "The first Token includes the space before the word.",
+        optionAriaLabel: "Choose the most accurate statement about tokenising unhelpful"
+      })
+      }),
+      zh: Object.freeze({
+        checkpoint: "Qwen/Qwen2.5-0.5B-Instruct",
+        revision: "7ae557604adf67be50417f59c2c2f167def9a775",
+        example: Object.freeze({
+          text: "天气很好",
+          ids: Object.freeze([104307, 101243]),
+          pieces: Object.freeze(["天气", "很好"])
+        }),
+        challenge: Object.freeze({
+          sentence: "今天去公园",
+          targetWord: "今天去公园",
+          targetIds: Object.freeze([100644, 85336, 102077]),
+          targetRawPieces: Object.freeze(["ä»Ĭå¤©", "åİ»", "åħ¬åĽŃ"]),
+          targetPieces: Object.freeze(["今天", "去", "公园"]),
+          correctOptionId: "option-d",
+          options: Object.freeze([
+            Object.freeze({ id: "option-a", pieces: Object.freeze(["今天去公园"]) }),
+            Object.freeze({ id: "option-b", pieces: Object.freeze(["今天去", "公园"]) }),
+            Object.freeze({ id: "option-c", pieces: Object.freeze(["今天", "去", "公园"]) }),
+            Object.freeze({ id: "option-d", statement: "取决于分词器。不同分词器可能会用不同方式拆分“今天去公园”。" })
+          ])
+        }),
+        copy: Object.freeze({
+          question: "关于“今天去公园”的分词，哪种说法最准确？",
+          instruction: "选择关于分词最准确的说法。",
+          hint: "提示：不同分词器是否必须用完全相同的方式拆分同一段文字？",
+          comparisonNote: "这里显示的是当前 Qwen2.5 分词器的真实词元边界。",
+          optionAriaLabel: "选择关于今天去公园分词最准确的说法"
+        })
       })
     });
+    const tokenRoomTeachingData = () => tokenRoomPuzzles[state.language] || tokenRoomPuzzles.en;
     const numbersRoomTeachingData = Object.freeze({
       token: "reader",
       tokenId: 305,
@@ -2231,17 +2271,19 @@
       { id: "tokens", label: "Tokens" },
       { id: "context", label: "Context" },
       { id: "connections", label: "Connections" },
-      { id: "prediction", label: "Prediction" }
+      { id: "prediction", label: "Prediction" },
+      { id: "repeat", label: "Repeat" }
     ];
     const finalConceptOrder = finalConceptPieces.map((piece) => piece.id);
-    const finalConceptTrayOrder = ["prediction", "context", "training", "connections", "tokens"];
+    const finalConceptTrayOrder = ["prediction", "repeat", "context", "training", "connections", "tokens"];
     const finalConceptTrayPieces = finalConceptTrayOrder.map((id) => finalConceptPieces.find((piece) => piece.id === id));
     const completionConcepts = [
       { id: "tokens", room: "token" },
       { id: "context", room: "numbers" },
       { id: "connections", room: "context" },
       { id: "prediction", room: "connections" },
-      { id: "patterns", room: "prediction" }
+      { id: "patterns", room: "prediction" },
+      { id: "repeat", room: null, colour: "#9b6cff", asset: "/assets/img/final-challenge/crystals/final-multicolour-crystal.svg" }
     ];
 
     const state = {
@@ -2350,7 +2392,7 @@
       const previousRoom = state.currentRoom;
       const wasInitialised = Boolean(state.latestInit);
       state.latestInit = payload;
-      state.language = ["en", "zh", "fr", "de"].includes(payload.preferredLanguage) ? payload.preferredLanguage : "en";
+      state.language = ["en", "zh"].includes(payload.preferredLanguage) ? payload.preferredLanguage : "en";
       state.localeContent = payload.localeContent || state.localeContent || {};
       document.documentElement.lang = state.language === "zh" ? "zh-CN" : state.language;
       state.completed = new Set(payload.completedRooms || []);
@@ -2622,11 +2664,14 @@
     }
 
     function completionMarkup(room) {
+      const activeTokenPuzzle = tokenRoomTeachingData();
       const next = rooms[room.number];
       const crystalName = `${room.power} Crystal`;
       const crystalSrc = crystalAsset(room);
       const completionNote = room.id === "token"
-        ? "Correct! Token boundaries depend on the tokenizer. Different tokenizers may split the same text differently."
+        ? state.language === "zh"
+          ? "正确！词元边界取决于分词器。不同分词器可能会用不同方式拆分同一段文字。"
+          : "Correct! Token boundaries depend on the tokenizer. Different tokenizers may split the same text differently."
         : room.id === "numbers"
           ? "Correct! Those tokens are inside the current context window, so they are available to the model right now. Tokens outside the window may not be available for this prediction."
         : room.id === "context"
@@ -2639,11 +2684,11 @@
           ? `Door opened. Room ${next.number} is ready.`
           : "All rooms cleared. The final exit is ready.";
       const tokenMechanism = room.id === "token" ? `<p class="token-lock-accepts">The lock accepts the text as Token pieces.</p><div class="token-success-chain" aria-label="Text passes through the tokenizer and becomes Token pieces">
-        <span><small>Text</small><b>${tokenRoomTeachingData.challenge.targetWord}</b></span>
+        <span><small>Text</small><b>${activeTokenPuzzle.challenge.targetWord}</b></span>
         <i aria-hidden="true">↓</i>
         <span><small>Tokenizer</small><b>Qwen2.5</b></span>
         <i aria-hidden="true">↓</i>
-        <span class="token-success-pieces"><small>Token pieces</small><b>${tokenRoomTeachingData.challenge.targetPieces.map((piece) => `[${piece}]`).join(" ")}</b></span>
+        <span class="token-success-pieces"><small>Token pieces</small><b>${activeTokenPuzzle.challenge.targetPieces.map((piece) => `[${piece}]`).join(" ")}</b></span>
       </div>` : "";
       const numbersMechanism = room.id === "numbers" ? `<div class="token-success-chain context-success-chain" aria-label="Tokens inside the current context window are available">
         <span><small>Current context window</small><b>curious · reader · opened · the · old · book</b></span>
@@ -2749,13 +2794,14 @@
 
     function tokenPuzzle(data) {
       const step = !data.inspected ? 0 : !data.tokenised ? 1 : 2;
-      const example = tokenRoomTeachingData.example;
-      const challenge = tokenRoomTeachingData.challenge;
+      const puzzle = tokenRoomTeachingData();
+      const example = puzzle.example;
+      const challenge = puzzle.challenge;
       const selectedOption = challenge.options.find((option) => option.id === data.selectedOption);
       const comparison = data.submitted && selectedOption ? `<div class="token-comparison" aria-live="polite">
         <div><small>Your idea</small><div>${selectedOption.pieces.map((piece) => `<span>${piece}</span>`).join("")}</div></div>
-        <b aria-hidden="true">vs</b>
-        <div><small>Tokenizer split</small><div>${challenge.targetPieces.map((piece) => `<span>${piece}</span>`).join("")}</div><em>The first Token includes the space before the word.</em></div>
+        <b aria-hidden="true">${state.language === "zh" ? "对比" : "vs"}</b>
+        <div><small>Tokenizer split</small><div>${challenge.targetPieces.map((piece) => `<span>${piece}</span>`).join("")}</div><em>${puzzle.copy.comparisonNote}</em></div>
       </div>` : "";
       return `<div class="room-body">
         <section class="puzzle-board">
@@ -2775,12 +2821,12 @@
               </div>
               <div class="token-split-challenge">
                 <span class="token-question-badge">Lock question</span>
-                <h2>Which statement about tokenising &ldquo;unhelpful&rdquo; is the most accurate?</h2>
-                <p class="token-target-sentence">The reader found an <mark>${challenge.targetWord}</mark> clue.</p>
-                <p>Choose the most accurate statement. You do not need to reorder the sentence.</p>
-                <div class="token-split-options" role="group" aria-label="Choose the most accurate statement about tokenising ${challenge.targetWord}">${challenge.options.map((option, index) => `<button type="button" class="token-split-option ${data.selectedOption === option.id ? "selected" : ""}" data-token-option="${option.id}" aria-pressed="${data.selectedOption === option.id}"><small>Option ${String.fromCharCode(65 + index)}</small><span>${option.statement ? `<strong>${option.statement}</strong>` : option.pieces.map((piece) => `<b>${piece}</b>`).join("")}</span></button>`).join("")}</div>
+                <h2>${puzzle.copy.question}</h2>
+                <p class="token-target-sentence">${state.language === "zh" ? `<mark>${challenge.sentence}</mark>` : `The reader found an <mark>${challenge.targetWord}</mark> clue.`}</p>
+                <p>${puzzle.copy.instruction}</p>
+                <div class="token-split-options" role="group" aria-label="${puzzle.copy.optionAriaLabel}">${challenge.options.map((option, index) => `<button type="button" class="token-split-option ${data.selectedOption === option.id ? "selected" : ""}" data-token-option="${option.id}" aria-pressed="${data.selectedOption === option.id}"><small>Option ${String.fromCharCode(65 + index)}</small><span>${option.statement ? `<strong>${option.statement}</strong>` : option.pieces.map((piece) => `<b>${piece}</b>`).join("")}</span></button>`).join("")}</div>
                 ${comparison}
-                ${data.showHint ? `<p class="token-hint" role="status">Hint: Think back to the verified example. Do all tokenizers have to split the same text in exactly the same way?</p>` : ""}
+                ${data.showHint ? `<p class="token-hint" role="status">${puzzle.copy.hint}</p>` : ""}
                 <div class="token-room-actions"><button type="button" data-action="check" ${data.selectedOption ? "" : "disabled"}>Activate lock</button><button type="button" class="secondary" data-action="token-hint">${data.showHint ? "Hide hint" : "Show hint"}</button><button type="button" class="secondary" data-action="reset-room">Reset room</button></div>
               </div>
             `}
@@ -3536,9 +3582,10 @@
     function checkRoom(room) {
       const data = state.roomData;
       if (room.id === "token") {
+        const activeTokenPuzzle = tokenRoomTeachingData();
         if (!data.selectedOption) {
           setRoomFeedback(data, "feedback.tokenChoose", "bad");
-        } else if (data.selectedOption === tokenRoomTeachingData.challenge.correctOptionId) {
+        } else if (data.selectedOption === activeTokenPuzzle.challenge.correctOptionId) {
           return roomComplete(room);
         } else {
           data.submitted = true;
@@ -3628,9 +3675,9 @@
           <h2 id="completionRecapTitle">${message("completion.recapTitle")}</h2>
           <div class="completion-concepts">
             ${completionConcepts.map((concept) => {
-              const room = roomById(concept.room);
-              return `<article class="completion-concept" style="--room:${finalCrystalColour(room)}">
-                <img src="${crystalAsset(room)}" alt="">
+              const room = concept.room ? roomById(concept.room) : null;
+              return `<article class="completion-concept" style="--room:${concept.colour || finalCrystalColour(room)}">
+                <img src="${concept.asset || crystalAsset(room)}" alt="">
                 <strong>${message(`completion.concepts.${concept.id}.title`)}</strong>
                 <p>${message(`completion.concepts.${concept.id}.body`)}</p>
               </article>`;
@@ -3664,17 +3711,17 @@
       const leadText = exitComplete
         ? "Review mode: the exit is already open. Replay the final lock if you want to solve it again."
         : allDone
-          ? "Combine the five crystals, then Rebuild the learning-to-prediction path."
+          ? "Combine the five crystals, then rebuild the model's process."
           : "Collect all five room crystals before opening the final exit.";
       const consoleTitle = exitComplete ? "Final lock solved" : puzzleUnlocked ? "Final Lock" : fusionActive ? "Final crystal is forming..." : "Final Lock";
       const consoleInstruction = exitComplete
         ? "The puzzle is complete. Click Replay final puzzle to unlock the controls again."
         : puzzleUnlocked
           ? canTryFinal
-            ? "All five slots are full. Solve the Final Lock, or use Reset cards to try again."
+            ? "All six slots are full. Solve the Final Lock, or use Reset cards to try again."
             : "Drag each card into an empty slot. You can also click a card to fill the next empty slot. Click a filled slot to remove it."
           : fusionActive
-            ? "Combining the five ideas..."
+            ? "Combining the five crystal energies..."
           : allDone
             ? "Place all five crystals to reveal the last challenge."
             : "The brain door needs every room crystal.";
@@ -3706,7 +3753,7 @@
               </button>`;
             }).join("")}
           </div>
-          <div class="sequence-tray" aria-label="${title} cards">
+          <div class="sequence-tray" aria-label="${state.language === "zh" ? "重建模型过程卡片" : `${title} cards`}">
             ${pieces.map((piece) => {
               const used = placed.includes(piece.id);
               return `<button type="button" class="sequence-piece" data-exit-piece="${kind}" data-piece="${piece.id}" draggable="${used || state.finalComplete ? "false" : "true"}" ${used || state.finalComplete ? "disabled" : ""}>
@@ -3755,9 +3802,9 @@
               }).join("")}
             </div>` : ""}
             ${puzzleUnlocked ? `<div class="brain-puzzle">
-                ${renderSequence("final", finalConceptTrayPieces, finalConceptOrder, conceptPlaced, "Arrange the five ideas", "Drag each card into slots 1–5 in a sensible learning-to-prediction order. You can also click a card to fill the next empty slot, and click a filled slot to remove it.")}
-                ${state.exitHint ? `<div class="exit-hint" role="status"><strong>Hint</strong> Training happened earlier. When the model is used, text becomes tokens, available context is processed, information is combined, and a prediction is made.</div>` : ""}
-              </div>` : `<div class="final-lock-locked ${fusionActive ? "forming" : ""}" aria-live="polite"><strong>FINAL LOCK</strong><span>${fusionActive ? "Combining the five ideas..." : "Combine all five crystals to reveal the last challenge."}</span></div>`}
+                ${renderSequence("final", finalConceptTrayPieces, finalConceptOrder, conceptPlaced, "Rebuild the model's process", "Arrange the ideas to show how a language model gets from learning patterns to generating text. This is the model's process, not the order of the lessons you completed. Drag each card into slots 1–6. You can also click a card to fill the next empty slot, and click a filled slot to remove it.")}
+                ${state.exitHint ? `<div class="exit-hint" role="status"><strong>Hint</strong> Training happened earlier, before use. During use, text becomes Tokens, available Context is processed, information is combined through Connections, one next Token is predicted, then the selected Token is added to the Context and the process repeats.</div>` : ""}
+              </div>` : `<div class="final-lock-locked ${fusionActive ? "forming" : ""}" aria-live="polite"><strong>FINAL LOCK</strong><span>${fusionActive ? "Combining the five crystal energies..." : "Combine all five crystals to reveal the last challenge."}</span></div>`}
             <div class="exit-actions">
               <button type="button" class="secondary" data-action="map">Room Map</button>
               ${!exitComplete && puzzleUnlocked ? `<button type="button" class="ghost-reset" data-action="clear-final" ${hasPlacedCards ? "" : "disabled"}>Reset cards</button>` : ""}

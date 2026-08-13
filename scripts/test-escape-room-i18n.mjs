@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { activeEscapeRoomEnglish, escapeRoomRuntimeLocales } from "../src/finalChallenge/escapeRoomRuntimeLocales.js";
 
-const languages = ["zh", "fr", "de"];
+const languages = ["zh"];
 const intentionalOriginal = new Set(["Option", "Tokens", "Training"]);
 
 function leafPaths(value, prefix = "") {
@@ -32,5 +32,14 @@ for (const room of ["token", "context", "connection", "prediction", "pattern"]) 
   assert.match(html, new RegExp(`setRoomFeedback\\(data, \\"feedback\\.${room}`), `${room} must store stable feedback keys.`);
 }
 assert.match(html, /previousRoom !== state\.currentRoom \|\| !state\.roomData/, "Language init must preserve the active room state.");
+assert.match(html, /\["en", "zh"\]\.includes\(payload\.preferredLanguage\)/, "Escape Room runtime supports only the active EN/ZH locale pair.");
+assert.match(html, /const tokenRoomTeachingData = \(\) => tokenRoomPuzzles\[state\.language\]/, "Room 1 chooses its teaching puzzle at render time from the active locale.");
+assert.match(html, /text: "天气很好"[\s\S]*pieces: Object\.freeze\(\["天气", "很好"\]\)/, "Chinese Room 1 includes a verified Chinese tokenizer example.");
+assert.match(html, /sentence: "今天去公园"[\s\S]*correctOptionId: "option-d"/, "Chinese Room 1 uses the tokenizer-dependent statement as its stable correct answer.");
+assert.match(html, /id: "option-d", statement: "取决于分词器。不同分词器可能会用不同方式拆分“今天去公园”。"/, "Chinese Room 1 includes the tokenizer-dependent explanation option.");
+
+const finalChallenge = await readFile(new URL("../src/finalChallenge/FinalChallenge.jsx", import.meta.url), "utf8");
+assert.match(finalChallenge, /if \(runtimeStatus !== "ready"\) return;[\s\S]*sendInitToGame\(iframeRef\.current, readEscapeProgress\(\), mainProgress, language\);[\s\S]*\[runtimeStatus, mainProgress, language, localeContent\]/, "An active locale change is immediately resent to the ready iframe.");
+assert.match(html, /else if \(!wasInitialised\) \{[\s\S]*state\.exitOrder = \[\]/, "Final Lock ordering state is reset only during first initialisation, not a locale change.");
 
 process.stdout.write("Escape Room i18n parity, active-content coverage, and stable-state checks passed.\n");

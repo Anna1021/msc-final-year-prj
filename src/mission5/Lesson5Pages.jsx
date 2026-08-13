@@ -29,21 +29,23 @@ const PAGE_3_PREDICTIONS=Object.freeze([{id:"read",value:62},{id:"write",value:1
 
 function ExampleStackVisual(){return <span className="l5-page-one-illustration l5-page-one-document-stack" aria-hidden="true"><i/><i/><i/><i/></span>}
 function PatternNetworkVisual(){return <svg className="l5-page-one-illustration l5-page-one-pattern-network" viewBox="0 0 110 92" aria-hidden="true"><defs><radialGradient id="l5-network-core"><stop stopColor="#a88af2"/><stop offset="1" stopColor="#7252d8"/></radialGradient><filter id="l5-network-glow"><feGaussianBlur stdDeviation="2.2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g className="network-lines"><path d="M18 48 42 22 72 18 94 42 82 72 48 78 18 48Z"/><path d="M42 22 48 78M72 18 18 48M94 42 48 78M42 22 82 72"/></g><g className="network-nodes" filter="url(#l5-network-glow)"><circle cx="18" cy="48" r="6"/><circle cx="42" cy="22" r="7"/><circle cx="72" cy="18" r="6"/><circle cx="94" cy="42" r="7"/><circle cx="82" cy="72" r="6"/><circle cx="48" cy="78" r="7"/><circle className="network-core" cx="57" cy="48" r="12" fill="url(#l5-network-core)"/></g></svg>}
-function PatternOrbVisual({label}){return <span className="l5-page-one-illustration l5-page-one-pattern-orb" role="img" aria-label={label}><i className="orb-core"><b/><b/><b/><b/></i><i className="orb-neck"/><i className="orb-base"/></span>}
 function PredictionBarsVisual(){return <span className="l5-page-one-illustration l5-page-one-prediction-bars" aria-hidden="true"><i/><i/><i/><i/><b/></span>}
 
 export function Lesson5NewPage1({active,t,onComplete}){
   useEffect(()=>{if(active)onComplete?.()},[active,onComplete]);
   const examples=PAGE_2_EXAMPLE_IDS.map((id)=><React.Fragment key={id}>{t(`mission5.page2.examples.${id}.line1`)}<br/>{t(`mission5.page2.examples.${id}.line2Before`)}<mark>{t(`mission5.page2.examples.${id}.focus`)}</mark>{t(`mission5.page2.examples.${id}.line2After`)}</React.Fragment>);
-  const flow=[
+  const trainingFlow=[
     {label:t("mission5.page1.step1"),visual:<ExampleStackVisual/>},
-    {label:t("mission5.page1.step2"),visual:<PatternNetworkVisual/>},
-    {label:t("mission5.page1.prediction"),visual:<PatternOrbVisual label={t("mission5.page1.patternOrbAria")}/>},
-    {label:t("mission5.page1.realToken"),visual:<PredictionBarsVisual/>}
+    {label:t("mission5.page1.step2"),visual:<PatternNetworkVisual/>}
+  ];
+  const useFlow=[
+    {label:t("mission5.page1.yourText"),visual:<UserRound className="l5-page-one-use-icon" aria-hidden="true"/>},
+    {label:t("mission5.page1.prediction"),visual:<PredictionBarsVisual/>},
+    {label:t("mission5.page1.realToken"),visual:<RefreshCcw className="l5-page-one-use-icon" aria-hidden="true"/>}
   ];
   const keyword=<aside className="l5-page-one-keyword" aria-label={t("mission5.page1.term")}><header><small>{t("mission5.page2.keywordLabel")}</small><Lightbulb/></header><div className="l5-page-one-key-icon"><BookOpenCheck/></div><h2>{t("mission5.page1.term")}</h2><p>{t("mission5.page1.technical")}</p><div className="l5-page-one-keyword-note"><small>{t("mission5.page1.rememberLabel")}</small><p>{t("mission5.page1.targetCovered")}</p></div><div className="l5-page-one-keyword-decoration" aria-hidden="true"><i/><i/><i/></div><img src="/assets/img/mission5-robot-training.png" alt="" aria-hidden="true"/></aside>;
   return <section hidden={!active} className="l5-new-page l5-new-page-one"><LearningLayout sidebar={keyword}>
-    <section className="l5-page-one-short-answer"><div className="l5-page-one-answer-copy"><span className="l5-page-number-badge">1</span><div><h2>{t("mission5.page1.badge")}</h2><p>{t("mission5.page1.intro")}</p></div></div><div className="l5-page-one-flow" aria-label={t("mission5.page1.flowAria")}>{flow.map((item,index)=><React.Fragment key={item.label}><div className="l5-page-one-flow-step">{item.visual}<strong>{item.label}</strong></div>{index<flow.length-1&&<ArrowRight className="l5-page-one-flow-arrow" aria-hidden="true"/>}</React.Fragment>)}</div></section>
+    <section className="l5-page-one-short-answer"><div className="l5-page-one-answer-copy"><span className="l5-page-number-badge">1</span><div><h2>{t("mission5.page1.badge")}</h2><p>{t("mission5.page1.intro")}</p></div></div><div className="l5-page-one-flow" aria-label={t("mission5.page1.flowAria")}><div className="l5-page-one-flow-phase is-training"><small>{t("mission5.page1.beforeUse")}</small><div>{trainingFlow.map((item,index)=><React.Fragment key={item.label}><div className="l5-page-one-flow-step">{item.visual}<strong>{item.label}</strong></div>{index<trainingFlow.length-1&&<ArrowRight className="l5-page-one-flow-arrow" aria-hidden="true"/>}</React.Fragment>)}</div></div><div className="l5-page-one-time-transition"><strong>{t("mission5.page1.trainingFinishes")}</strong><ArrowDown aria-hidden="true"/><span>{t("mission5.page1.laterUse")}</span></div><div className="l5-page-one-flow-phase is-use"><small>{t("mission5.page1.whenUse")}</small><div>{useFlow.map((item,index)=><React.Fragment key={item.label}><div className="l5-page-one-flow-step">{item.visual}<strong>{item.label}</strong></div>{index<useFlow.length-1&&<ArrowRight className="l5-page-one-flow-arrow" aria-hidden="true"/>}</React.Fragment>)}</div></div></div></section>
     <section className="l5-page-one-think"><h2>{t("mission5.page1.existingText")}</h2><p>{t("mission5.page1.lesson4")}</p><p>{t("mission5.page1.lesson5")}</p><p>{t("mission5.page1.targetCovered")}</p><div className="l5-page-one-examples"><strong>{t("mission5.page1.targetKnown")}</strong><div>{examples.map((example,index)=><article key={index}>{example}</article>)}<b aria-hidden="true">…</b></div></div><ArrowDown className="l5-page-one-down" aria-hidden="true"/><div className="l5-page-one-takeaway"><CircleDot/><p>{t("mission5.page1.takeaway")}</p></div></section>
   </LearningLayout></section>;
 }

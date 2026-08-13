@@ -97,14 +97,14 @@
       },
       "exit": {
         "fusionComplete": "Final crystal formed. The Final Lock is now active.",
-        "complete": "Final lock solved. Training happened earlier; during use, tokens, context and connections lead to one next-token prediction.",
+        "complete": "Final lock solved. Training happened earlier; during use, tokens, context and connections lead to a next-token prediction, then the selected token is added and the process repeats.",
         "ready": "The order is correct. Solve the Final Lock.", "forming": "Final crystal is forming...",
-        "orderPrompt": "Put the five ideas in order to solve the Final Lock.", "placePrompt": "Place all five crystals around the model door.",
-        "needsCrystals": "The final room needs every room crystal.", "reset": "Final lock reset. Place the five crystals, then rebuild the path.",
-        "cardsCleared": "Cards cleared. Rebuild the learning-to-prediction path.", "fusionStarted": "Five crystals placed. Fusion sequence started.",
+        "orderPrompt": "Arrange all six process steps to solve the Final Lock.", "placePrompt": "Place all five crystals around the model door.",
+        "needsCrystals": "The final room needs every room crystal.", "reset": "Final lock reset. Place the five crystals, then rebuild the model's process.",
+        "cardsCleared": "Cards cleared. Rebuild the model's process.", "fusionStarted": "Five crystals placed. Fusion sequence started.",
         "placedProgress": "{{count}} / {{total}} crystals placed. Keep powering the Language Model Door.",
         "slotOccupied": "That slot already has a card. Drag the card to swap, or choose an empty slot.",
-        "slotsFull": "All five slots are filled. Check the order, then solve the Final Lock.", "cardPlaced": "Card added to a slot. Keep filling the empty slots.",
+        "slotsFull": "All six slots are filled. Check the order, then solve the Final Lock.", "cardPlaced": "Card added to a slot. Keep filling the empty slots.",
         "unreadableCard": "I could not read that card. Try dragging it again, or click it instead.", "wrongDropArea": "Drop that card inside the Final Lock slots.",
         "cardRemoved": "Card removed. Try the order again.", "dropOnSlot": "Drop the card onto a slot or inside the matching console.",
         "waitFusion": "Wait for the final crystal to form.", "placeAllFirst": "Place every crystal around the Language Model Door first.",
@@ -113,16 +113,17 @@
       "completion": {
         "eyebrow": "Final Challenge complete",
         "title": "Congratulations — the Language Model Door is open!",
-        "intro": "You restored all five crystals and rebuilt the path from learning to prediction.",
-        "summary": "Language models process text as Tokens, use available Context, combine information through Connections, make a next-token Prediction, and rely on Patterns learned earlier during training.",
+        "intro": "You restored all five crystals and rebuilt the model's process from earlier training to repeated next-token prediction.",
+        "summary": "Language models rely on Patterns learned earlier during Training, process text as Tokens, use available Context, combine information through Connections, make a next-token Prediction, add the selected Token to the Context, and Repeat.",
         "guide": "Guide note: you solved the final lock by connecting the ideas — not by treating the model like a person.",
-        "recapTitle": "Five ideas you unlocked",
+        "recapTitle": "Six ideas you unlocked",
         "concepts": {
           "tokens": { "title": "Tokens", "body": "Text is split into smaller pieces the model can process." },
           "context": { "title": "Context", "body": "Earlier available Tokens help shape what may come next." },
           "connections": { "title": "Connections", "body": "Information from different Token positions can be combined." },
           "prediction": { "title": "Prediction", "body": "The model compares possibilities and selects a next Token." },
-          "patterns": { "title": "Learned patterns", "body": "Training happened earlier and shaped the model's later predictions." }
+          "patterns": { "title": "Learned patterns", "body": "Training happened earlier and shaped the model's later predictions." },
+          "repeat": { "title": "Repeat / Building a response", "body": "The selected Token joins the Context, then the model predicts the next Token again." }
         },
         "return": "Return to LLM Explorer",
         "replay": "Replay Final Challenge"

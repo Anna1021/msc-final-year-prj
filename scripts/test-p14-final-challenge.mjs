@@ -34,11 +34,11 @@ assert.equal(rooms.length, 5, "Final Challenge exposes exactly five rooms and fi
 assert.equal(new Set(rooms.map((room) => room.crystalId)).size, 5, "each room awards one unique crystal");
 assert.ok(rooms.every((room) => room.accent.toLowerCase() !== "#9b6cff"), "no room uses the retired purple crystal accent");
 assert.deepEqual(finalExitPuzzle.steps, ["Place crystals", "Form final crystal", "Solve final lock"]);
-assert.deepEqual(finalExitPuzzle.concepts, ["Training", "Tokens", "Context", "Connections", "Prediction"]);
+assert.deepEqual(finalExitPuzzle.concepts, ["Training", "Tokens", "Context", "Connections", "Prediction", "Repeat"]);
 assert.deepEqual(finalExitPuzzle.correctOrder, finalExitPuzzle.concepts);
 assert.match(finalExitPuzzle.trainingNote, /Training happened earlier/i);
 
-for (const visibleIdea of ["Token Workshop", "Context Chamber", "Connection Lab", "Prediction Machine", "Pattern Workshop", "Final Lock", "Rebuild the learning-to-prediction path"]) {
+for (const visibleIdea of ["Token Workshop", "Context Chamber", "Connection Lab", "Prediction Machine", "Pattern Workshop", "Final Lock", "Rebuild the model's process"]) {
   assert.ok(runtime.includes(visibleIdea), `runtime includes ${visibleIdea}`);
 }
 assert.match(runtime, /Inspect console[\s\S]*Activate context scanner[\s\S]*Unlock context door/, "Room 2 uses the Context Chamber's three-step flow");
@@ -90,17 +90,17 @@ assert.match(runtime, /data-exit-piece/);
 assert.match(runtime, /dragstart/);
 assert.match(runtime, /handleExitDrop/);
 const finalConceptSource = runtime.match(/const finalConceptPieces = \[[\s\S]*?\n    \];/)?.[0] || "";
-assert.equal((finalConceptSource.match(/id:/g) || []).length, 5, "the Final Lock has exactly five concept cards");
-assert.match(finalConceptSource, /id: "training"[\s\S]*id: "tokens"[\s\S]*id: "context"[\s\S]*id: "connections"[\s\S]*id: "prediction"/, "the five concepts have the required order");
-assert.doesNotMatch(finalConceptSource, /numbers|repeat|train-predict/, "the Final Lock has no Numbers concept, duplicate Prediction, or obsolete repeat step");
-assert.match(runtime, /const finalConceptTrayOrder = \["prediction", "context", "training", "connections", "tokens"\]/, "the draggable cards begin in a deliberately shuffled order");
-assert.doesNotMatch(runtime, /const finalConceptTrayOrder = \["training", "tokens", "context", "connections", "prediction"\]/, "the tray does not reveal the correct answer order");
+assert.equal((finalConceptSource.match(/id:/g) || []).length, 6, "the Final Lock has exactly six process cards");
+assert.match(finalConceptSource, /id: "training"[\s\S]*id: "tokens"[\s\S]*id: "context"[\s\S]*id: "connections"[\s\S]*id: "prediction"[\s\S]*id: "repeat"/, "the six process steps have the required order");
+assert.doesNotMatch(finalConceptSource, /numbers|train-predict/, "the Final Lock has no Numbers concept, duplicate Prediction, or obsolete combined step");
+assert.match(runtime, /const finalConceptTrayOrder = \["prediction", "repeat", "context", "training", "connections", "tokens"\]/, "the draggable cards begin in a deliberately shuffled order");
+assert.doesNotMatch(runtime, /const finalConceptTrayOrder = \["training", "tokens", "context", "connections", "prediction", "repeat"\]/, "the tray does not reveal the correct answer order");
 assert.match(runtime, /renderSequence\("final", finalConceptTrayPieces, finalConceptOrder/, "the shuffled tray and correct slot order remain separate");
 assert.match(runtime, /\.brain-puzzle \{[\s\S]*grid-template-columns: minmax\(0, 1fr\);[\s\S]*width: 100%/, "the single Final Lock fills the full right-hand puzzle area");
-assert.match(runtime, /\.sequence-slots, \.sequence-tray \{[\s\S]*grid-template-columns: repeat\(5, minmax\(0, 1fr\)\)/, "the five slots and shuffled cards use the available width instead of ten tall rows");
+assert.match(runtime, /\.sequence-slots, \.sequence-tray \{[\s\S]*grid-template-columns: repeat\(6, minmax\(0, 1fr\)\)/, "the six slots and shuffled cards use the available width");
 assert.doesNotMatch(finalConceptSource, /note: "Earlier"/, "the Training card does not reveal its correct position");
 assert.doesNotMatch(runtime, /class="exit-training-note"/, "the default answer-revealing training note is removed");
-assert.match(runtime, /Drag each card into slots 1–5 in a sensible learning-to-prediction order/, "the answer card contains the complete neutral instruction");
+assert.match(runtime, /This is the model's process, not the order of the lessons you completed[\s\S]*slots 1–6/, "the Final Lock explicitly separates model process from Lesson order");
 assert.match(runtime, /\$\{!fused \? `<div class="crystal-tray"/, "the used crystal inventory disappears after fusion to shorten the final puzzle");
 assert.equal((runtime.match(/renderSequence\("final"/g) || []).length, 1, "the Final Exit renders one ordering question");
 assert.doesNotMatch(runtime, /renderSequence\("model"|renderSequence\("review"/, "the old two-question structure is removed");
@@ -114,7 +114,7 @@ assert.match(runtime, /const puzzleUnlocked = fused[\s\S]*puzzleUnlocked \? `<di
 assert.match(runtime, /prefers-reduced-motion: reduce[\s\S]*reducedMotion \? 320 : 1900/, "reduced motion uses a short state-safe fusion transition");
 assert.match(runtime, /final-multicolour-crystal\.svg/, "the fused state retains the local multicolour Final Crystal");
 assert.match(runtime, /id="completionScreen"/, "the completed Final Challenge has a dedicated epilogue screen");
-assert.match(runtime, /const completionConcepts = \[[\s\S]*tokens[\s\S]*context[\s\S]*connections[\s\S]*prediction[\s\S]*patterns/, "the epilogue recaps the five taught concepts using stable IDs");
+assert.match(runtime, /const completionConcepts = \[[\s\S]*tokens[\s\S]*context[\s\S]*connections[\s\S]*prediction[\s\S]*patterns[\s\S]*repeat/, "the epilogue recaps all six process ideas using stable IDs");
 assert.match(runtime, /function renderCompletion\(\)[\s\S]*completion-final-crystal[\s\S]*completion-guide[\s\S]*data-completion-action="return"[\s\S]*data-completion-action="replay"/, "the epilogue reuses the final crystal and guide with both requested actions");
 assert.match(runtime, /completionTimer = window\.setTimeout\([\s\S]*openCompletion\(\{ focus: true \}\)[\s\S]*reducedMotion \? 80 : 700/, "success transitions to the epilogue after a short accessible delay");
 assert.match(runtime, /data-completion-action='return'[\s\S]*ESCAPE_ROOM_NAVIGATE[\s\S]*route: "missions"/, "Return to AI Explorer uses the existing navigation bridge");

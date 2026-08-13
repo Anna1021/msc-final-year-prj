@@ -229,6 +229,11 @@ export default function FinalChallenge({ progress: mainProgress, navigate, notif
   }, [runtimeStatus, mainProgress, language, localeContent]);
 
   useEffect(() => {
+    if (runtimeStatus !== "ready") return;
+    sendInitToGame(iframeRef.current, readEscapeProgress(), mainProgress, language);
+  }, [runtimeStatus, mainProgress, language, localeContent]);
+
+  useEffect(() => {
     function onMessage(event) {
       const message = validateEscapeRoomMessage(event);
       if (!message.ok) {

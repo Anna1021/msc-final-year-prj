@@ -1,4 +1,4 @@
-import { TOKEN_ROOM_CHALLENGE, TOKEN_ROOM_EXAMPLE, TOKEN_ROOM_TOKENIZER } from "./tokenRoomTeachingData.js";
+import { TOKEN_ROOM_CHALLENGE, TOKEN_ROOM_EXAMPLE, TOKEN_ROOM_PUZZLES, TOKEN_ROOM_TOKENIZER } from "./tokenRoomTeachingData.js";
 
 export const ESCAPE_STORAGE_KEY = "aiExplorerEscapeRoomProgress";
 // Version 3 moves the Final Challenge to the five-Lesson/five-crystal path.
@@ -15,6 +15,7 @@ export const tokenRoom = {
   tokenizer: TOKEN_ROOM_TOKENIZER,
   teachingExample: TOKEN_ROOM_EXAMPLE,
   challenge: TOKEN_ROOM_CHALLENGE,
+  puzzles: TOKEN_ROOM_PUZZLES,
   learningGoal: "Text enters a language model as tokenizer-dependent pieces, not as one whole block."
 };
 
@@ -29,11 +30,11 @@ export const rooms = [
 export const finalExitPuzzle = {
   title: "Power the Language Model Door",
   steps: ["Place crystals", "Form final crystal", "Solve final lock"],
-  concepts: ["Training", "Tokens", "Context", "Connections", "Prediction"],
-  correctOrder: ["Training", "Tokens", "Context", "Connections", "Prediction"],
+  concepts: ["Training", "Tokens", "Context", "Connections", "Prediction", "Repeat"],
+  correctOrder: ["Training", "Tokens", "Context", "Connections", "Prediction", "Repeat"],
   trainingNote: "Training happened earlier, when the model learned patterns from many examples.",
   completionMessage:
-    "Training happened earlier. When the model is used, text becomes tokens, available context is processed, information is connected, and one next-token prediction is made."
+    "Training happened earlier. During use, text becomes tokens, available context is processed, information is connected, one next-token prediction is made, and the selected token is added before prediction repeats."
 };
 
 export const tokenHintLevels = [
