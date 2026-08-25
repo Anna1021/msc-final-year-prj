@@ -63,3 +63,5 @@ assets/img/mission5-robot-training-source.png filter=lfs diff=lfs merge=lfs -tex
 assets/img/mission5-robot-training.png filter=lfs diff=lfs merge=lfs -text
 assets/img/missions-robot-target.png filter=lfs diff=lfs merge=lfs -text
 public/assets/img/lesson1-open-book.png filter=lfs diff=lfs merge=lfs -text
+docs/diagrams/*.png filter=lfs diff=lfs merge=lfs -text
+docs/diagrams/*.pdf filter=lfs diff=lfs merge=lfs -text
