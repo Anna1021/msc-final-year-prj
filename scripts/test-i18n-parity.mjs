@@ -22,6 +22,7 @@ const runtimeNamespaces = [
   "predictionStage",
   "compareStage"
 ];
+const supportedLanguageOnlyNamespaces = ["guide"];
 
 function leafPaths(value, prefix = "") {
   return Object.entries(value).flatMap(([key, child]) => {
@@ -61,6 +62,16 @@ for (const namespace of runtimeNamespaces) {
   }
 }
 
+for (const namespace of supportedLanguageOnlyNamespaces) {
+  const english = await readLocaleNamespace("en", namespace);
+  const chinese = await readLocaleNamespace("zh", namespace);
+  const englishKeys = new Set(leafPaths(english));
+  const chineseKeys = new Set(leafPaths(chinese));
+  const missing = [...englishKeys].filter((key) => !chineseKeys.has(key)).sort();
+  const extra = [...chineseKeys].filter((key) => !englishKeys.has(key)).sort();
+  if (missing.length || extra.length) differences.push({ language: "zh", namespace, missing, extra });
+}
+
 if (differences.length) {
   for (const { language, namespace, missing, extra } of differences) {
     process.stderr.write(`\n[i18n parity] ${language}/${namespace}\n`);
@@ -85,4 +96,4 @@ const chineseVisibleText = [
 assert.doesNotMatch(chineseVisibleText, /\bTokens?\b/i, "Chinese educational UI must use 词元 instead of standalone Token/Tokens.");
 assert.match(chineseVisibleText, /词元/);
 
-process.stdout.write(`i18n parity passed for ${runtimeNamespaces.length} resource namespaces across ${languages.length} retained locales; runtime selection is en/zh only.\n`);
+process.stdout.write(`i18n parity passed for ${runtimeNamespaces.length} retained namespaces plus ${supportedLanguageOnlyNamespaces.length} EN/ZH-only namespace; runtime selection is en/zh only.\n`);

@@ -88,24 +88,24 @@ export default function QwenTokenizerPlayground({ language, t, onSuccessfulRun, 
   return <div className={`m1-playground ${visualVariant === "paged" ? "m1-playground--paged" : ""}`.trim()}>
     <div className="m1-playground-scene" aria-hidden="true"><FlaskConical size={22} strokeWidth={1.8} /><img src={visualVariant === "paged" ? "/assets/img/mission-robot-pointing.png" : "/assets/img/mission-robot-reading.png"} alt="" /></div>
     {showModelNote && <div className="m1-model-note"><span>{t("mission1.playground.modelLabel")}</span><strong>{LIVE_TOKENIZER.checkpoint}</strong></div>}
-    <div className="m1-preset-row" aria-label={t("mission1.playground.presetsLabel")}>
+    <div className="m1-preset-row" data-guide-target="lesson1-examples" aria-label={t("mission1.playground.presetsLabel")}>
       {presets.map((preset, index) => <button type="button" className={`m1-preset ${visualVariant === "paged" && input === preset ? "is-selected" : ""}`.trim()} aria-pressed={visualVariant === "paged" ? input === preset : undefined} key={preset} onClick={() => { setInput(preset); setResult(null); setStatus("ready"); }}><Play size={15} strokeWidth={1.8} />{visualVariant === "paged" ? <span><small>{t("mission1.playground.preset", { number: index + 1 })}</small><strong>{preset}</strong></span> : t("mission1.playground.preset", { number: index + 1 })}</button>)}
     </div>
     <label className="m1-input-label" htmlFor="m1-tokenizer-input"><strong>{t("mission1.playground.inputLabel")}</strong><span>{input.length} / 200</span></label>
-    <textarea id="m1-tokenizer-input" data-tour-id="m1-token-input" maxLength={200} value={input} placeholder={t("mission1.playground.placeholder")} onChange={(event) => { setInput(event.target.value); setError(""); if (status === "validation-error") setStatus("ready"); }} />
+    <textarea id="m1-tokenizer-input" data-tour-id="m1-token-input" data-guide-target="m1-token-input" maxLength={200} value={input} placeholder={t("mission1.playground.placeholder")} onChange={(event) => { setInput(event.target.value); setError(""); if (status === "validation-error") setStatus("ready"); }} />
     <div className="m1-playground-actions">
-      <button type="button" className="primary" data-tour-id="m1-tokenize" disabled={busy} onClick={runTokenizer}>{busy ? <LoaderCircle className="m1-spinner" size={18} strokeWidth={1.8} /> : <Play size={18} strokeWidth={1.8} />}{status === "loading-tokenizer" ? t("mission1.playground.loading") : status === "tokenizing" ? t("mission1.playground.tokenizing") : t("mission1.playground.tokenize")}</button>
+      <button type="button" className="primary" data-tour-id="m1-tokenize" data-guide-target="m1-tokenize" disabled={busy} onClick={runTokenizer}>{busy ? <LoaderCircle className="m1-spinner" size={18} strokeWidth={1.8} /> : <Play size={18} strokeWidth={1.8} />}{status === "loading-tokenizer" ? t("mission1.playground.loading") : status === "tokenizing" ? t("mission1.playground.tokenizing") : t("mission1.playground.tokenize")}</button>
       {status === "load-error" && <button type="button" className="outline" onClick={runTokenizer}><RefreshCcw size={17} strokeWidth={1.8} />{t("mission1.actions.retry")}</button>}
       <button type="button" className="outline" onClick={restartActivity}><RotateCcw size={17} strokeWidth={1.8} />{t("mission1.actions.restartActivity")}</button>
     </div>
     {error && <div className="m1-inline-message error" role="alert"><AlertCircle size={18} strokeWidth={1.8} />{error}</div>}
-    {result && <div className="m1-token-result" data-tour-id="m1-token-result" ref={resultRef} aria-live="polite">
+    {result && <div className="m1-token-result" data-tour-id="m1-token-result" data-guide-target="m1-token-result" ref={resultRef} aria-live="polite">
       <div className="m1-result-heading"><div><small>{t("mission1.playground.originalText")}</small><strong>{result.text}</strong></div><div data-tour-id="m1-token-count"><strong>{result.count}</strong><small>{t("mission1.playground.totalTokens")}</small></div></div>
       {visualVariant === "paged" && <div className="m1-result-transform" aria-hidden="true"><span>{t("mission1.paged.writeStep")}</span><ArrowDown size={19} strokeWidth={1.8} /><span>{t("mission1.paged.discoverStep")}</span></div>}
       <TokenPieces groups={result.visualGroups} visualVariant={visualVariant === "paged" ? "verified" : "default"} t={t} />
       <p className="m1-space-legend"><span>␠</span>{t("mission1.tokens.spaceLegend")}</p>
       {visualVariant === "paged" && <p className="m1-playground-discovery"><strong>{t("mission1.paged.discoveryCount", { count: result.count })}</strong><span>{t("mission1.paged.discoveryNotice")}</span><em>{t("mission1Learning.changeDiscovery")}</em></p>}
-      <button type="button" className="m1-technical-toggle" aria-expanded={technicalOpen} aria-controls="mission1-tokenizer-technical-details" onClick={() => setTechnicalOpen((open) => !open)}>{technicalOpen ? <ChevronUp size={17} strokeWidth={1.8} /> : <ChevronDown size={17} strokeWidth={1.8} />}{technicalOpen ? t("mission1.playground.hideTechnical") : t("mission1.playground.showTechnical")}</button>
+      <button type="button" className="m1-technical-toggle" data-guide-target="lesson1-technical-details" aria-expanded={technicalOpen} aria-controls="mission1-tokenizer-technical-details" onClick={() => setTechnicalOpen((open) => !open)}>{technicalOpen ? <ChevronUp size={17} strokeWidth={1.8} /> : <ChevronDown size={17} strokeWidth={1.8} />}{technicalOpen ? t("mission1.playground.hideTechnical") : t("mission1.playground.showTechnical")}</button>
       {technicalOpen && <div id="mission1-tokenizer-technical-details" className="m1-technical-details"><p>{t("mission1.playground.technicalOptional")}</p>{result.pieces.map((piece) => <code key={`${piece.index}-${piece.id}`}><span>#{piece.index + 1}</span><b>{piece.rawPiece}</b><small>ID {piece.id}</small></code>)}</div>}
     </div>}
   </div>;

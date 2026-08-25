@@ -22,10 +22,10 @@ const IDEA_ICONS = [GitBranch, ListFilter, Target, Repeat2];
 const ORDER_STEPS = ["compare", "choose", "add", "repeat"];
 const candidateLabel = (t, id) => t(`mission4.teachingCandidates.${id}`);
 
-function TechnicalWord({ t, page, term, children, visual }) {
+function TechnicalWord({ t, page, term, children, visual, guideTarget }) {
   const [open, setOpen] = useState(true);
   const id = `l4-page-${page}-technical`;
-  return <details className="l4-new-technical" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
+  return <details className="l4-new-technical" data-guide-target={guideTarget} open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
     <summary aria-expanded={open} aria-controls={id}><span><BookOpenCheck />{t("mission4.sidebar.technicalWord")}</span><strong>{term}</strong><ChevronDown /></summary>
     <div id={id}><p>{children}</p>{visual}</div>
   </details>;
@@ -83,7 +83,7 @@ function ProcessedRepresentation({ label }) {
 export function Lesson4NewPage1({ active, t }) {
   const predictionVisual = <div className="l4-p1-orb" aria-hidden="true"><span>?</span><i /><i /></div>;
   const sidebar = <aside className="l4-new-sidebar l4-p1-sidebar" aria-label={t("mission4.sidebar.learningNotes")}>
-    <TechnicalWord t={t} page={1} term={t("mission4.page1.term")} visual={predictionVisual}>{t("mission4.page1.technical")}</TechnicalWord>
+    <TechnicalWord t={t} page={1} term={t("mission4.page1.term")} visual={predictionVisual} guideTarget="lesson4-technical-word">{t("mission4.page1.technical")}</TechnicalWord>
     <section className="l4-p1-think"><BookOpenCheck /><div><h3>{t("mission4.page1.thinkTitle")}</h3><p>{t("mission4.page1.thinkCopy")}</p><strong>{t("mission4.page1.thinkNext")}</strong></div></section>
   </aside>;
   return <section hidden={!active} className="l4-new-page l4-p1-page"><LearningLayout sidebar={sidebar}>
@@ -172,6 +172,7 @@ export function Lesson4NewPage4({ active, t, onComplete, onContinue }) {
     onContinue={onContinue}
     pageNumber={5}
     lessonClassName="lesson-4-paged__lesson"
+    guideTarget="lesson-quiz"
     showLesson1Visuals={false}
     showCorrectAnswer
   />;

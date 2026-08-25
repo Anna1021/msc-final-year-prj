@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from "react";
+import React,{useEffect,useRef,useState} from "react";
 import {
   ArrowDown,ArrowRight,BarChart3,BookOpenCheck,Check,CircleDot,
   FlaskConical,GripVertical,Info,Lightbulb,MessageSquare,Network,Plus,RefreshCcw,
@@ -9,6 +9,7 @@ import {
   calculateToyPrediction,predictionDeltas
 } from "./lesson5ToyTraining.js";
 import LessonSummaryPage from "../pagedMissions/LessonSummaryPage.jsx";
+import {LESSON_5_CHANGE_GUIDE_FLOW,useGuide} from "../guide/index.js";
 
 function LearningLayout({children,sidebar}){return <div className="l5-new-layout"><main className="l5-new-main">{children}</main>{sidebar}</div>}
 
@@ -45,7 +46,7 @@ export function Lesson5NewPage1({active,t,onComplete}){
   ];
   const keyword=<aside className="l5-page-one-keyword" aria-label={t("mission5.page1.term")}><header><small>{t("mission5.page2.keywordLabel")}</small><Lightbulb/></header><div className="l5-page-one-key-icon"><BookOpenCheck/></div><h2>{t("mission5.page1.term")}</h2><p>{t("mission5.page1.technical")}</p><div className="l5-page-one-keyword-note"><small>{t("mission5.page1.rememberLabel")}</small><p>{t("mission5.page1.targetCovered")}</p></div><div className="l5-page-one-keyword-decoration" aria-hidden="true"><i/><i/><i/></div><img src="/assets/img/mission5-robot-training.png" alt="" aria-hidden="true"/></aside>;
   return <section hidden={!active} className="l5-new-page l5-new-page-one"><LearningLayout sidebar={keyword}>
-    <section className="l5-page-one-short-answer"><div className="l5-page-one-answer-copy"><span className="l5-page-number-badge">1</span><div><h2>{t("mission5.page1.badge")}</h2><p>{t("mission5.page1.intro")}</p></div></div><div className="l5-page-one-flow" aria-label={t("mission5.page1.flowAria")}><div className="l5-page-one-flow-phase is-training"><small>{t("mission5.page1.beforeUse")}</small><div>{trainingFlow.map((item,index)=><React.Fragment key={item.label}><div className="l5-page-one-flow-step">{item.visual}<strong>{item.label}</strong></div>{index<trainingFlow.length-1&&<ArrowRight className="l5-page-one-flow-arrow" aria-hidden="true"/>}</React.Fragment>)}</div></div><div className="l5-page-one-time-transition"><strong>{t("mission5.page1.trainingFinishes")}</strong><ArrowDown aria-hidden="true"/><span>{t("mission5.page1.laterUse")}</span></div><div className="l5-page-one-flow-phase is-use"><small>{t("mission5.page1.whenUse")}</small><div>{useFlow.map((item,index)=><React.Fragment key={item.label}><div className="l5-page-one-flow-step">{item.visual}<strong>{item.label}</strong></div>{index<useFlow.length-1&&<ArrowRight className="l5-page-one-flow-arrow" aria-hidden="true"/>}</React.Fragment>)}</div></div></div></section>
+    <section className="l5-page-one-short-answer" data-guide-target="lesson5-training-before-use"><div className="l5-page-one-answer-copy"><span className="l5-page-number-badge">1</span><div><h2>{t("mission5.page1.badge")}</h2><p>{t("mission5.page1.intro")}</p></div></div><div className="l5-page-one-flow" aria-label={t("mission5.page1.flowAria")}><div className="l5-page-one-flow-phase is-training"><small>{t("mission5.page1.beforeUse")}</small><div>{trainingFlow.map((item,index)=><React.Fragment key={item.label}><div className="l5-page-one-flow-step">{item.visual}<strong>{item.label}</strong></div>{index<trainingFlow.length-1&&<ArrowRight className="l5-page-one-flow-arrow" aria-hidden="true"/>}</React.Fragment>)}</div></div><div className="l5-page-one-time-transition"><strong>{t("mission5.page1.trainingFinishes")}</strong><ArrowDown aria-hidden="true"/><span>{t("mission5.page1.laterUse")}</span></div><div className="l5-page-one-flow-phase is-use"><small>{t("mission5.page1.whenUse")}</small><div>{useFlow.map((item,index)=><React.Fragment key={item.label}><div className="l5-page-one-flow-step">{item.visual}<strong>{item.label}</strong></div>{index<useFlow.length-1&&<ArrowRight className="l5-page-one-flow-arrow" aria-hidden="true"/>}</React.Fragment>)}</div></div></div></section>
     <section className="l5-page-one-think"><h2>{t("mission5.page1.existingText")}</h2><p>{t("mission5.page1.lesson4")}</p><p>{t("mission5.page1.lesson5")}</p><p>{t("mission5.page1.targetCovered")}</p><div className="l5-page-one-examples"><strong>{t("mission5.page1.targetKnown")}</strong><div>{examples.map((example,index)=><article key={index}>{example}</article>)}<b aria-hidden="true">…</b></div></div><ArrowDown className="l5-page-one-down" aria-hidden="true"/><div className="l5-page-one-takeaway"><CircleDot/><p>{t("mission5.page1.takeaway")}</p></div></section>
   </LearningLayout></section>;
 }
@@ -53,7 +54,7 @@ export function Lesson5NewPage1({active,t,onComplete}){
 export function Lesson5NewPage2({active,t,onComplete}){
   useEffect(()=>{if(active)onComplete?.()},[active,onComplete]);
   const keyword=<aside className="l5-page-two-keyword" aria-label={t("mission5.page2.term")}><header><small>{t("mission5.page2.keywordLabel")}</small><Sparkles/></header><div className="l5-page-two-key-icon"><Lightbulb/></div><h2>{t("mission5.page2.term")}</h2><p>{t("mission5.page2.definition")}</p><div className="l5-page-two-key-decoration" aria-hidden="true"><i/><i/><i/></div><img src="/assets/img/mission5-robot-training.png" alt="" aria-hidden="true"/></aside>;
-  return <section hidden={!active} className="l5-new-page l5-new-page-two"><LearningLayout sidebar={keyword}>
+  return <section hidden={!active} className="l5-new-page l5-new-page-two" data-guide-target="lesson5-patterns"><LearningLayout sidebar={keyword}>
     <section className="l5-page-two-card"><header className="l5-page-two-intro"><span className="l5-page-number-badge">2</span><div><h2>{t("mission5.page2.introTitle")}</h2><p>{t("mission5.page2.introBody")}</p></div></header><div className="l5-page-two-examples">{PAGE_2_EXAMPLE_IDS.map((id)=><article key={id}>{t(`mission5.page2.examples.${id}.line1`)}<br/>{t(`mission5.page2.examples.${id}.line2Before`)}<mark>{t(`mission5.page2.examples.${id}.focus`)}</mark>{t(`mission5.page2.examples.${id}.line2After`)}</article>)}<b aria-hidden="true">…</b></div><div className="l5-page-two-explain"><div className="l5-page-two-pattern-copy"><span><Target/></span><p>{t("mission5.page2.patternCopy")}</p></div><ArrowRight aria-hidden="true"/><section className="l5-page-two-chart"><header><strong>{t("mission5.page2.chartTitle")}</strong><BookOpenCheck/></header>{PAGE_2_CANDIDATES.map(({id,value},index)=><div className={`is-bar-${index+1}`} key={id}><span>{t(`mission5.page2.candidates.${id}`)}</span><i><b style={{width:`${(value/70)*100}%`}}/></i><em>{value}%</em></div>)}<footer><span>{t("mission5.page2.lessLikely")}</span><i aria-hidden="true"><b/></i><span>{t("mission5.page2.moreLikely")}</span></footer></section></div><div className="l5-page-two-takeaway"><Info/><p><strong>{t("mission5.page2.takeawayTitle")}</strong><span>{t("mission5.page2.takeawayBody")}</span></p><div aria-hidden="true"><i/><i/><i/><i/></div></div></section>
   </LearningLayout></section>;
 }
@@ -62,7 +63,7 @@ export function Lesson5NewPage3({active,t,onComplete}){
   useEffect(()=>{if(active)onComplete?.()},[active,onComplete]);
   const token=(id)=>t(`mission5.page3.tokens.${id}`);
   const keyword=<aside className="l5-page-three-keyword" aria-label={t("mission5.page3.term")}><header><small>{t("mission5.page3.keywordLabel")}</small><Sparkles/></header><div className="l5-page-three-key-icon"><Network/></div><h2>{t("mission5.page3.term")}</h2><p>{t("mission5.page3.definition")}</p><div className="l5-page-three-key-decoration" aria-hidden="true"><i/><i/><i/><i/></div><img src="/assets/img/mission-robot-pointing.png" alt="" aria-hidden="true"/></aside>;
-  return <section hidden={!active} className="l5-new-page l5-new-page-three"><LearningLayout sidebar={keyword}>
+  return <section hidden={!active} className="l5-new-page l5-new-page-three" data-guide-target="lesson5-repeated-examples"><LearningLayout sidebar={keyword}>
     <section className="l5-page-three-card"><header className="l5-page-three-intro"><span className="l5-page-number-badge">3</span><div><h2>{t("mission5.page3.introTitle")}</h2><p>{t("mission5.page3.introLine1")}<br/>{t("mission5.page3.introLine2")}</p></div></header><div className="l5-page-three-flow" aria-label={t("mission5.page3.flowAria")}><section className="l5-page-three-stage is-examples"><h3>{t("mission5.page3.stage1Title")}</h3><div>{PAGE_3_EXAMPLES.map((example,index)=><article key={index}>{example.filter((tokenId)=>token(tokenId)).map((tokenId,tokenIndex)=><span className={tokenId==="read"?"is-read":""} key={`${tokenId}-${tokenIndex}`}>{token(tokenId)}</span>)}</article>)}</div><strong aria-hidden="true">…</strong><p>{t("mission5.page3.moreExamples")}</p></section><ArrowRight className="l5-page-three-arrow" aria-hidden="true"/><section className="l5-page-three-stage is-pattern"><h3>{t("mission5.page3.stage2Title")}</h3><svg viewBox="0 0 250 180" role="img" aria-label={t("mission5.page3.patternAria")}><g className="pattern-lines"><line x1="125" y1="90" x2="45" y2="35"/><line x1="125" y1="90" x2="202" y2="45"/><line x1="125" y1="90" x2="30" y2="104"/><line x1="125" y1="90" x2="220" y2="105"/><line x1="125" y1="90" x2="65" y2="150"/><line x1="125" y1="90" x2="190" y2="150"/></g><g className="pattern-nodes"><circle cx="45" cy="35" r="11"/><circle cx="202" cy="45" r="11"/><circle cx="30" cy="104" r="11"/><circle cx="220" cy="105" r="11"/><circle cx="65" cy="150" r="11"/><circle cx="190" cy="150" r="11"/><circle className="pattern-core" cx="125" cy="90" r="32"/><text x="125" y="96" textAnchor="middle">{token("read")}</text></g></svg><p>{t("mission5.page3.patternLine1",{token:token("read")})}<br/>{t("mission5.page3.patternLine2")}</p><div className="l5-page-three-pattern-chips"><span>{token("book")}</span><span>{token("opened")}</span><span>{token("began")}</span><b>…</b></div></section><ArrowRight className="l5-page-three-arrow" aria-hidden="true"/><section className="l5-page-three-stage is-prediction"><h3>{t("mission5.page3.stage3Title")}</h3><p>{t("mission5.page3.stage3Line1")}<br/>{t("mission5.page3.stage3Line2")}</p><div className="l5-page-three-new-input"><small>{t("mission5.page3.newInput")}</small><div>{PAGE_3_INPUT.map((tokenId,index)=><span key={`${tokenId}-${index}`}>{token(tokenId)}</span>)}<span className="is-blank" aria-label={t("mission5.page3.missingToken")}>___</span></div></div><ArrowDown aria-hidden="true"/><div className="l5-page-three-prediction"><header><strong>{t("mission5.page3.predictionTitle")}</strong><small>{t("mission5.page3.illustrative")}</small></header>{PAGE_3_PREDICTIONS.map(({id,value},index)=><div className={`is-prediction-${index+1}`} key={id}><span>{token(id)}</span><i><b style={{width:`${value}%`}}/></i><em>{value}%</em></div>)}</div></section></div><div className="l5-page-three-takeaway"><Info/><p><strong>{t("mission5.page3.takeawayTitle")}</strong><span>{t("mission5.page3.takeawayBody")}</span></p><div aria-hidden="true"><i/><i/><i/><i/></div></div></section>
   </LearningLayout></section>;
 }
@@ -82,7 +83,7 @@ export function Lesson5NewPage4({active,t,onComplete}){
     <section className="l5-page-four-card">
       <header className="l5-page-four-intro"><span className="l5-page-number-badge">4</span><div><h2>{t("mission5.page4.kicker")}</h2><p>{t("mission5.page4.intro")}</p><p>{t("mission5.page4.repeatIntro")}</p></div></header>
       <small className="l5-page-four-illustrative">{t("mission5.page4.illustrative")}</small>
-      <div className="l5-page-four-flow">
+      <div className="l5-page-four-flow" data-guide-target="lesson5-parameters">
         <section className="l5-page-four-stage is-before"><h3>{t("mission5.page4.beforeTitle")}</h3><p>{t("mission5.page4.beforeBody")}</p><Page4ProbabilityBars items={before} label={t("mission5.page4.beforeTitle")} t={t}/><div className="l5-page-four-note is-before-note"><CircleDot/><span>{t("mission5.page4.beforeNote")}</span></div></section>
         <ArrowRight className="l5-page-four-flow-arrow" aria-hidden="true"/>
         <section className="l5-page-four-stage is-adjustment"><h3>{t("mission5.page4.adjustmentTitle")}</h3><Page4AdjustmentVisual label={t("mission5.page4.adjustmentVisual")}/><p>{t("mission5.page4.adjustmentBody")}</p><strong>{t("mission5.page4.smallChange")}</strong></section>
@@ -115,12 +116,35 @@ function ToyPredictionBars({prediction,t}) {
 }
 
 export function Lesson5NewPage5({active,t}){
+  const guide=useGuide();
+  const pageRef=useRef(null);
+  const changeGuideScheduled=useRef(false);
   const[addedIds,setAddedIds]=useState([]);
   const[chooserOpen,setChooserOpen]=useState(false);
   const[latestChange,setLatestChange]=useState(null);
   const prediction=calculateToyPrediction(addedIds);
   const addedExamples=addedIds.map((id)=>AVAILABLE_TRAINING_EXAMPLES.find((example)=>example.id===id)).filter(Boolean);
   const availableExamples=AVAILABLE_TRAINING_EXAMPLES.filter((example)=>!addedIds.includes(example.id));
+  const changeGuideSeen=guide.seenFlowIds.includes(LESSON_5_CHANGE_GUIDE_FLOW.id)||guide.completedFlowIds.includes(LESSON_5_CHANGE_GUIDE_FLOW.id);
+
+  useEffect(()=>{
+    const root=pageRef.current;
+    if(!root)return;
+    root.querySelector(".is-examples")?.setAttribute("data-guide-target","lesson5-toy-training-examples");
+    root.querySelector(".l5-page-five-add-button")?.setAttribute("data-guide-target","lesson5-toy-add-example");
+    root.querySelector(".l5-page-five-test-sentence")?.setAttribute("data-guide-target","lesson5-toy-test-sentence");
+    root.querySelector(".l5-page-five-predictions")?.setAttribute("data-guide-target","lesson5-toy-prediction");
+    const change=root.querySelector(".is-change");
+    if(latestChange)change?.setAttribute("data-guide-target","lesson5-toy-change");
+    else change?.removeAttribute("data-guide-target");
+  },[latestChange]);
+
+  useEffect(()=>{
+    if(!active||latestChange?.action!=="added"||guide.expanded||changeGuideSeen||changeGuideScheduled.current)return undefined;
+    changeGuideScheduled.current=true;
+    const frame=window.requestAnimationFrame(()=>guide.openGuide(LESSON_5_CHANGE_GUIDE_FLOW.id));
+    return()=>window.cancelAnimationFrame(frame);
+  },[active,changeGuideSeen,guide.expanded,guide.openGuide,latestChange?.action]);
 
   function addExample(id){
     const example=AVAILABLE_TRAINING_EXAMPLES.find((candidate)=>candidate.id===id);
@@ -144,7 +168,7 @@ export function Lesson5NewPage5({active,t}){
 
   const sidebar=<aside className="l5-page-five-sidebar" aria-label={t("mission5.page5.sidebarAria")}><section className="l5-page-five-how"><header><Lightbulb/><h2>{t("mission5.page5.howTitle")}</h2></header><ol><li><Plus/><span>{t("mission5.page5.how1")}</span></li><li><Network/><span>{t("mission5.page5.how2")}</span></li><li><BarChart3/><span>{t("mission5.page5.how3")}</span></li><li><Sparkles/><span>{t("mission5.page5.how4")}</span></li></ol></section><section className="l5-page-five-disclaimer"><Info/><div><h2>{t("mission5.page5.simulationTitle")}</h2><p>{t("mission5.page5.simulationBody")}</p><p>{t("mission5.page5.simulationBoundary")}</p></div></section></aside>;
 
-  return <section hidden={!active} className="l5-new-page l5-new-page-five"><LearningLayout sidebar={sidebar}>
+  return <section ref={pageRef} hidden={!active} className="l5-new-page l5-new-page-five"><LearningLayout sidebar={sidebar}>
     <section className="l5-page-five-card">
       <header className="l5-page-five-intro"><span className="l5-page-number-badge">5</span><div><h2>{t("mission5.page5.kicker")}</h2><p>{t("mission5.page5.intro")}</p></div></header>
       <div className="l5-page-five-stages">
@@ -180,7 +204,7 @@ export function Lesson5NewPage6({active,t,onOpenLab}){
   return <section hidden={!active} className="l5-new-page l5-new-page-six"><div className="l5-page-six-layout">
     <main className="l5-page-six-card">
       <header className="l5-page-six-intro"><span className="l5-page-number-badge">6</span><div><h2>{t("mission5.page6.kicker")}</h2><p>{t("mission5.page6.intro")}</p></div></header>
-      <section className="l5-page-six-teaching" aria-label={t("mission5.page6.flowAria")}>
+      <section className="l5-page-six-teaching" aria-label={t("mission5.page6.flowAria")} data-guide-target="lesson5-response-loop">
         <div className="l5-page-six-steps">
           {step(1,"prompt",<div className="l5-page-six-prompt"><strong>{t("mission5.page6.example.prompt")}</strong><UserRound aria-hidden="true"/></div>)}
           <ArrowRight className="l5-page-six-arrow" aria-hidden="true"/>

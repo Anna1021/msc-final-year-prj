@@ -15,6 +15,7 @@ import { getLesson1JourneyCopy } from "./lesson1JourneyCopy.js";
 import { completeMission1Progress } from "./mission1Progress.js";
 import { writeProgress } from "../state/progress.js";
 import { useI18n } from "../i18n/index.jsx";
+import { LESSON_1_PLAYGROUND_RESULT_GUIDE_FLOW, useGuide } from "../guide/index.js";
 import "./mission1Paged.css";
 
 const INTRO_PRESENTATIONS = Object.freeze({
@@ -91,6 +92,7 @@ export const MISSION_1_PAGED_PAGES = Object.freeze([
 
 export default function Mission1PagedPrototype({ progress, setProgress, navigate, notify }) {
   const { language, t } = useI18n();
+  const guide = useGuide();
   const introFixture = useMemo(() => getMission1IntroFixture(language), [language]);
   const introPresentation = INTRO_PRESENTATIONS[language] ?? INTRO_PRESENTATIONS.en;
   const introGroups = useMemo(() => introFixture.rawPieces.map((rawPiece, index) => ({ startIndex: index, tokenCount: 1, ids: [introFixture.ids[index]], rawPieces: [rawPiece], decodedPiece: introFixture.decodedPieces[index] })), [introFixture]);
@@ -182,6 +184,13 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
     changePage(1);
   }
 
+  function handleSuccessfulPlaygroundRun() {
+    setPlaygroundComplete(true);
+    const resultFlowId = LESSON_1_PLAYGROUND_RESULT_GUIDE_FLOW.id;
+    if (guide.seenFlowIds.includes(resultFlowId) || guide.completedFlowIds.includes(resultFlowId)) return;
+    window.requestAnimationFrame(() => guide.openGuide(resultFlowId));
+  }
+
   const pageSubtitle = currentPage === 1
     ? t("mission1.intro.body")
     : currentPage === 2
@@ -202,8 +211,8 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
     onContinue: () => setContinuedPages((current) => new Set(current).add(currentPage))
   };
 
-  return <MissionLessonShell currentPage={currentPage} pageCount={MISSION_1_PAGED_PAGES.length} onPageChange={changePage} onEnd={() => navigate("/mission/2-prediction-paged")} onBackToMissions={() => navigate("/missions")} title={t(page.titleKey)} subtitle={pageSubtitle} labels={{...shellLabels, prototypeEndAction: t("missions.nextLesson2")}} recommendation={recommendation} hideNext={currentPage === 5} skipAction={currentPage===5?{label:t("mission1.skipQuiz"),onClick:()=>changePage(6)}:null} rootClassName={`mission-1-paged mission-1 playful-learning-scope ${currentPage===5?"mission-2-paged mission-2-reading-context m2-reading-page-6 lesson-quiz-layout":""}`} pageHero={<LessonPageHero lessonIndex={1} lessonCount={5} lessonProgressLabel={t("common.lesson.progress",{current:1,total:5})} lessonName={t("mission1.paged.tokenisation")} title={t(page.titleKey)} subtitle={pageSubtitle} illustration="/assets/img/mission-robot-reading.png" illustrationAlt={t("mission1.paged.robotAlt")} headingId={`lesson-1-page-${currentPage}-title`}/> }>
-    {currentPage === 1 ? <section id="m1-intro" className="course-section mission-1-paged__lesson" data-lesson-page="1">
+  return <MissionLessonShell currentPage={currentPage} pageCount={MISSION_1_PAGED_PAGES.length} onPageChange={changePage} onEnd={() => navigate("/mission/2-prediction-paged")} onBackToMissions={() => navigate("/missions")} title={t(page.titleKey)} subtitle={pageSubtitle} labels={{...shellLabels, prototypeEndAction: t("missions.nextLesson2")}} recommendation={recommendation} hideNext={currentPage === 5} skipAction={currentPage===5?{label:t("mission1.skipQuiz"),onClick:()=>changePage(6),guideTarget:"lesson1-quiz-skip"}:null} rootClassName={`mission-1-paged mission-1 playful-learning-scope ${currentPage===5?"mission-2-paged mission-2-reading-context m2-reading-page-6 lesson-quiz-layout":""}`} pageHero={<LessonPageHero lessonIndex={1} lessonCount={5} lessonProgressLabel={t("common.lesson.progress",{current:1,total:5})} lessonName={t("mission1.paged.tokenisation")} title={t(page.titleKey)} subtitle={pageSubtitle} illustration="/assets/img/mission-robot-reading.png" illustrationAlt={t("mission1.paged.robotAlt")} headingId={`lesson-1-page-${currentPage}-title`}/> }>
+    {currentPage === 1 ? <section id="m1-intro" className="course-section mission-1-paged__lesson" data-lesson-page="1" data-guide-target="lesson1-learning-area">
       <div className="course-section-head"><h2><span>1</span>{t("mission1.intro.buildingLabel")}</h2></div>
       <p>{t("mission1.intro.body")}</p>
       <PlayfulSceneBannerIntro language={language} t={t} />
@@ -218,8 +227,8 @@ export default function Mission1PagedPrototype({ progress, setProgress, navigate
       <div className="playful-model-note"><span><Info size={17} strokeWidth={1.8} /></span><div><strong>{t("mission1.demo.model")}</strong><small>{t("mission1.demo.different")}</small></div></div>
     </section> : null}
     <Mission1PagedIdJourneyPage active={currentPage === 3} copy={journeyCopy} />
-    <Mission1PagedPlaygroundPage active={currentPage === 4} language={language} t={t} exploreIndex={exploreIndex} resetKey={resetKey} onSuccessfulRun={() => setPlaygroundComplete(true)} />
-    <Mission1PagedKnowledgeQuiz active={currentPage === 5} copy={pageQuizCopy} resetKey={resetKey} onResultChange={setQuizResult} onContinue={() => changePage(6)} />
+    <Mission1PagedPlaygroundPage active={currentPage === 4} language={language} t={t} exploreIndex={exploreIndex} resetKey={resetKey} onSuccessfulRun={handleSuccessfulPlaygroundRun} />
+    <Mission1PagedKnowledgeQuiz active={currentPage === 5} copy={pageQuizCopy} resetKey={resetKey} onResultChange={setQuizResult} onContinue={() => changePage(6)} guideTarget="lesson1-quiz" guideCheckTarget="lesson1-quiz-check" />
     <Mission1PagedSummaryPage active={currentPage === 6} complete={missionComplete || (currentPage === 6 && coreComplete)} idLabel={`${journeyCopy.idPrefix} ${journeyCopy.tokenId}`} t={t} onTryAnother={() => { setExploreIndex((value) => value + 1); changePage(4); }} onRestart={restartMission} onMissions={() => navigate("/missions")} onNextMission={() => navigate("/mission/2-prediction-paged")} />
   </MissionLessonShell>;
 }

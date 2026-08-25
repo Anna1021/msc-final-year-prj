@@ -1,0 +1,107 @@
+digraph LLMExplorerDataFlow {
+  graph [
+    rankdir="TB",
+    newrank="true",
+    bgcolor="white",
+    pad="0.28",
+    margin="0",
+    nodesep="0.82",
+    ranksep="0.72",
+    splines="spline",
+    fontname="Helvetica",
+    fontsize="16",
+    fontcolor="#111111"
+  ];
+
+  node [
+    shape="box",
+    style="rounded,filled",
+    fillcolor="white",
+    color="#111111",
+    fontcolor="#111111",
+    fontname="Helvetica",
+    fontsize="12",
+    penwidth="1.25",
+    margin="0.22,0.15"
+  ];
+
+  edge [
+    color="#111111",
+    fontcolor="#111111",
+    fontname="Helvetica",
+    fontsize="9.25",
+    penwidth="1.05",
+    arrowsize="0.72"
+  ];
+
+  learner [
+    label="Learner",
+    width="1.35",
+    height="0.62"
+  ];
+
+  subgraph cluster_system {
+    label="LLM Explorer";
+    labelloc="t";
+    labeljust="c";
+    color="#111111";
+    fontcolor="#111111";
+    fontname="Helvetica";
+    fontsize="14";
+    penwidth="1.25";
+    margin="22";
+
+    interface [
+      label="User Interface and\nInteractive Feedback",
+      width="2.25",
+      height="0.78"
+    ];
+
+    logic [
+      label="Browser Educational\nLogic",
+      width="2.05",
+      height="0.78"
+    ];
+
+    model [
+      label="Model Processing",
+      width="1.85",
+      height="0.78"
+    ];
+
+    progress [
+      label="Browser Progress\nand Preferences",
+      shape="cylinder",
+      style="filled",
+      width="1.95",
+      height="0.82"
+    ];
+
+  }
+
+  { rank=same; learner; interface; logic; model; }
+
+  learner -> interface [
+    dir="both",
+    arrowtail="normal",
+    label="learner input  →\n←  lessons and feedback"
+  ];
+
+  interface -> logic [
+    dir="both",
+    arrowtail="normal",
+    label="activity data  →\n←  local outcomes"
+  ];
+
+  logic -> model [
+    dir="both",
+    arrowtail="normal",
+    label="model request  →\n←  tokenisation and predictions\n(only where required)"
+  ];
+
+  logic -> progress [
+    dir="both",
+    arrowtail="normal",
+    label="state updates  →\n←  saved state"
+  ];
+}

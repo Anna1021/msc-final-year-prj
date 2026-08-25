@@ -61,7 +61,7 @@ export default function Lesson5Paged({setProgress,navigate,notify}){
     <Lesson5NewPage4 active={currentPage===4} t={t} onComplete={()=>mark("connect-paths")}/>
     <Lesson5NewPage5 active={currentPage===5} t={t}/>
     <Lesson5NewPage6 active={currentPage===6} t={t} onOpenLab={()=>navigate("/mission/4-training-data-paged?page=4")}/>
-    <Mission1PagedKnowledgeQuiz active={currentPage===7} copy={quizCopy} resetKey={0} onResultChange={setQuizResult} onContinue={()=>changePage(8)} pageNumber={7} lessonClassName="lesson-5-paged__lesson" showLesson1Visuals={false}/>
+    <Mission1PagedKnowledgeQuiz active={currentPage===7} copy={quizCopy} resetKey={0} onResultChange={setQuizResult} onContinue={()=>changePage(8)} pageNumber={7} lessonClassName="lesson-5-paged__lesson" showLesson1Visuals={false} guideTarget="lesson-quiz"/>
     <Lesson5NewPage8 active={currentPage===8} t={t} complete={complete}/>
   </MissionLessonShell>;
 }

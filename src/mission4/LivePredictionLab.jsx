@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   AlertCircle, ArrowRight, Check, ChevronLeft, ChevronRight,
-  CircleDot, LoaderCircle, Pause, Play, RefreshCw, RotateCcw
+  CircleDot, LoaderCircle, Pause, Play, Pointer, RefreshCw, RotateCcw
 } from "lucide-react";
 import useLivePredictionModel from "./useLivePredictionModel.js";
+import { LESSON_4_HISTORY_GUIDE_FLOW, LESSON_4_LIVE_GUIDE_FLOW, useGuide } from "../guide/index.js";
 
 const STARTER_IDS = ["cat", "weather", "dragon"];
 const MAX_PROMPT_LENGTH = 120;
@@ -18,7 +19,7 @@ const candidateLabel = (candidate, t) => candidate?.display_kind === "byte_fragm
 
 function CandidateBoard({ candidates = [], selectedId, reviewing, onLatest, t }) {
   const maximum = candidates[0]?.probability || 1;
-  return <section className="l4-watch-candidates" aria-labelledby="l4-watch-candidate-title">
+  return <section className="l4-watch-candidates" data-guide-target="lesson4-predictions" aria-labelledby="l4-watch-candidate-title">
     <header><div><h3 id="l4-watch-candidate-title">{reviewing ? t("mission4.live.lab.reviewingStep", { step: reviewing }) : t("mission4.live.lab.candidateTitle")}</h3><p>{t("mission4.live.lab.candidateSubtitle")}</p></div>{reviewing && <button type="button" className="outline" onClick={onLatest}><ArrowRight />{t("mission4.live.lab.returnLatest")}</button>}</header>
     {candidates.length ? <ol>{candidates.map((candidate, index) => <li className={selectedId === candidate.token_id ? "is-selected" : ""} key={candidate.token_id}>
       <b>{index + 1}</b><span title={`${candidate.raw_token} · ID ${candidate.token_id}`}>{candidateLabel(candidate, t)}</span><i aria-hidden="true"><em style={{ width:`${(candidate.probability / maximum) * 100}%` }} /></i><strong>{(candidate.probability * 100).toFixed(1)}%</strong>{selectedId === candidate.token_id && <small><Check />{t("mission4.live.lab.selected")}</small>}
@@ -39,8 +40,8 @@ function CurrentContext({ text, latest, generated, maximum, contextRef, t }) {
 
 function History({ steps, reviewStep, onReview, scrollerRef, t }) {
   function scroll(direction) { scrollerRef.current?.scrollBy({ left:direction * 460, behavior:"smooth" }); }
-  return <section className="l4-watch-history" aria-labelledby="l4-watch-history-title">
-    <header><div><h3 id="l4-watch-history-title">{t("mission4.live.lab.historyTitle")}</h3><p>{t("mission4.live.lab.historySubtitle")}</p></div><div><button type="button" aria-label={t("mission4.live.lab.scrollLeft")} onClick={() => scroll(-1)}><ChevronLeft /></button><button type="button" aria-label={t("mission4.live.lab.scrollRight")} onClick={() => scroll(1)}><ChevronRight /></button></div></header>
+  return <section className="l4-watch-history" data-guide-target="lesson4-history" aria-labelledby="l4-watch-history-title">
+    <header><div><h3 id="l4-watch-history-title">{t("mission4.live.lab.historyTitle")}</h3><p>{t("mission4.live.lab.historySubtitle")}</p></div><div data-guide-target="lesson4-history-navigation"><button type="button" aria-label={t("mission4.live.lab.scrollLeft")} title={t("mission4.live.lab.scrollLeft")} onClick={() => scroll(-1)}><ChevronLeft /></button><button type="button" aria-label={t("mission4.live.lab.scrollRight")} title={t("mission4.live.lab.scrollRight")} onClick={() => scroll(1)}><ChevronRight /></button></div></header>
     <div ref={scrollerRef} className="l4-watch-history-track" tabIndex="0" aria-label={t("mission4.live.lab.historyAria")}>
       {steps.length ? steps.map(step => <button type="button" className={`${reviewStep === step.step ? "is-reviewing" : ""} ${step.step === steps.length ? "is-latest" : ""}`} onClick={() => onReview(step.step)} key={step.step}><small>{t("mission4.live.lab.step", { step: step.step })}</small><strong>{candidateLabel(step.selected, t)}</strong><span>{(step.selected.probability * 100).toFixed(1)}%</span></button>) : <p>{t("mission4.live.lab.historyEmpty")}</p>}
     </div>
@@ -49,6 +50,7 @@ function History({ steps, reviewStep, onReview, scrollerRef, t }) {
 
 export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
   const model = useLivePredictionModel();
+  const guide = useGuide();
   const defaultPrompt = t("mission4.live.lab.defaultPrompt");
   const starters = STARTER_IDS.map((id) => ({ id, text:t(`mission4.live.lab.starters.${id}`) }));
   const starterSignature = starters.map((starter) => starter.text).join("\u0000");
@@ -76,6 +78,7 @@ export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
   const promptLockedRef = useRef(false);
   const tokenIdsRef = useRef(null);
   const appliedPromptRef = useRef(defaultPrompt);
+  const historyGuideScheduledRef = useRef(false);
 
   currentTextRef.current = currentText;
   stepsRef.current = steps;
@@ -100,6 +103,14 @@ export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
     currentTextRef.current = localizedPrompt;
     appliedPromptRef.current = localizedPrompt;
   }, [defaultPrompt, starterSignature]);
+  useEffect(() => {
+    const historyAlreadySeen = guide.seenFlowIds.includes(LESSON_4_HISTORY_GUIDE_FLOW.id)
+      || guide.completedFlowIds.includes(LESSON_4_HISTORY_GUIDE_FLOW.id);
+    if (steps.length < 2 || guide.expanded || historyAlreadySeen || historyGuideScheduledRef.current) return undefined;
+    historyGuideScheduledRef.current = true;
+    const frame = window.requestAnimationFrame(() => guide.openGuide(LESSON_4_HISTORY_GUIDE_FLOW.id));
+    return () => window.cancelAnimationFrame(frame);
+  }, [guide.completedFlowIds, guide.expanded, guide.openGuide, guide.seenFlowIds, steps.length]);
 
   function pause() {
     pauseRequestedRef.current = true;
@@ -262,22 +273,25 @@ export default function LivePredictionLab({ t, onSuccessfulPrediction }) {
   const autoLabel = t(`mission4.live.lab.${runState === "running" && !draftChanged ? "pause" : draftChanged ? "run" : runState === "paused" ? "resume" : runState === "complete" ? "runAgain" : runState === "limit" ? "continue" : "run"}`);
   const statusKey = busy ? "predicting" : runState === "running" ? "generating" : runState === "paused" ? "paused" : runState === "limit" ? "limitReached" : runState === "complete" ? "generationComplete" : "ready";
   const temperatureDescription = t(`mission4.live.lab.${temperature < .8 ? "temperatureFocused" : temperature > 1.2 ? "temperatureSpread" : "temperatureBalanced"}`);
+  const showCounterCue = guide.expanded
+    && guide.activeFlowId === LESSON_4_LIVE_GUIDE_FLOW.id
+    && guide.currentStep?.id === "character-limit";
 
   return <div className="lesson-4-live-lab l4-watch-lab">
     <div className="l4-watch-prompt-panel">
-      <section className="l4-watch-prompt"><label htmlFor="l4-watch-input"><input id="l4-watch-input" aria-label={t("mission4.live.lab.textBeginning")} value={prompt} maxLength={MAX_PROMPT_LENGTH} onChange={event => updatePrompt(event.target.value)} /><small>{prompt.length} / {MAX_PROMPT_LENGTH}</small></label><button type="button" className="primary" disabled={!canRun || (!draftChanged && runState !== "running" && runState === "limit" && steps.length >= maxTokens)} onClick={runDraft}>{runState === "running" && !draftChanged ? <Pause /> : busy && !draftChanged ? <LoaderCircle className="is-spinning" /> : generationMode === "step" ? <ArrowRight /> : <Play />}{generationMode === "auto" ? autoLabel : t("mission4.live.lab.predictNext")}</button></section>
-      <div className="l4-watch-examples"><span>{t("mission4.live.lab.tryExample")}</span>{starters.map(starter => <button type="button" onClick={() => chooseStarter(starter)} key={starter.id}>{starter.text}</button>)}<button type="button" className="l4-watch-reset" onClick={() => clearGeneration(prompt)}><RotateCcw />{t("mission4.live.lab.reset")}</button></div>
+      <section className="l4-watch-prompt"><label htmlFor="l4-watch-input"><input id="l4-watch-input" data-guide-target="lesson4-input" aria-label={t("mission4.live.lab.textBeginning")} value={prompt} maxLength={MAX_PROMPT_LENGTH} onChange={event => updatePrompt(event.target.value)} /><small data-guide-target="lesson4-character-counter">{showCounterCue && <span className="l4-watch-counter-cue" aria-hidden="true"><Pointer /></span>}{prompt.length} / {MAX_PROMPT_LENGTH}</small></label><button type="button" className="primary" data-guide-target="lesson4-run" disabled={!canRun || (!draftChanged && runState !== "running" && runState === "limit" && steps.length >= maxTokens)} onClick={runDraft}>{runState === "running" && !draftChanged ? <Pause /> : busy && !draftChanged ? <LoaderCircle className="is-spinning" /> : generationMode === "step" ? <ArrowRight /> : <Play />}{generationMode === "auto" ? autoLabel : t("mission4.live.lab.predictNext")}</button></section>
+      <div className="l4-watch-examples" data-guide-target="lesson4-preset-examples"><span>{t("mission4.live.lab.tryExample")}</span>{starters.map(starter => <button type="button" onClick={() => chooseStarter(starter)} key={starter.id}>{starter.text}</button>)}<button type="button" className="l4-watch-reset" onClick={() => clearGeneration(prompt)}><RotateCcw />{t("mission4.live.lab.reset")}</button></div>
     </div>
     <section className="l4-watch-controls">
-      <fieldset><legend>{t("mission4.live.lab.generationMode")}</legend><div><button type="button" aria-pressed={generationMode === "auto"} onClick={() => switchMode("auto")}><Play />{t("mission4.live.lab.auto")} <small>{t("mission4.live.lab.recommended")}</small></button><button type="button" aria-pressed={generationMode === "step"} onClick={() => switchMode("step")}><CircleDot />{t("mission4.live.lab.stepByStep")}</button></div></fieldset>
-      <label>{t("mission4.live.lab.maxTokens")}<select value={maxTokens} onChange={event => changeLimit(event.target.value)}>{TOKEN_LIMITS.map(limit => <option value={limit} key={limit}>{t("mission4.live.lab.tokenOption", { count:limit })}</option>)}</select></label>
+      <fieldset data-guide-target="lesson4-generation-mode"><legend>{t("mission4.live.lab.generationMode")}</legend><div><button type="button" aria-pressed={generationMode === "auto"} onClick={() => switchMode("auto")}><Play />{t("mission4.live.lab.auto")} <small>{t("mission4.live.lab.recommended")}</small></button><button type="button" aria-pressed={generationMode === "step"} onClick={() => switchMode("step")}><CircleDot />{t("mission4.live.lab.stepByStep")}</button></div></fieldset>
+      <label data-guide-target="lesson4-max-tokens">{t("mission4.live.lab.maxTokens")}<select value={maxTokens} onChange={event => changeLimit(event.target.value)}>{TOKEN_LIMITS.map(limit => <option value={limit} key={limit}>{t("mission4.live.lab.tokenOption", { count:limit })}</option>)}</select></label>
       <span className={`l4-watch-run-status is-${runState}`}><i />{t(`mission4.live.lab.${statusKey}`)}</span>
     </section>
     {model.status === "error" && <div className="l4-watch-error" role="alert"><AlertCircle /><div><strong>{t("mission4.live.lab.modelErrorTitle")}</strong><p>{t("mission4.live.lab.modelErrorBody")}</p></div><button type="button" onClick={retryPrediction}><RefreshCw />{t("mission4.live.lab.tryAgain")}</button></div>}
     <div className="l4-watch-workspace">
       <CurrentContext text={currentText} latest={latestHighlight} generated={steps.length} maximum={maxTokens} contextRef={contextRef} t={t} />
       <div className="l4-watch-next"><CandidateBoard candidates={viewed?.candidates} selectedId={viewed?.selected.token_id} reviewing={reviewStep} onLatest={() => setReviewStep(null)} t={t} />
-        <section className="l4-watch-temperature"><label htmlFor="l4-watch-temperature"><strong>{t("mission4.live.lab.temperature")}</strong><output>{temperature.toFixed(1)}</output></label><input id="l4-watch-temperature" type="range" min="0.4" max="1.6" step="0.1" value={temperature} style={{ "--temperature-position":`${((temperature - .4) / 1.2) * 100}%` }} onChange={event => setTemperature(Number(event.target.value))} aria-valuetext={t("mission4.live.lab.temperatureAria", { value:temperature.toFixed(1), description:temperatureDescription })} /><div><span>{t("mission4.live.lab.moreFocused")}</span><span>{t("mission4.live.lab.moreSpread")}</span></div><p>{t("mission4.live.lab.temperatureApplies")}</p></section>
+        <section className="l4-watch-temperature" data-guide-target="lesson4-temperature"><label htmlFor="l4-watch-temperature"><strong>{t("mission4.live.lab.temperature")}</strong><output>{temperature.toFixed(1)}</output></label><input id="l4-watch-temperature" type="range" min="0.4" max="1.6" step="0.1" value={temperature} style={{ "--temperature-position":`${((temperature - .4) / 1.2) * 100}%` }} onChange={event => setTemperature(Number(event.target.value))} aria-valuetext={t("mission4.live.lab.temperatureAria", { value:temperature.toFixed(1), description:temperatureDescription })} /><div><span>{t("mission4.live.lab.moreFocused")}</span><span>{t("mission4.live.lab.moreSpread")}</span></div><p>{t("mission4.live.lab.temperatureApplies")}</p></section>
       </div>
     </div>
     <History steps={steps} reviewStep={reviewStep} onReview={step => { if (runState === "running") pause(); setReviewStep(step); }} scrollerRef={historyRef} t={t} />

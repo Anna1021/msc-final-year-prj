@@ -16,6 +16,7 @@ import enNumbersStage from "../locales/en/numbersStage.json";
 import enContextStage from "../locales/en/contextStage.json";
 import enPredictionStage from "../locales/en/predictionStage.json";
 import enCompareStage from "../locales/en/compareStage.json";
+import enGuide from "../locales/en/guide.json";
 import zhCommon from "../locales/zh/common.json";
 import zhNavigation from "../locales/zh/navigation.json";
 import zhMissions from "../locales/zh/missions.json";
@@ -32,6 +33,7 @@ import zhNumbersStage from "../locales/zh/numbersStage.json";
 import zhContextStage from "../locales/zh/contextStage.json";
 import zhPredictionStage from "../locales/zh/predictionStage.json";
 import zhCompareStage from "../locales/zh/compareStage.json";
+import zhGuide from "../locales/zh/guide.json";
 import frCommon from "../locales/fr/common.json";
 import frNavigation from "../locales/fr/navigation.json";
 import frMissions from "../locales/fr/missions.json";
@@ -72,8 +74,8 @@ for (const [language, runtime] of Object.entries(escapeRoomRuntimeLocales)) {
 }
 
 const resources = {
-  en: { common: enCommon, navigation: enNavigation, missions: enMissions, escapeRoom: enEscapeRoom, mission1: enMission1, mission1Learning: enMission1Learning, learningMode: enLearningMode, mission2: enMission2, mission3: enMission3, mission4: enMission4, mission5: enMission5, tokenLab: enTokenLab, numbersStage: enNumbersStage, contextStage: enContextStage, predictionStage: enPredictionStage, compareStage: enCompareStage },
-  zh: { common: zhCommon, navigation: zhNavigation, missions: zhMissions, escapeRoom: zhEscapeRoom, mission1: zhMission1, mission1Learning: zhMission1Learning, learningMode: zhLearningMode, mission2: zhMission2, mission3: zhMission3, mission4: zhMission4, mission5: zhMission5, tokenLab: zhTokenLab, numbersStage: zhNumbersStage, contextStage: zhContextStage, predictionStage: zhPredictionStage, compareStage: zhCompareStage },
+  en: { common: enCommon, navigation: enNavigation, missions: enMissions, escapeRoom: enEscapeRoom, mission1: enMission1, mission1Learning: enMission1Learning, learningMode: enLearningMode, mission2: enMission2, mission3: enMission3, mission4: enMission4, mission5: enMission5, tokenLab: enTokenLab, numbersStage: enNumbersStage, contextStage: enContextStage, predictionStage: enPredictionStage, compareStage: enCompareStage, guide: enGuide },
+  zh: { common: zhCommon, navigation: zhNavigation, missions: zhMissions, escapeRoom: zhEscapeRoom, mission1: zhMission1, mission1Learning: zhMission1Learning, learningMode: zhLearningMode, mission2: zhMission2, mission3: zhMission3, mission4: zhMission4, mission5: zhMission5, tokenLab: zhTokenLab, numbersStage: zhNumbersStage, contextStage: zhContextStage, predictionStage: zhPredictionStage, compareStage: zhCompareStage, guide: zhGuide },
   fr: { common: frCommon, navigation: frNavigation, missions: frMissions, escapeRoom: frEscapeRoom, mission1: frMission1, mission1Learning: frMission1Learning, learningMode: frLearningMode, mission2: frMission2, mission3: frMission3, mission4: frMission4, mission5: frMission5, tokenLab: frTokenLab, numbersStage: frNumbersStage, contextStage: frContextStage, predictionStage: frPredictionStage, compareStage: frCompareStage },
   de: { common: deCommon, navigation: deNavigation, missions: deMissions, escapeRoom: deEscapeRoom, mission1: deMission1, mission1Learning: deMission1Learning, learningMode: deLearningMode, mission2: deMission2, mission3: deMission3, mission4: deMission4, mission5: deMission5, tokenLab: deTokenLab, numbersStage: deNumbersStage, contextStage: deContextStage, predictionStage: dePredictionStage, compareStage: deCompareStage }
 };

@@ -1,0 +1,257 @@
+{
+  "common": {
+    "eyebrow": "Q GUIDE",
+    "needHand": "Need a hand?",
+    "next": "Next",
+    "back": "Back",
+    "close": "Close",
+    "skip": "Skip guide",
+    "openGuide": "Open Q website guide",
+    "guideOpen": "Q website guide is open",
+    "progress": "Guide {{current}} of {{total}}"
+  },
+  "generic": {
+    "title": "Explore this page",
+    "reading": "This page is mainly for reading and exploring. Continue when you're ready."
+  },
+  "reusable": {
+    "quiz": {
+      "title": "How this quiz works",
+      "body": "Choose an answer, then check it to see immediate feedback. The quiz is optional, so you can also skip it and continue."
+    }
+  },
+  "home": {
+    "titles": {
+      "welcome": "Hi, I'm Q!",
+      "lessons": "Explore the lessons",
+      "language": "Switch language",
+      "profile": "Your progress",
+      "finalChallenge": "Final Challenge",
+      "finalAdvisory": "Choose how to continue"
+    },
+    "welcome": "I'm your guide robot for LLM Explorer. I'm here to help you explore the website and show you how to use the interactive activities.\n\nI'm your guide, not the language model you'll learn about in the lessons.",
+    "lessons": "These lessons build up the ideas step by step.\nYou can start with Lesson 1 or open a lesson you want to revisit.",
+    "language": "You can switch the learning interface between English and Chinese here.",
+    "profile": "Your progress is saved on this device.\nOpen this menu if you want to reset your progress.",
+    "finalChallenge": "The Final Challenge brings the main ideas together.\nYou can try it after the lessons, or enter earlier if you already understand the ideas.",
+    "finalAdvisory": "Before entering, you can choose what fits you best.\nYou can enter if you have reviewed the lessons, continue if you already understand the ideas, or return to the lessons first."
+  },
+  "lesson1": {
+    "intro": {
+      "title": "Start learning",
+      "body": "This is the main learning area. Read the explanation and visual examples, then select Next when you're ready. Q will show you more guidance in Lesson 1 while you learn how the activities work. In later lessons, repeated tips won't open automatically — but you can click Q anytime if you want help."
+    },
+    "playground": {
+      "examples": {
+        "title": "Try an example",
+        "body": "Choose one of these examples to load it into the text box instantly."
+      },
+      "input": {
+        "title": "Write your own text",
+        "body": "You can also delete the example and type your own text. LLM Explorer is designed and tested primarily for English and Chinese learning activities."
+      },
+      "tokenize": {
+        "title": "Tokenize your text",
+        "body": "When you're ready, select Tokenize to see how the real tokenizer splits your text into token pieces."
+      }
+    },
+    "result": {
+      "tokens": {
+        "title": "See the token pieces",
+        "body": "Each card represents one token produced by the tokenizer. If the text changes, the token pieces may change too."
+      },
+      "technical": {
+        "title": "Want more detail?",
+        "body": "You can open the technical details to see token IDs. You do not need to memorise these numbers."
+      }
+    },
+    "quiz": {
+      "area": {
+        "title": "Quick quiz",
+        "body": "This quiz is optional. Choose an answer, then check it to see the feedback."
+      },
+      "check": {
+        "title": "Check your answer",
+        "body": "Select Check answer to see the feedback. If the answer isn't right, you can try again."
+      },
+      "skip": {
+        "title": "You can skip it too",
+        "body": "If you prefer, you can skip the quiz and continue to the lesson summary."
+      }
+    },
+    "summary": {
+      "title": "Lesson summary",
+      "body": "Review the main ideas from Lesson 1, then continue when you're ready."
+    }
+  },
+  "lesson2": {
+    "warmup": {
+      "title": "Think about it",
+      "body": "This is a quick practice activity inside the lesson. Choose the word that fits each context and see how the earlier words change what is likely to come next."
+    },
+    "contextWindow": {
+      "title": "Context window",
+      "body": "This page shows which part of a longer sequence is available to the model at one time."
+    },
+    "contextComparison": {
+      "title": "Compare the contexts",
+      "body": "Compare the two examples and notice how different earlier context changes the likely next token."
+    },
+    "contextLimit": {
+      "title": "Inside or outside?",
+      "body": "Only the tokens inside the current context window are available for the current prediction."
+    },
+    "playground": {
+      "drag": {
+        "title": "Move the context window",
+        "body": "You can drag the context window directly across the token sequence. Try moving it and watch which tokens become available."
+      },
+      "controls": {
+        "title": "Or use the controls",
+        "body": "You can also move the window with these buttons, or reset it to the starting position."
+      },
+      "size": {
+        "title": "Change the window size",
+        "body": "Try a different window size. A larger window makes more tokens available for the current prediction."
+      },
+      "result": {
+        "title": "Watch what changes",
+        "body": "As the available context changes, the model's next-token probabilities can change too."
+      }
+    },
+    "quiz": {
+      "title": "Check the idea",
+      "body": "This optional quiz checks the main ideas from Lesson 2. Answer the questions, or skip it if you prefer."
+    },
+    "summary": {
+      "title": "Lesson summary",
+      "body": "Review how context and context windows affect what information is available for next-token prediction."
+    },
+    "draggableWindow": "Draggable context window"
+  },
+  "lesson3": {
+    "intro": {
+      "title": "Explore the connections",
+      "body": "This lesson looks at how information from different token positions can contribute when a token is processed. Follow the examples and watch how the connection pattern changes."
+    },
+    "keywords": {
+      "title": "Need a definition?",
+      "body": "The Keywords panel keeps important terms nearby while you learn. Click a keyword to collapse or reopen its explanation whenever you need it."
+    },
+    "contributions": {
+      "title": "Compare contributions",
+      "body": "Follow the example to see how information from different earlier positions can contribute by different amounts in this simplified teaching representation."
+    },
+    "representation": {
+      "title": "Follow the available context",
+      "body": "Notice which earlier token positions are available to the focus token, and how their information can contribute to its updated representation."
+    },
+    "position": {
+      "title": "Position changes the pattern",
+      "body": "Compare the two examples. Similar tokens appear in different positions, so the illustrated connection pattern changes."
+    },
+    "playground": {
+      "sentence": {
+        "title": "Start with a sentence",
+        "body": "Switch between the two sentences. They contain similar information in a different order, so you can compare how changing token positions changes the connection pattern."
+      },
+      "focus": {
+        "title": "Choose a focus token",
+        "body": "Click any token to make it the focus. The visualisation below will then show which earlier positions can connect to that token."
+      },
+      "connections": {
+        "title": "Watch the pattern change",
+        "body": "The lines show a simplified teaching representation of connections from earlier positions to the focus token. Try changing the sentence or focus token and compare what changes. These are illustrative connections, not real model attention weights."
+      },
+      "ownSentence": {
+        "title": "Now try your own sentence",
+        "body": "Enter your own sentence and select Analyse. You can then explore its token positions and connections in the same way."
+      }
+    },
+    "quiz": {
+      "title": "Check your understanding",
+      "body": "This quiz is optional. Complete it to check the Lesson 3 ideas, or skip it and continue when you are ready."
+    },
+    "summary": {
+      "title": "Review the connections",
+      "body": "Review how position, available context and connections contribute to the way a token is processed."
+    }
+  },
+  "lesson4": {
+    "possibilities": {
+      "title": "Possible next tokens",
+      "body": "The model can assign different scores to many possible next tokens. Follow the visual to compare them."
+    },
+    "technicalWords": {
+      "title": "Technical words",
+      "body": "You can open or collapse these cards whenever you want to check a technical term."
+    },
+    "scores": {
+      "title": "Compare the scores",
+      "body": "This page shows how the model can give possible next tokens different internal scores. A higher score means the token is currently a better fit for the available context."
+    },
+    "probabilities": {
+      "title": "From scores to probabilities",
+      "body": "This page shows how internal scores can be turned into probabilities that are easier to compare."
+    },
+    "live": {
+      "presets": {
+        "title": "Try an example",
+        "body": "Choose one of these examples to load a starter sentence instantly."
+      },
+      "input": {
+        "title": "Write your own starter",
+        "body": "You can also delete the example and type your own starter text. The model will continue from whatever is currently in this box."
+      },
+      "counter": {
+        "title": "Keep an eye on the limit",
+        "body": "Your starter text can contain up to 120 characters. This counter shows how much of the limit you've used."
+      },
+      "run": {
+        "title": "Run the model",
+        "body": "Select Run when you're ready. The real language model will predict what could come next from your starter text."
+      },
+      "mode": {
+        "title": "Choose how to generate",
+        "body": "Auto keeps generating tokens for you. Step by step lets you inspect one prediction at a time before continuing. Step by step is useful when you want to watch the prediction process closely."
+      },
+      "maxTokens": {
+        "title": "Set a generation limit",
+        "body": "Choose the maximum number of new tokens the model can generate in this run. For example, 100 means it will stop after at most 100 generated tokens."
+      },
+      "temperature": {
+        "title": "Change the temperature",
+        "body": "Temperature changes how spread out the next-token probabilities are. Lower values make the strongest options stand out more; higher values spread probability across more possibilities. The model samples from this changed distribution, so try moving the slider, then run again and compare what changes. The candidate list shows some of the model's highest-probability next tokens, not every possible token."
+      }
+    },
+    "history": {
+      "title": "Review earlier steps",
+      "body": "The history records earlier generated tokens and the probability each selected token had at that step.",
+      "navigationTitle": "Move through the history",
+      "navigationBody": "If earlier or later history is out of view, use these arrows to move through the recorded steps."
+    },
+    "quiz": {
+      "title": "Check what you discovered",
+      "body": "This optional quiz checks the main ideas from Lesson 4. Complete it or skip it when you're ready."
+    },
+    "summary": {
+      "title": "Lesson summary",
+      "body": "Review how scores, probabilities and repeated next-token prediction work together to generate text."
+    }
+  },
+  "lesson5": {
+    "trainingFirst": { "title": "Training happens first", "body": "Training happens before you use the model. The patterns learned earlier are used later when the trained model predicts tokens." },
+    "patterns": { "title": "Patterns, not stored answers", "body": "The examples illustrate recurring text patterns. The model is not simply saving one complete answer to repeat later." },
+    "repeatedExamples": { "title": "Patterns across many examples", "body": "Seeing related patterns across many training examples can change which next tokens fit a new context." },
+    "parameters": { "title": "Small changes over training", "body": "This is a simplified teaching view of parameter adjustment. Many small updates across many examples shape later predictions." },
+    "toyModel": {
+      "examples": { "title": "Training examples", "body": "These examples form a small teaching dataset. This is a simplified simulation, not real model training." },
+      "add": { "title": "Add one example", "body": "Open the example chooser and add an example to the toy dataset. The displayed scores will be recalculated." },
+      "test": { "title": "Test the same sentence", "body": "The test sentence stays fixed so you can compare what changes after the teaching examples change." },
+      "prediction": { "title": "Current prediction", "body": "These bars show the toy model's current scores for the possible locations." },
+      "change": { "title": "Compare the change", "body": "The newly added example changed the toy dataset, so the prediction scores changed too. This demonstrates the idea of learned patterns with a simplified rule." }
+    },
+    "bridge": { "title": "Build a response token by token", "body": "A selected token is added to the context, then the model predicts again. Repeating this process builds a longer response." },
+    "summary": { "title": "Review learned patterns", "body": "Review how earlier training shapes later next-token predictions, then continue to the Final Challenge when you're ready." }
+  }
+}

@@ -71,7 +71,7 @@ export default function Lesson3Paged({ setProgress, navigate, notify }) {
     <Lesson3Page3 active={currentPage===3} t={t} onComplete={markContextualBuild}/>
     <Lesson3Page4 active={currentPage===4} t={t}/>
     <Lesson3Page5 active={currentPage===5} t={t} onComplete={markTransformerProcess}/>
-    <Mission1PagedKnowledgeQuiz active={currentPage===6} copy={{...quizCopy,quizTitle:quizCopy.conceptCheckpoint}} resetKey={0} onResultChange={setQuizResult} onContinue={()=>changePage(7)} pageNumber={6} lessonClassName="mission-3-paged__lesson" showLesson1Visuals={false} showTitle={false}/>
+    <Mission1PagedKnowledgeQuiz active={currentPage===6} copy={{...quizCopy,quizTitle:quizCopy.conceptCheckpoint}} resetKey={0} onResultChange={setQuizResult} onContinue={()=>changePage(7)} pageNumber={6} lessonClassName="mission-3-paged__lesson" showLesson1Visuals={false} showTitle={false} guideTarget="lesson-quiz"/>
     <Lesson3Page7 active={currentPage===7} t={t} complete={complete} onVisit={markSummaryVisited}/>
   </MissionLessonShell>;
 }

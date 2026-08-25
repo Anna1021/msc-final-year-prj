@@ -40,7 +40,7 @@ export default function MissionLessonShell({ currentPage, pageCount, progressPag
     <nav className="mission-lesson-paged__nav" aria-label={labels.navigationLabel ?? labels.topicLabel}>
       <button type="button" className="outline" disabled={currentPage === 1} onClick={() => onPageChange(currentPage - 1)}><ArrowLeft size={18} strokeWidth={1.8} />{labels.back}</button>
       <span><strong>{pageLabel}</strong><small>{labels.prototypeLabel}</small></span>
-      {skipAction ? <button type="button" className="outline mission-lesson-paged__skip" onClick={skipAction.onClick}>{skipAction.label}<ArrowRight size={18} strokeWidth={1.8} /></button> : !hideNext && <button type="button" className="primary" disabled={currentPage === pageCount && !onEnd} onClick={() => currentPage === pageCount ? onEnd?.() : onPageChange(currentPage + 1)}>{currentPage === pageCount ? labels.prototypeEndAction : labels.next}<ArrowRight size={18} strokeWidth={1.8} /></button>}
+      {skipAction ? <button type="button" className="outline mission-lesson-paged__skip" data-guide-target={skipAction.guideTarget || undefined} onClick={skipAction.onClick}>{skipAction.label}<ArrowRight size={18} strokeWidth={1.8} /></button> : !hideNext && <button type="button" className="primary" disabled={currentPage === pageCount && !onEnd} onClick={() => currentPage === pageCount ? onEnd?.() : onPageChange(currentPage + 1)}>{currentPage === pageCount ? labels.prototypeEndAction : labels.next}<ArrowRight size={18} strokeWidth={1.8} /></button>}
     </nav>
   </div>;
 }

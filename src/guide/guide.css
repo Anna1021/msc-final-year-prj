@@ -1,0 +1,143 @@
+.guide-assistant {
+  position: fixed;
+  z-index: 6100;
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  min-width: 62px;
+  min-height: 62px;
+  overflow: hidden;
+  border: 3px solid #8b72f1;
+  border-radius: 50%;
+  padding: 0;
+  color: #18213c;
+  background: linear-gradient(145deg, #fff, #f0ecff 64%, #e7f8ff);
+  box-shadow: 0 0 0 6px rgba(123, 98, 232, .14), 0 12px 28px rgba(50, 42, 125, .22);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.guide-assistant:active { cursor: grabbing; }
+.guide-assistant:hover { border-color: #6750e7; box-shadow: 0 0 0 7px rgba(91, 72, 218, .16), 0 15px 30px rgba(50, 42, 125, .25); }
+.guide-assistant:focus-visible { outline: 3px solid #3b8eea; outline-offset: 5px; }
+.guide-assistant.is-expanded { box-shadow: 0 0 0 7px rgba(86, 174, 231, .17), 0 15px 30px rgba(50, 42, 125, .24); }
+.guide-assistant__mascot-frame {
+  position: absolute;
+  inset: 2px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.guide-assistant__mascot-image {
+  width: 76px;
+  height: 52px;
+  max-width: none;
+  object-fit: contain;
+  pointer-events: none;
+  transform: translate3d(-8px, 1px, 0);
+  transform-origin: center;
+}
+
+.guide-spotlight {
+  position: fixed;
+  z-index: 6000;
+  inset: 0;
+  pointer-events: none;
+}
+
+.guide-spotlight-ring {
+  position: fixed;
+  z-index: 1;
+  border: 3px solid rgba(114, 88, 236, .92);
+  border-radius: 16px;
+  box-shadow: 0 0 0 5px rgba(87, 174, 231, .2), 0 0 24px rgba(99, 74, 220, .28), 0 0 0 100vmax rgba(36, 34, 74, .42);
+  pointer-events: none;
+}
+
+.guide-panel-positioner {
+  position: fixed;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+}
+
+.guide-panel {
+  position: fixed;
+  z-index: 2;
+  display: grid;
+  gap: 12px;
+  width: min(350px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  border: 1px solid #d7d1f4;
+  border-radius: 20px;
+  padding: 17px;
+  color: #17203c;
+  background: radial-gradient(circle at 96% 2%, rgba(92, 179, 232, .12), transparent 34%), linear-gradient(145deg, #fff, #f7f4ff);
+  box-shadow: 0 24px 58px rgba(35, 34, 85, .24);
+  pointer-events: auto;
+}
+
+.guide-panel-positioner.no-target .guide-panel { right: 22px; bottom: 108px; }
+
+.guide-panel > header,
+.guide-panel > footer,
+.guide-panel > footer > div {
+  display: flex;
+  align-items: center;
+}
+
+.guide-panel > header { justify-content: space-between; gap: 12px; color: #6955d6; font-size: .72rem; font-weight: 900; letter-spacing: .04em; }
+.guide-panel h2 { margin: 0; color: #17203c; font-size: 1.12rem; line-height: 1.25; }
+.guide-panel p { margin: 0; color: #4d5975; font-size: .88rem; line-height: 1.55; white-space: pre-line; }
+.guide-panel > footer { justify-content: space-between; gap: 12px; margin-top: 2px; }
+.guide-panel > footer > div { justify-content: flex-end; gap: 8px; }
+
+.guide-panel button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 38px;
+  border: 1px solid #d8d5e8;
+  border-radius: 11px;
+  padding: 8px 12px;
+  color: #322a73;
+  background: #fff;
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.guide-panel button:hover { border-color: #9b8ae8; }
+.guide-panel button:focus-visible { outline: 3px solid rgba(55, 143, 231, .35); outline-offset: 2px; }
+.guide-panel .guide-panel-close { width: 34px; min-height: 34px; border: 0; padding: 0; background: transparent; }
+.guide-panel .guide-panel-next { border-color: #674fe0; color: #fff; background: linear-gradient(135deg, #7356ed, #5540d7); }
+.guide-panel .guide-panel-skip { border-color: transparent; padding-inline: 4px; color: #6d7489; background: transparent; }
+
+@media (max-width: 600px) {
+  .guide-assistant { width: 58px; height: 58px; min-width: 58px; min-height: 58px; }
+  .guide-panel { max-height: min(58vh, 430px); }
+  .guide-panel-positioner.no-target .guide-panel {
+    right: 12px !important;
+    bottom: 96px !important;
+    left: 12px !important;
+    top: auto !important;
+    width: auto !important;
+  }
+  .guide-panel > footer { align-items: stretch; flex-direction: column; }
+  .guide-panel > footer > div { justify-content: stretch; }
+  .guide-panel > footer > div button { flex: 1; }
+  .guide-panel .guide-panel-skip { align-self: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-assistant { transition: none; }
+}

@@ -4,6 +4,7 @@ import { AlertTriangle, ArrowRight, BadgeCheck, BookOpen, BrainCircuit, Braces, 
 import "./styles.css";
 import "./home.css";
 import FinalChallenge from "./finalChallenge/FinalChallenge.jsx";
+import { resetEscapeProgress } from "./finalChallenge/useEscapeRoomProgress.js";
 import LanguageSelector from "./components/LanguageSelector.jsx";
 import {
   ContextIllustration,
@@ -63,6 +64,7 @@ import {
 } from "./state/progress.js";
 import { routeGroup } from "./utils/routes.js";
 import { canonicalLessonLocation, resolveLegacyLessonRoute } from "./utils/legacyLessonRoutes.js";
+import { GuideExperience, GuideProvider, useGuide } from "./guide/index.js";
 
 function Icon({ name, className = "" }) {
   const paths = {
@@ -289,8 +291,8 @@ function TopBar({ route, navigate, resetProgress, qaToolsVisible, qaMode, setQaM
 
   const actions = <div className="top-actions">
     {qaToolsVisible && qaMode && <span className="qa-active-chip" title="QA Mode is active — access restrictions are temporarily disabled.">QA Mode active</span>}
-    <LanguageSelector compact />
-    <button className="avatar-button" aria-label="Open learner menu" onClick={() => setOpen(!open)}><Avatar small /><span>⌄</span></button>
+    <LanguageSelector compact guideTarget={route === "/dashboard" ? "home-language-selector" : null} />
+    <button className="avatar-button" data-guide-target={route === "/dashboard" ? "home-profile" : undefined} aria-label="Open learner menu" onClick={() => setOpen(!open)}><Avatar small /><span>⌄</span></button>
     {open && <div className="profile-menu">
       {qaToolsVisible && <div className="qa-menu-control"><span><strong>QA Mode</strong><small>Unlock all routes</small></span><button type="button" role="switch" aria-checked={qaMode} className={`qa-toggle ${qaMode ? "on" : ""}`} onClick={() => setQaMode(!qaMode)}><span />{qaMode ? "On" : "Off"}</button></div>}
       <button onClick={resetProgress}>Reset Progress</button>
@@ -338,7 +340,7 @@ function Dashboard({ progress, navigate, notify, qaMode }) {
   const { t } = useI18n();
 
   return <main className="dashboard-learning-journey">
-    <section className="learn-journey-hero" aria-labelledby="learn-journey-title">
+    <section className="learn-journey-hero" data-guide-target="home-hero" aria-labelledby="learn-journey-title">
       <div className="learn-hero-copy">
         <h1 id="learn-journey-title">{t("common.homeExplorer.heroTitleStart")}<br /><span>{t("common.homeExplorer.heroTitleAccent")}</span> {t("common.homeExplorer.heroTitleEnd")}</h1>
         <p>{t("common.homeExplorer.heroCopy")}</p>
@@ -359,7 +361,7 @@ function Dashboard({ progress, navigate, notify, qaMode }) {
       </ol>
     </section>
 
-    <section className="learn-lessons" aria-labelledby="learn-lessons-title">
+    <section className="learn-lessons" data-guide-target="home-lessons" aria-labelledby="learn-lessons-title">
       <header className="learn-section-heading">
         <div>
           <h2 id="learn-lessons-title">{t("common.homeExplorer.lessonsTitle")}</h2>
@@ -397,7 +399,7 @@ function Dashboard({ progress, navigate, notify, qaMode }) {
         <p>{t("common.homeExplorer.escapeCopy")}</p>
       </div>
       <div className="learn-final-action-wrap">
-        <button type="button" onClick={() => navigate("/final-challenge")}>{t("common.homeExplorer.enterChallenge")} <ArrowRight /></button>
+        <button type="button" data-guide-target="home-final-challenge" onClick={() => navigate("/final-challenge")}>{t("common.homeExplorer.enterChallenge")} <ArrowRight /></button>
       </div>
     </section>
     <footer className="learn-home-footer"><span>{t("common.app.name")}</span><i />{t("common.app.tagline")}<i />{t("common.homeExplorer.footer")}</footer>
@@ -2832,7 +2834,7 @@ function FinalChallengeAdvisory({ onEnter, onReview, onDismiss }) {
   }, [onDismiss]);
 
   return <div className="final-advisory-backdrop">
-    <section className="final-advisory-dialog" role="dialog" aria-modal="true" aria-labelledby="final-advisory-title" aria-describedby="final-advisory-copy">
+    <section className="final-advisory-dialog" data-guide-target="home-final-advisory" role="dialog" aria-modal="true" aria-labelledby="final-advisory-title" aria-describedby="final-advisory-copy">
       <header>
         <span className="final-advisory-icon" aria-hidden="true"><DoorOpen /></span>
         <div><small>{t("common.finalAdvisory.eyebrow")}</small><h2 id="final-advisory-title">{t("common.finalAdvisory.title")}</h2></div>
@@ -2853,6 +2855,7 @@ function FinalChallengeAdvisory({ onEnter, onReview, onDismiss }) {
 }
 
 function App() {
+  const guide = useGuide();
   const [route, setRoute] = useState(() => resolveRuntimeRoute(window.location.pathname));
   const [progress, setProgress] = useState(readProgress);
   const [visitedMissionIds, setVisitedMissionIds] = useState(() => {
@@ -2890,6 +2893,7 @@ function App() {
       setShowFinalChallengeAdvisory(true);
       return;
     }
+    if (resolvedRoute === "/final-challenge" && guide.activeFlowId === "home.onboarding") guide.finishGuide();
     if (resolvedRoute !== "/final-challenge") setFinalChallengeAcknowledged(false);
     if (!legacyTarget) {
       const visitedMissionId = missionIdFromRoute(resolvedRoute);
@@ -2901,12 +2905,14 @@ function App() {
   }
 
   function enterFinalChallenge() {
+    if (guide.activeFlowId === "home.onboarding") guide.finishGuide();
     setShowFinalChallengeAdvisory(false);
     setFinalChallengeAcknowledged(true);
     if (route !== "/final-challenge") navigate("/final-challenge", { skipFinalAdvisory: true });
   }
 
   function reviewLessonsBeforeChallenge() {
+    if (guide.activeFlowId === "home.onboarding") guide.finishGuide();
     setShowFinalChallengeAdvisory(false);
     setFinalChallengeAcknowledged(false);
     navigate("/dashboard");
@@ -2919,6 +2925,7 @@ function App() {
   function resetProgress() {
     const next = defaultProgress();
     writeProgress(next);
+    resetEscapeProgress();
     setProgress(next);
     notify("Progress reset.");
   }
@@ -2979,6 +2986,11 @@ function App() {
     if (route === "/final-challenge" && completedCount(progress) < missionData.length && !finalChallengeAcknowledged) setShowFinalChallengeAdvisory(true);
   }, [route, progress, finalChallengeAcknowledged]);
   React.useEffect(() => {
+    if (!showFinalChallengeAdvisory || guide.activeFlowId !== "home.onboarding") return;
+    if (guide.currentStep?.id === "final-challenge") guide.goToStep("final-advisory");
+    else if (guide.currentStep?.id !== "final-advisory") guide.collapseGuide();
+  }, [showFinalChallengeAdvisory, guide.activeFlowId, guide.currentStep?.id, guide.goToStep, guide.collapseGuide]);
+  React.useEffect(() => {
     if (route !== "/badges") return;
     const suffix = qaToolsVisible ? "?qa=1" : "";
     window.history.replaceState({}, "", `/progress${suffix}`);
@@ -2999,11 +3011,13 @@ function App() {
   else if (route === "/mission/5-bias-paged") page = <Lesson5Paged progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
   else if (route === "/final-challenge") page = <FinalChallenge progress={progress} setProgress={setProgress} navigate={navigate} notify={notify} />;
   else page = <PlaceholderPage route={route} />;
-  return <><Shell route={route} progress={progress} navigate={navigate} resetProgress={resetProgress} qaToolsVisible={qaToolsVisible} qaMode={qaMode} setQaMode={setQaMode}>{page}{toast && <div className="toast show">{toast}</div>}</Shell>{showFinalChallengeAdvisory && <FinalChallengeAdvisory onEnter={enterFinalChallenge} onReview={reviewLessonsBeforeChallenge} onDismiss={reviewLessonsBeforeChallenge} />}</>;
+  return <><Shell route={route} progress={progress} navigate={navigate} resetProgress={resetProgress} qaToolsVisible={qaToolsVisible} qaMode={qaMode} setQaMode={setQaMode}>{page}{toast && <div className="toast show">{toast}</div>}</Shell>{showFinalChallengeAdvisory && <FinalChallengeAdvisory onEnter={enterFinalChallenge} onReview={reviewLessonsBeforeChallenge} onDismiss={reviewLessonsBeforeChallenge} />}<GuideExperience /></>;
 }
 
 createRoot(document.getElementById("root")).render(
   <LanguageProvider>
-    <App />
+    <GuideProvider>
+      <App />
+    </GuideProvider>
   </LanguageProvider>
 );

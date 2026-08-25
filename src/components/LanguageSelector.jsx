@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, Globe2 } from "lucide-react";
 import { useI18n } from "../i18n/index.jsx";
 
-export default function LanguageSelector({ compact = false }) {
+export default function LanguageSelector({ compact = false, guideTarget = null }) {
   const { language, setLanguage, languages, t } = useI18n();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -24,7 +24,7 @@ export default function LanguageSelector({ compact = false }) {
   }, []);
 
   return (
-    <div className={`language-selector ${compact ? "language-selector-compact" : ""}`} ref={ref}>
+    <div className={`language-selector ${compact ? "language-selector-compact" : ""}`} ref={ref} data-guide-target={guideTarget || undefined}>
       <button
         type="button"
         className="language-button"

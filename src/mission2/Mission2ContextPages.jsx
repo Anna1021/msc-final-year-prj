@@ -10,6 +10,7 @@ import {
   ChevronRight,
   Eye,
   Info,
+  HandGrab,
   Lightbulb,
   LoaderCircle,
   Building2,
@@ -26,6 +27,7 @@ import useContextPlaygroundPredictions, {
   resizeContextWindow,
 } from "./useContextPlaygroundPredictions.js";
 import LessonSummaryPage from "../pagedMissions/LessonSummaryPage.jsx";
+import { LESSON_2_CONTEXT_PLAYGROUND_GUIDE_FLOW, useGuide } from "../guide/index.js";
 
 const PLAYGROUND_WINDOW_SIZES = [5, 7, 10, 12];
 const PLAYGROUND_DEFAULT_START = 7;
@@ -87,7 +89,7 @@ export function Mission2OpeningPage({ active, language, t, onComplete }) {
       <div className="m2-context-takeaway"><Info aria-hidden="true" /><p><strong>{t("mission2.page1.takeawayLead")}</strong> {t("mission2.page1.takeaway")}</p></div>
     </div>
 
-    <div className="m2-context-prompt-board">
+    <div className="m2-context-prompt-board" data-guide-target="lesson2-think-about-it">
       <div className="m2-context-prompt-intro"><span><Lightbulb aria-hidden="true" /></span><div><strong>{t("mission2.page1.thinkTitle")}</strong><p>{t("mission2.page1.thinkIntro")}</p></div></div>
       <div className="m2-context-mini-prompts">
         {examples.map(({ id, answer, prefixKey, options }) => {
@@ -256,10 +258,12 @@ export function Mission2OutsidePage({ active, t, onComplete }) {
 }
 
 export function Mission2SizePage({ active, t, onComplete }) {
+  const guide = useGuide();
   const sequenceText = t("mission2.page5.sequenceTokens");
   const allTokens = useMemo(() => sequenceText.split(" "), [sequenceText]);
   const [windowStart, setWindowStart] = useState(PLAYGROUND_DEFAULT_START);
   const [windowSize, setWindowSize] = useState(PLAYGROUND_DEFAULT_SIZE);
+  const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef(null);
   const safeStart = clampContextWindow(windowStart, windowSize, allTokens.length);
   const availableTokens = useMemo(() => getAvailableContext(allTokens, safeStart, windowSize), [allTokens, safeStart, windowSize]);
@@ -281,6 +285,7 @@ export function Mission2SizePage({ active, t, onComplete }) {
     onComplete?.();
   }
   function startDrag(event) {
+    setIsDragging(true);
     dragRef.current = { pointerX: event.clientX, windowStart: safeStart };
     event.currentTarget.setPointerCapture(event.pointerId);
   }
@@ -292,10 +297,16 @@ export function Mission2SizePage({ active, t, onComplete }) {
   function endDrag() {
     if (dragRef.current) onComplete?.();
     dragRef.current = null;
+    setIsDragging(false);
   }
   const leadingTokens = allTokens.slice(0, safeStart);
   const trailingTokens = allTokens.slice(safeStart + windowSize);
   const maximumProbability = predictions.candidates[0]?.probability || 1;
+  const showDragCue = active
+    && guide.expanded
+    && guide.activeFlowId === LESSON_2_CONTEXT_PLAYGROUND_GUIDE_FLOW.id
+    && guide.currentStep?.id === "drag-window"
+    && !isDragging;
 
   return <section hidden={!active} className="mission-2-paged__lesson m2-reading-page m2-context-playground" data-lesson-page="5">
     <div className="m2-playground-heading">
@@ -310,8 +321,18 @@ export function Mission2SizePage({ active, t, onComplete }) {
           <i aria-hidden="true">…</i>
           {leadingTokens.length > 0 && <div className="m2-playground-track-zone is-outside"><div>{leadingTokens.map((token, index) => <span key={`before-${token}-${index}`}>{token}</span>)}</div><p>{t("mission2.page5.outsideLabel")}<small>{t("mission2.page5.outsideNote")}</small></p></div>}
           <div className="m2-playground-track-zone is-window-zone">
-            <div className="m2-playground-window" onPointerDown={startDrag} onPointerMove={continueDrag} onPointerUp={endDrag} onPointerCancel={endDrag}>
-              <strong>{t("mission2.page5.windowLabel")}</strong><div>{availableTokens.map((token, index) => <span className={`tone-${index % 8}`} key={`inside-${token}-${index}`}>{token}</span>)}</div>
+            <div
+              className={`m2-playground-window ${isDragging ? "is-dragging" : ""}`}
+              data-guide-target="lesson2-context-window-drag"
+              aria-label={t("guide.lesson2.draggableWindow")}
+              onPointerDown={startDrag}
+              onPointerMove={continueDrag}
+              onPointerUp={endDrag}
+              onPointerCancel={endDrag}
+            >
+              <strong>{t("mission2.page5.windowLabel")}</strong>
+              {showDragCue && <span className="m2-playground-drag-cue" aria-hidden="true"><HandGrab /><i /></span>}
+              <div>{availableTokens.map((token, index) => <span className={`tone-${index % 8}`} key={`inside-${token}-${index}`}>{token}</span>)}</div>
             </div>
             <p>{t("mission2.page5.insideLabel")}<small>{t("mission2.page5.insideNote")}</small></p>
           </div>
@@ -322,11 +343,11 @@ export function Mission2SizePage({ active, t, onComplete }) {
 
       <section className="m2-playground-controls" aria-labelledby="m2-playground-step2">
         <header><span>2</span><div><h3 id="m2-playground-step2">{t("mission2.page5.step2Title")}</h3><p>{t("mission2.page5.step2Note")}</p></div></header>
-        <div className="m2-playground-move-buttons"><button type="button" disabled={safeStart === 0} onClick={() => moveWindow(-1)}><ChevronLeft />{t("mission2.page5.moveLeft")}</button><button type="button" disabled={safeStart >= allTokens.length - windowSize} onClick={() => moveWindow(1)}>{t("mission2.page5.moveRight")}<ChevronRight /></button><button type="button" onClick={resetWindow}><RotateCcw />{t("mission2.page5.reset")}</button></div>
-        <fieldset><legend>{t("mission2.page5.windowSize")}</legend>{PLAYGROUND_WINDOW_SIZES.map((size) => <button type="button" aria-pressed={windowSize === size} className={windowSize === size ? "is-active" : ""} onClick={() => resizeWindow(size)} key={size}>{size}</button>)}</fieldset>
+        <div className="m2-playground-move-buttons" data-guide-target="lesson2-context-controls"><button type="button" disabled={safeStart === 0} onClick={() => moveWindow(-1)}><ChevronLeft />{t("mission2.page5.moveLeft")}</button><button type="button" disabled={safeStart >= allTokens.length - windowSize} onClick={() => moveWindow(1)}>{t("mission2.page5.moveRight")}<ChevronRight /></button><button type="button" onClick={resetWindow}><RotateCcw />{t("mission2.page5.reset")}</button></div>
+        <fieldset data-guide-target="lesson2-context-size"><legend>{t("mission2.page5.windowSize")}</legend>{PLAYGROUND_WINDOW_SIZES.map((size) => <button type="button" aria-pressed={windowSize === size} className={windowSize === size ? "is-active" : ""} onClick={() => resizeWindow(size)} key={size}>{size}</button>)}</fieldset>
       </section>
 
-      <section className="m2-playground-results" aria-labelledby="m2-playground-step3">
+      <section className="m2-playground-results" data-guide-target="lesson2-context-result" aria-labelledby="m2-playground-step3">
         <header><span>3</span><h3 id="m2-playground-step3">{t("mission2.page5.step3Title")}</h3></header>
         <article className="m2-playground-available"><h4>{t("mission2.page5.availableTitle")}</h4><p>{t("mission2.page5.availableNote")}</p><div aria-live="polite">{availableTokens.map((token, index) => <span className={`tone-${index % 8}`} key={`${token}-${index}`}>{token}</span>)}</div></article>
         <article className="m2-playground-predictions"><div><h4>{t("mission2.page5.predictionsTitle")}</h4><p>{t("mission2.page5.predictionsNote")}</p><small>{t("mission2.page5.realModelLabel")}</small></div>

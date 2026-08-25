@@ -138,7 +138,7 @@ export default function Mission2PagedPrototype({ setProgress, navigate, notify }
     <Mission2GrowingTextPage active={currentPage === 3} t={t} onComplete={() => mark("grow-text")} />
     <Mission2OutsidePage active={currentPage === 4} t={t} onComplete={() => mark("visible-clue")} />
     <Mission2SizePage active={currentPage === 5} t={t} onComplete={() => mark("resize-window")} />
-    <Mission1PagedKnowledgeQuiz active={currentPage === 6} copy={pageQuizCopy} resetKey={0} onResultChange={setQuizResult} onContinue={() => changePage(7)} pageNumber={6} lessonClassName="mission-2-paged__lesson" showLesson1Visuals={false} />
+    <Mission1PagedKnowledgeQuiz active={currentPage === 6} copy={pageQuizCopy} resetKey={0} onResultChange={setQuizResult} onContinue={() => changePage(7)} pageNumber={6} lessonClassName="mission-2-paged__lesson" showLesson1Visuals={false} guideTarget="lesson-quiz" />
     <Mission2SummaryPage active={currentPage === 7} t={t} complete={complete} onContinue={continueToNextLesson} />
   </MissionLessonShell>;
 }

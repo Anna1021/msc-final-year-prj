@@ -20,6 +20,7 @@ for (const id of [1, 2, 3, 5, 6]) assert.equal(canAccessMission(defaultProgress,
 assert.doesNotMatch(app, /route === "\/final-challenge" && !canAccessFinalChallenge/, "no Final Challenge route guard remains");
 assert.doesNotMatch(app, /function AccessGuardPage/, "obsolete access guard UI is removed");
 assert.doesNotMatch(finalChallenge, /setProgress/, "Escape completion cannot mutate five-Lesson progress");
+assert.match(app, /function resetProgress\(\) \{[\s\S]*writeProgress\(next\);[\s\S]*resetEscapeProgress\(\);[\s\S]*setProgress\(next\);/, "the shared Reset Progress action clears both Lesson and Final Challenge progress");
 assert.match(app, /onClick=\{\(\) => navigate\("\/final-challenge"\)\}/, "Final Challenge entry navigates directly");
 assert.match(shell, /currentPage === pageCount \? onEnd\?\.\(\)/, "final-page footer uses an available continuation action");
 for (const source of lessonSources) {
