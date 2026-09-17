@@ -1,4 +1,3 @@
-import { Tensor } from "@huggingface/transformers";
 import { LIVE_MODEL } from "../src/mission4/liveModelConfig.js";
 import { chooseTokenId, createSeededRandom, probabilityDistribution, topCandidateProbabilities, visualiseToken } from "../src/mission4/livePredictionMath.js";
 
@@ -75,7 +74,10 @@ async function loadModel() {
       revision: LIVE_MODEL.revision,
       dtype: LIVE_MODEL.dtype,
       device: "cpu"
-    }));
+    })).then((model) => {
+      console.log("[ModelService] Model ready");
+      return model;
+    });
   }
   return modelPromise;
 }
@@ -115,7 +117,8 @@ function decodedContribution(tokenizer, inputIds, tokenId) {
   return { contribution, before, after };
 }
 
-function tokenInputs(ids) {
+async function tokenInputs(ids) {
+  const { Tensor } = await import("@huggingface/transformers");
   return {
     input_ids:new Tensor("int64", BigInt64Array.from(ids, BigInt), [1, ids.length]),
     attention_mask:new Tensor("int64", BigInt64Array.from(ids, () => 1n), [1, ids.length])
@@ -127,7 +130,7 @@ async function infer(request) {
   const [tokenizer, model] = await Promise.all([loadTokenizer(), loadModel()]);
   const encoded = inputTokenIds ? null : await tokenizer(text);
   const inputIds = inputTokenIds || Array.from(encoded.input_ids.data, Number);
-  const inputs = inputTokenIds ? tokenInputs(inputIds) : encoded;
+  const inputs = inputTokenIds ? await tokenInputs(inputIds) : encoded;
   const output = await model(inputs);
   if (!output?.logits?.dims || output.logits.dims.length !== 3) throw new Error("The model did not return usable causal-language-model logits.");
   const [, sequenceLength, vocabularySize] = output.logits.dims;

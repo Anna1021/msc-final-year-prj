@@ -21,6 +21,7 @@
     "test:mission2-paged": "node scripts/test-mission2-paged.mjs",
     "test:mission3-paged": "node scripts/test-mission3-paged.mjs",
     "test:mission4-paged": "node scripts/test-mission4-paged.mjs",
+    "test:server-cold-start": "node tests/test-server-cold-start.mjs",
     "test:next-token-api": "node scripts/test-next-token-api.mjs",
     "test:next-token-live": "node scripts/test-next-token-live.mjs",
     "test:live-prediction-unicode": "node scripts/test-live-prediction-unicode.mjs",

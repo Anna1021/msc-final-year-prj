@@ -83,4 +83,7 @@ export function createAppServer({ predictor = predictNextToken } = {}) {
   });
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) createAppServer().listen(port, "0.0.0.0", () => console.log(`LLM Explorer listening on ${port}`));
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  console.log("[Server] Starting...");
+  createAppServer().listen(port, "0.0.0.0", () => console.log(`[Server] Listening on port ${port}`));
+}
